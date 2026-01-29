@@ -1,0 +1,3000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Cloud - Segment Builder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #f3f4f6;
+            color: #1f2937;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .app-header {
+            background: #0B3A5D;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .back-button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            transition: background 0.2s;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .segment-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .datacloud-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .segment-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        .segment-name {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .header-icons {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-icon-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-icon-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .header-icon-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .audience-count {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+        }
+
+        .count-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .count-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        .count-percentage {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            padding: 0.625rem 1.25rem;
+            border-radius: 0.375rem;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #0B3A5D;
+        }
+
+        .btn-secondary:hover {
+            background: #f9fafb;
+        }
+
+        .btn-primary {
+            background: #1d72f3;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1557c7;
+        }
+
+        /* Tab Navigation */
+        .tab-navigation {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 0 1.5rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .tab-item {
+            padding: 1rem 1.5rem;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            color: #6b7280;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            background: none;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+        }
+
+        .tab-item:hover {
+            color: #1f2937;
+            background: #f9fafb;
+        }
+
+        .tab-item.active {
+            color: #1d72f3;
+            border-bottom-color: #1d72f3;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Welcome State */
+        .welcome-state {
+            text-align: center;
+            max-width: 800px;
+            margin: 4rem auto;
+        }
+
+        .welcome-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 2rem;
+            color: #1d72f3;
+        }
+
+        .welcome-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+
+        .welcome-subtitle {
+            font-size: 1.125rem;
+            color: #6b7280;
+            margin-bottom: 2rem;
+        }
+
+        .goal-input-container {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            transition: border-color 0.2s;
+        }
+
+        .goal-input-container:focus-within {
+            border-color: #1d72f3;
+        }
+
+        .goal-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            color: #1f2937;
+        }
+
+        .goal-input::placeholder {
+            color: #9ca3af;
+        }
+
+        .goal-submit {
+            background: #1d72f3;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .goal-submit:hover {
+            background: #1557c7;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Section Header */
+        .section-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-description {
+            font-size: 1rem;
+            color: #6b7280;
+        }
+
+        /* Segment Definition Cards */
+        .filter-list {
+            display: grid;
+            grid-template-columns: 1fr 80px;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .filters-column {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .and-column {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .filter-and-slab {
+            background: #d1fae5;
+            color: #065f46;
+            font-size: 0.875rem;
+            font-weight: 700;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 60px;
+        }
+
+        .filter-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-left: 4px solid #1d72f3;
+            transition: box-shadow 0.2s;
+            min-height: 60px;
+        }
+
+        .filter-card:hover {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .filter-card.highlight {
+            border-left-color: #fbbf24;
+        }
+
+        .filter-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .filter-text {
+            font-size: 0.9375rem;
+            color: #1f2937;
+        }
+
+        .filter-text strong {
+            font-weight: 600;
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .icon-btn {
+            background: none;
+            border: 1px solid #e5e7eb;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            color: #6b7280;
+            transition: all 0.2s;
+        }
+
+        .icon-btn:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+        }
+
+        /* Quick Filters Panel */
+        .quick-filters-section {
+            margin-bottom: 2rem;
+        }
+
+        .quick-filters-trigger {
+            background: white;
+            border: 2px dashed #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1.25rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s;
+        }
+
+        .quick-filters-trigger:hover {
+            border-color: #1d72f3;
+            background: #f9fafb;
+        }
+
+        .trigger-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .trigger-icon {
+            width: 24px;
+            height: 24px;
+            color: #1d72f3;
+        }
+
+        .trigger-text {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #1f2937;
+        }
+
+        .trigger-arrow {
+            width: 20px;
+            height: 20px;
+            color: #6b7280;
+            transition: transform 0.3s;
+        }
+
+        .trigger-arrow.open {
+            transform: rotate(180deg);
+        }
+
+        .quick-filters-panel {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 0.75rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            display: none;
+        }
+
+        .quick-filters-panel.open {
+            display: block;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .quick-filters-header {
+            margin-bottom: 1.25rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .quick-filters-title {
+            font-size: 1.0625rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .quick-filters-desc {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .quick-filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .quick-filter-item {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quick-filter-item:hover {
+            background: #eff6ff;
+            border-color: #1d72f3;
+            box-shadow: 0 2px 4px rgba(29, 114, 243, 0.1);
+        }
+
+        .quick-filter-item-content {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .quick-filter-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .quick-filter-info {
+            flex: 1;
+        }
+
+        .quick-filter-name {
+            font-size: 0.9375rem;
+            font-weight: 500;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .quick-filter-detail {
+            font-size: 0.8125rem;
+            color: #6b7280;
+        }
+
+        /* Channel Affinity */
+        .channel-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .channel-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .channel-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .channel-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            background: #eff6ff;
+        }
+
+        .channel-info {
+            flex: 1;
+        }
+
+        .channel-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .channel-badge {
+            display: inline-block;
+            padding: 0.25rem 0.625rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background: #1d72f3;
+            color: white;
+            margin-left: 0.5rem;
+        }
+
+        .channel-engagement {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .channel-bar-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .channel-bar {
+            flex: 1;
+            height: 8px;
+            background: #f3f4f6;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .channel-bar-fill {
+            height: 100%;
+            background: #1d72f3;
+            transition: width 0.6s ease-out;
+        }
+
+        .channel-percentage {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1f2937;
+            min-width: 50px;
+            text-align: right;
+        }
+
+        .channel-insight {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            font-size: 0.875rem;
+            color: #1e40af;
+        }
+
+        .channel-source {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-left: 3px solid #1d72f3;
+            border-radius: 0.375rem;
+            padding: 0.875rem 1rem;
+            margin-top: 1rem;
+            font-size: 0.8125rem;
+            color: #6b7280;
+        }
+
+        /* Smart Splits */
+        .split-controls-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .split-controls-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .split-controls-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .reset-link {
+            font-size: 0.875rem;
+            color: #1d72f3;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            transition: background 0.2s;
+        }
+
+        .reset-link:hover {
+            background: #eff6ff;
+        }
+
+        .split-slider-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .split-display {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .split-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .split-emoji {
+            font-size: 1.25rem;
+        }
+
+        .split-percentage-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1f2937;
+            min-width: 60px;
+        }
+
+        .split-slider {
+            flex: 1;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 8px;
+            border-radius: 4px;
+            background: linear-gradient(to right, #1d72f3 0%, #1d72f3 50%, #10b981 50%, #10b981 100%);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .split-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid #1d72f3;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .split-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid #1d72f3;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .splits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .split-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+        }
+
+        .split-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .split-name-section {
+            flex: 1;
+        }
+
+        .split-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .split-label {
+            font-size: 0.8125rem;
+            color: #6b7280;
+        }
+
+        .split-size {
+            text-align: right;
+        }
+
+        .split-size-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+        }
+
+        .split-size-value {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .split-offer {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .split-offer-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .split-offer-title {
+            font-size: 1.0625rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .split-offer-channel {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .split-audience {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .split-audience-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .split-audience-count {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        /* Analytics Grid */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+        }
+
+        .stat-card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 0.375rem;
+            background: #eff6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .stat-change {
+            font-size: 0.8125rem;
+            color: #10b981;
+            margin-top: 0.5rem;
+        }
+
+        .insights-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .insight-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+        }
+
+        .insight-card-title {
+            font-size: 1.0625rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+        }
+
+        .insight-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .insight-item {
+            background: #f9fafb;
+            border-left: 3px solid #1d72f3;
+            border-radius: 0.25rem;
+            padding: 0.875rem 1rem;
+            font-size: 0.875rem;
+            color: #1f2937;
+        }
+
+        .insight-item strong {
+            font-weight: 600;
+            color: #1d72f3;
+        }
+
+        /* Performance Cards */
+        .performance-section {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .performance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .performance-title {
+            font-size: 1.0625rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .performance-badge {
+            font-size: 0.75rem;
+            color: #6b7280;
+            background: #f3f4f6;
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.25rem;
+        }
+
+        .performance-items {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .performance-item {
+            border-bottom: 1px solid #f3f4f6;
+            padding-bottom: 1rem;
+        }
+
+        .performance-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .performance-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .performance-name {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .performance-emoji {
+            font-size: 1.5rem;
+        }
+
+        .performance-text {
+            font-size: 0.9375rem;
+            font-weight: 500;
+            color: #1f2937;
+        }
+
+        .performance-result {
+            text-align: right;
+        }
+
+        .performance-percentage {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .performance-delta {
+            font-size: 0.8125rem;
+            color: #10b981;
+        }
+
+        .performance-bar-bg {
+            height: 10px;
+            background: #f3f4f6;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .performance-bar-fill {
+            height: 100%;
+            background: #1d72f3;
+            transition: width 0.6s ease-out;
+        }
+
+        .winner-banner {
+            background: #d1fae5;
+            border: 1px solid #6ee7b7;
+            border-radius: 0.375rem;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: #065f46;
+        }
+
+        .winner-banner strong {
+            font-weight: 600;
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .btn-nav {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-nav-secondary {
+            background: white;
+            border: 1px solid #e5e7eb;
+            color: #1f2937;
+        }
+
+        .btn-nav-secondary:hover {
+            background: #f9fafb;
+        }
+
+        .btn-nav-primary {
+            background: #1d72f3;
+            border: none;
+            color: white;
+        }
+
+        .btn-nav-primary:hover {
+            background: #1557c7;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .tab-navigation {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .quick-filters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .splits-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .insights-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- App Header -->
+    <div class="app-header">
+        <div class="header-left">
+            <button class="back-button" onclick="window.location.reload()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+            </button>
+            <div class="segment-title">
+                <svg class="segment-icon" viewBox="0 0 24 24" fill="white" stroke="none" style="width: 24px; height: 24px;">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5"/>
+                    <path d="M2 12l10 5 10-5"/>
+                </svg>
+                <span class="segment-name" id="segmentName">Data Cloud Segment Builder</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="header-icons">
+                <button class="header-icon-btn" title="Search">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="M21 21l-4.35-4.35"/>
+                    </svg>
+                </button>
+                <button class="header-icon-btn" title="Recent Activity">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                </button>
+                <button class="header-icon-btn" title="Notifications">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                    </svg>
+                </button>
+                <button class="header-icon-btn" title="Data Sources">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                        <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+                        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                    </svg>
+                </button>
+                <button class="header-icon-btn" title="Settings">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M12 1v6m0 6v6M5.64 5.64l4.24 4.24m4.24 4.24l4.24 4.24M1 12h6m6 0h6M5.64 18.36l4.24-4.24m4.24-4.24l4.24-4.24"/>
+                    </svg>
+                </button>
+                <button class="header-icon-btn" title="Help & Support">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                    </svg>
+                </button>
+                <button class="header-icon-btn" title="User Profile">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Segment Toolbar -->
+    <div id="segmentToolbar" style="background: white; border-bottom: 1px solid #e5e7eb; padding: 1rem 1.5rem; display: none; align-items: center; justify-content: space-between;">
+        <!-- Left Side: Population Metrics -->
+        <div style="display: flex; align-items: center; gap: 1.5rem;">
+            <!-- Action Buttons -->
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <button style="width: 36px; height: 36px; border: 1px solid #d1d5db; border-radius: 0.375rem; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #6b7280; transition: all 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'" title="Undo">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 7v6h6"/>
+                        <path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13"/>
+                    </svg>
+                </button>
+                <button style="width: 36px; height: 36px; border: 1px solid #d1d5db; border-radius: 0.375rem; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #6b7280; transition: all 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'" title="Redo">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 7v6h-6"/>
+                        <path d="M3 17a9 9 0 019-9 9 9 0 016 2.3l3 2.7"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Population Count -->
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <button style="width: 36px; height: 36px; border: 1px solid #d1d5db; border-radius: 0.375rem; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #6b7280; transition: all 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'" title="Refresh">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0118.8-4.3M22 12.5a10 10 0 01-18.8 4.2"/>
+                    </svg>
+                </button>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <div style="font-size: 1.75rem; font-weight: 700; color: #1f2937;" id="toolbarAudienceCount">12,487</div>
+                    <div style="font-size: 0.9375rem; color: #6b7280;">Unified Individuals</div>
+                </div>
+            </div>
+
+            <!-- Percentage Badge -->
+            <div style="display: flex; align-items: center; gap: 0.5rem; background: #eff6ff; padding: 0.5rem 1rem; border-radius: 0.375rem;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="#3b82f6">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+                <span style="font-size: 0.9375rem; color: #1e40af; font-weight: 500;">0.4% of 3,286,468 total population</span>
+            </div>
+        </div>
+
+        <!-- Right Side: Action Buttons -->
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <button style="padding: 0.5rem 1.25rem; border: 1px solid #d1d5db; border-radius: 0.375rem; background: white; color: #374151; font-size: 0.9375rem; font-weight: 500; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'">
+                Edit Properties
+            </button>
+            <button style="padding: 0.5rem 1.25rem; border: 1px solid #1d72f3; border-radius: 0.375rem; background: white; color: #1d72f3; font-size: 0.9375rem; font-weight: 500; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#eff6ff'" onmouseout="this.style.background='white'">
+                Preview Segment
+            </button>
+            <button style="padding: 0.5rem 1.25rem; border: 1px solid #d1d5db; border-radius: 0.375rem; background: white; color: #374151; font-size: 0.9375rem; font-weight: 500; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'" onclick="alert('Closing segment builder...')">
+                Close
+            </button>
+            <button style="padding: 0.5rem 1.25rem; border: none; border-radius: 0.375rem; background: #1d72f3; color: white; font-size: 0.9375rem; font-weight: 500; cursor: pointer; transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.05);" onmouseover="this.style.background='#1557b0'" onmouseout="this.style.background='#1d72f3'" onclick="alert('Segment saved successfully!')">
+                Save
+            </button>
+        </div>
+    </div>
+
+    <!-- Tab Navigation -->
+    <div id="tabNavigation" class="tab-navigation" style="display: none;">
+        <button class="tab-item" onclick="switchTab(0)" id="tab0">Segment Definition</button>
+        <button class="tab-item" onclick="switchTab(1)" id="tab1">Rank and Limit</button>
+        <button class="tab-item" onclick="switchTab(2)" id="tab2">Channel Affinity</button>
+        <button class="tab-item" onclick="switchTab(3)" id="tab3">Smart Splits</button>
+        <button class="tab-item" onclick="switchTab(4)" id="tab4">Analytics</button>
+        <button class="tab-item" onclick="switchTab(5)" id="tab5">Activate</button>
+        <button class="tab-item" onclick="switchTab(6)" id="tab6">Segment Performance</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Welcome State -->
+        <div id="welcomeState" class="welcome-state">
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 3rem;">
+                <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem; text-align: center;">
+                    <div style="width: 48px; height: 48px; background: #eff6ff; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1d72f3" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                    </div>
+                    <div style="font-size: 1.75rem; font-weight: 700; color: #1f2937; margin-bottom: 0.25rem;">3.2M</div>
+                    <div style="font-size: 0.875rem; color: #6b7280;">Profiles</div>
+                </div>
+
+                <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem; text-align: center;">
+                    <div style="width: 48px; height: 48px; background: #fef3c7; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2">
+                            <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                        </svg>
+                    </div>
+                    <div style="font-size: 1.75rem; font-weight: 700; color: #1f2937; margin-bottom: 0.25rem;">12</div>
+                    <div style="font-size: 0.875rem; color: #6b7280;">Sources</div>
+                </div>
+
+                <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem; text-align: center;">
+                    <div style="width: 48px; height: 48px; background: #f0fdf4; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M12 1v6m0 6v6"/>
+                        </svg>
+                    </div>
+                    <div style="font-size: 1.75rem; font-weight: 700; color: #1f2937; margin-bottom: 0.25rem;">847</div>
+                    <div style="font-size: 0.875rem; color: #6b7280;">Segments</div>
+                </div>
+
+                <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem; text-align: center;">
+                    <div style="width: 48px; height: 48px; background: #fae8ff; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2">
+                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                        </svg>
+                    </div>
+                    <div style="font-size: 1.75rem; font-weight: 700; color: #1f2937; margin-bottom: 0.25rem;">400</div>
+                    <div style="font-size: 0.875rem; color: #6b7280;">Activations</div>
+                </div>
+            </div>
+
+            <div style="background: white; border: 2px solid #1d72f3; border-radius: 1rem; padding: 3rem; box-shadow: 0 8px 24px rgba(29, 114, 243, 0.12);">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #1d72f3 0%, #1557b0 100%); border-radius: 1rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; box-shadow: 0 8px 16px rgba(29, 114, 243, 0.25);">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                            <line x1="12" y1="22.08" x2="12" y2="12"/>
+                        </svg>
+                    </div>
+                    <h1 style="font-size: 2.25rem; font-weight: 700; color: #1f2937; margin-bottom: 0.75rem;">What's your goal for today?</h1>
+                    <p style="font-size: 1.125rem; color: #6b7280;">Tell me your goal and I'll handle the rest</p>
+                </div>
+                <form onsubmit="startSegment(event)" class="goal-input-container">
+                    <input type="text" class="goal-input" id="goalInput" placeholder="e.g., Target high-value customers who haven't purchased in 6 months" required>
+                    <button type="submit" class="goal-submit">Start Building Segment</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tab 0: Segment Definition -->
+        <div id="tabContent0" class="tab-content">
+            <div class="section-header">
+                <h2 class="section-title" id="segmentTitle">High Value Outdoor Enthusiasts</h2>
+                <p class="section-description" id="segmentDescription">Our most engaged outdoor enthusiasts who have a high history of premium purchases but haven't geared up recently</p>
+            </div>
+
+            <div class="filter-list" id="filterList">
+                <div class="filters-column" id="filtersColumn">
+                    <div class="filter-card">
+                        <div class="filter-content">
+                            <span class="filter-text"><strong>Lifetime Value</strong> is equal to or greater than <strong>USD 7,000</strong></span>
+                        </div>
+                        <div class="filter-actions">
+                            <button class="icon-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                                </svg>
+                            </button>
+                            <button class="icon-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="filter-card highlight">
+                        <div class="filter-content">
+                            <span class="filter-text"><strong>Product Interest</strong> is equal to <strong>Trekking Boots</strong></span>
+                        </div>
+                        <div class="filter-actions">
+                            <button class="icon-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                                </svg>
+                            </button>
+                            <button class="icon-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="filter-card">
+                        <div class="filter-content">
+                            <span class="filter-text"><strong>Last Activity</strong> is more than <strong>180 Days ago</strong></span>
+                        </div>
+                        <div class="filter-actions">
+                            <button class="icon-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                                </svg>
+                            </button>
+                            <button class="icon-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="and-column" id="andColumn">
+                    <div class="filter-and-slab">AND</div>
+                </div>
+            </div>
+
+            <div class="quick-filters-section">
+                <div class="quick-filters-trigger" onclick="toggleQuickFilters()">
+                    <div class="trigger-content">
+                        <svg class="trigger-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 5v14M5 12h14"/>
+                        </svg>
+                        <span class="trigger-text">Add from Quick Filters</span>
+                    </div>
+                    <svg class="trigger-arrow" id="triggerArrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </div>
+                <div class="quick-filters-panel" id="quickFiltersPanel">
+                    <div class="quick-filters-header">
+                        <h3 class="quick-filters-title">Select from Quick Filters to Refine Segment</h3>
+                        <p class="quick-filters-desc">Click any attribute to add it to your segment criteria</p>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <input type="text" placeholder="Search filters..." style="width: 100%; padding: 0.75rem 1rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.9375rem; color: #1f2937; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#1d72f3'; this.style.boxShadow='0 0 0 3px rgba(29,114,243,0.1)'" onblur="this.style.borderColor='#d1d5db'; this.style.boxShadow='none'">
+                    </div>
+                    <div class="quick-filters-grid">
+                        <div class="quick-filter-item" onclick="addQuickFilter('Region: Pacific Northwest', '🗺️')">
+                            <div class="quick-filter-item-content">
+                                <span class="quick-filter-icon">🗺️</span>
+                                <div class="quick-filter-info">
+                                    <div class="quick-filter-name">Pacific Northwest</div>
+                                    <div class="quick-filter-detail">Geographic region filter</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="quick-filter-item" onclick="addQuickFilter('Device: Mobile', '📱')">
+                            <div class="quick-filter-item-content">
+                                <span class="quick-filter-icon">📱</span>
+                                <div class="quick-filter-info">
+                                    <div class="quick-filter-name">Mobile Users</div>
+                                    <div class="quick-filter-detail">Primary device type</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="quick-filter-item" onclick="addQuickFilter('Age Group: 25-44', '👤')">
+                            <div class="quick-filter-item-content">
+                                <span class="quick-filter-icon">👤</span>
+                                <div class="quick-filter-info">
+                                    <div class="quick-filter-name">Age 25-44</div>
+                                    <div class="quick-filter-detail">Demographic segment</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="quick-filter-item" onclick="addQuickFilter('Purchase Frequency: High', '🔄')">
+                            <div class="quick-filter-item-content">
+                                <span class="quick-filter-icon">🔄</span>
+                                <div class="quick-filter-info">
+                                    <div class="quick-filter-name">High Frequency</div>
+                                    <div class="quick-filter-detail">4+ purchases/month</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="quick-filter-item" onclick="addQuickFilter('Email Engagement: Active', '✉️')">
+                            <div class="quick-filter-item-content">
+                                <span class="quick-filter-icon">✉️</span>
+                                <div class="quick-filter-info">
+                                    <div class="quick-filter-name">Email Active</div>
+                                    <div class="quick-filter-detail">Opened in last 30 days</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="quick-filter-item" onclick="addQuickFilter('Loyalty Tier: Gold', '⭐')">
+                            <div class="quick-filter-item-content">
+                                <span class="quick-filter-icon">⭐</span>
+                                <div class="quick-filter-info">
+                                    <div class="quick-filter-name">Gold Member</div>
+                                    <div class="quick-filter-detail">Loyalty program tier</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="quick-filter-item" onclick="addQuickFilter('Season: Winter', '❄️')">
+                            <div class="quick-filter-item-content">
+                                <span class="quick-filter-icon">❄️</span>
+                                <div class="quick-filter-info">
+                                    <div class="quick-filter-name">Winter Season</div>
+                                    <div class="quick-filter-detail">Seasonal preference</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="quick-filter-item" onclick="addQuickFilter('Income Level: High', '💰')">
+                            <div class="quick-filter-item-content">
+                                <span class="quick-filter-icon">💰</span>
+                                <div class="quick-filter-info">
+                                    <div class="quick-filter-name">High Income</div>
+                                    <div class="quick-filter-detail">$100K+ annual income</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav btn-nav-secondary" disabled style="visibility: hidden;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Previous
+                </button>
+                <button class="btn-nav btn-nav-primary" onclick="switchTab(1)">
+                    Next: Rank and Limit
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Tab 1: Rank and Limit -->
+        <div id="tabContent1" class="tab-content">
+            <div class="section-header">
+                <h2 class="section-title">Rank and Limit</h2>
+                <p class="section-description">Transform your broad segment into highly specific, actionable audiences</p>
+            </div>
+
+            <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 0.5rem; padding: 1.25rem; margin-bottom: 2rem;">
+                <h4 style="font-size: 1rem; font-weight: 600; color: #1e40af; margin-bottom: 0.75rem;">What is Group, Rank, and Limit (GRL)?</h4>
+                <p style="font-size: 0.875rem; color: #1e3a8a; line-height: 1.6;">
+                    GRL allows you to organize records into meaningful groups, prioritize them based on defined business rules, and control segment sizes. 
+                    This transforms broad segments into the <strong>best-of-the-best</strong> audiences for high-value campaigns.
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.375rem; padding: 1rem;">
+                    <div style="font-size: 1.25rem; margin-bottom: 0.5rem;">🪣</div>
+                    <div style="font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">Group (The Bucket)</div>
+                    <div style="font-size: 0.8125rem; color: #6b7280;">Gather members into buckets by City (London, Tokyo, etc.)</div>
+                </div>
+                <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.375rem; padding: 1rem;">
+                    <div style="font-size: 1.25rem; margin-bottom: 0.5rem;">📊</div>
+                    <div style="font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">Rank (The Priority)</div>
+                    <div style="font-size: 0.8125rem; color: #6b7280;">Sort members by Lifetime Points within each city</div>
+                </div>
+                <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.375rem; padding: 1rem;">
+                    <div style="font-size: 1.25rem; margin-bottom: 0.5rem;">🎯</div>
+                    <div style="font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">Limit (The Quantity)</div>
+                    <div style="font-size: 0.8125rem; color: #6b7280;">Select only the Top 5 from each city</div>
+                </div>
+            </div>
+
+            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1.5rem;">
+                <h4 style="font-size: 1rem; font-weight: 600; color: #1f2937; margin-bottom: 1.25rem;">Configure Your GRL Rules</h4>
+                
+                <!-- Step 1: Group -->
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.5rem;">
+                        <span style="color: #1d72f3; margin-right: 0.25rem;">1.</span> Group By
+                    </label>
+                    <select style="width: 100%; padding: 0.75rem 1rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.9375rem; color: #1f2937; background: white; cursor: pointer;">
+                        <option value="">Select attribute to group by...</option>
+                        <option value="region" selected>Geographic Region</option>
+                        <option value="city">City</option>
+                        <option value="account">Account ID</option>
+                        <option value="loyalty">Loyalty Tier</option>
+                    </select>
+                    <div style="font-size: 0.8125rem; color: #6b7280; margin-top: 0.5rem;">
+                        Example: Group by <strong>Geographic Region</strong> to ensure fair distribution across all areas
+                    </div>
+                </div>
+
+                <!-- Step 2: Rank -->
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.5rem;">
+                        <span style="color: #1d72f3; margin-right: 0.25rem;">2.</span> Rank By
+                    </label>
+                    <div style="display: grid; grid-template-columns: 1fr auto; gap: 0.75rem;">
+                        <select style="padding: 0.75rem 1rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.9375rem; color: #1f2937; background: white; cursor: pointer;">
+                            <option value="">Select ranking attribute...</option>
+                            <option value="ltv" selected>Lifetime Value (LTV)</option>
+                            <option value="points">Loyalty Points</option>
+                            <option value="recency">Last Purchase Date</option>
+                            <option value="engagement">Engagement Score</option>
+                        </select>
+                        <select style="padding: 0.75rem 1rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.9375rem; color: #1f2937; background: white; cursor: pointer;">
+                            <option value="desc" selected>Descending (Highest First)</option>
+                            <option value="asc">Ascending (Lowest First)</option>
+                        </select>
+                    </div>
+                    <div style="font-size: 0.8125rem; color: #6b7280; margin-top: 0.5rem;">
+                        Example: Rank by <strong>Lifetime Value</strong> in descending order to prioritize highest-value customers
+                    </div>
+                </div>
+
+                <!-- Step 3: Limit -->
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.5rem;">
+                        <span style="color: #1d72f3; margin-right: 0.25rem;">3.</span> Limit To
+                    </label>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <input type="number" value="10" min="1" max="1000" style="width: 120px; padding: 0.75rem 1rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.9375rem; color: #1f2937;">
+                        <span style="font-size: 0.9375rem; color: #6b7280;">records per group</span>
+                    </div>
+                    <div style="font-size: 0.8125rem; color: #6b7280; margin-top: 0.5rem;">
+                        Example: Limit to <strong>Top 10</strong> customers per region for a focused, high-value campaign
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: #fef3c7; border: 1px solid #fcd34d; border-radius: 0.5rem; padding: 1.25rem; margin-bottom: 2rem;">
+                <div style="display: flex; align-items: start; gap: 0.75rem;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#92400e" stroke-width="2" style="flex-shrink: 0; margin-top: 0.125rem;">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="16" x2="12" y2="12"/>
+                        <line x1="12" y1="8" x2="12.01" y2="8"/>
+                    </svg>
+                    <div style="font-size: 0.875rem; color: #78350f; line-height: 1.6;">
+                        <strong>Result Preview:</strong> Your segment of <strong>12,487 customers</strong> will be refined to approximately <strong>500 top customers</strong> 
+                        (10 per region × ~50 regions). This ensures you target only the highest-value individuals while maintaining geographic balance.
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem;">
+                <h4 style="font-size: 0.9375rem; font-weight: 600; color: #1f2937; margin-bottom: 1rem;">Why Use Rank and Limit?</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; font-size: 0.875rem; color: #6b7280; line-height: 1.6;">
+                    <div>
+                        <strong style="color: #1f2937;">✓ Precision Targeting:</strong> Focus on best-fit customers instead of everyone who qualifies
+                    </div>
+                    <div>
+                        <strong style="color: #1f2937;">✓ Resource Optimization:</strong> Control campaign costs by limiting audience size
+                    </div>
+                    <div>
+                        <strong style="color: #1f2937;">✓ Fair Distribution:</strong> Ensure representation across all groups (regions, accounts, etc.)
+                    </div>
+                    <div>
+                        <strong style="color: #1f2937;">✓ No SQL Required:</strong> Simple point-and-click interface for complex logic
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav btn-nav-secondary" onclick="switchTab(0)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Previous
+                </button>
+                <button class="btn-nav btn-nav-primary" onclick="switchTab(2)">
+                    Next: Channel Affinity
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Tab 2: Channel Affinity -->
+        <div id="tabContent2" class="tab-content">
+            <div class="section-header">
+                <h2 class="section-title">Channel Affinity Analysis</h2>
+                <p class="section-description">These channels perform best with your target audience</p>
+            </div>
+
+            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1.5rem;">
+                <h4 style="font-size: 1rem; font-weight: 600; color: #1f2937; margin-bottom: 1rem;">Why Look at Channel Affinity?</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+                    <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.375rem; padding: 1rem;">
+                        <div style="font-size: 1.25rem; margin-bottom: 0.5rem;">🎯</div>
+                        <div style="font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">Optimize Engagement</div>
+                        <div style="font-size: 0.8125rem; color: #6b7280;">Reach your audience on channels where they're most active</div>
+                    </div>
+                    <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.375rem; padding: 1rem;">
+                        <div style="font-size: 1.25rem; margin-bottom: 0.5rem;">💰</div>
+                        <div style="font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">Reduce Waste</div>
+                        <div style="font-size: 0.8125rem; color: #6b7280;">Avoid spending on channels with low engagement potential</div>
+                    </div>
+                    <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.375rem; padding: 1rem;">
+                        <div style="font-size: 1.25rem; margin-bottom: 0.5rem;">📈</div>
+                        <div style="font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">Data-Driven Strategy</div>
+                        <div style="font-size: 0.8125rem; color: #6b7280;">Make informed decisions based on historical performance</div>
+                    </div>
+                    <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.375rem; padding: 1rem;">
+                        <div style="font-size: 1.25rem; margin-bottom: 0.5rem;">⏰</div>
+                        <div style="font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">Perfect Timing</div>
+                        <div style="font-size: 0.8125rem; color: #6b7280;">Send messages when your audience is most likely to respond</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="channel-list">
+                <div class="channel-card">
+                    <div class="channel-header">
+                        <div class="channel-icon">📱</div>
+                        <div class="channel-info">
+                            <div class="channel-name">
+                                Mobile Push
+                                <span class="channel-badge">Top Pick</span>
+                            </div>
+                            <div class="channel-engagement">High engagement potential</div>
+                        </div>
+                    </div>
+                    <div class="channel-bar-container">
+                        <div class="channel-bar">
+                            <div class="channel-bar-fill" style="width: 70%"></div>
+                        </div>
+                        <div class="channel-percentage">70%</div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.75rem; padding: 0.625rem; background: #eff6ff; border-radius: 0.375rem;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1d72f3" stroke-width="2" style="flex-shrink: 0;">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                        <span style="font-size: 0.8125rem; color: #1e40af;">Best window: <strong>12:00 PM - 2:00 PM</strong></span>
+                    </div>
+                </div>
+
+                <div class="channel-card">
+                    <div class="channel-header">
+                        <div class="channel-icon">💬</div>
+                        <div class="channel-info">
+                            <div class="channel-name">SMS</div>
+                            <div class="channel-engagement">Medium engagement potential</div>
+                        </div>
+                    </div>
+                    <div class="channel-bar-container">
+                        <div class="channel-bar">
+                            <div class="channel-bar-fill" style="width: 55%"></div>
+                        </div>
+                        <div class="channel-percentage">55%</div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.75rem; padding: 0.625rem; background: #eff6ff; border-radius: 0.375rem;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1d72f3" stroke-width="2" style="flex-shrink: 0;">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                        <span style="font-size: 0.8125rem; color: #1e40af;">Best window: <strong>10:00 AM - 12:00 PM</strong></span>
+                    </div>
+                </div>
+
+                <div class="channel-card">
+                    <div class="channel-header">
+                        <div class="channel-icon">✉️</div>
+                        <div class="channel-info">
+                            <div class="channel-name">Email</div>
+                            <div class="channel-engagement">Lower engagement potential</div>
+                        </div>
+                    </div>
+                    <div class="channel-bar-container">
+                        <div class="channel-bar">
+                            <div class="channel-bar-fill" style="width: 35%"></div>
+                        </div>
+                        <div class="channel-percentage">35%</div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.75rem; padding: 0.625rem; background: #eff6ff; border-radius: 0.375rem;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1d72f3" stroke-width="2" style="flex-shrink: 0;">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                        <span style="font-size: 0.8125rem; color: #1e40af;">Best window: <strong>6:00 PM - 8:00 PM</strong></span>
+                    </div>
+                </div>
+
+                <div class="channel-card">
+                    <div class="channel-header">
+                        <div class="channel-icon">🔔</div>
+                        <div class="channel-info">
+                            <div class="channel-name">In-App</div>
+                            <div class="channel-engagement">Medium engagement potential</div>
+                        </div>
+                    </div>
+                    <div class="channel-bar-container">
+                        <div class="channel-bar">
+                            <div class="channel-bar-fill" style="width: 18%"></div>
+                        </div>
+                        <div class="channel-percentage">18%</div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.75rem; padding: 0.625rem; background: #eff6ff; border-radius: 0.375rem;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1d72f3" stroke-width="2" style="flex-shrink: 0;">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                        <span style="font-size: 0.8125rem; color: #1e40af;">Best window: <strong>9:00 AM - 11:00 AM</strong></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="channel-insight">
+                <strong>Insight:</strong> 70% of this segment responds better to Mobile Push notifications. Consider prioritizing this channel for maximum engagement.
+            </div>
+
+            <div class="channel-source">
+                This data is based on performance analysis from <strong>847 previously run campaigns</strong> targeting similar audience segments.
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav btn-nav-secondary" onclick="switchTab(1)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Previous
+                </button>
+                <button class="btn-nav btn-nav-primary" onclick="switchTab(3)">
+                    Next: Smart Splits
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Tab 3: Smart Splits -->
+        <div id="tabContent3" class="tab-content">
+            <div class="section-header">
+                <h2 class="section-title">Smart Splits</h2>
+                <p class="section-description">Create optimized test variants to maximize campaign performance</p>
+            </div>
+
+            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1.5rem;">
+                <h4 style="font-size: 1rem; font-weight: 600; color: #1f2937; margin-bottom: 1rem;">Why Use Smart Splits?</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+                    <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.375rem; padding: 1rem;">
+                        <div style="font-size: 1.25rem; margin-bottom: 0.5rem;">🧪</div>
+                        <div style="font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">A/B Testing</div>
+                        <div style="font-size: 0.8125rem; color: #6b7280;">Test different offers and messaging to find what resonates best</div>
+                    </div>
+                    <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.375rem; padding: 1rem;">
+                        <div style="font-size: 1.25rem; margin-bottom: 0.5rem;">🛡️</div>
+                        <div style="font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">Risk Mitigation</div>
+                        <div style="font-size: 0.8125rem; color: #6b7280;">Reduce campaign risk by testing variants before full rollout</div>
+                    </div>
+                    <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.375rem; padding: 1rem;">
+                        <div style="font-size: 1.25rem; margin-bottom: 0.5rem;">📊</div>
+                        <div style="font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">Data-Driven Decisions</div>
+                        <div style="font-size: 0.8125rem; color: #6b7280;">Make informed choices based on real performance data</div>
+                    </div>
+                    <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.375rem; padding: 1rem;">
+                        <div style="font-size: 1.25rem; margin-bottom: 0.5rem;">💰</div>
+                        <div style="font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">Maximize ROI</div>
+                        <div style="font-size: 0.8125rem; color: #6b7280;">Identify the highest-performing variant to scale for better returns</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="split-controls-card">
+                <div class="split-controls-header">
+                    <h3 class="split-controls-title">Adjust Split Percentages</h3>
+                    <button class="reset-link" onclick="resetSplit()">Reset to 50/50</button>
+                </div>
+                <div class="split-slider-wrapper">
+                    <div class="split-display">
+                        <div class="split-item">
+                            <span class="split-emoji">📱</span>
+                            <span class="split-percentage-text"><span id="splitA">50</span>%</span>
+                        </div>
+                    </div>
+                    <input type="range" min="10" max="90" value="50" class="split-slider" id="splitSlider" oninput="updateSplit(this.value)">
+                    <div class="split-display">
+                        <div class="split-item">
+                            <span class="split-emoji">💬</span>
+                            <span class="split-percentage-text"><span id="splitB">50</span>%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="splits-grid">
+                <div class="split-card">
+                    <div class="split-card-header">
+                        <div class="split-name-section">
+                            <div class="split-name">📱 Push Discount</div>
+                            <div class="split-label">Split 1 of 2</div>
+                        </div>
+                        <div class="split-size">
+                            <div class="split-size-label">Split Size</div>
+                            <div class="split-size-value"><span id="splitACard">50</span>%</div>
+                        </div>
+                    </div>
+                    <div class="split-offer">
+                        <div class="split-offer-icon">🎁</div>
+                        <div class="split-offer-title">15% Discount</div>
+                        <div class="split-offer-channel">via Mobile Push</div>
+                    </div>
+                    <div class="split-audience">
+                        <div class="split-audience-label">Audience</div>
+                        <div class="split-audience-count" id="audienceA">6,244</div>
+                    </div>
+                </div>
+
+                <div class="split-card">
+                    <div class="split-card-header">
+                        <div class="split-name-section">
+                            <div class="split-name">💬 SMS Free Ship</div>
+                            <div class="split-label">Split 2 of 2</div>
+                        </div>
+                        <div class="split-size">
+                            <div class="split-size-label">Split Size</div>
+                            <div class="split-size-value"><span id="splitBCard">50</span>%</div>
+                        </div>
+                    </div>
+                    <div class="split-offer">
+                        <div class="split-offer-icon">🚚</div>
+                        <div class="split-offer-title">Free Shipping</div>
+                        <div class="split-offer-channel">via SMS</div>
+                    </div>
+                    <div class="split-audience">
+                        <div class="split-audience-label">Audience</div>
+                        <div class="split-audience-count" id="audienceB">6,243</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 1.5rem; padding: 1.5rem; background: white; border: 2px dashed #d1d5db; border-radius: 0.5rem; text-align: center; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#1d72f3'; this.style.background='#f9fafb'" onmouseout="this.style.borderColor='#d1d5db'; this.style.background='white'" onclick="alert('Add Split functionality - You can create additional splits for multivariate testing!')">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1d72f3" stroke-width="2" style="margin-bottom: 0.5rem;">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="16"/>
+                    <line x1="8" y1="12" x2="16" y2="12"/>
+                </svg>
+                <div style="font-size: 0.9375rem; font-weight: 600; color: #1d72f3; margin-bottom: 0.25rem;">Add Another Split</div>
+                <div style="font-size: 0.8125rem; color: #6b7280;">Create additional variants for multivariate testing</div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav btn-nav-secondary" onclick="switchTab(2)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Previous
+                </button>
+                <button class="btn-nav btn-nav-primary" onclick="switchTab(4)">
+                    Next: Analytics
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Tab 4: Analytics -->
+        <div id="tabContent4" class="tab-content">
+            <div class="section-header">
+                <h2 class="section-title">Segment Analytics</h2>
+                <p class="section-description">Real-time insights into your segmentation strategy</p>
+            </div>
+
+            <div class="analytics-grid">
+                <!-- Row 1 -->
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div class="stat-icon">👥</div>
+                    </div>
+                    <div class="stat-label">Total Reachable</div>
+                    <div class="stat-value">12,487</div>
+                    <div class="stat-change">+2.3% vs last campaign</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div class="stat-icon">🎯</div>
+                    </div>
+                    <div class="stat-label">Expected Reach</div>
+                    <div class="stat-value">87.2%</div>
+                    <div class="stat-change" style="color: #6b7280;">Based on channel affinity</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div class="stat-icon">⚥</div>
+                    </div>
+                    <div class="stat-label">Gender Ratio</div>
+                    <div class="stat-value">60:40</div>
+                    <div class="stat-change" style="color: #6b7280;">Male : Female</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div class="stat-icon">📊</div>
+                    </div>
+                    <div class="stat-label">Average Age</div>
+                    <div class="stat-value">34.2</div>
+                    <div class="stat-change" style="color: #6b7280;">years old</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div class="stat-icon">🎯</div>
+                    </div>
+                    <div class="stat-label">Top Age Group</div>
+                    <div class="stat-value">25-34</div>
+                    <div class="stat-change" style="color: #6b7280;">4,620 customers (37%)</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div class="stat-icon">💰</div>
+                    </div>
+                    <div class="stat-label">Avg Lifetime Value</div>
+                    <div class="stat-value">$3,240</div>
+                    <div class="stat-change">+12% vs avg customer</div>
+                </div>
+
+                <!-- Row 2 -->
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div class="stat-icon">📍</div>
+                    </div>
+                    <div class="stat-label">Top Region</div>
+                    <div class="stat-value">Pacific NW</div>
+                    <div class="stat-change" style="color: #6b7280;">2,847 customers (23%)</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div class="stat-icon">⏰</div>
+                    </div>
+                    <div class="stat-label">Avg Days Since Purchase</div>
+                    <div class="stat-value">210</div>
+                    <div class="stat-change" style="color: #6b7280;">~7 months inactive</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div class="stat-icon">🛍️</div>
+                    </div>
+                    <div class="stat-label">Past Purchase Rate</div>
+                    <div class="stat-value">3.8x</div>
+                    <div class="stat-change">Above average</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div class="stat-icon">⭐</div>
+                    </div>
+                    <div class="stat-label">Loyalty Status</div>
+                    <div class="stat-value">Gold+</div>
+                    <div class="stat-change" style="color: #6b7280;">89% are Gold or Platinum</div>
+                </div>
+
+            </div>
+
+            <div style="background: white; border: 2px solid #1d72f3; border-radius: 0.75rem; padding: 1.75rem; margin: 2rem 0;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <div>
+                        <h3 style="font-size: 1.25rem; font-weight: 700; color: #1f2937; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1d72f3" stroke-width="2">
+                                <circle cx="12" cy="8" r="7"/>
+                                <circle cx="12" cy="8" r="3"/>
+                                <path d="M12 15v6"/>
+                            </svg>
+                            Segment Overlap Analysis
+                        </h3>
+                        <p style="font-size: 0.875rem; color: #6b7280;">Visualize overlap with other active and historical segments</p>
+                    </div>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <button onclick="filterOverlapSegments('week')" id="filterWeek" style="padding: 0.5rem 1rem; border: 2px solid #d1d5db; background: white; color: #6b7280; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                            Last Week
+                        </button>
+                        <button onclick="filterOverlapSegments('month')" id="filterMonth" style="padding: 0.5rem 1rem; border: 2px solid #d1d5db; background: white; color: #6b7280; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                            Last Month
+                        </button>
+                        <button onclick="filterOverlapSegments('all')" id="filterAll" style="padding: 0.5rem 1rem; border: 2px solid #1d72f3; background: #1d72f3; color: white; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                            All Segments
+                        </button>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 2rem;">
+                    <!-- Left: Venn Diagram Visualization -->
+                    <div>
+                        <div style="margin-bottom: 1.25rem;">
+                            <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.5rem;">
+                                Compare with segment:
+                            </label>
+                            <select id="overlapSegmentSelector" onchange="updateOverlapVisualization(this.value)" style="width: 100%; padding: 0.75rem 1rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.9375rem; color: #1f2937; background: white; cursor: pointer;">
+                                <option value="outdoor" data-period="week month">Outdoor Adventure Enthusiasts (Last Week + Last Month)</option>
+                                <option value="winter" data-period="week">Winter Sports Promo (Last Week)</option>
+                                <option value="holiday" data-period="month">Holiday Gift Guide (Last Month)</option>
+                                <option value="premium" data-period="all">Premium Product Buyers (Active)</option>
+                                <option value="loyalty" data-period="all">Loyalty Program - Gold Tier (Active)</option>
+                                <option value="recentBuyers" data-period="all">Recent Buyers - 30 Days (Active)</option>
+                            </select>
+                        </div>
+
+                        <!-- Venn Diagram -->
+                        <div style="position: relative; height: 340px; background: #f9fafb; border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1rem;">
+                            <svg width="100%" height="100%" viewBox="0 0 400 300" style="overflow: visible;">
+                                <!-- Left Circle (Current Segment) -->
+                                <circle id="vennCircle1" cx="140" cy="150" r="100" fill="#1d72f3" fill-opacity="0.3" stroke="#1d72f3" stroke-width="3"/>
+                                
+                                <!-- Right Circle (Comparison Segment) -->
+                                <circle id="vennCircle2" cx="260" cy="150" r="100" fill="#10b981" fill-opacity="0.3" stroke="#10b981" stroke-width="3"/>
+                                
+                                <!-- Overlap region highlight (intersection) -->
+                                <path id="vennOverlapPath" d="M 200 60 A 100 100 0 0 1 200 240 A 100 100 0 0 1 200 60" fill="#8b5cf6" fill-opacity="0.5"/>
+                                
+                                <!-- Labels -->
+                                <text x="100" y="150" text-anchor="middle" font-size="14" font-weight="600" fill="#1e40af">
+                                    <tspan x="100" dy="-10">Your</tspan>
+                                    <tspan x="100" dy="20">Segment</tspan>
+                                    <tspan x="100" dy="20" font-size="20" font-weight="700">12,487</tspan>
+                                </text>
+                                
+                                <text id="vennCompareLabel" x="300" y="150" text-anchor="middle" font-size="14" font-weight="600" fill="#065f46">
+                                    <tspan x="300" dy="-10">Outdoor</tspan>
+                                    <tspan x="300" dy="20">Adventures</tspan>
+                                    <tspan x="300" dy="20" font-size="20" font-weight="700">18,245</tspan>
+                                </text>
+                                
+                                <text x="200" y="150" text-anchor="middle" font-size="16" font-weight="700" fill="#6b21a8">
+                                    <tspan x="200" dy="-10">Overlap</tspan>
+                                    <tspan x="200" dy="25" font-size="24">42%</tspan>
+                                    <tspan x="200" dy="25" font-size="14" font-weight="600">5,244</tspan>
+                                </text>
+                            </svg>
+                        </div>
+
+                        <!-- Overlap Details -->
+                        <div id="overlapDetails" style="background: #f0fdf4; border: 1px solid #86efac; border-radius: 0.5rem; padding: 1rem;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                                <div style="width: 12px; height: 12px; background: #10b981; border-radius: 50%;"></div>
+                                <div style="font-weight: 600; color: #166534; font-size: 0.9375rem;">Outdoor Adventure Enthusiasts</div>
+                            </div>
+                            <div style="font-size: 0.875rem; color: #166534; line-height: 1.6; margin-bottom: 0.75rem;">
+                                <strong>Campaign History:</strong> Ran last week and last month with strong engagement
+                            </div>
+                            <div style="display: grid; gap: 0.5rem; font-size: 0.8125rem; color: #166534;">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span>Last Week (Winter Sports Promo):</span>
+                                    <strong>35% responded</strong>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span>Last Month (Holiday Gift Guide):</span>
+                                    <strong>52% responded</strong>
+                                </div>
+                            </div>
+                            <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #86efac; font-size: 0.8125rem; color: #166534;">
+                                <strong>💡 Recommendation:</strong> Coordinate messaging timing to avoid campaign fatigue. Consider suppressing overlapping users for 2-3 weeks.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Quick Segment List -->
+                    <div>
+                        <h4 style="font-size: 0.9375rem; font-weight: 600; color: #1f2937; margin-bottom: 1rem;">Quick Select</h4>
+                        <div id="segmentOverlapList" style="display: grid; gap: 0.75rem; max-height: 520px; overflow-y: auto; padding-right: 0.5rem;">
+                            <div onclick="document.getElementById('overlapSegmentSelector').value='outdoor'; updateOverlapVisualization('outdoor')" data-period="week month" class="overlap-list-item" style="padding: 1rem; background: #f0fdf4; border: 2px solid #86efac; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 6px rgba(16,185,129,0.2)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+                                    <div style="font-size: 1.5rem;">🏕️</div>
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 600; color: #166534; font-size: 0.875rem; margin-bottom: 0.125rem;">Outdoor Adventures</div>
+                                        <div style="font-size: 0.75rem; color: #16a34a;">Last Week + Last Month</div>
+                                    </div>
+                                </div>
+                                <div style="text-align: center; padding: 0.5rem; background: white; border-radius: 0.375rem;">
+                                    <div style="font-size: 1.5rem; font-weight: 700; color: #10b981;">42%</div>
+                                    <div style="font-size: 0.75rem; color: #6b7280;">5,244 overlap</div>
+                                </div>
+                            </div>
+
+                            <div onclick="document.getElementById('overlapSegmentSelector').value='winter'; updateOverlapVisualization('winter')" data-period="week" class="overlap-list-item" style="padding: 1rem; background: #faf5ff; border: 2px solid #e9d5ff; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 6px rgba(139,92,246,0.2)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+                                    <div style="font-size: 1.5rem;">❄️</div>
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 600; color: #6b21a8; font-size: 0.875rem; margin-bottom: 0.125rem;">Winter Sports Promo</div>
+                                        <div style="font-size: 0.75rem; color: #9333ea;">Last Week</div>
+                                    </div>
+                                </div>
+                                <div style="text-align: center; padding: 0.5rem; background: white; border-radius: 0.375rem;">
+                                    <div style="font-size: 1.5rem; font-weight: 700; color: #8b5cf6;">35%</div>
+                                    <div style="font-size: 0.75rem; color: #6b7280;">4,370 overlap</div>
+                                </div>
+                            </div>
+
+                            <div onclick="document.getElementById('overlapSegmentSelector').value='holiday'; updateOverlapVisualization('holiday')" data-period="month" class="overlap-list-item" style="padding: 1rem; background: #fdf2f8; border: 2px solid #fbcfe8; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 6px rgba(236,72,153,0.2)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+                                    <div style="font-size: 1.5rem;">🎁</div>
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 600; color: #9f1239; font-size: 0.875rem; margin-bottom: 0.125rem;">Holiday Gift Guide</div>
+                                        <div style="font-size: 0.75rem; color: #ec4899;">Last Month</div>
+                                    </div>
+                                </div>
+                                <div style="text-align: center; padding: 0.5rem; background: white; border-radius: 0.375rem;">
+                                    <div style="font-size: 1.5rem; font-weight: 700; color: #ec4899;">52%</div>
+                                    <div style="font-size: 0.75rem; color: #6b7280;">6,493 overlap</div>
+                                </div>
+                            </div>
+
+                            <div onclick="document.getElementById('overlapSegmentSelector').value='premium'; updateOverlapVisualization('premium')" data-period="all" class="overlap-list-item" style="padding: 1rem; background: #fffbeb; border: 2px solid #fde68a; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 6px rgba(245,158,11,0.2)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+                                    <div style="font-size: 1.5rem;">⭐</div>
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 600; color: #92400e; font-size: 0.875rem; margin-bottom: 0.125rem;">Premium Buyers</div>
+                                        <div style="font-size: 0.75rem; color: #f59e0b;">Active</div>
+                                    </div>
+                                </div>
+                                <div style="text-align: center; padding: 0.5rem; background: white; border-radius: 0.375rem;">
+                                    <div style="font-size: 1.5rem; font-weight: 700; color: #f59e0b;">28%</div>
+                                    <div style="font-size: 0.75rem; color: #6b7280;">3,496 overlap</div>
+                                </div>
+                            </div>
+
+                            <div onclick="document.getElementById('overlapSegmentSelector').value='loyalty'; updateOverlapVisualization('loyalty')" data-period="all" class="overlap-list-item" style="padding: 1rem; background: #eff6ff; border: 2px solid #bfdbfe; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 6px rgba(59,130,246,0.2)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+                                    <div style="font-size: 1.5rem;">💎</div>
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 600; color: #1e40af; font-size: 0.875rem; margin-bottom: 0.125rem;">Gold Tier Loyalty</div>
+                                        <div style="font-size: 0.75rem; color: #3b82f6;">Active</div>
+                                    </div>
+                                </div>
+                                <div style="text-align: center; padding: 0.5rem; background: white; border-radius: 0.375rem;">
+                                    <div style="font-size: 1.5rem; font-weight: 700; color: #3b82f6;">38%</div>
+                                    <div style="font-size: 0.75rem; color: #6b7280;">4,745 overlap</div>
+                                </div>
+                            </div>
+
+                            <div onclick="document.getElementById('overlapSegmentSelector').value='recentBuyers'; updateOverlapVisualization('recentBuyers')" data-period="all" class="overlap-list-item" style="padding: 1rem; background: #ecfeff; border: 2px solid #a5f3fc; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 6px rgba(6,182,212,0.2)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+                                    <div style="font-size: 1.5rem;">🛍️</div>
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 600; color: #155e75; font-size: 0.875rem; margin-bottom: 0.125rem;">Recent Buyers</div>
+                                        <div style="font-size: 0.75rem; color: #06b6d4;">Active (30 Days)</div>
+                                    </div>
+                                </div>
+                                <div style="text-align: center; padding: 0.5rem; background: white; border-radius: 0.375rem;">
+                                    <div style="font-size: 1.5rem; font-weight: 700; color: #06b6d4;">22%</div>
+                                    <div style="font-size: 0.75rem; color: #6b7280;">2,747 overlap</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav btn-nav-secondary" onclick="switchTab(3)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Previous
+                </button>
+                <button class="btn-nav btn-nav-primary" onclick="switchTab(5)">
+                    Next: Activate
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Tab 5: Activate Segment -->
+        <div id="tabContent5" class="tab-content">
+            <div class="section-header">
+                <h2 class="section-title">Activate Your Segment</h2>
+                <p class="section-description">Choose an activation template and launch your campaign</p>
+            </div>
+
+            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1.5rem;">
+                <h3 style="font-size: 1.125rem; font-weight: 600; color: #1f2937; margin-bottom: 1rem;">Segment Summary</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; padding: 1rem; background: #f9fafb; border-radius: 0.375rem;">
+                    <div>
+                        <div style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.25rem;">Segment Name</div>
+                        <div style="font-size: 0.9375rem; font-weight: 600; color: #1f2937;">High Value Outdoor Enthusiasts</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.25rem;">Audience Size</div>
+                        <div style="font-size: 0.9375rem; font-weight: 600; color: #1f2937;">12,487</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.25rem;">Avg. LTV</div>
+                        <div style="font-size: 0.9375rem; font-weight: 600; color: #1f2937;">$3,240</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.25rem;">Smart Splits</div>
+                        <div style="font-size: 0.9375rem; font-weight: 600; color: #1f2937;">2 Variants (50/50)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1.5rem;">
+                <h3 style="font-size: 1.125rem; font-weight: 600; color: #1f2937; margin-bottom: 0.75rem;">Select Activation Template</h3>
+                <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 1.25rem;">Choose a pre-configured activation template or create a custom workflow</p>
+                
+                <div style="display: grid; gap: 1rem;">
+                    <label style="display: flex; align-items: start; gap: 1rem; padding: 1.25rem; border: 2px solid #e5e7eb; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#1d72f3'; this.style.background='#f9fafb'" onmouseout="this.style.borderColor='#e5e7eb'; this.style.background='white'">
+                        <input type="radio" name="activation" value="multichannel" checked style="margin-top: 0.25rem;">
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <div style="font-size: 1.25rem;">📱</div>
+                                <div style="font-weight: 600; color: #1f2937;">Multi-Channel Campaign</div>
+                                <span style="background: #dbeafe; color: #1e40af; font-size: 0.75rem; padding: 0.125rem 0.5rem; border-radius: 0.25rem; font-weight: 600;">RECOMMENDED</span>
+                            </div>
+                            <div style="font-size: 0.875rem; color: #6b7280; line-height: 1.5;">
+                                Activate across Email, SMS, and Push Notifications with optimized send times. Includes automated follow-up sequences based on engagement.
+                            </div>
+                            <div style="margin-top: 0.75rem; display: flex; gap: 1rem; font-size: 0.8125rem; color: #6b7280;">
+                                <span>✓ Email (6-8 PM)</span>
+                                <span>✓ SMS (10 AM-12 PM)</span>
+                                <span>✓ Push (12-2 PM)</span>
+                            </div>
+                        </div>
+                    </label>
+
+                    <label style="display: flex; align-items: start; gap: 1rem; padding: 1.25rem; border: 2px solid #e5e7eb; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#1d72f3'; this.style.background='#f9fafb'" onmouseout="this.style.borderColor='#e5e7eb'; this.style.background='white'">
+                        <input type="radio" name="activation" value="email" style="margin-top: 0.25rem;">
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <div style="font-size: 1.25rem;">📧</div>
+                                <div style="font-weight: 600; color: #1f2937;">Email-Only Campaign</div>
+                            </div>
+                            <div style="font-size: 0.875rem; color: #6b7280; line-height: 1.5;">
+                                Send targeted email campaign with A/B tested subject lines and personalized content. Best for detailed product information and storytelling.
+                            </div>
+                        </div>
+                    </label>
+
+                    <label style="display: flex; align-items: start; gap: 1rem; padding: 1.25rem; border: 2px solid #e5e7eb; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#1d72f3'; this.style.background='#f9fafb'" onmouseout="this.style.borderColor='#e5e7eb'; this.style.background='white'">
+                        <input type="radio" name="activation" value="crm" style="margin-top: 0.25rem;">
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <div style="font-size: 1.25rem;">🎯</div>
+                                <div style="font-weight: 600; color: #1f2937;">CRM & Sales Outreach</div>
+                            </div>
+                            <div style="font-size: 0.875rem; color: #6b7280; line-height: 1.5;">
+                                Sync segment to Salesforce Sales Cloud for direct sales outreach. Creates tasks, opportunities, and enables personalized sales engagement.
+                            </div>
+                        </div>
+                    </label>
+
+                    <label style="display: flex; align-items: start; gap: 1rem; padding: 1.25rem; border: 2px solid #e5e7eb; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#1d72f3'; this.style.background='#f9fafb'" onmouseout="this.style.borderColor='#e5e7eb'; this.style.background='white'">
+                        <input type="radio" name="activation" value="custom" style="margin-top: 0.25rem;">
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <div style="font-size: 1.25rem;">⚙️</div>
+                                <div style="font-weight: 600; color: #1f2937;">Custom Workflow</div>
+                            </div>
+                            <div style="font-size: 0.875rem; color: #6b7280; line-height: 1.5;">
+                                Build a custom activation workflow with Flow Builder. Configure your own channels, timing, triggers, and conditions.
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div style="text-align: center; padding: 2rem 0;">
+                <button onclick="activateSegment()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; font-size: 1.125rem; font-weight: 600; padding: 1rem 3rem; border: none; border-radius: 0.5rem; cursor: pointer; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3); transition: all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 12px rgba(16, 185, 129, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(16, 185, 129, 0.3)'">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="8 12 12 16 16 12"/>
+                            <line x1="12" y1="8" x2="12" y2="16"/>
+                        </svg>
+                        <span>Activate Segment</span>
+                    </div>
+                </button>
+                <div style="font-size: 0.875rem; color: #6b7280; margin-top: 1rem;">Activation will begin immediately and respect the selected channel send times</div>
+            </div>
+
+            <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 0.5rem; padding: 1.25rem;">
+                <div style="display: flex; align-items: start; gap: 0.75rem;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1d72f3" stroke-width="2" style="flex-shrink: 0; margin-top: 0.125rem;">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="16" x2="12" y2="12"/>
+                        <line x1="12" y1="8" x2="12.01" y2="8"/>
+                    </svg>
+                    <div style="font-size: 0.875rem; color: #1e40af; line-height: 1.6;">
+                        <strong>Pro Tip:</strong> Multi-Channel Campaign template is recommended based on your segment's channel affinity data. This approach leverages the best send times for each channel to maximize engagement.
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav btn-nav-secondary" onclick="switchTab(4)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Previous
+                </button>
+                <button class="btn-nav btn-nav-secondary" disabled style="visibility: hidden;">
+                    Next
+                </button>
+            </div>
+        </div>
+
+        <!-- Tab 6: Segment Performance -->
+        <div id="tabContent6" class="tab-content">
+            <div class="section-header">
+                <h2 class="section-title">Segment Performance</h2>
+                <p class="section-description">Real-time performance metrics and actionable insights</p>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 2rem; border-radius: 0.5rem; margin-bottom: 2rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div style="font-size: 0.9375rem; opacity: 0.9; margin-bottom: 0.5rem;">Segment Status</div>
+                        <div style="font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;">✓ Active</div>
+                        <div style="font-size: 0.9375rem; opacity: 0.9;">Multi-Channel Campaign • Activated 2 hours ago</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 0.9375rem; opacity: 0.9; margin-bottom: 0.5rem;">Messages Sent</div>
+                        <div style="font-size: 2rem; font-weight: 700;">8,243</div>
+                        <div style="font-size: 0.9375rem; opacity: 0.9;">of 12,487 (66%)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1.5rem;">
+                <h3 style="font-size: 1.125rem; font-weight: 600; color: #1f2937; margin-bottom: 0.5rem;">Smart Split Performance</h3>
+                <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 1.25rem;">Compare how each variant is performing in real-time</p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                    <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 0.5rem; padding: 1.25rem; position: relative;">
+                        <div style="position: absolute; top: -10px; right: 1rem; background: #10b981; color: white; font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.75rem; border-radius: 1rem;">WINNING</div>
+                        <div style="font-size: 1.125rem; font-weight: 600; color: #1f2937; margin-bottom: 1rem;">📱 Push Discount (Split A)</div>
+                        <div style="display: grid; gap: 0.75rem;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="font-size: 0.875rem; color: #6b7280;">Conversion Rate</span>
+                                <span style="font-size: 0.9375rem; font-weight: 600; color: #10b981;">18.4%</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="font-size: 0.875rem; color: #6b7280;">Engagement Rate</span>
+                                <span style="font-size: 0.9375rem; font-weight: 600; color: #1f2937;">42.7%</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="font-size: 0.875rem; color: #6b7280;">Revenue Generated</span>
+                                <span style="font-size: 0.9375rem; font-weight: 600; color: #1f2937;">$87,420</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="font-size: 0.875rem; color: #6b7280;">Audience Size</span>
+                                <span style="font-size: 0.9375rem; font-weight: 600; color: #1f2937;">6,244 (50%)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 0.5rem; padding: 1.25rem;">
+                        <div style="font-size: 1.125rem; font-weight: 600; color: #1f2937; margin-bottom: 1rem;">📧 Email Offer (Split B)</div>
+                        <div style="display: grid; gap: 0.75rem;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="font-size: 0.875rem; color: #6b7280;">Conversion Rate</span>
+                                <span style="font-size: 0.9375rem; font-weight: 600; color: #f59e0b;">14.2%</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="font-size: 0.875rem; color: #6b7280;">Engagement Rate</span>
+                                <span style="font-size: 0.9375rem; font-weight: 600; color: #1f2937;">38.5%</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="font-size: 0.875rem; color: #6b7280;">Revenue Generated</span>
+                                <span style="font-size: 0.9375rem; font-weight: 600; color: #1f2937;">$68,940</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="font-size: 0.875rem; color: #6b7280;">Audience Size</span>
+                                <span style="font-size: 0.9375rem; font-weight: 600; color: #1f2937;">6,243 (50%)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: #fef3c7; border: 1px solid #fcd34d; border-radius: 0.5rem; padding: 1rem;">
+                    <div style="display: flex; align-items: start; gap: 0.5rem;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#92400e" stroke-width="2" style="flex-shrink: 0; margin-top: 0.125rem;">
+                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                        </svg>
+                        <div style="font-size: 0.875rem; color: #92400e;">
+                            <strong>Split Recommendation:</strong> Push Discount (Split A) is outperforming by 4.2 percentage points. Consider allocating more budget to this variant or using this strategy for future campaigns.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1.5rem;">
+                <h3 style="font-size: 1.125rem; font-weight: 600; color: #1f2937; margin-bottom: 0.5rem;">📊 Overall Segment Performance</h3>
+                <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 1.25rem;">How your segment performed across all metrics</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div style="background: #f9fafb; border-radius: 0.5rem; padding: 1rem;">
+                        <div style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.5rem;">Total Conversions</div>
+                        <div style="font-size: 1.75rem; font-weight: 700; color: #10b981;">2,048</div>
+                        <div style="font-size: 0.75rem; color: #10b981; margin-top: 0.25rem;">↑ 16.4% conversion rate</div>
+                    </div>
+                    <div style="background: #f9fafb; border-radius: 0.5rem; padding: 1rem;">
+                        <div style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.5rem;">Total Revenue</div>
+                        <div style="font-size: 1.75rem; font-weight: 700; color: #1f2937;">$156,360</div>
+                        <div style="font-size: 0.75rem; color: #10b981; margin-top: 0.25rem;">↑ $76 avg order value</div>
+                    </div>
+                    <div style="background: #f9fafb; border-radius: 0.5rem; padding: 1rem;">
+                        <div style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.5rem;">Engagement Rate</div>
+                        <div style="font-size: 1.75rem; font-weight: 700; color: #1f2937;">40.8%</div>
+                        <div style="font-size: 0.75rem; color: #10b981; margin-top: 0.25rem;">↑ 8.2% above average</div>
+                    </div>
+                    <div style="background: #f9fafb; border-radius: 0.5rem; padding: 1rem;">
+                        <div style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.5rem;">ROI</div>
+                        <div style="font-size: 1.75rem; font-weight: 700; color: #10b981;">4.2x</div>
+                        <div style="font-size: 0.75rem; color: #6b7280; margin-top: 0.25rem;">$37,240 campaign cost</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1.5rem;">
+                <h3 style="font-size: 1.125rem; font-weight: 600; color: #1f2937; margin-bottom: 0.5rem;">📈 Performance vs. Past Campaigns</h3>
+                <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 1.25rem;">See how this segment compares to similar campaigns</p>
+                
+                <div style="display: grid; gap: 1rem;">
+                    <div style="background: #f0fdf4; border: 1px solid #86efac; border-radius: 0.5rem; padding: 1rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                            <div>
+                                <div style="font-weight: 600; color: #166534; margin-bottom: 0.25rem;">🏕️ Outdoor Adventure Campaign (Last Month)</div>
+                                <div style="font-size: 0.8125rem; color: #16a34a;">Dec 1-24, 2025 • Similar audience profile</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 1.5rem; font-weight: 700; color: #10b981;">+24%</div>
+                                <div style="font-size: 0.75rem; color: #166534;">Better conversion</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 0.8125rem; color: #166534;">
+                            <strong>Comparison:</strong> Your segment achieved 16.4% conversion vs. 13.2% in the Outdoor Adventure campaign. The refined targeting and mobile push strategy drove superior results.
+                        </div>
+                    </div>
+
+                    <div style="background: #faf5ff; border: 1px solid #e9d5ff; border-radius: 0.5rem; padding: 1rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                            <div>
+                                <div style="font-weight: 600; color: #6b21a8; margin-bottom: 0.25rem;">❄️ Winter Sports Promo (Last Week)</div>
+                                <div style="font-size: 0.8125rem; color: #9333ea;">Jan 13-19, 2026 • Different product category</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 1.5rem; font-weight: 700; color: #8b5cf6;">+12%</div>
+                                <div style="font-size: 0.75rem; color: #6b21a8;">Better engagement</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 0.8125rem; color: #6b21a8;">
+                            <strong>Comparison:</strong> Engagement rate of 40.8% vs. 36.4% in Winter Sports. Your high-value targeting and personalized messaging resonated better with this premium segment.
+                        </div>
+                    </div>
+
+                    <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 0.5rem; padding: 1rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                            <div>
+                                <div style="font-weight: 600; color: #1e40af; margin-bottom: 0.25rem;">📊 Average Campaign Performance (Last 6 Months)</div>
+                                <div style="font-size: 0.8125rem; color: #3b82f6;">Baseline across all segments</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 1.5rem; font-weight: 700; color: #3b82f6;">+38%</div>
+                                <div style="font-size: 0.75rem; color: #1e40af;">Above average</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 0.8125rem; color: #1e40af;">
+                            <strong>Comparison:</strong> Your segment significantly outperformed the 6-month average (11.9% conversion rate). The combination of GRL refinement, smart splits, and optimal channel timing drove exceptional results.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1.5rem;">
+                <h3 style="font-size: 1.125rem; font-weight: 600; color: #1f2937; margin-bottom: 0.5rem;">🎯 What Could Be Better?</h3>
+                <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 1.25rem;">AI-powered recommendations to optimize your campaign</p>
+                
+                <div style="display: grid; gap: 1rem;">
+                    <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1rem; border-radius: 0.375rem;">
+                        <div style="font-weight: 600; color: #991b1b; margin-bottom: 0.5rem;">⚠️ Email Engagement Below Expected</div>
+                        <div style="font-size: 0.875rem; color: #7f1d1d; line-height: 1.6; margin-bottom: 0.75rem;">
+                            Email open rate (42%) is 8% below your segment's predicted rate (50%). This may be due to send time or subject line.
+                        </div>
+                        <div style="font-size: 0.8125rem; color: #991b1b;">
+                            <strong>Action:</strong> Try sending emails closer to 7:00 PM when this segment is most active, and A/B test subject lines that emphasize exclusivity.
+                        </div>
+                    </div>
+
+                    <div style="background: #fffbeb; border-left: 4px solid #f59e0b; padding: 1rem; border-radius: 0.375rem;">
+                        <div style="font-weight: 600; color: #92400e; margin-bottom: 0.5rem;">💡 SMS Underutilized</div>
+                        <div style="font-size: 0.875rem; color: #78350f; line-height: 1.6; margin-bottom: 0.75rem;">
+                            SMS has a 92% affinity score for this segment but only 31% of the audience engaged. Response rate is strong, but reach is limited.
+                        </div>
+                        <div style="font-size: 0.8125rem; color: #92400e;">
+                            <strong>Action:</strong> Increase SMS allocation by 15% in future campaigns. This channel has high potential with this audience.
+                        </div>
+                    </div>
+
+                    <div style="background: #f0f9ff; border-left: 4px solid #0ea5e9; padding: 1rem; border-radius: 0.375rem;">
+                        <div style="font-weight: 600; color: #075985; margin-bottom: 0.5rem;">📊 Segment Overlap Consideration</div>
+                        <div style="font-size: 0.875rem; color: #0c4a6e; line-height: 1.6; margin-bottom: 0.75rem;">
+                            52% of this segment received the Holiday Gift Guide campaign last month. Some fatigue may be present in the overlapping audience.
+                        </div>
+                        <div style="font-size: 0.8125rem; color: #075985;">
+                            <strong>Action:</strong> Consider suppressing the 52% overlap group for 1-2 weeks, or create a specialized message for returning customers.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: white; border: 2px solid #10b981; border-radius: 0.5rem; padding: 1.5rem;">
+                <h3 style="font-size: 1.125rem; font-weight: 600; color: #1f2937; margin-bottom: 0.5rem;">✅ Next Steps</h3>
+                <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 1.25rem;">Recommended actions to maximize campaign success</p>
+                
+                <div style="display: grid; gap: 0.875rem;">
+                    <div style="display: flex; align-items: start; gap: 0.75rem; padding: 1rem; background: #f9fafb; border-radius: 0.375rem;">
+                        <div style="width: 32px; height: 32px; background: #10b981; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; flex-shrink: 0;">1</div>
+                        <div>
+                            <div style="font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">Scale the Winning Split</div>
+                            <div style="font-size: 0.875rem; color: #6b7280;">Push Discount (Split A) is outperforming. Allocate 70% of future budget to this approach.</div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; align-items: start; gap: 0.75rem; padding: 1rem; background: #f9fafb; border-radius: 0.375rem;">
+                        <div style="width: 32px; height: 32px; background: #10b981; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; flex-shrink: 0;">2</div>
+                        <div>
+                            <div style="font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">Re-engage Non-Responders</div>
+                            <div style="font-size: 0.875rem; color: #6b7280;">Create a follow-up campaign targeting the 4,244 customers who didn't engage (34%). Try different messaging or channel.</div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; align-items: start; gap: 0.75rem; padding: 1rem; background: #f9fafb; border-radius: 0.375rem;">
+                        <div style="width: 32px; height: 32px; background: #10b981; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; flex-shrink: 0;">3</div>
+                        <div>
+                            <div style="font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">Create a Lookalike Segment</div>
+                            <div style="font-size: 0.875rem; color: #6b7280;">Build a lookalike audience based on the 2,048 customers who converted. This can expand your high-value audience by ~8,000-10,000.</div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; align-items: start; gap: 0.75rem; padding: 1rem; background: #f9fafb; border-radius: 0.375rem;">
+                        <div style="width: 32px; height: 32px; background: #10b981; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; flex-shrink: 0;">4</div>
+                        <div>
+                            <div style="font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">Optimize Send Times</div>
+                            <div style="font-size: 0.875rem; color: #6b7280;">Shift email sends to 6:30-7:00 PM window when this segment shows peak engagement. Expected lift: +6-8% open rate.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav btn-nav-secondary" onclick="switchTab(5)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Previous
+                </button>
+                <button class="btn-nav btn-nav-primary" onclick="alert('Campaign performance data saved!')">
+                    Export Results
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTab = 0;
+        let currentAudience = 12487;
+        let addedFilters = [];
+
+        function startSegment(event) {
+            event.preventDefault();
+            const goal = document.getElementById('goalInput').value;
+            
+            // Keep segment name as is
+            
+            // Hide welcome
+            document.getElementById('welcomeState').style.display = 'none';
+            
+            // Show toolbar and tab navigation
+            document.getElementById('segmentToolbar').style.display = 'flex';
+            document.getElementById('tabNavigation').style.display = 'flex';
+            
+            // Show first tab
+            document.getElementById('tabContent0').classList.add('active');
+            
+            // Switch to first tab
+            switchTab(0);
+        }
+
+        function switchTab(index) {
+            // Hide all tabs
+            for (let i = 0; i < 7; i++) {
+                document.getElementById('tabContent' + i).classList.remove('active');
+                document.getElementById('tab' + i).classList.remove('active');
+            }
+            
+            // Show selected tab
+            document.getElementById('tabContent' + index).classList.add('active');
+            document.getElementById('tab' + index).classList.add('active');
+            
+            currentTab = index;
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function activateSegment() {
+            // Show success message
+            alert('Segment activated successfully! Viewing performance data...');
+            // Go to performance tab
+            switchTab(6);
+        }
+
+        function toggleOverlapDetails(id) {
+            const detailsDiv = document.getElementById(id + '-details');
+            if (detailsDiv.style.display === 'none' || detailsDiv.style.display === '') {
+                detailsDiv.style.display = 'block';
+            } else {
+                detailsDiv.style.display = 'none';
+            }
+        }
+
+        function updateOverlapVisualization(segmentType) {
+            const data = {
+                outdoor: {
+                    name: 'Outdoor\nAdventures',
+                    count: '18,245',
+                    overlap: '42%',
+                    overlapCount: '5,244',
+                    color: '#10b981',
+                    bgColor: '#f0fdf4',
+                    borderColor: '#86efac',
+                    textColor: '#166534',
+                    history: 'Ran last week and last month with strong engagement',
+                    details: [
+                        { label: 'Last Week (Winter Sports Promo):', value: '35% responded' },
+                        { label: 'Last Month (Holiday Gift Guide):', value: '52% responded' }
+                    ],
+                    recommendation: 'Coordinate messaging timing to avoid campaign fatigue. Consider suppressing overlapping users for 2-3 weeks.'
+                },
+                premium: {
+                    name: 'Premium\nBuyers',
+                    count: '9,832',
+                    overlap: '28%',
+                    overlapCount: '3,496',
+                    color: '#f59e0b',
+                    bgColor: '#fffbeb',
+                    borderColor: '#fde68a',
+                    textColor: '#92400e',
+                    history: 'Active segment with high purchasing power',
+                    details: [
+                        { label: 'Average purchase value:', value: '$485 (35% above avg)' },
+                        { label: 'Loyalty tier:', value: 'Mostly Gold/Platinum' }
+                    ],
+                    recommendation: 'Prioritize exclusive product launches and VIP experiences for this high-value overlap.'
+                },
+                winter: {
+                    name: 'Winter\nSports',
+                    count: '14,620',
+                    overlap: '35%',
+                    overlapCount: '4,370',
+                    color: '#8b5cf6',
+                    bgColor: '#faf5ff',
+                    borderColor: '#e9d5ff',
+                    textColor: '#6b21a8',
+                    history: 'Campaign ran Jan 13-19, 2026 (Last Week)',
+                    details: [
+                        { label: 'Response rate:', value: '18.2% (above average)' },
+                        { label: 'Campaign ROI:', value: '$124K revenue' }
+                    ],
+                    recommendation: 'Wait 2-3 weeks before next outreach. High engagement suggests strong sports equipment interest.'
+                },
+                holiday: {
+                    name: 'Holiday\nGift Guide',
+                    count: '21,340',
+                    overlap: '52%',
+                    overlapCount: '6,493',
+                    color: '#ec4899',
+                    bgColor: '#fdf2f8',
+                    borderColor: '#fbcfe8',
+                    textColor: '#9f1239',
+                    history: 'Campaign ran Dec 1-24, 2025 (Last Month)',
+                    details: [
+                        { label: 'Conversion rate:', value: '14.8% (excellent)' },
+                        { label: 'Average order value:', value: '$287' }
+                    ],
+                    recommendation: 'Strong seasonal responsiveness. Leverage gift-giving occasions and holiday themes for this audience.'
+                },
+                loyalty: {
+                    name: 'Gold Tier\nLoyalty',
+                    count: '15,420',
+                    overlap: '38%',
+                    overlapCount: '4,745',
+                    color: '#3b82f6',
+                    bgColor: '#eff6ff',
+                    borderColor: '#bfdbfe',
+                    textColor: '#1e40af',
+                    history: 'Active loyalty program members',
+                    details: [
+                        { label: 'Average tenure:', value: '3.2 years' },
+                        { label: 'Points balance:', value: 'Avg 8,420 points' }
+                    ],
+                    recommendation: 'Leverage loyalty rewards and exclusive member benefits to drive engagement and retention.'
+                },
+                recentBuyers: {
+                    name: 'Recent\nBuyers',
+                    count: '7,892',
+                    overlap: '22%',
+                    overlapCount: '2,747',
+                    color: '#06b6d4',
+                    bgColor: '#ecfeff',
+                    borderColor: '#a5f3fc',
+                    textColor: '#155e75',
+                    history: 'Purchased within last 30 days',
+                    details: [
+                        { label: 'Purchase recency:', value: 'Avg 12 days ago' },
+                        { label: 'Repeat purchase rate:', value: '34%' }
+                    ],
+                    recommendation: 'Target with complementary products and accessories. High conversion potential for cross-sell.'
+                }
+            };
+
+            const segment = data[segmentType];
+            
+            // Update comparison label in Venn diagram
+            const labelLines = segment.name.split('\n');
+            document.getElementById('vennCompareLabel').innerHTML = `
+                <tspan x="300" dy="-10">${labelLines[0]}</tspan>
+                <tspan x="300" dy="20">${labelLines[1]}</tspan>
+                <tspan x="300" dy="20" font-size="20" font-weight="700">${segment.count}</tspan>
+            `;
+            
+            // Update right circle color
+            document.getElementById('vennCircle2').setAttribute('fill', segment.color);
+            document.getElementById('vennCircle2').setAttribute('fill-opacity', '0.3');
+            document.getElementById('vennCircle2').setAttribute('stroke', segment.color);
+            
+            // Update overlap text
+            const overlapText = document.querySelectorAll('#vennCircle1 ~ text')[2];
+            if (overlapText) {
+                overlapText.innerHTML = `
+                    <tspan x="200" dy="-10">Overlap</tspan>
+                    <tspan x="200" dy="25" font-size="24">${segment.overlap}</tspan>
+                    <tspan x="200" dy="25" font-size="14" font-weight="600">${segment.overlapCount}</tspan>
+                `;
+            }
+            
+            // Update details box
+            let detailsHTML = `
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                    <div style="width: 12px; height: 12px; background: ${segment.color}; border-radius: 50%;"></div>
+                    <div style="font-weight: 600; color: ${segment.textColor}; font-size: 0.9375rem;">${segment.name.replace('\n', ' ')}</div>
+                </div>
+                <div style="font-size: 0.875rem; color: ${segment.textColor}; line-height: 1.6; margin-bottom: 0.75rem;">
+                    <strong>Campaign History:</strong> ${segment.history}
+                </div>
+                <div style="display: grid; gap: 0.5rem; font-size: 0.8125rem; color: ${segment.textColor};">
+            `;
+            
+            segment.details.forEach(detail => {
+                detailsHTML += `
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>${detail.label}</span>
+                        <strong>${detail.value}</strong>
+                    </div>
+                `;
+            });
+            
+            detailsHTML += `
+                </div>
+                <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid ${segment.borderColor}; font-size: 0.8125rem; color: ${segment.textColor};">
+                    <strong>💡 Recommendation:</strong> ${segment.recommendation}
+                </div>
+            `;
+            
+            document.getElementById('overlapDetails').innerHTML = detailsHTML;
+            document.getElementById('overlapDetails').style.background = segment.bgColor;
+            document.getElementById('overlapDetails').style.borderColor = segment.borderColor;
+        }
+
+        function filterOverlapSegments(period) {
+            // Update button states
+            document.getElementById('filterWeek').style.background = period === 'week' ? '#1d72f3' : 'white';
+            document.getElementById('filterWeek').style.color = period === 'week' ? 'white' : '#6b7280';
+            document.getElementById('filterWeek').style.borderColor = period === 'week' ? '#1d72f3' : '#d1d5db';
+            
+            document.getElementById('filterMonth').style.background = period === 'month' ? '#1d72f3' : 'white';
+            document.getElementById('filterMonth').style.color = period === 'month' ? 'white' : '#6b7280';
+            document.getElementById('filterMonth').style.borderColor = period === 'month' ? '#1d72f3' : '#d1d5db';
+            
+            document.getElementById('filterAll').style.background = period === 'all' ? '#1d72f3' : 'white';
+            document.getElementById('filterAll').style.color = period === 'all' ? 'white' : '#6b7280';
+            document.getElementById('filterAll').style.borderColor = period === 'all' ? '#1d72f3' : '#d1d5db';
+
+            // Filter list items
+            const listItems = document.querySelectorAll('.overlap-list-item');
+            const selectOptions = document.querySelectorAll('#overlapSegmentSelector option');
+            
+            listItems.forEach(item => {
+                const itemPeriod = item.getAttribute('data-period');
+                if (period === 'all' || itemPeriod.includes(period)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            // Filter dropdown options
+            selectOptions.forEach(option => {
+                const optionPeriod = option.getAttribute('data-period');
+                if (period === 'all' || optionPeriod.includes(period)) {
+                    option.style.display = 'block';
+                } else {
+                    option.style.display = 'none';
+                }
+            });
+
+            // Select first visible option
+            const firstVisible = Array.from(selectOptions).find(opt => opt.style.display !== 'none');
+            if (firstVisible) {
+                document.getElementById('overlapSegmentSelector').value = firstVisible.value;
+                updateOverlapVisualization(firstVisible.value);
+            }
+        }
+
+        function toggleQuickFilters() {
+            const panel = document.getElementById('quickFiltersPanel');
+            const arrow = document.getElementById('triggerArrow');
+            
+            if (panel.classList.contains('open')) {
+                panel.classList.remove('open');
+                arrow.classList.remove('open');
+            } else {
+                panel.classList.add('open');
+                arrow.classList.add('open');
+            }
+        }
+
+        function addQuickFilter(name, icon) {
+            if (addedFilters.includes(name)) {
+                toggleQuickFilters();
+                return;
+            }
+            
+            addedFilters.push(name);
+            
+            // Get filters column
+            const filtersColumn = document.getElementById('filtersColumn');
+            
+            // Create new filter card
+            const newFilter = document.createElement('div');
+            newFilter.className = 'filter-card';
+            newFilter.innerHTML = `
+                <div class="filter-content">
+                    <span class="filter-text"><strong>${name.split(':')[0]}</strong> is equal to <strong>${name.split(':')[1]}</strong></span>
+                </div>
+                <div class="filter-actions">
+                    <button class="icon-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                        </svg>
+                    </button>
+                    <button class="icon-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </button>
+                </div>
+            `;
+            filtersColumn.appendChild(newFilter);
+            
+            // The AND slab automatically spans all filters, no need to update it
+            
+            // Update audience count
+            currentAudience -= 1500;
+            updateAudienceDisplay();
+            
+            // Close panel
+            toggleQuickFilters();
+        }
+
+        function updateAudienceDisplay() {
+            // Update final audience in Save & Activate tab
+            const finalAudience = document.getElementById('finalAudience');
+            if (finalAudience) {
+                finalAudience.textContent = currentAudience.toLocaleString();
+            }
+            
+            // Update toolbar audience count
+            const toolbarAudienceElement = document.getElementById('toolbarAudienceCount');
+            if (toolbarAudienceElement) {
+                toolbarAudienceElement.textContent = currentAudience.toLocaleString();
+            }
+        }
+
+        function updateSplit(value) {
+            const percentA = parseInt(value);
+            const percentB = 100 - percentA;
+            
+            document.getElementById('splitA').textContent = percentA;
+            document.getElementById('splitB').textContent = percentB;
+            document.getElementById('splitACard').textContent = percentA;
+            document.getElementById('splitBCard').textContent = percentB;
+            
+            const audienceA = Math.floor(currentAudience * percentA / 100);
+            const audienceB = currentAudience - audienceA;
+            
+            document.getElementById('audienceA').textContent = audienceA.toLocaleString();
+            document.getElementById('audienceB').textContent = audienceB.toLocaleString();
+            
+            // Update slider gradient
+            const slider = document.getElementById('splitSlider');
+            slider.style.background = `linear-gradient(to right, #1d72f3 0%, #1d72f3 ${percentA}%, #10b981 ${percentA}%, #10b981 100%)`;
+        }
+
+        function resetSplit() {
+            document.getElementById('splitSlider').value = 50;
+            updateSplit(50);
+        }
+
+        // Close quick filters when clicking outside
+        document.addEventListener('click', function(event) {
+            const trigger = event.target.closest('.quick-filters-trigger');
+            const panel = document.getElementById('quickFiltersPanel');
+            const arrow = document.getElementById('triggerArrow');
+            
+            if (!trigger && !event.target.closest('.quick-filters-panel') && panel.classList.contains('open')) {
+                panel.classList.remove('open');
+                arrow.classList.remove('open');
+            }
+        });
+    </script>
+</body>
+</html>
