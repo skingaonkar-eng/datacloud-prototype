@@ -5246,6 +5246,7 @@
         let followupAnswers = {};
         let currentQuestionIndex = 0;
         let goalQuestionFlow = [];
+        let currentFlow = null; // Store the current goal flow (including strategies)
 
         // Sophisticated question flows for each goal
         const goalQuestionFlows = {
@@ -5713,13 +5714,49 @@
             strategiesContainer.style.display = 'none';
             
             // Get question flow for this goal
-            const flow = goalQuestionFlows[selectedGoal];
+            let flow = goalQuestionFlows[selectedGoal];
             if (!flow) {
-                // If no custom flow, proceed directly to segment
-                proceedToSegment();
-                return;
+                // If no custom flow, create a generic flow for custom goals
+                flow = {
+                    questions: [
+                        {
+                            text: 'Who is your target audience for this goal?',
+                            options: [
+                                { label: 'High-value customers (Top 20% LTV)', value: 'high_value' },
+                                { label: 'Active customers (purchased recently)', value: 'active' },
+                                { label: 'At-risk customers (low engagement)', value: 'at_risk' },
+                                { label: 'All customers', value: 'all' }
+                            ]
+                        },
+                        {
+                            text: 'What time frame are you looking at?',
+                            options: [
+                                { label: 'Last 30 days', value: '30_days' },
+                                { label: 'Last 60 days', value: '60_days' },
+                                { label: 'Last 90 days', value: '90_days' },
+                                { label: 'Custom timeframe', value: 'custom' }
+                            ]
+                        }
+                    ],
+                    strategies: [
+                        {
+                            name: 'Strategy A (Precision Approach)',
+                            description: 'Focused targeting with specific criteria',
+                            details: 'Smaller, highly targeted segment',
+                            icon: '🎯'
+                        },
+                        {
+                            name: 'Strategy B (Broad Reach)',
+                            description: 'Wider targeting with flexible criteria',
+                            details: 'Larger segment, broader impact',
+                            icon: '📊'
+                        }
+                    ]
+                };
             }
             
+            // Store the current flow for later access
+            currentFlow = flow;
             goalQuestionFlow = flow.questions;
             currentQuestionIndex = 0;
             followupAnswers = {};
@@ -5843,7 +5880,7 @@
         }
 
         function showStrategies() {
-            const flow = goalQuestionFlows[selectedGoal];
+            const flow = currentFlow || goalQuestionFlows[selectedGoal];
             const strategies = flow.strategies;
             
             // Show agent message introducing strategies
@@ -5884,7 +5921,7 @@
         }
 
         function selectStrategy(strategyIndex) {
-            const flow = goalQuestionFlows[selectedGoal];
+            const flow = currentFlow || goalQuestionFlows[selectedGoal];
             const strategy = flow.strategies[strategyIndex];
             
             // Hide all strategy cards
