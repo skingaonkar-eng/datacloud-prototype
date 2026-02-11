@@ -3465,6 +3465,13 @@
                             </svg>
                             Other Segments
                         </button>
+                        <button class="filter-tab" onclick="switchFilterTab('scores')" id="tab-scores">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 6v6l4 2"/>
+                            </svg>
+                            Predictive Scores
+                        </button>
                     </div>
 
                     <!-- Tab Panels -->
@@ -3609,8 +3616,18 @@
                     <!-- Metrics Tab -->
                     <div class="filter-tab-content" id="content-metrics">
                         <div class="filter-panel-header">
-                            <h3>Metrics</h3>
-                            <p>Calculated metrics using multiple attributes with formulas</p>
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                <div style="flex: 1;">
+                                    <h3>Metrics</h3>
+                                    <p>Calculated metrics using multiple attributes with formulas</p>
+                                </div>
+                                <button onclick="alert('Navigate to Metric Builder')" style="background: #1d72f3; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 0.375rem;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                                    </svg>
+                                    Create New Metric
+                                </button>
+                            </div>
                         </div>
                         <div style="margin-bottom: 1rem;">
                             <input type="text" placeholder="Search metrics..." class="filter-search-input">
@@ -3739,6 +3756,113 @@
                                 <div class="filter-info">
                                     <div class="filter-name">Mobile App Users</div>
                                     <div class="filter-detail">67.9K members • Active</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Predictive Scores Tab -->
+                    <div class="filter-tab-content" id="content-scores">
+                        <div class="filter-panel-header">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                <div style="flex: 1;">
+                                    <h3>Predictive Scores</h3>
+                                    <p>AI-powered propensity and affinity scores from Model Builder</p>
+                                </div>
+                                <button onclick="alert('Navigate to Model Builder')" style="background: #1d72f3; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 0.375rem;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                                    </svg>
+                                    Create New Score
+                                </button>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <input type="text" placeholder="Search predictive scores..." class="filter-search-input">
+                        </div>
+                        <div class="filter-items-grid">
+                            <div class="filter-item" onclick="addQuickFilter('Purchase Propensity: > 0.7', '🎯', exclusionMode, 'metric')">
+                                <span class="filter-icon">🎯</span>
+                                <div class="filter-info">
+                                    <div class="filter-name">High Purchase Propensity</div>
+                                    <div class="filter-detail">ML Score: Likelihood to purchase in next 30 days > 70%</div>
+                                </div>
+                            </div>
+                            <div class="filter-item" onclick="addQuickFilter('Churn Propensity: > 0.6', '⚠️', exclusionMode, 'metric')">
+                                <span class="filter-icon">⚠️</span>
+                                <div class="filter-info">
+                                    <div class="filter-name">High Churn Risk</div>
+                                    <div class="filter-detail">ML Score: Likelihood to churn in next 90 days > 60%</div>
+                                </div>
+                            </div>
+                            <div class="filter-item" onclick="addQuickFilter('Product Affinity - Outdoor Gear: > 0.8', '🏔️', exclusionMode, 'metric')">
+                                <span class="filter-icon">🏔️</span>
+                                <div class="filter-info">
+                                    <div class="filter-name">Outdoor Gear Affinity</div>
+                                    <div class="filter-detail">ML Score: Interest in outdoor products > 80%</div>
+                                </div>
+                            </div>
+                            <div class="filter-item" onclick="addQuickFilter('Product Affinity - Electronics: > 0.75', '💻', exclusionMode, 'metric')">
+                                <span class="filter-icon">💻</span>
+                                <div class="filter-info">
+                                    <div class="filter-name">Electronics Affinity</div>
+                                    <div class="filter-detail">ML Score: Interest in electronics > 75%</div>
+                                </div>
+                            </div>
+                            <div class="filter-item" onclick="addQuickFilter('Upsell Propensity: > 0.65', '⬆️', exclusionMode, 'metric')">
+                                <span class="filter-icon">⬆️</span>
+                                <div class="filter-info">
+                                    <div class="filter-name">High Upsell Potential</div>
+                                    <div class="filter-detail">ML Score: Likelihood to upgrade/buy premium > 65%</div>
+                                </div>
+                            </div>
+                            <div class="filter-item" onclick="addQuickFilter('Cross-sell Propensity: > 0.7', '🔀', exclusionMode, 'metric')">
+                                <span class="filter-icon">🔀</span>
+                                <div class="filter-info">
+                                    <div class="filter-name">High Cross-sell Potential</div>
+                                    <div class="filter-detail">ML Score: Likelihood to buy complementary products > 70%</div>
+                                </div>
+                            </div>
+                            <div class="filter-item" onclick="addQuickFilter('Brand Affinity: > 0.85', '❤️', exclusionMode, 'metric')">
+                                <span class="filter-icon">❤️</span>
+                                <div class="filter-info">
+                                    <div class="filter-name">High Brand Loyalty</div>
+                                    <div class="filter-detail">ML Score: Brand preference and loyalty > 85%</div>
+                                </div>
+                            </div>
+                            <div class="filter-item" onclick="addQuickFilter('Response Propensity - Email: > 0.6', '📧', exclusionMode, 'metric')">
+                                <span class="filter-icon">📧</span>
+                                <div class="filter-info">
+                                    <div class="filter-name">Email Response Propensity</div>
+                                    <div class="filter-detail">ML Score: Likelihood to engage with email > 60%</div>
+                                </div>
+                            </div>
+                            <div class="filter-item" onclick="addQuickFilter('Conversion Propensity: > 0.75', '✨', exclusionMode, 'metric')">
+                                <span class="filter-icon">✨</span>
+                                <div class="filter-info">
+                                    <div class="filter-name">High Conversion Likelihood</div>
+                                    <div class="filter-detail">ML Score: Probability to convert from lead > 75%</div>
+                                </div>
+                            </div>
+                            <div class="filter-item" onclick="addQuickFilter('Win-back Propensity: > 0.55', '🔄', exclusionMode, 'metric')">
+                                <span class="filter-icon">🔄</span>
+                                <div class="filter-info">
+                                    <div class="filter-name">Win-back Opportunity</div>
+                                    <div class="filter-detail">ML Score: Likelihood lapsed customers will return > 55%</div>
+                                </div>
+                            </div>
+                            <div class="filter-item" onclick="addQuickFilter('Product Recommendation Score - Premium: > 0.8', '⭐', exclusionMode, 'metric')">
+                                <span class="filter-icon">⭐</span>
+                                <div class="filter-info">
+                                    <div class="filter-name">Premium Product Fit</div>
+                                    <div class="filter-detail">ML Score: Fit for premium products > 80%</div>
+                                </div>
+                            </div>
+                            <div class="filter-item" onclick="addQuickFilter('Referral Propensity: > 0.7', '🎁', exclusionMode, 'metric')">
+                                <span class="filter-icon">🎁</span>
+                                <div class="filter-info">
+                                    <div class="filter-name">High Referral Likelihood</div>
+                                    <div class="filter-detail">ML Score: Likelihood to refer friends > 70%</div>
                                 </div>
                             </div>
                         </div>
