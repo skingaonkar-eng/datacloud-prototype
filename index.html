@@ -6462,175 +6462,179 @@
             'Churn Prevention': {
                 questions: [
                     {
-                        text: 'What does churn mean for you?',
+                        text: 'How should I identify customers at risk of churning?',
                         options: [
-                            { label: 'Subscription cancellation', value: 'subscription' },
-                            { label: 'No purchase in last N days', value: 'no_purchase' },
-                            { label: 'No product usage in last N days', value: 'no_usage' },
-                            { label: 'Custom definition', value: 'custom' }
+                            { label: 'No purchase in 90+ days', value: 'no_purchase_90' },
+                            { label: 'Declining engagement (fewer opens/clicks)', value: 'declining_engagement' },
+                            { label: 'Subscription nearing renewal', value: 'renewal' },
+                            { label: 'Low product usage frequency', value: 'low_usage' }
                         ]
                     },
                     {
-                        text: 'What do you mean by likely to respond?',
+                        text: 'Which customers should I prioritize for retention?',
                         options: [
-                            { label: 'Use existing Response Propensity score', value: 'propensity_score' },
-                            { label: 'Use proxies: past engagement + recent activity', value: 'proxies' },
-                            { label: 'Custom', value: 'custom' }
+                            { label: 'High lifetime value customers only', value: 'high_ltv' },
+                            { label: 'Recent customers (< 6 months tenure)', value: 'recent' },
+                            { label: 'Long-term customers (> 1 year)', value: 'longterm' },
+                            { label: 'All at-risk customers', value: 'all' }
                         ]
                     }
                 ],
                 strategies: [
                     {
-                        name: 'Strategy A (Precision-Focused)',
-                        description: 'High LTV + churn risk + high response likelihood',
-                        details: 'Smaller audience, better ROI',
-                        icon: '🎯'
+                        name: 'Strategy A (High-Value Retention)',
+                        description: 'Top 20% LTV + declining activity + early warning signals',
+                        details: 'Focus on most valuable relationships',
+                        icon: '💎'
                     },
                     {
-                        name: 'Strategy B (Reach-Focused)',
-                        description: 'Medium+ LTV + churn risk + medium response likelihood',
-                        details: 'Larger audience, lower precision',
-                        icon: '📊'
+                        name: 'Strategy B (Broad Prevention)',
+                        description: 'All at-risk + medium+ engagement history',
+                        details: 'Wider net, proactive approach',
+                        icon: '🛡️'
                     }
                 ]
             },
             'Win-back': {
                 questions: [
                     {
-                        text: 'How do you define "churned"?',
+                        text: 'How long have these customers been inactive?',
                         options: [
-                            { label: 'No purchase in 60+ days', value: '60_days' },
-                            { label: 'No purchase in 90+ days', value: '90_days' },
-                            { label: 'Subscription canceled', value: 'subscription_canceled' },
-                            { label: 'Custom timeframe', value: 'custom' }
+                            { label: 'Recently lapsed (30-90 days)', value: 'recent_lapsed' },
+                            { label: 'Moderately lapsed (90-180 days)', value: 'moderate_lapsed' },
+                            { label: 'Long lapsed (180+ days)', value: 'long_lapsed' },
+                            { label: 'Subscription canceled', value: 'canceled' }
                         ]
                     },
                     {
-                        text: 'What incentive will you offer?',
+                        text: 'What past behavior indicates they might return?',
                         options: [
-                            { label: 'Discount (10-30%)', value: 'discount' },
-                            { label: 'Free gift / bonus', value: 'gift' },
-                            { label: 'Loyalty points', value: 'loyalty' },
-                            { label: 'Free shipping', value: 'free_shipping' }
+                            { label: 'High historical purchase frequency', value: 'frequent_past' },
+                            { label: 'Strong past engagement (opens/clicks)', value: 'engaged_past' },
+                            { label: 'High average order value', value: 'high_aov' },
+                            { label: 'Multiple product categories purchased', value: 'multi_category' }
                         ]
                     }
                 ],
                 strategies: [
                     {
-                        name: 'Strategy A (High-Value Focus)',
-                        description: 'Top 20% LTV + recently churned + high past engagement',
-                        details: 'Smaller segment, highest recovery potential',
-                        icon: '💎'
+                        name: 'Strategy A (High-Recovery Potential)',
+                        description: 'Recently lapsed + high past engagement + top 30% LTV',
+                        details: 'Highest likelihood to return',
+                        icon: '🎯'
                     },
                     {
-                        name: 'Strategy B (Broad Win-back)',
-                        description: 'Medium+ LTV + churned 30-90 days + any engagement',
-                        details: 'Larger segment, moderate recovery rate',
-                        icon: '🎯'
+                        name: 'Strategy B (Volume Win-back)',
+                        description: 'All lapsed (30-180 days) + any past purchases',
+                        details: 'Broader reach, build pipeline',
+                        icon: '📈'
                     }
                 ]
             },
             'Growth & Monetization': {
                 questions: [
                     {
-                        text: 'What product/category are you promoting?',
+                        text: 'What defines a customer with growth potential?',
                         options: [
-                            { label: 'Premium tier upgrade', value: 'premium_upgrade' },
-                            { label: 'Add-on products', value: 'addons' },
-                            { label: 'Bundle/package', value: 'bundle' },
-                            { label: 'New product line', value: 'new_product' }
+                            { label: 'Active but low average order value', value: 'low_aov_active' },
+                            { label: 'Single category buyers (room to expand)', value: 'single_category' },
+                            { label: 'Infrequent but high-value purchases', value: 'low_freq_high_value' },
+                            { label: 'Loyal customers not on premium tier', value: 'non_premium' }
                         ]
                     },
                     {
-                        text: 'How do you measure "share of wallet"?',
+                        text: 'What growth metric matters most to you?',
                         options: [
-                            { label: 'Purchase frequency increase', value: 'frequency' },
-                            { label: 'Average order value growth', value: 'aov' },
-                            { label: 'Product category expansion', value: 'categories' }
+                            { label: 'Increase purchase frequency', value: 'frequency' },
+                            { label: 'Increase average order value', value: 'aov' },
+                            { label: 'Expand to new categories', value: 'categories' },
+                            { label: 'Upgrade to premium/subscription', value: 'upgrade' }
                         ]
                     }
                 ],
                 strategies: [
                     {
-                        name: 'Strategy A (High-Intent Upsell)',
-                        description: 'Frequent buyers + high AOV + product affinity',
-                        details: 'Highest conversion potential',
+                        name: 'Strategy A (High-Intent Expansion)',
+                        description: 'Active buyers + single category + high engagement',
+                        details: 'Ready for cross-sell opportunities',
                         icon: '🚀'
                     },
                     {
-                        name: 'Strategy B (Growth Opportunity)',
-                        description: 'Medium frequency + growth potential + category fit',
-                        details: 'Larger audience, expansion focus',
-                        icon: '📈'
+                        name: 'Strategy B (Volume Growth)',
+                        description: 'All active + below median AOV or frequency',
+                        details: 'Broad growth opportunity',
+                        icon: '📊'
                     }
                 ]
             },
             'Acquisition': {
                 questions: [
                     {
-                        text: 'Define "best customers" for lookalike?',
+                        text: 'What characteristics define your ideal new customer?',
                         options: [
-                            { label: 'Top 10% LTV', value: 'top_ltv' },
-                            { label: 'Most frequent buyers', value: 'frequent' },
-                            { label: 'High engagement + purchases', value: 'engaged' },
-                            { label: 'Custom criteria', value: 'custom' }
+                            { label: 'Similar to top 10% lifetime value customers', value: 'top_ltv' },
+                            { label: 'Similar to most engaged customers', value: 'engaged' },
+                            { label: 'Similar to customers who convert fast', value: 'fast_convert' },
+                            { label: 'Similar to loyal repeat buyers', value: 'loyal' }
                         ]
                     },
                     {
-                        text: 'Which attributes to match on?',
+                        text: 'Should I focus on specific demographics or behaviors?',
                         options: [
                             { label: 'Demographics (age, location, income)', value: 'demographics' },
-                            { label: 'Behaviors (browsing, engagement)', value: 'behaviors' },
-                            { label: 'Both demographics + behaviors', value: 'both' }
+                            { label: 'Behaviors (interests, online activity)', value: 'behaviors' },
+                            { label: 'Purchase signals (intent, cart activity)', value: 'purchase_signals' },
+                            { label: 'All characteristics combined', value: 'combined' }
                         ]
                     }
                 ],
                 strategies: [
                     {
-                        name: 'Strategy A (High-Quality Match)',
-                        description: 'Top 5% LTV lookalikes + tight demographic match',
-                        details: 'Smaller audience, highest quality',
-                        icon: '🎯'
+                        name: 'Strategy A (Quality-First)',
+                        description: 'Lookalike to top 5% LTV + strong match on all signals',
+                        details: 'Smaller, high-quality prospects',
+                        icon: '💎'
                     },
                     {
-                        name: 'Strategy B (Scale Acquisition)',
-                        description: 'Top 20% LTV lookalikes + moderate match',
-                        details: 'Larger pool, good quality/scale balance',
-                        icon: '📊'
+                        name: 'Strategy B (Scale-First)',
+                        description: 'Lookalike to top 20% + broader match criteria',
+                        details: 'Larger prospect pool, good fit',
+                        icon: '📈'
                     }
                 ]
             },
             'Service Led Marketing': {
                 questions: [
                     {
-                        text: 'How do you identify "frustrated" customers?',
+                        text: 'What service issue signals should I look for?',
                         options: [
-                            { label: 'Recent support case opened', value: 'case_opened' },
-                            { label: 'Low satisfaction score', value: 'low_satisfaction' },
-                            { label: 'Multiple cases in 30 days', value: 'multiple_cases' },
-                            { label: 'Custom criteria', value: 'custom' }
+                            { label: 'Recent support case opened (< 14 days)', value: 'recent_case' },
+                            { label: 'Multiple cases in short time period', value: 'multiple_cases' },
+                            { label: 'Low satisfaction/NPS score', value: 'low_satisfaction' },
+                            { label: 'Unresolved or escalated case', value: 'unresolved' }
                         ]
                     },
                     {
-                        text: 'What action will you take?',
+                        text: 'Which customers need priority attention?',
                         options: [
-                            { label: 'Proactive support outreach', value: 'support' },
-                            { label: 'Goodwill discount/credit', value: 'compensation' },
-                            { label: 'Premium service upgrade', value: 'upgrade' }
+                            { label: 'High-value customers with any issue', value: 'high_value_any' },
+                            { label: 'Customers with severe/critical issues', value: 'critical_issues' },
+                            { label: 'At-risk of churn based on service history', value: 'churn_risk' },
+                            { label: 'All customers with open cases', value: 'all_cases' }
                         ]
                     }
                 ],
                 strategies: [
                     {
-                        name: 'Strategy A (High-Risk Intervention)',
-                        description: 'Multiple cases + low satisfaction + high value',
-                        details: 'Immediate action, prevent churn',
+                        name: 'Strategy A (Critical Care)',
+                        description: 'High LTV + multiple/unresolved cases + low satisfaction',
+                        details: 'Immediate intervention, save relationship',
                         icon: '🚨'
                     },
                     {
-                        name: 'Strategy B (Proactive Care)',
-                        description: 'Recent case + medium value + early intervention',
-                        details: 'Broader care, relationship building',
+                        name: 'Strategy B (Proactive Service)',
+                        description: 'Any value + recent case + opportunity for improvement',
+                        details: 'Build trust, improve experience',
                         icon: '💙'
                     }
                 ]
@@ -6860,42 +6864,174 @@
         function detectGoalIntent(goalText) {
             const lowerGoal = goalText.toLowerCase();
             
-            // Churn/retention keywords
-            if (lowerGoal.includes('churn') || lowerGoal.includes('retention') || lowerGoal.includes('at risk') || lowerGoal.includes('at-risk')) {
-                return 'Churn Prevention';
-            }
-            
-            // Win-back keywords
-            if (lowerGoal.includes('win back') || lowerGoal.includes('winback') || lowerGoal.includes('churned') || lowerGoal.includes('lapsed')) {
+            // Win-back keywords (check first before churn)
+            if (lowerGoal.includes('win back') || lowerGoal.includes('winback') || lowerGoal.includes('lapsed') || lowerGoal.includes('lapsing') || 
+                lowerGoal.includes('inactive') || lowerGoal.includes('dormant') || lowerGoal.includes('haven\'t purchased')) {
                 return 'Win-back';
             }
             
+            // Churn/retention keywords
+            if (lowerGoal.includes('churn') || lowerGoal.includes('retention') || lowerGoal.includes('at risk') || lowerGoal.includes('at-risk') ||
+                lowerGoal.includes('likely to leave') || lowerGoal.includes('prevent') || lowerGoal.includes('retain')) {
+                return 'Churn Prevention';
+            }
+            
             // Growth/monetization keywords
-            if (lowerGoal.includes('share of wallet') || lowerGoal.includes('monetization') || lowerGoal.includes('increase revenue from existing')) {
+            if (lowerGoal.includes('share of wallet') || lowerGoal.includes('monetization') || lowerGoal.includes('increase revenue') ||
+                lowerGoal.includes('grow revenue') || lowerGoal.includes('expand wallet') || lowerGoal.includes('more from existing')) {
                 return 'Growth & Monetization';
             }
             
+            // Upsell/cross-sell keywords
+            if (lowerGoal.includes('upsell') || lowerGoal.includes('cross-sell') || lowerGoal.includes('cross sell') || 
+                lowerGoal.includes('additional products') || lowerGoal.includes('bundle') || lowerGoal.includes('upgrade')) {
+                return 'Cross-sell & Upsell';
+            }
+            
             // Acquisition keywords
-            if (lowerGoal.includes('acquisition') || lowerGoal.includes('lookalike') || lowerGoal.includes('similar to best') || lowerGoal.includes('prospect')) {
+            if (lowerGoal.includes('acquisition') || lowerGoal.includes('lookalike') || lowerGoal.includes('similar to') || 
+                lowerGoal.includes('prospect') || lowerGoal.includes('new customer') || lowerGoal.includes('acquire')) {
                 return 'Acquisition';
             }
             
             // Service keywords
-            if (lowerGoal.includes('service') || lowerGoal.includes('frustrated') || lowerGoal.includes('support case') || lowerGoal.includes('satisfaction')) {
+            if (lowerGoal.includes('service') || lowerGoal.includes('frustrated') || lowerGoal.includes('support case') || 
+                lowerGoal.includes('satisfaction') || lowerGoal.includes('complaint') || lowerGoal.includes('issue')) {
                 return 'Service Led Marketing';
             }
             
-            // Upsell/cross-sell keywords
-            if (lowerGoal.includes('upsell') || lowerGoal.includes('cross-sell') || lowerGoal.includes('cross sell') || lowerGoal.includes('additional products')) {
-                return 'Cross-sell & Upsell';
-            }
-            
-            // Default to Churn Prevention if contains customer targeting language
-            if (lowerGoal.includes('target customers') || lowerGoal.includes('prioritize')) {
-                return 'Churn Prevention';
-            }
-            
             return null;
+        }
+
+        function generateContextualFlow(goalText) {
+            const lowerGoal = goalText.toLowerCase();
+            let questions = [];
+            let strategies = [];
+            
+            // Detect key attributes mentioned in the goal
+            const hasValue = lowerGoal.includes('high value') || lowerGoal.includes('high ltv') || lowerGoal.includes('valuable') || lowerGoal.includes('premium');
+            const hasActivity = lowerGoal.includes('active') || lowerGoal.includes('inactive') || lowerGoal.includes('lapsed') || lowerGoal.includes('lapsing');
+            const hasEngagement = lowerGoal.includes('engaged') || lowerGoal.includes('engagement') || lowerGoal.includes('loyal');
+            const hasPurchase = lowerGoal.includes('purchas') || lowerGoal.includes('buy') || lowerGoal.includes('order');
+            
+            // Question 1: Define the key attribute mentioned
+            if (hasValue) {
+                questions.push({
+                    text: 'How do you define "high value" customers?',
+                    options: [
+                        { label: 'Top 10% lifetime value', value: 'top_10_ltv' },
+                        { label: 'Top 20% lifetime value', value: 'top_20_ltv' },
+                        { label: 'LTV above $5,000', value: 'ltv_threshold' },
+                        { label: 'Custom value criteria', value: 'custom_value' }
+                    ]
+                });
+            } else if (hasActivity) {
+                questions.push({
+                    text: 'How do you define "lapsing" or "inactive" customers?',
+                    options: [
+                        { label: 'No purchase in 60+ days', value: '60_days' },
+                        { label: 'No purchase in 90+ days', value: '90_days' },
+                        { label: 'No purchase in 180+ days', value: '180_days' },
+                        { label: 'Declining activity trend', value: 'declining' }
+                    ]
+                });
+            } else if (hasEngagement) {
+                questions.push({
+                    text: 'How do you measure engagement?',
+                    options: [
+                        { label: 'Email open/click rates', value: 'email_engagement' },
+                        { label: 'Website/app visits', value: 'digital_engagement' },
+                        { label: 'Purchase frequency', value: 'purchase_freq' },
+                        { label: 'Multiple interaction channels', value: 'omnichannel' }
+                    ]
+                });
+            } else {
+                questions.push({
+                    text: 'What is the main characteristic of your target customers?',
+                    options: [
+                        { label: 'High lifetime value', value: 'high_ltv' },
+                        { label: 'Purchase frequency', value: 'frequent' },
+                        { label: 'Recent activity', value: 'recent' },
+                        { label: 'Engagement level', value: 'engaged' }
+                    ]
+                });
+            }
+            
+            // Question 2: Define prioritization or timeframe
+            if (hasPurchase || hasActivity) {
+                questions.push({
+                    text: 'What timeframe should I consider for purchase/activity?',
+                    options: [
+                        { label: 'Last 30 days', value: '30_days' },
+                        { label: 'Last 60 days', value: '60_days' },
+                        { label: 'Last 90 days', value: '90_days' },
+                        { label: 'Last 6 months', value: '180_days' }
+                    ]
+                });
+            } else {
+                questions.push({
+                    text: 'How should I prioritize within this audience?',
+                    options: [
+                        { label: 'Focus on highest value only', value: 'highest_value' },
+                        { label: 'Balance value and reach', value: 'balanced' },
+                        { label: 'Include all who match criteria', value: 'all_match' },
+                        { label: 'Add engagement as qualifier', value: 'engagement_filter' }
+                    ]
+                });
+            }
+            
+            // Generate strategies based on goal context
+            if (hasValue && hasActivity) {
+                strategies = [
+                    {
+                        name: 'Strategy A (High-Value Recovery)',
+                        description: 'Top 20% LTV + recently lapsed (60-90 days) + past engagement',
+                        details: 'Highest recovery potential, premium treatment',
+                        icon: '💎'
+                    },
+                    {
+                        name: 'Strategy B (Broader Reactivation)',
+                        description: 'All high-value + any lapse period + recent history',
+                        details: 'Wider net, build back relationship',
+                        icon: '🎯'
+                    }
+                ];
+            } else if (hasValue) {
+                strategies = [
+                    {
+                        name: 'Strategy A (Premium Precision)',
+                        description: 'Top 10% LTV + additional qualifying criteria',
+                        details: 'Most valuable, personalized approach',
+                        icon: '👑'
+                    },
+                    {
+                        name: 'Strategy B (High-Value Expansion)',
+                        description: 'Top 30% LTV + broader match criteria',
+                        details: 'Larger segment, strong value focus',
+                        icon: '💎'
+                    }
+                ];
+            } else {
+                strategies = [
+                    {
+                        name: 'Strategy A (Focused Targeting)',
+                        description: 'Strict criteria match + highest priority signals',
+                        details: 'Smaller, highly qualified segment',
+                        icon: '🎯'
+                    },
+                    {
+                        name: 'Strategy B (Broad Opportunity)',
+                        description: 'Flexible criteria + wider reach',
+                        details: 'Larger audience, balanced approach',
+                        icon: '📊'
+                    }
+                ];
+            }
+            
+            return {
+                questions: questions,
+                strategies: strategies
+            };
         }
 
         function showFollowupQuestions() {
@@ -6925,43 +7061,8 @@
             // Get question flow for this goal
             let flow = goalQuestionFlows[selectedGoal];
             if (!flow) {
-                // If no custom flow, create a generic flow for custom goals
-                flow = {
-                    questions: [
-                        {
-                            text: 'Who is your target audience for this goal?',
-                            options: [
-                                { label: 'High-value customers (Top 20% LTV)', value: 'high_value' },
-                                { label: 'Active customers (purchased recently)', value: 'active' },
-                                { label: 'At-risk customers (low engagement)', value: 'at_risk' },
-                                { label: 'All customers', value: 'all' }
-                            ]
-                        },
-                        {
-                            text: 'What time frame are you looking at?',
-                            options: [
-                                { label: 'Last 30 days', value: '30_days' },
-                                { label: 'Last 60 days', value: '60_days' },
-                                { label: 'Last 90 days', value: '90_days' },
-                                { label: 'Custom timeframe', value: 'custom' }
-                            ]
-                        }
-                    ],
-                    strategies: [
-                        {
-                            name: 'Strategy A (Precision Approach)',
-                            description: 'Focused targeting with specific criteria',
-                            details: 'Smaller, highly targeted segment',
-                            icon: '🎯'
-                        },
-                        {
-                            name: 'Strategy B (Broad Reach)',
-                            description: 'Wider targeting with flexible criteria',
-                            details: 'Larger segment, broader impact',
-                            icon: '📊'
-                        }
-                    ]
-                };
+                // Create contextual flow for custom goals based on keywords
+                flow = generateContextualFlow(selectedGoal);
             }
             
             // Store the current flow for later access
