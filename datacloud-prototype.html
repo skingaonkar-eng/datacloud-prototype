@@ -6581,6 +6581,7 @@
 
         // Agentic conversation variables
         let selectedGoal = '';
+        let userOriginalGoal = ''; // Store user's original custom goal text for display
         let followupAnswers = {};
         let currentQuestionIndex = 0;
         let goalQuestionFlow = [];
@@ -6951,6 +6952,7 @@
 
         function selectGoal(goalTitle) {
             selectedGoal = goalTitle;
+            userOriginalGoal = ''; // Clear custom goal since this is auto-suggested
             showFollowupQuestions();
             
             // Scroll to top to show the agent conversation
@@ -6968,19 +6970,18 @@
                 return;
             }
             
+            // Store the original user input for display and semantic analysis
+            userOriginalGoal = goal;
             selectedGoal = goal;
             
             // Analyze custom goal and map to appropriate flow
             const detectedGoal = detectGoalIntent(goal);
             if (detectedGoal && goalQuestionFlows[detectedGoal]) {
                 // Use detected goal's question flow but keep original custom text
-                const originalGoal = selectedGoal;
                 selectedGoal = detectedGoal;
                 showFollowupQuestions();
-                // Restore original custom goal text for display
-                document.getElementById('userGoalText').textContent = originalGoal;
             } else {
-                // No specific flow detected - proceed directly
+                // No specific flow detected - generate contextual flow
                 showFollowupQuestions();
             }
             
@@ -7191,7 +7192,8 @@
             let flow = goalQuestionFlows[selectedGoal];
             if (!flow) {
                 // Create contextual flow for custom goals based on keywords
-                flow = generateContextualFlow(selectedGoal);
+                // Use the original user input for semantic analysis
+                flow = generateContextualFlow(userOriginalGoal || selectedGoal);
             }
             
             // Store the current flow for later access
@@ -7200,11 +7202,12 @@
             currentQuestionIndex = 0;
             followupAnswers = {};
             
-            // Show user's selected goal
+            // Show user's selected goal - use original text if available (custom goal)
+            const displayGoal = userOriginalGoal || selectedGoal;
             const userGoalHTML = `
                 <div class="chat-message user-message">
                     <div class="chat-bubble">
-                        <div class="chat-bubble-text">${selectedGoal}</div>
+                        <div class="chat-bubble-text">${displayGoal}</div>
                     </div>
                 </div>
             `;
