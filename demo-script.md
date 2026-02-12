@@ -400,4 +400,244 @@ A: "They're built in Model Builder using your historical data—you control the 
 
 ---
 
-**END OF DEMO SCRIPT**
+## DEMO TALK TRACK (Verbatim Script - 9 minutes)
+
+*Use this as your speaking script during the demo. Actions are in [brackets].*
+
+---
+
+### **INTRO (15 seconds)**
+
+"Hi everyone, I'm Sarah, Marketing Manager at OutdoorCo. Spring is our peak season for outdoor gear, and I need to bring back our best customers who've gone quiet over the winter. Let me show you how Data Cloud's Segment Builder helps me do this in just minutes."
+
+---
+
+### **ACT 1: STARTING WITH THE AGENT (1:45)**
+
+*[Navigate to landing page, click "Create New Segment"]*
+
+"I'll start by clicking 'Create New Segment.' Notice I have two options here—I can let the AI guide me, or I can build manually. For today, I'll use the AI assistant because it's the fastest way to get started."
+
+*[Click "Guide Me with AI Assistant"]*
+
+"Now I'm going to describe my goal in plain business language—no technical jargon needed."
+
+*[Type in agent:]*  
+"I want to target high-value customers who haven't purchased in the last 6 months but have strong history with us."
+
+"The agent immediately understands what I'm trying to do and asks me clarifying questions."
+
+*[Agent asks first question]*
+
+"It's asking me to define 'high-value'—do I mean top 10%, top 20%, or a specific dollar amount? I'll select 'Top 20% lifetime value' because that's about 50,000 of our best customers."
+
+*[Select answer, agent asks second question]*
+
+"Now it wants to know what I mean by 'lapsing'—how long is too long? I'll say '180+ days'—basically six months of inactivity."
+
+*[Select answer, agent shows strategies]*
+
+"Based on my answers, the AI suggests two targeting strategies. Strategy A focuses on recently lapsed customers with high past engagement—this gives me the highest recovery potential. Strategy B casts a wider net. I'll go with Strategy A."
+
+*[Select Strategy A]*
+
+"And just like that—in 30 seconds—the agent has built my segment foundation and taken me to the builder. If I wanted full control, I could've chosen 'Manual Builder' and started from scratch. But this AI-first approach saves me tons of time."
+
+---
+
+### **ACT 2: BUILDING & REFINING (2:30)**
+
+*[Now in Segment Definition tab]*
+
+"The agent has already added three filters based on my goal: Lifetime Value over $7,000, Last Activity more than 180 days ago, and Product Interest in Trekking Boots—which is our hero category."
+
+"But I want to refine this further. Let me click 'Add from Quick Filters' to explore what else I can add."
+
+*[Click "Add from Quick Filters" to open filter builder]*
+
+"Now this is powerful. I have five different ways to add targeting criteria:"
+
+*[Navigate through tabs]*
+
+"**Quick Attributes** are raw data fields like Age or Location—I'd need to manually configure the values."
+
+"**Quick Filters** are pre-configured. See 'Millennials'? It already has age 25-40 set. One click and it's added."
+
+"**Metrics** are calculated fields using formulas—like Customer Health Score that combines LTV, engagement, and recency."
+
+"**Predictive Scores**—this is where it gets really smart. These are AI propensity and affinity scores from our Model Builder. Let me add one."
+
+*[Click on Predictive Scores tab, add "Purchase Propensity > 0.7"]*
+
+"I'm adding 'Purchase Propensity greater than 70%'—this machine learning score tells me which lapsed customers are most likely to buy again if we reach out. And notice the badge—it shows this is a 'Metric' so I know what type of filter it is."
+
+*[Go back to Quick Filters tab]*
+
+"Let me also add 'Email Engaged in last 30 days'—even though they haven't purchased, they're still opening our emails. That's a great signal."
+
+*[Add filter]*
+
+"Now, let me add some exclusions—customers I shouldn't target."
+
+*[Click "+ Add Exclusion"]*
+
+"I'll exclude 'Recent Buyers from last 30 days'—no point targeting people who just bought. And I'll also exclude anyone contacted in the last 7 days to avoid message fatigue."
+
+*[Add both exclusions]*
+
+"See how I'm building complex AND/OR logic visually? No SQL, no technical queries—just business rules. And everything is color-coded so I know exactly what I'm looking at."
+
+---
+
+### **ACT 3: VALIDATING BEFORE I ACTIVATE (2:15)**
+
+"Before I activate this segment, I want to validate it. Let me click 'Preview Segment.'"
+
+*[Click "Preview Segment" button]*
+
+#### **Preview (45 sec)**
+
+"Here are 50 actual customers who will be in my segment. I can see their names, lifetime value, last purchase date, loyalty tier—all the details. The attributes I used in my filters show first, so I can quickly verify the rules are working correctly."
+
+"And look at these distribution charts—68% male, mostly in the $7K-$10K LTV range, 47% are Gold loyalty members. These quick visuals give me confidence my segment looks right."
+
+*[Click "Next: Insights"]*
+
+#### **Insights (45 sec)**
+
+"Now let me understand what this audience really looks like strategically."
+
+"I have 45,700 customers worth $38.6 million in total addressable value. But here's what's important—$2.94 million is at risk if these customers churn. That's real business impact."
+
+"Their average order frequency used to be 3.2 times per year—these were good customers. And they're still opening our emails at 42%, so they haven't tuned us out."
+
+"The AI recommendation says 'Premium positioning'—don't lead with discounts, emphasize quality. And the best time to reach them is 6 to 8 PM on weekdays. I'll use that when I activate."
+
+*[Click "Next: Overlap Analysis"]*
+
+#### **Overlap (45 sec)**
+
+"Let me check if these customers overlap with other segments I'm running."
+
+*[Select "Holiday Gift Guide" from dropdown]*
+
+"Whoa—52% overlap with my holiday segment! That's 6,493 customers. And look at the fatigue indicators—23% of my segment was contacted in the last 7 days, 19% are receiving high message frequency."
+
+"The AI is suggesting I exclude 890 high-frequency customers. Let me add that."
+
+*[Click "+ Add" on suggestion]*
+
+"Done—it automatically added that exclusion to my segment rules and brought me back to the builder. This is how validation and refinement work together seamlessly."
+
+*[Click "Back to Rules"]*
+
+"In just two minutes, I previewed my audience, understood their characteristics, identified overlap issues, and refined my targeting—all without leaving the builder."
+
+---
+
+### **ACT 4: OPTIONAL FEATURES (1:00)**
+
+*[Navigate through tabs quickly]*
+
+"These next features are optional but powerful. Notice they're all marked with 'OPTIONAL' badges."
+
+*[Quick show Rank & Limit]*
+
+"**Rank and Limit** lets me prioritize and cap audience size. I could say 'give me the top 500 customers per region ranked by LTV'—perfect for controlled rollouts or budget constraints. I'm skipping this today."
+
+*[Click "Skip to Activate" → Channel Affinity]*
+
+"**Channel Affinity** shows me Email is 45%, SMS is 22%, Push is 18%. This is based on analysis from 847 previous activations. And it confirms 6-8 PM is the best send time."
+
+*[Click "Skip to Activate" → Smart Splits]*
+
+"**Smart Splits** lets me A/B test. I could create Split A with 60% getting Email + SMS, and Split B with 40% getting Email + Push. Great for testing, but I'm confident in my approach today."
+
+*[Click "Skip to Activate"]*
+
+"See how I control my workflow? I can use these features when I need them, or skip right to activation."
+
+---
+
+### **ACT 5: ACTIVATION & ORCHESTRATION (1:45)**
+
+*[Now in Activate tab]*
+
+"Here's where I bring this segment to life."
+
+"I have three pre-built templates here. Each one has channels and personalization attributes already configured. Look at this 'Multi-Channel Engagement' template—it has Email, WhatsApp, and Meta Ads set up, with five personalization attributes ready to go."
+
+"But I want to build a custom one for my spring reactivation. Let me click 'Create Custom Template.'"
+
+*[Click "Create Custom Template"]*
+
+"**Step 1:** I'll select my channels—Email as primary, SMS as follow-up, and Mobile Push as a reminder."
+
+"**Step 2:** For personalization, I want to use customer name, their last purchase date, and their favorite product category so the message feels personal. I can click 'Add' here to search all my attributes and metrics."
+
+"Now here's the really powerful part—**Journey Configuration**. This is optional, but let me show you."
+
+*[Click "Configure Journey"]*
+
+"I can select a pre-built journey flow. Look at this 'Email Engagement Flow'—it sends an email, waits 24 hours, checks if they opened it. If yes, sends a WhatsApp message. If no, activates Meta Ads for retargeting."
+
+"Or I can build my own custom journey with these quick-add steps—Send Email, Wait 24 hours, If Email Opened, Send WhatsApp. It's all visual, drag-and-drop conditional logic."
+
+"And here's the magic—if I'm already in this tab and I just tell the agent at the bottom: 'Create a template: send email, if opened send WhatsApp, if not wait 24 hours and send push'—it automatically builds it for me!"
+
+*[Click "Activate Segment"]*
+
+"Let me activate this now."
+
+*[Success popup appears]*
+
+"Segment activated successfully! 12,487 customers are now in my spring reactivation flow. Let me check the performance."
+
+*[Click "View Performance"]*
+
+---
+
+### **ACT 6: MEASURING SUCCESS (1:00)**
+
+*[Segment Performance tab]*
+
+"This is the final piece—understanding if my targeting was right."
+
+"Out of 12,487 customers, I reached 11,843—that's 95%. My engagement rate is 24.8%, and conversion rate is 16.4%. That's excellent for a lapsed audience."
+
+"I generated $167,000 in revenue with a 4.2x return on investment. The $37,000 I spent on this activation returned over four times that."
+
+"And look at this comparison—I'm 38% above my 6-month average and showing 185% lift versus the control group. That proves this segment created incremental value."
+
+"Finally, the AI is already suggesting my next segments: win-back the 1,847 non-responders, upsell the converters to premium tier, and create a lookalike for acquisition. That's how the loop closes—insights feed the next action."
+
+---
+
+### **CLOSING (30 seconds)**
+
+"So in under 10 minutes, I went from a business goal—'reactivate valuable lapsed customers'—to an activated, multi-channel journey, to performance insights showing real ROI."
+
+"The AI guided me when I needed it, validation tools gave me confidence before I activated, and now I have clear next steps."
+
+"This is Data Cloud—transforming how marketers build, validate, and activate segments. It's not just a segment builder—it's an intelligent marketing co-pilot."
+
+"Any questions?"
+
+---
+
+### **KEY PHRASES TO EMPHASIZE:**
+
+Throughout the demo, weave in these value statements:
+
+- ✨ **"No SQL needed—just business language"**
+- 🎯 **"AI asks the right questions, not technical ones"**
+- 🔍 **"Validate before you activate—preview, insights, overlap"**
+- ⚡ **"Minutes, not hours or days"**
+- 🔄 **"Closed-loop: from goal to insights to next action"**
+- 🤖 **"The agent is like a marketing co-pilot"**
+- 🎨 **"Visual, intuitive—technical work hidden away"**
+
+---
+
+**END OF TALK TRACK**
+
