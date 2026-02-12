@@ -1695,6 +1695,12 @@
             border: 1px solid #a5b4fc;
         }
 
+        .badge-score {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fcd34d;
+        }
+
         .filter-content {
             flex: 1;
             display: flex;
@@ -3459,18 +3465,18 @@
                             </svg>
                             Metrics
                         </button>
-                        <button class="filter-tab" onclick="switchFilterTab('segments')" id="tab-segments">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                            </svg>
-                            Other Segments
-                        </button>
                         <button class="filter-tab" onclick="switchFilterTab('scores')" id="tab-scores">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="12" cy="12" r="10"/>
                                 <path d="M12 6v6l4 2"/>
                             </svg>
                             Predictive Scores
+                        </button>
+                        <button class="filter-tab" onclick="switchFilterTab('segments')" id="tab-segments">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                            </svg>
+                            Other Segments
                         </button>
                     </div>
 
@@ -3758,6 +3764,13 @@
                                     <div class="filter-detail">67.9K members • Active</div>
                                 </div>
                             </div>
+                            <div class="filter-item" onclick="addQuickFilter('Recently Contacted (30 days) Segment', '📮', exclusionMode, 'segment')">
+                                <span class="filter-icon">📮</span>
+                                <div class="filter-info">
+                                    <div class="filter-name">Recently Contacted (30 days)</div>
+                                    <div class="filter-detail">24.3K members • Active • Common exclusion</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -3781,84 +3794,84 @@
                             <input type="text" placeholder="Search predictive scores..." class="filter-search-input">
                         </div>
                         <div class="filter-items-grid">
-                            <div class="filter-item" onclick="addQuickFilter('Purchase Propensity: > 0.7', '🎯', exclusionMode, 'metric')">
+                            <div class="filter-item" onclick="addQuickFilter('Purchase Propensity: > 0.7', '🎯', exclusionMode, 'score')">
                                 <span class="filter-icon">🎯</span>
                                 <div class="filter-info">
                                     <div class="filter-name">High Purchase Propensity</div>
                                     <div class="filter-detail">ML Score: Likelihood to purchase in next 30 days > 70%</div>
                                 </div>
                             </div>
-                            <div class="filter-item" onclick="addQuickFilter('Churn Propensity: > 0.6', '⚠️', exclusionMode, 'metric')">
+                            <div class="filter-item" onclick="addQuickFilter('Churn Propensity: > 0.6', '⚠️', exclusionMode, 'score')">
                                 <span class="filter-icon">⚠️</span>
                                 <div class="filter-info">
                                     <div class="filter-name">High Churn Risk</div>
                                     <div class="filter-detail">ML Score: Likelihood to churn in next 90 days > 60%</div>
                                 </div>
                             </div>
-                            <div class="filter-item" onclick="addQuickFilter('Product Affinity - Outdoor Gear: > 0.8', '🏔️', exclusionMode, 'metric')">
+                            <div class="filter-item" onclick="addQuickFilter('Product Affinity - Outdoor Gear: > 0.8', '🏔️', exclusionMode, 'score')">
                                 <span class="filter-icon">🏔️</span>
                                 <div class="filter-info">
                                     <div class="filter-name">Outdoor Gear Affinity</div>
                                     <div class="filter-detail">ML Score: Interest in outdoor products > 80%</div>
                                 </div>
                             </div>
-                            <div class="filter-item" onclick="addQuickFilter('Product Affinity - Electronics: > 0.75', '💻', exclusionMode, 'metric')">
+                            <div class="filter-item" onclick="addQuickFilter('Product Affinity - Electronics: > 0.75', '💻', exclusionMode, 'score')">
                                 <span class="filter-icon">💻</span>
                                 <div class="filter-info">
                                     <div class="filter-name">Electronics Affinity</div>
                                     <div class="filter-detail">ML Score: Interest in electronics > 75%</div>
                                 </div>
                             </div>
-                            <div class="filter-item" onclick="addQuickFilter('Upsell Propensity: > 0.65', '⬆️', exclusionMode, 'metric')">
+                            <div class="filter-item" onclick="addQuickFilter('Upsell Propensity: > 0.65', '⬆️', exclusionMode, 'score')">
                                 <span class="filter-icon">⬆️</span>
                                 <div class="filter-info">
                                     <div class="filter-name">High Upsell Potential</div>
                                     <div class="filter-detail">ML Score: Likelihood to upgrade/buy premium > 65%</div>
                                 </div>
                             </div>
-                            <div class="filter-item" onclick="addQuickFilter('Cross-sell Propensity: > 0.7', '🔀', exclusionMode, 'metric')">
+                            <div class="filter-item" onclick="addQuickFilter('Cross-sell Propensity: > 0.7', '🔀', exclusionMode, 'score')">
                                 <span class="filter-icon">🔀</span>
                                 <div class="filter-info">
                                     <div class="filter-name">High Cross-sell Potential</div>
                                     <div class="filter-detail">ML Score: Likelihood to buy complementary products > 70%</div>
                                 </div>
                             </div>
-                            <div class="filter-item" onclick="addQuickFilter('Brand Affinity: > 0.85', '❤️', exclusionMode, 'metric')">
+                            <div class="filter-item" onclick="addQuickFilter('Brand Affinity: > 0.85', '❤️', exclusionMode, 'score')">
                                 <span class="filter-icon">❤️</span>
                                 <div class="filter-info">
                                     <div class="filter-name">High Brand Loyalty</div>
                                     <div class="filter-detail">ML Score: Brand preference and loyalty > 85%</div>
                                 </div>
                             </div>
-                            <div class="filter-item" onclick="addQuickFilter('Response Propensity - Email: > 0.6', '📧', exclusionMode, 'metric')">
+                            <div class="filter-item" onclick="addQuickFilter('Response Propensity - Email: > 0.6', '📧', exclusionMode, 'score')">
                                 <span class="filter-icon">📧</span>
                                 <div class="filter-info">
                                     <div class="filter-name">Email Response Propensity</div>
                                     <div class="filter-detail">ML Score: Likelihood to engage with email > 60%</div>
                                 </div>
                             </div>
-                            <div class="filter-item" onclick="addQuickFilter('Conversion Propensity: > 0.75', '✨', exclusionMode, 'metric')">
+                            <div class="filter-item" onclick="addQuickFilter('Conversion Propensity: > 0.75', '✨', exclusionMode, 'score')">
                                 <span class="filter-icon">✨</span>
                                 <div class="filter-info">
                                     <div class="filter-name">High Conversion Likelihood</div>
                                     <div class="filter-detail">ML Score: Probability to convert from lead > 75%</div>
                                 </div>
                             </div>
-                            <div class="filter-item" onclick="addQuickFilter('Win-back Propensity: > 0.55', '🔄', exclusionMode, 'metric')">
+                            <div class="filter-item" onclick="addQuickFilter('Win-back Propensity: > 0.55', '🔄', exclusionMode, 'score')">
                                 <span class="filter-icon">🔄</span>
                                 <div class="filter-info">
                                     <div class="filter-name">Win-back Opportunity</div>
                                     <div class="filter-detail">ML Score: Likelihood lapsed customers will return > 55%</div>
                                 </div>
                             </div>
-                            <div class="filter-item" onclick="addQuickFilter('Product Recommendation Score - Premium: > 0.8', '⭐', exclusionMode, 'metric')">
+                            <div class="filter-item" onclick="addQuickFilter('Product Recommendation Score - Premium: > 0.8', '⭐', exclusionMode, 'score')">
                                 <span class="filter-icon">⭐</span>
                                 <div class="filter-info">
                                     <div class="filter-name">Premium Product Fit</div>
                                     <div class="filter-detail">ML Score: Fit for premium products > 80%</div>
                                 </div>
                             </div>
-                            <div class="filter-item" onclick="addQuickFilter('Referral Propensity: > 0.7', '🎁', exclusionMode, 'metric')">
+                            <div class="filter-item" onclick="addQuickFilter('Referral Propensity: > 0.7', '🎁', exclusionMode, 'score')">
                                 <span class="filter-icon">🎁</span>
                                 <div class="filter-info">
                                     <div class="filter-name">High Referral Likelihood</div>
@@ -3904,27 +3917,19 @@
                 </div>
             </div>
 
-            <div class="nav-buttons" style="display: flex; justify-content: space-between; align-items: center;">
-                <button class="btn-nav btn-nav-secondary" disabled style="visibility: hidden;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+            <div class="nav-buttons" style="display: flex; justify-content: flex-end; align-items: center; gap: 0.75rem; margin-top: 2rem;">
+                <button class="btn-nav btn-nav-primary" onclick="switchTab(1)" style="font-size: 0.875rem; padding: 0.625rem 1.25rem;">
+                    Next: Rank & Limit
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 0.375rem;">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
                     </svg>
-                    Previous
                 </button>
-                <div style="display: flex; gap: 1rem;">
-                    <button class="btn-nav btn-nav-primary" onclick="switchTab(1)">
-                        Rank & Limit (Optional)
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
-                    </button>
-                    <button class="btn-nav btn-nav-secondary" onclick="switchTab(4)" style="border: 2px solid #1d72f3; color: #1d72f3; font-weight: 600;">
-                        Skip to Activate
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
-                    </button>
-                </div>
+                <button class="btn-nav btn-nav-secondary" onclick="switchTab(4)" style="font-size: 0.875rem; padding: 0.625rem 1.25rem;">
+                    Skip to Activate
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 0.375rem;">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
             </div>
         </div>
 
@@ -8798,6 +8803,7 @@
                 'attribute': '<span class="filter-type-badge badge-attribute">Attribute</span>',
                 'filter': '<span class="filter-type-badge badge-filter">Filter</span>',
                 'metric': '<span class="filter-type-badge badge-metric">Metric</span>',
+                'score': '<span class="filter-type-badge badge-score">AI Score</span>',
                 'segment': '<span class="filter-type-badge badge-segment">Segment</span>'
             };
             return badges[filterType] || badges['filter'];
