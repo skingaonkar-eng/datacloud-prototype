@@ -1,0 +1,2453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Cloud - UX Prototype</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #0a0a0f;
+            color: #f4f4f5;
+            overflow-x: hidden;
+        }
+
+        /* Background Effects */
+        .bg-gradient {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, #0a0a0f 50%, #0a0a0f 100%);
+            pointer-events: none;
+        }
+
+        .bg-orb-1 {
+            position: fixed;
+            top: 0;
+            left: 25%;
+            width: 384px;
+            height: 384px;
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+        }
+
+        .bg-orb-2 {
+            position: fixed;
+            bottom: 0;
+            right: 25%;
+            width: 384px;
+            height: 384px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+        }
+
+        /* Header */
+        header {
+            position: relative;
+            z-index: 10;
+            padding: 2rem;
+            animation: fadeInDown 0.6s ease-out;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            color: #a78bfa;
+        }
+
+        h1 {
+            font-size: 1.875rem;
+            font-weight: bold;
+            background: linear-gradient(to right, #a78bfa, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            margin-top: 0.5rem;
+            color: #a1a1aa;
+            font-size: 0.875rem;
+        }
+
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem 10rem 2rem;
+        }
+
+        /* Welcome Screen */
+        .welcome {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            text-align: center;
+            animation: fadeIn 0.6s ease-out;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .welcome-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            animation: pulse-rotate 3s ease-in-out infinite;
+        }
+
+        .welcome h2 {
+            font-size: 2.25rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #a78bfa, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .welcome p {
+            font-size: 1.125rem;
+            color: #a1a1aa;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Glassmorphic Card */
+        .glass-card {
+            background: rgba(39, 39, 42, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(113, 113, 122, 0.2);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+        }
+
+        /* Agent Bar */
+        .agent-bar {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 50;
+            width: calc(100% - 2rem);
+            max-width: 768px;
+            animation: slideUp 0.6s ease-out 0.3s both;
+        }
+
+        .agent-bar-inner {
+            background: rgba(39, 39, 42, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(113, 113, 122, 0.2);
+            border-radius: 9999px;
+            padding: 0.5rem;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .agent-bar:hover .agent-bar-inner {
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
+        }
+
+        .agent-bar form {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0 1rem;
+        }
+
+        .agent-icon {
+            width: 20px;
+            height: 20px;
+            color: #a78bfa;
+        }
+
+        .agent-icon.processing {
+            animation: spin 2s linear infinite;
+        }
+
+        .agent-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #f4f4f5;
+            font-size: 1.125rem;
+            padding: 0.75rem 0;
+        }
+
+        .agent-input::placeholder {
+            color: #71717a;
+        }
+
+        .agent-submit {
+            background: #8b5cf6;
+            border: none;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .agent-submit:hover:not(:disabled) {
+            background: #7c3aed;
+            transform: scale(1.05);
+        }
+
+        .agent-submit:disabled {
+            background: #3f3f46;
+            cursor: not-allowed;
+        }
+
+        .agent-status {
+            text-align: center;
+            margin-top: 0.75rem;
+            font-size: 0.875rem;
+            color: #a1a1aa;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        /* Content Sections */
+        .content {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        .section {
+            margin-bottom: 2rem;
+            animation: slideInUp 0.5s ease-out;
+        }
+
+        .section-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-header h3 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header p {
+            color: #a1a1aa;
+        }
+
+        /* Goal Display */
+        .goal-card {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            animation: slideInUp 0.5s ease-out;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: #a78bfa;
+            border-radius: 50%;
+            margin-top: 0.5rem;
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        .goal-content {
+            flex: 1;
+        }
+
+        .goal-label {
+            font-size: 0.875rem;
+            color: #a1a1aa;
+            margin-bottom: 0.25rem;
+        }
+
+        .goal-text {
+            font-size: 1.25rem;
+        }
+
+        /* Attribute Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .attribute-card {
+            background: rgba(39, 39, 42, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(113, 113, 122, 0.2);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: slideInUp 0.5s ease-out backwards;
+        }
+
+        .attribute-card:nth-child(1) { animation-delay: 0.1s; }
+        .attribute-card:nth-child(2) { animation-delay: 0.2s; }
+        .attribute-card:nth-child(3) { animation-delay: 0.3s; }
+
+        .attribute-card:hover {
+            transform: translateY(-4px) scale(1.02);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .icon-gradient-1 { background: linear-gradient(135deg, #10b981, #059669); }
+        .icon-gradient-2 { background: linear-gradient(135deg, #f97316, #f59e0b); }
+        .icon-gradient-3 { background: linear-gradient(135deg, #3b82f6, #06b6d4); }
+        .icon-gradient-4 { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+
+        .card-label {
+            font-size: 0.875rem;
+            color: #a1a1aa;
+            margin-bottom: 0.25rem;
+        }
+
+        .card-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-detail {
+            font-size: 0.875rem;
+            color: #71717a;
+        }
+
+        .card-hover-line {
+            height: 4px;
+            width: 0;
+            background: linear-gradient(to right, #8b5cf6, #3b82f6);
+            border-radius: 2px;
+            margin-top: 1rem;
+            transition: width 0.3s ease;
+        }
+
+        .attribute-card:hover .card-hover-line {
+            width: 100%;
+        }
+
+        /* Search Bar */
+        .search-section {
+            margin-top: 1.5rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .search-bar {
+            background: rgba(39, 39, 42, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(113, 113, 122, 0.2);
+            border-radius: 1rem;
+            padding: 1.25rem 1.5rem;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar:hover {
+            background: rgba(39, 39, 42, 0.6);
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .search-bar-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .search-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+        }
+
+        .search-bar-icon {
+            width: 24px;
+            height: 24px;
+            color: #a78bfa;
+        }
+
+        .search-bar-text {
+            flex: 1;
+        }
+
+        .search-bar-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #f4f4f5;
+            margin-bottom: 0.25rem;
+        }
+
+        .search-bar-subtitle {
+            font-size: 0.875rem;
+            color: #a1a1aa;
+        }
+
+        .search-bar-arrow {
+            width: 20px;
+            height: 20px;
+            color: #a1a1aa;
+            transition: transform 0.3s ease;
+        }
+
+        .search-bar-arrow.open {
+            transform: rotate(180deg);
+        }
+
+        /* Quick Filters Panel */
+        .quick-filters-panel {
+            position: absolute;
+            top: calc(100% + 0.75rem);
+            left: 0;
+            right: 0;
+            background: rgba(24, 24, 27, 0.98);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            width: 100%;
+            max-height: 500px;
+            overflow-y: auto;
+            z-index: 100;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(139, 92, 246, 0.1);
+            animation: slideInDown 0.3s ease-out;
+        }
+
+        .quick-filters-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .quick-filters-panel::-webkit-scrollbar-track {
+            background: rgba(39, 39, 42, 0.5);
+            border-radius: 4px;
+            margin: 0.5rem;
+        }
+
+        .quick-filters-panel::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            border-radius: 4px;
+        }
+
+        .quick-filters-panel::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #7c3aed, #2563eb);
+        }
+
+        .quick-filters-header {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(113, 113, 122, 0.2);
+        }
+
+        .quick-filters-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #f4f4f5;
+            margin-bottom: 0.5rem;
+        }
+
+        .quick-filters-description {
+            font-size: 0.875rem;
+            color: #a1a1aa;
+        }
+
+        .quick-filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .quick-filter-item {
+            padding: 1.25rem;
+            border-radius: 1rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border: 2px solid rgba(113, 113, 122, 0.2);
+            background: rgba(39, 39, 42, 0.4);
+        }
+
+        .quick-filter-item:hover {
+            background: rgba(139, 92, 246, 0.15);
+            border-color: rgba(139, 92, 246, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.2);
+        }
+
+        .quick-filter-item:active {
+            transform: translateY(0);
+        }
+
+        .quick-filter-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.2));
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            flex-shrink: 0;
+        }
+
+        .quick-filter-info {
+            flex: 1;
+        }
+
+        .quick-filter-name {
+            font-size: 1.0625rem;
+            font-weight: 600;
+            color: #f4f4f5;
+            margin-bottom: 0.25rem;
+            line-height: 1.3;
+        }
+
+        .quick-filter-desc {
+            font-size: 0.875rem;
+            color: #a1a1aa;
+            line-height: 1.4;
+        }
+
+
+        /* Audience Card */
+        .audience-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            animation: slideInUp 0.5s ease-out 0.4s backwards;
+            position: relative;
+            z-index: 1;
+        }
+
+        .audience-info h4 {
+            font-size: 0.875rem;
+            color: #a1a1aa;
+            margin-bottom: 0.25rem;
+        }
+
+        .audience-count {
+            font-size: 2.25rem;
+            font-weight: bold;
+            background: linear-gradient(to right, #a78bfa, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .continue-btn {
+            background: #8b5cf6;
+            color: white;
+            border: none;
+            border-radius: 9999px;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .continue-btn:hover {
+            background: #7c3aed;
+            transform: scale(1.05) translateX(5px);
+        }
+
+        /* Channel Affinity */
+        .channel-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .channel-item {
+            background: rgba(39, 39, 42, 0.3);
+            padding: 1rem;
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+            animation: slideInLeft 0.5s ease-out backwards;
+        }
+
+        .channel-item:nth-child(1) { animation-delay: 0.1s; }
+        .channel-item:nth-child(2) { animation-delay: 0.2s; }
+        .channel-item:nth-child(3) { animation-delay: 0.3s; }
+        .channel-item:nth-child(4) { animation-delay: 0.4s; }
+
+        .channel-item.top-pick {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .channel-item:hover {
+            transform: scale(1.02);
+        }
+
+        .channel-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .channel-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .channel-gradient-1 { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .channel-gradient-2 { background: linear-gradient(135deg, #3b82f6, #06b6d4); }
+        .channel-gradient-3 { background: linear-gradient(135deg, #64748b, #3f3f46); }
+        .channel-gradient-4 { background: linear-gradient(135deg, #10b981, #059669); }
+
+        .channel-info {
+            flex: 1;
+        }
+
+        .channel-name {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .top-badge {
+            background: #8b5cf6;
+            font-size: 0.75rem;
+            padding: 0.125rem 0.5rem;
+            border-radius: 9999px;
+        }
+
+        .channel-bar-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .channel-bar-bg {
+            flex: 1;
+            height: 8px;
+            background: #27272a;
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+
+        .channel-bar-fill {
+            height: 100%;
+            border-radius: 9999px;
+            animation: fillBar 0.8s ease-out backwards;
+        }
+
+        .fill-gradient-1 { background: linear-gradient(to right, #8b5cf6, #7c3aed); }
+        .fill-gradient-2 { background: linear-gradient(to right, #3b82f6, #06b6d4); }
+        .fill-gradient-3 { background: linear-gradient(to right, #64748b, #3f3f46); }
+        .fill-gradient-4 { background: linear-gradient(to right, #10b981, #059669); }
+
+        .channel-percent {
+            font-weight: bold;
+            min-width: 60px;
+            text-align: right;
+        }
+
+        .engagement-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .badge-high {
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+        }
+
+        .badge-medium {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+        }
+
+        .badge-low {
+            background: rgba(100, 116, 139, 0.2);
+            color: #a1a1aa;
+        }
+
+        .insight-box {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            padding: 1rem;
+            border-radius: 1rem;
+            margin-top: 1.5rem;
+            font-size: 0.875rem;
+            animation: slideInUp 0.5s ease-out 0.6s backwards;
+        }
+
+        .insight-box strong {
+            color: #a78bfa;
+        }
+
+        /* Split Visualization */
+        .split-prompt {
+            text-align: center;
+            padding: 3rem 2rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .split-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 1.5rem;
+            animation: rotate-wiggle 2s ease-in-out infinite;
+        }
+
+        .optimize-btn {
+            background: linear-gradient(to right, #8b5cf6, #3b82f6);
+            color: white;
+            border: none;
+            border-radius: 9999px;
+            padding: 1rem 2rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+            transition: all 0.3s;
+        }
+
+        .optimize-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
+        }
+
+        .split-result {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .split-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: slideInDown 0.5s ease-out;
+        }
+
+        .split-count {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: rgba(39, 39, 42, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(113, 113, 122, 0.2);
+            border-radius: 1rem;
+            padding: 0.75rem 1.5rem;
+        }
+
+        .split-connector {
+            text-align: center;
+            margin: 2rem 0;
+            animation: slideInDown 0.5s ease-out 0.2s backwards;
+        }
+
+        .connector-line {
+            width: 2px;
+            height: 48px;
+            background: linear-gradient(to bottom, #8b5cf6, transparent);
+            margin: 0 auto;
+        }
+
+        .split-groups {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .split-group {
+            background: rgba(39, 39, 42, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(113, 113, 122, 0.2);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            animation: slideInUp 0.5s ease-out backwards;
+        }
+
+        .split-group:nth-child(1) { animation-delay: 0.3s; }
+        .split-group:nth-child(2) { animation-delay: 0.5s; }
+
+        .group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .group-badge {
+            width: 48px;
+            height: 48px;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .badge-a { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .badge-b { background: linear-gradient(135deg, #3b82f6, #06b6d4); }
+
+        .group-size p:first-child {
+            font-size: 0.875rem;
+            color: #a1a1aa;
+        }
+
+        .group-size p:last-child {
+            font-size: 1.125rem;
+            font-weight: bold;
+        }
+
+        .offer-card {
+            padding: 1rem;
+            border-radius: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .offer-a {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .offer-b {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .offer-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .offer-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+        }
+
+        .offer-channel {
+            font-size: 0.875rem;
+            color: #a1a1aa;
+        }
+
+        .group-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .strategy-box {
+            background: rgba(39, 39, 42, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(113, 113, 122, 0.2);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            font-size: 0.875rem;
+            text-align: center;
+            animation: slideInUp 0.5s ease-out 0.8s backwards;
+        }
+
+        .strategy-box strong {
+            color: #a78bfa;
+        }
+
+        /* Split Percentage Controls */
+        .split-controls {
+            background: rgba(39, 39, 42, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(113, 113, 122, 0.2);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            animation: slideInDown 0.5s ease-out 0.3s backwards;
+        }
+
+        .split-controls-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .split-controls-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #f4f4f5;
+        }
+
+        .split-controls-reset {
+            font-size: 0.875rem;
+            color: #a78bfa;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .split-controls-reset:hover {
+            background: rgba(139, 92, 246, 0.2);
+        }
+
+        .split-slider-container {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .split-percentage-display {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex: 1;
+        }
+
+        .split-percentage-item {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .split-percentage-badge {
+            width: 32px;
+            height: 32px;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .split-percentage-info {
+            flex: 1;
+        }
+
+        .split-percentage-label {
+            font-size: 0.75rem;
+            color: #a1a1aa;
+            margin-bottom: 0.125rem;
+        }
+
+        .split-percentage-value {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #f4f4f5;
+        }
+
+        .split-slider {
+            flex: 2;
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: linear-gradient(to right, 
+                #8b5cf6 0%, 
+                #8b5cf6 50%, 
+                #3b82f6 50%, 
+                #3b82f6 100%);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .split-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #f4f4f5;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            border: 2px solid #8b5cf6;
+            transition: all 0.2s;
+        }
+
+        .split-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.5);
+        }
+
+        .split-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #f4f4f5;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            border: 2px solid #8b5cf6;
+            transition: all 0.2s;
+        }
+
+        .split-slider::-moz-range-thumb:hover {
+            transform: scale(1.15);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.5);
+        }
+
+        /* Insights Panel */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: rgba(39, 39, 42, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(113, 113, 122, 0.2);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            animation: slideInUp 0.5s ease-out backwards;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+
+        .stat-card-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #a1a1aa;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-number {
+            font-size: 2.25rem;
+            font-weight: bold;
+        }
+
+        .stat-change {
+            font-size: 0.75rem;
+            color: #34d399;
+            margin-top: 0.5rem;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .venn-card {
+            background: rgba(39, 39, 42, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(113, 113, 122, 0.2);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            animation: slideInLeft 0.5s ease-out 0.4s backwards;
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .venn-diagram {
+            position: relative;
+            height: 256px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .venn-circle {
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 2px solid;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: scaleIn 0.5s ease-out backwards;
+        }
+
+        .venn-circle-1 {
+            left: 16px;
+            background: rgba(139, 92, 246, 0.3);
+            border-color: #8b5cf6;
+            animation-delay: 0.5s;
+        }
+
+        .venn-circle-2 {
+            right: 16px;
+            background: rgba(59, 130, 246, 0.3);
+            border-color: #3b82f6;
+            animation-delay: 0.6s;
+        }
+
+        .venn-label {
+            text-align: center;
+        }
+
+        .venn-label-title {
+            font-size: 0.75rem;
+            color: #a1a1aa;
+        }
+
+        .venn-label-value {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .venn-overlap {
+            position: absolute;
+            z-index: 10;
+            background: rgba(24, 24, 27, 0.8);
+            border: 1px solid rgba(139, 92, 246, 0.5);
+            border-radius: 0.75rem;
+            padding: 0.75rem;
+            animation: scaleIn 0.5s ease-out 0.7s backwards;
+        }
+
+        .venn-overlap-title {
+            font-size: 0.75rem;
+            color: #a1a1aa;
+            margin-bottom: 0.25rem;
+        }
+
+        .venn-overlap-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(to right, #a78bfa, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .explainability-card {
+            background: rgba(39, 39, 42, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(113, 113, 122, 0.2);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            animation: slideInRight 0.5s ease-out 0.5s backwards;
+        }
+
+        .insight-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .insight-item {
+            padding: 1rem;
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            animation: slideInRight 0.5s ease-out backwards;
+        }
+
+        .insight-item:nth-child(1) {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            animation-delay: 0.6s;
+        }
+
+        .insight-item:nth-child(2) {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            animation-delay: 0.7s;
+        }
+
+        .insight-item:nth-child(3) {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            animation-delay: 0.8s;
+        }
+
+        .insight-item:nth-child(4) {
+            background: rgba(249, 115, 22, 0.1);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            animation-delay: 0.9s;
+        }
+
+        .highlight-violet { color: #a78bfa; font-weight: 600; }
+        .highlight-blue { color: #60a5fa; font-weight: 600; }
+        .highlight-emerald { color: #34d399; font-weight: 600; }
+        .highlight-orange { color: #fb923c; font-weight: 600; }
+
+        .performance-card {
+            background: rgba(39, 39, 42, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(113, 113, 122, 0.2);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            animation: slideInUp 0.5s ease-out 0.6s backwards;
+        }
+
+        .performance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .performance-items {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .performance-item {
+            animation: slideInLeft 0.5s ease-out backwards;
+        }
+
+        .performance-item:nth-child(1) { animation-delay: 0.7s; }
+        .performance-item:nth-child(2) { animation-delay: 0.8s; }
+
+        .performance-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .performance-group {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .performance-badge {
+            width: 40px;
+            height: 40px;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.125rem;
+        }
+
+        .performance-info p:first-child {
+            font-size: 0.875rem;
+            color: #a1a1aa;
+        }
+
+        .performance-info p:last-child {
+            font-size: 0.75rem;
+            color: #71717a;
+        }
+
+        .performance-result {
+            text-align: right;
+        }
+
+        .performance-percent {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .performance-change {
+            font-size: 0.75rem;
+            color: #34d399;
+        }
+
+        .performance-bar-bg {
+            height: 12px;
+            background: #27272a;
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+
+        .performance-bar-fill {
+            height: 100%;
+            animation: fillBar 1s ease-out backwards;
+        }
+
+        .winner-badge {
+            background: linear-gradient(to right, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.2));
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            text-align: center;
+            font-size: 0.875rem;
+            animation: scaleIn 0.5s ease-out 1s backwards;
+        }
+
+        .winner-badge strong {
+            color: #34d399;
+        }
+
+        .final-cta {
+            background: rgba(39, 39, 42, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(113, 113, 122, 0.2);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            animation: slideInUp 0.5s ease-out 1.2s backwards;
+        }
+
+        .final-cta h4 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .final-cta p {
+            color: #a1a1aa;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-secondary {
+            background: #3f3f46;
+            color: white;
+            border: none;
+            border-radius: 9999px;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .cta-secondary:hover {
+            background: #52525b;
+        }
+
+        .cta-primary {
+            background: linear-gradient(to right, #8b5cf6, #3b82f6);
+            color: white;
+            border: none;
+            border-radius: 9999px;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+            transition: all 0.2s;
+        }
+
+        .cta-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(100px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInDown {
+            from { opacity: 0; transform: translateY(-40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+
+        @keyframes pulse-rotate {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.05) rotate(5deg); }
+            50% { transform: scale(1.1) rotate(0deg); }
+            75% { transform: scale(1.05) rotate(-5deg); }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes rotate-wiggle {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(10deg) scale(1.1); }
+            50% { transform: rotate(0deg) scale(1.1); }
+            75% { transform: rotate(-10deg) scale(1.1); }
+        }
+
+        @keyframes fillBar {
+            from { width: 0; }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .split-groups {
+                grid-template-columns: 1fr;
+            }
+
+            .insights-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .venn-circle {
+                width: 120px;
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient"></div>
+    <div class="bg-orb-1"></div>
+    <div class="bg-orb-2"></div>
+
+    <header>
+        <div class="header-content">
+            <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            <div>
+                <h1>Data Cloud</h1>
+                <p class="subtitle">Your Agentic Segmentation Workspace</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Welcome Screen -->
+        <div id="welcome" class="welcome">
+            <div>
+                <svg class="welcome-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+                <h2>What's your goal for today?</h2>
+                <p>Tell me your goal and I'll handle the rest</p>
+            </div>
+        </div>
+
+        <!-- Content Sections -->
+        <div id="content" class="content">
+            <!-- Goal Display -->
+            <div class="glass-card goal-card">
+                <div class="pulse-dot"></div>
+                <div class="goal-content">
+                    <p class="goal-label">Your Goal</p>
+                    <p class="goal-text" id="goalText"></p>
+                </div>
+            </div>
+
+            <!-- Step 1: Attributes -->
+            <div id="step1" class="section" style="display: none;">
+                <div class="section-header">
+                    <h3>Key Attributes Identified</h3>
+                    <p>Based on your goal, I've identified these audience characteristics</p>
+                </div>
+
+                <div class="cards-grid" id="attributeCardsGrid">
+                    <div class="attribute-card">
+                        <div class="card-header">
+                            <div class="card-icon icon-gradient-1">📈</div>
+                            <div class="pulse-dot"></div>
+                        </div>
+                        <p class="card-label">Lifetime Value</p>
+                        <p class="card-value">Top 10%</p>
+                        <p class="card-detail">LTV > $500</p>
+                        <div class="card-hover-line"></div>
+                    </div>
+
+                    <div class="attribute-card">
+                        <div class="card-header">
+                            <div class="card-icon icon-gradient-2">⏰</div>
+                            <div class="pulse-dot"></div>
+                        </div>
+                        <p class="card-label">Last Activity</p>
+                        <p class="card-value">180+ Days</p>
+                        <p class="card-detail">No purchase in 6 months</p>
+                        <div class="card-hover-line"></div>
+                    </div>
+
+                    <div class="attribute-card">
+                        <div class="card-header">
+                            <div class="card-icon icon-gradient-3">📦</div>
+                            <div class="pulse-dot"></div>
+                        </div>
+                        <p class="card-label">Product Interest</p>
+                        <p class="card-value">Trekking Boots</p>
+                        <p class="card-detail">Previously purchased</p>
+                        <div class="card-hover-line"></div>
+                    </div>
+                </div>
+
+                <div class="search-section">
+                    <h4 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem;">Add from Quick Filters</h4>
+                    <div class="glass-card search-bar" onclick="toggleQuickFilters()">
+                        <div class="search-bar-content">
+                            <div class="search-bar-left">
+                                <svg class="search-bar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/>
+                                </svg>
+                                <div class="search-bar-text">
+                                    <div class="search-bar-title">Browse Quick Filters</div>
+                                    <div class="search-bar-subtitle">Click to view available attributes</div>
+                                </div>
+                            </div>
+                            <svg id="quickFiltersArrow" class="search-bar-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"/>
+                            </svg>
+                        </div>
+                        <div id="quickFiltersPanel" class="quick-filters-panel" style="display: none;" onclick="event.stopPropagation()">
+                            <div class="quick-filters-header">
+                                <div class="quick-filters-title">Select Quick Attribute to Refine Your Segment</div>
+                                <div class="quick-filters-description">Click any attribute to add it to your segment criteria</div>
+                            </div>
+                            <div class="quick-filters-grid">
+                                <div class="quick-filter-item" onclick="addFilter('Region: Pacific Northwest', '🗺️')">
+                                    <div class="quick-filter-icon">🗺️</div>
+                                    <div class="quick-filter-info">
+                                        <div class="quick-filter-name">Pacific Northwest</div>
+                                        <div class="quick-filter-desc">Geographic region filter</div>
+                                    </div>
+                                </div>
+                                <div class="quick-filter-item" onclick="addFilter('Device: Mobile', '📱')">
+                                    <div class="quick-filter-icon">📱</div>
+                                    <div class="quick-filter-info">
+                                        <div class="quick-filter-name">Mobile Users</div>
+                                        <div class="quick-filter-desc">Primary device type</div>
+                                    </div>
+                                </div>
+                                <div class="quick-filter-item" onclick="addFilter('Age Group: 25-44', '👤')">
+                                    <div class="quick-filter-icon">👤</div>
+                                    <div class="quick-filter-info">
+                                        <div class="quick-filter-name">Age 25-44</div>
+                                        <div class="quick-filter-desc">Demographic segment</div>
+                                    </div>
+                                </div>
+                                <div class="quick-filter-item" onclick="addFilter('Purchase Frequency: High', '🔄')">
+                                    <div class="quick-filter-icon">🔄</div>
+                                    <div class="quick-filter-info">
+                                        <div class="quick-filter-name">High Frequency</div>
+                                        <div class="quick-filter-desc">4+ purchases/month</div>
+                                    </div>
+                                </div>
+                                <div class="quick-filter-item" onclick="addFilter('Email Engagement: Active', '✉️')">
+                                    <div class="quick-filter-icon">✉️</div>
+                                    <div class="quick-filter-info">
+                                        <div class="quick-filter-name">Email Active</div>
+                                        <div class="quick-filter-desc">Opened in last 30 days</div>
+                                    </div>
+                                </div>
+                                <div class="quick-filter-item" onclick="addFilter('Loyalty Tier: Gold', '⭐')">
+                                    <div class="quick-filter-icon">⭐</div>
+                                    <div class="quick-filter-info">
+                                        <div class="quick-filter-name">Gold Member</div>
+                                        <div class="quick-filter-desc">Loyalty program tier</div>
+                                    </div>
+                                </div>
+                                <div class="quick-filter-item" onclick="addFilter('Season: Winter', '❄️')">
+                                    <div class="quick-filter-icon">❄️</div>
+                                    <div class="quick-filter-info">
+                                        <div class="quick-filter-name">Winter Season</div>
+                                        <div class="quick-filter-desc">Seasonal preference</div>
+                                    </div>
+                                </div>
+                                <div class="quick-filter-item" onclick="addFilter('Income Level: High', '💰')">
+                                    <div class="quick-filter-icon">💰</div>
+                                    <div class="quick-filter-info">
+                                        <div class="quick-filter-name">High Income</div>
+                                        <div class="quick-filter-desc">$100K+ annual income</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card audience-card">
+                    <div class="audience-info">
+                        <h4>Estimated Audience Size</h4>
+                        <p class="audience-count" id="audienceCount">12,487 people</p>
+                    </div>
+                    <button class="continue-btn" onclick="showStep(2)">
+                        Show Channel Affinity
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                            <polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Channel Affinity -->
+            <div id="step2" class="section" style="display: none;">
+                <div class="section-header">
+                    <h3>Channel Affinity Analysis</h3>
+                    <p>These channels perform best with your target audience</p>
+                </div>
+
+                <div class="glass-card">
+                    <div class="channel-list">
+                        <div class="channel-item top-pick">
+                            <div class="channel-header">
+                                <div class="channel-icon channel-gradient-1">📱</div>
+                                <div class="channel-info">
+                                    <div class="channel-name">
+                                        <span>Mobile Push</span>
+                                        <span class="top-badge">Top Pick</span>
+                                    </div>
+                                    <div class="channel-bar-container">
+                                        <div class="channel-bar-bg">
+                                            <div class="channel-bar-fill fill-gradient-1" style="width: 70%; animation-delay: 0.3s;"></div>
+                                        </div>
+                                        <span class="channel-percent">70%</span>
+                                    </div>
+                                </div>
+                                <span class="engagement-badge badge-high">High</span>
+                            </div>
+                        </div>
+
+                        <div class="channel-item">
+                            <div class="channel-header">
+                                <div class="channel-icon channel-gradient-2">💬</div>
+                                <div class="channel-info">
+                                    <div class="channel-name">
+                                        <span>SMS</span>
+                                    </div>
+                                    <div class="channel-bar-container">
+                                        <div class="channel-bar-bg">
+                                            <div class="channel-bar-fill fill-gradient-2" style="width: 55%; animation-delay: 0.4s;"></div>
+                                        </div>
+                                        <span class="channel-percent">55%</span>
+                                    </div>
+                                </div>
+                                <span class="engagement-badge badge-medium">Medium</span>
+                            </div>
+                        </div>
+
+                        <div class="channel-item">
+                            <div class="channel-header">
+                                <div class="channel-icon channel-gradient-3">✉️</div>
+                                <div class="channel-info">
+                                    <div class="channel-name">
+                                        <span>Email</span>
+                                    </div>
+                                    <div class="channel-bar-container">
+                                        <div class="channel-bar-bg">
+                                            <div class="channel-bar-fill fill-gradient-3" style="width: 35%; animation-delay: 0.5s;"></div>
+                                        </div>
+                                        <span class="channel-percent">35%</span>
+                                    </div>
+                                </div>
+                                <span class="engagement-badge badge-low">Low</span>
+                            </div>
+                        </div>
+
+                        <div class="channel-item">
+                            <div class="channel-header">
+                                <div class="channel-icon channel-gradient-4">🔔</div>
+                                <div class="channel-info">
+                                    <div class="channel-name">
+                                        <span>In-App</span>
+                                    </div>
+                                    <div class="channel-bar-container">
+                                        <div class="channel-bar-bg">
+                                            <div class="channel-bar-fill fill-gradient-4" style="width: 45%; animation-delay: 0.6s;"></div>
+                                        </div>
+                                        <span class="channel-percent">45%</span>
+                                    </div>
+                                </div>
+                                <span class="engagement-badge badge-medium">Medium</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="insight-box">
+                        <strong>Insight:</strong> 70% of this segment responds better to Mobile Push notifications. Consider prioritizing this channel for maximum engagement.
+                    </div>
+                    
+                    <div style="margin-top: 1rem; padding: 0.75rem 1rem; background: rgba(59, 130, 246, 0.05); border-left: 3px solid rgba(59, 130, 246, 0.5); border-radius: 0.5rem; font-size: 0.875rem; color: #a1a1aa;">
+                        This data is based on performance analysis from <strong style="color: #60a5fa;">847 previously run campaigns</strong> targeting similar audience segments.
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; margin-top: 1.5rem;">
+                    <button class="continue-btn" onclick="showStep(3)">
+                        Create Smart Splits
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                            <polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 3: Smart Splits -->
+            <div id="step3" class="section" style="display: none;">
+                <div class="section-header">
+                    <h3>Smart Splits</h3>
+                    <p>Let me create optimized splits for you</p>
+                </div>
+
+                <div id="splitPrompt" class="glass-card split-prompt">
+                    <svg class="split-icon" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2">
+                        <line x1="6" y1="3" x2="6" y2="15"/>
+                        <circle cx="18" cy="6" r="3"/>
+                        <circle cx="6" cy="18" r="3"/>
+                        <path d="M18 9a9 9 0 0 1-9 9"/>
+                    </svg>
+                    <h4 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 0.75rem;">Ready to Optimize?</h4>
+                    <p style="color: #a1a1aa; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                        I can split your audience into two optimized groups and test different offers across channels to see what drives the best results.
+                    </p>
+                    <button class="optimize-btn" onclick="createSplit()">Create Smart Splits</button>
+                </div>
+
+                <div id="splitResult" class="split-result" style="display: none;">
+                    <div class="split-header">
+                        <div class="split-count">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                            <span style="font-weight: 600;"><span id="totalAudience">12,487</span> People</span>
+                        </div>
+                    </div>
+
+                    <div class="split-controls">
+                        <div class="split-controls-header">
+                            <div class="split-controls-title">Adjust Split Percentages</div>
+                            <div class="split-controls-reset" onclick="resetSplitPercentages()">Reset to 50/50</div>
+                        </div>
+                        <div class="split-slider-container">
+                            <div class="split-percentage-display">
+                                <div class="split-percentage-item">
+                                    <div class="split-percentage-badge badge-a">📱</div>
+                                    <div class="split-percentage-info">
+                                        <div class="split-percentage-label">Push Discount</div>
+                                        <div class="split-percentage-value"><span id="splitAPercent">50</span>%</div>
+                                    </div>
+                                </div>
+                                <input type="range" min="10" max="90" value="50" class="split-slider" id="splitSlider" oninput="updateSplitPercentages(this.value)">
+                                <div class="split-percentage-item">
+                                    <div class="split-percentage-badge badge-b">💬</div>
+                                    <div class="split-percentage-info">
+                                        <div class="split-percentage-label">SMS Free Ship</div>
+                                        <div class="split-percentage-value"><span id="splitBPercent">50</span>%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="split-connector">
+                        <div class="connector-line"></div>
+                    </div>
+
+                    <div class="split-groups">
+                        <div class="split-group">
+                            <div style="margin-bottom: 1rem;">
+                                <p style="font-size: 1.5rem; font-weight: bold; color: #f4f4f5; margin-bottom: 0.5rem;">📱 Push Discount</p>
+                                <p style="font-size: 0.875rem; color: #a1a1aa;">Split 1 of 2</p>
+                            </div>
+
+                            <div class="group-header">
+                                <div class="group-size">
+                                    <p>Split Size</p>
+                                    <p style="font-size: 1.125rem; font-weight: bold;"><span id="splitAPercentCard">50</span>%</p>
+                                </div>
+                            </div>
+
+                            <div class="offer-card offer-a">
+                                <div class="offer-icon">🎁</div>
+                                <h5 class="offer-title">15% Discount</h5>
+                                <p class="offer-channel">via Mobile Push</p>
+                            </div>
+
+                            <div class="group-stats">
+                                <div>
+                                    <p style="font-size: 0.875rem; color: #a1a1aa;">Audience</p>
+                                    <p class="stat-value" id="splitAAudience">6,244</p>
+                                </div>
+                                <div class="pulse-dot"></div>
+                            </div>
+                        </div>
+
+                        <div class="split-group">
+                            <div style="margin-bottom: 1rem;">
+                                <p style="font-size: 1.5rem; font-weight: bold; color: #f4f4f5; margin-bottom: 0.5rem;">💬 SMS Free Ship</p>
+                                <p style="font-size: 0.875rem; color: #a1a1aa;">Split 2 of 2</p>
+                            </div>
+
+                            <div class="group-header">
+                                <div class="group-size">
+                                    <p>Split Size</p>
+                                    <p style="font-size: 1.125rem; font-weight: bold;"><span id="splitBPercentCard">50</span>%</p>
+                                </div>
+                            </div>
+
+                            <div class="offer-card offer-b">
+                                <div class="offer-icon">🚚</div>
+                                <h5 class="offer-title">Free Shipping</h5>
+                                <p class="offer-channel">via SMS</p>
+                            </div>
+
+                            <div class="group-stats">
+                                <div>
+                                    <p style="font-size: 0.875rem; color: #a1a1aa;">Audience</p>
+                                    <p class="stat-value" id="splitBAudience">6,243</p>
+                                </div>
+                                <div class="pulse-dot"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="strategy-box">
+                        <strong>Split Strategy:</strong> <em>Push Discount</em> tests price sensitivity via high-engagement channel, while <em>SMS Free Ship</em> tests value-add incentives via alternative channel. Adjust percentages above to customize split sizes.
+                    </div>
+                </div>
+
+                <div id="step3Continue" style="display: none; margin-top: 1.5rem; text-align: right;">
+                    <button class="continue-btn" onclick="showStep(4)">
+                        View Analytics
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                            <polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 4: Analytics -->
+            <div id="step4" class="section" style="display: none;">
+                <div class="section-header">
+                    <h3>Segment Analytics</h3>
+                    <p>Real-time insights into your segmentation strategy</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon icon-gradient-1">👥</div>
+                            <div class="pulse-dot"></div>
+                        </div>
+                        <p class="stat-label">Total Reachable</p>
+                        <p class="stat-number">12,487</p>
+                        <p class="stat-change">+2.3% vs last campaign</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon channel-gradient-2">🎯</div>
+                            <div class="pulse-dot"></div>
+                        </div>
+                        <p class="stat-label">Expected Reach</p>
+                        <p class="stat-number">87.2%</p>
+                        <p class="stat-change" style="color: #71717a;">Based on channel affinity</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon channel-gradient-4">📈</div>
+                            <div class="pulse-dot"></div>
+                        </div>
+                        <p class="stat-label">Projected ROI</p>
+                        <p class="stat-number">4.2x</p>
+                        <p class="stat-change">+35% confidence</p>
+                    </div>
+                </div>
+
+                <div class="insights-grid">
+                    <div class="venn-card">
+                        <div class="card-title">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2">
+                                <line x1="18" y1="20" x2="18" y2="10"/>
+                                <line x1="12" y1="20" x2="12" y2="4"/>
+                                <line x1="6" y1="20" x2="6" y2="14"/>
+                            </svg>
+                            <span>Segment Overlap</span>
+                        </div>
+
+                        <div class="venn-diagram">
+                            <div class="venn-circle venn-circle-1">
+                                <div class="venn-label" style="margin-left: -2rem;">
+                                    <p class="venn-label-title">Current</p>
+                                    <p class="venn-label-value" id="vennCurrentCount">12.5K</p>
+                                </div>
+                            </div>
+
+                            <div class="venn-circle venn-circle-2">
+                                <div class="venn-label" style="margin-right: -2rem;">
+                                    <p class="venn-label-title">Outdoor</p>
+                                    <p class="venn-label-value">15.3K</p>
+                                </div>
+                            </div>
+
+                            <div class="venn-overlap">
+                                <p class="venn-overlap-title">Overlap</p>
+                                <p class="venn-overlap-value" id="vennOverlapCount">4.5K</p>
+                            </div>
+                        </div>
+
+                        <p style="font-size: 0.75rem; color: #a1a1aa; text-align: center; margin-top: 1rem;" id="vennOverlapText">
+                            36% of your current segment also belongs to General Outdoor segment
+                        </p>
+                    </div>
+
+                    <div class="explainability-card">
+                        <div class="card-title">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="12" y1="16" x2="12" y2="12"/>
+                                <line x1="12" y1="8" x2="12.01" y2="8"/>
+                            </svg>
+                            <span>Why This Works</span>
+                        </div>
+
+                        <div class="insight-items">
+                            <div class="insight-item">
+                                <span class="highlight-violet">4x</span> more likely to convert on <span class="highlight-violet">weekends</span>
+                            </div>
+
+                            <div class="insight-item">
+                                <span class="highlight-blue">73%</span> prefer visual content over text
+                            </div>
+
+                            <div class="insight-item">
+                                Peak engagement: <span class="highlight-emerald">6-9 PM PST</span>
+                            </div>
+
+                            <div class="insight-item">
+                                <span class="highlight-orange">Responds well</span> to urgency & scarcity messaging
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; margin-top: 1.5rem;">
+                    <button class="continue-btn" onclick="showStep(5)">
+                        Create Segment
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                            <polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 5: Create Segment & Performance -->
+            <div id="step5" class="section" style="display: none;">
+                <div class="section-header">
+                    <h3>Create and Run Segment</h3>
+                    <p>Launch your segment and track performance</p>
+                </div>
+
+                <!-- Create Segment Prompt -->
+                <div id="createPrompt" class="glass-card" style="padding: 3rem 2rem; text-align: center;">
+                    <svg style="width: 64px; height: 64px; margin: 0 auto 1.5rem; color: #a78bfa;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                        <polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                    <h4 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 0.75rem;">Ready to Launch Your Segment?</h4>
+                    <p style="color: #a1a1aa; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                        Your segment targeting <strong style="color: #a78bfa;">12,487 high-value customers</strong> is ready to deploy across your marketing channels.
+                    </p>
+                    <button class="optimize-btn" onclick="createSegment()">Create and Run Segment</button>
+                </div>
+
+                <!-- Performance Results -->
+                <div id="performanceResults" style="display: none;">
+                    <div class="glass-card" style="padding: 1.5rem; margin-bottom: 1.5rem; text-align: center; animation: slideInDown 0.5s ease-out;">
+                        <div style="display: inline-flex; align-items: center; gap: 0.75rem; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 9999px; padding: 0.75rem 1.5rem;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                <polyline points="22 4 12 14.01 9 11.01"/>
+                            </svg>
+                            <span style="color: #34d399; font-weight: 600;">Segment Created Successfully</span>
+                        </div>
+                    </div>
+
+                    <div class="section-header" style="animation: slideInUp 0.5s ease-out 0.2s backwards;">
+                        <h3>Now See the Performance</h3>
+                        <p>Live results from your A/B split test</p>
+                    </div>
+
+                    <div class="performance-card">
+                    <div class="performance-header">
+                        <div class="card-title">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                            </svg>
+                            <span>Split Performance</span>
+                        </div>
+                        <span style="font-size: 0.75rem; color: #a1a1aa;">Live Results</span>
+                    </div>
+
+                    <div class="performance-items">
+                        <div class="performance-item">
+                            <div class="performance-item-header">
+                                <div class="performance-group">
+                                    <div class="performance-badge badge-a">📱</div>
+                                    <div class="performance-info">
+                                        <p>Push Discount</p>
+                                        <p>15% Discount via Mobile Push</p>
+                                    </div>
+                                </div>
+                                <div class="performance-result">
+                                    <p class="performance-percent">18.5%</p>
+                                </div>
+                            </div>
+                            <div class="performance-bar-bg">
+                                <div class="performance-bar-fill fill-gradient-1" style="width: 74%; animation-delay: 0.8s;"></div>
+                            </div>
+                        </div>
+
+                        <div class="performance-item">
+                            <div class="performance-item-header">
+                                <div class="performance-group">
+                                    <div class="performance-badge badge-b">💬</div>
+                                    <div class="performance-info">
+                                        <p>SMS Free Ship</p>
+                                        <p>Free Shipping via SMS</p>
+                                    </div>
+                                </div>
+                                <div class="performance-result">
+                                    <p class="performance-percent">22.3%</p>
+                                    <p class="performance-change">+20% vs Push</p>
+                                </div>
+                            </div>
+                            <div class="performance-bar-bg">
+                                <div class="performance-bar-fill fill-gradient-2" style="width: 89.2%; animation-delay: 0.9s;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="winner-badge">
+                        <strong>Winner:</strong> SMS Free Ship split is performing 20% better with statistical significance
+                    </div>
+                </div>
+
+                <div class="final-cta">
+                    <h4>Ready to Launch?</h4>
+                    <p>Your segment is optimized and ready to deploy</p>
+                    <div class="cta-buttons">
+                        <button class="cta-secondary">Export Results</button>
+                        <button class="cta-primary">Launch Next Campaign</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Agent Bar -->
+    <div class="agent-bar">
+        <div class="agent-bar-inner">
+            <form id="agentForm" onsubmit="submitGoal(event)">
+                <svg id="agentIcon" class="agent-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+                <input 
+                    type="text" 
+                    id="agentInput"
+                    class="agent-input" 
+                    placeholder="Describe your marketing goal..."
+                    autocomplete="off"
+                >
+                <button type="submit" class="agent-submit" id="agentSubmit">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                        <line x1="22" y1="2" x2="11" y2="13"/>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                    </svg>
+                </button>
+            </form>
+        </div>
+        <p id="agentStatus" class="agent-status" style="display: none;"></p>
+    </div>
+
+    <script>
+        let currentStep = 0;
+        let addedFilters = [];
+
+        function submitGoal(event) {
+            event.preventDefault();
+            const input = document.getElementById('agentInput');
+            const goal = input.value.trim();
+            
+            if (!goal) return;
+
+            // Show processing state
+            document.getElementById('agentIcon').classList.add('processing');
+            document.getElementById('agentSubmit').disabled = true;
+            document.getElementById('agentInput').disabled = true;
+            document.getElementById('agentStatus').textContent = 'Analyzing your goal and identifying key attributes...';
+            document.getElementById('agentStatus').style.display = 'block';
+
+            // Simulate AI processing
+            setTimeout(() => {
+                document.getElementById('welcome').style.display = 'none';
+                document.getElementById('content').classList.add('active');
+                document.getElementById('goalText').textContent = goal;
+                document.getElementById('agentIcon').classList.remove('processing');
+                document.getElementById('agentStatus').style.display = 'none';
+                document.getElementById('agentInput').placeholder = 'Goal set - Agent is working...';
+                
+                showStep(1);
+            }, 1500);
+        }
+
+        function showStep(step) {
+            // Hide all steps
+            for (let i = 1; i <= 5; i++) {
+                const stepEl = document.getElementById('step' + i);
+                if (stepEl) stepEl.style.display = 'none';
+            }
+
+            // Show requested step
+            const stepEl = document.getElementById('step' + step);
+            if (stepEl) {
+                stepEl.style.display = 'block';
+                currentStep = step;
+                
+                // Scroll to top smoothly
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function toggleQuickFilters(event) {
+            if (event) event.stopPropagation();
+            const panel = document.getElementById('quickFiltersPanel');
+            const arrow = document.getElementById('quickFiltersArrow');
+            const isOpen = panel.style.display === 'block';
+            
+            panel.style.display = isOpen ? 'none' : 'block';
+            arrow.classList.toggle('open', !isOpen);
+        }
+
+        function addFilter(filterName, icon) {
+            if (addedFilters.includes(filterName)) {
+                // Close panel
+                const panel = document.getElementById('quickFiltersPanel');
+                const arrow = document.getElementById('quickFiltersArrow');
+                panel.style.display = 'none';
+                arrow.classList.remove('open');
+                return;
+            }
+            
+            addedFilters.push(filterName);
+            
+            // Add as attribute card
+            const grid = document.getElementById('attributeCardsGrid');
+            const newCard = document.createElement('div');
+            newCard.className = 'attribute-card';
+            newCard.style.animation = 'slideInUp 0.5s ease-out';
+            
+            // Parse filter info
+            const filterInfo = getFilterInfo(filterName, icon);
+            
+            newCard.innerHTML = `
+                <div class="card-header">
+                    <div class="card-icon ${filterInfo.gradient}">${icon}</div>
+                    <div class="pulse-dot"></div>
+                </div>
+                <p class="card-label">${filterInfo.label}</p>
+                <p class="card-value">${filterInfo.value}</p>
+                <p class="card-detail">${filterInfo.detail}</p>
+                <div class="card-hover-line"></div>
+            `;
+            
+            grid.appendChild(newCard);
+            
+            // Update audience count
+            updateAudienceCount();
+            
+            // Close panel
+            const panel = document.getElementById('quickFiltersPanel');
+            const arrow = document.getElementById('quickFiltersArrow');
+            panel.style.display = 'none';
+            arrow.classList.remove('open');
+        }
+
+        function getFilterInfo(filterName, icon) {
+            const filterMap = {
+                'Region: Pacific Northwest': {
+                    label: 'Geographic Region',
+                    value: 'Pacific NW',
+                    detail: 'WA, OR, ID region',
+                    gradient: 'icon-gradient-4'
+                },
+                'Device: Mobile': {
+                    label: 'Device Type',
+                    value: 'Mobile',
+                    detail: 'Primary mobile users',
+                    gradient: 'icon-gradient-3'
+                },
+                'Age Group: 25-44': {
+                    label: 'Age Group',
+                    value: '25-44',
+                    detail: 'Core demographic',
+                    gradient: 'icon-gradient-2'
+                },
+                'Purchase Frequency: High': {
+                    label: 'Purchase Frequency',
+                    value: 'High',
+                    detail: '4+ purchases/month',
+                    gradient: 'icon-gradient-1'
+                },
+                'Email Engagement: Active': {
+                    label: 'Email Engagement',
+                    value: 'Active',
+                    detail: 'Opened in last 30 days',
+                    gradient: 'icon-gradient-4'
+                },
+                'Loyalty Tier: Gold': {
+                    label: 'Loyalty Program',
+                    value: 'Gold Tier',
+                    detail: 'Premium members',
+                    gradient: 'icon-gradient-2'
+                },
+                'Season: Winter': {
+                    label: 'Season Preference',
+                    value: 'Winter',
+                    detail: 'Cold weather activities',
+                    gradient: 'icon-gradient-3'
+                },
+                'Income Level: High': {
+                    label: 'Income Level',
+                    value: 'High Income',
+                    detail: '$100K+ annual income',
+                    gradient: 'icon-gradient-1'
+                }
+            };
+            
+            return filterMap[filterName] || {
+                label: 'Attribute',
+                value: filterName,
+                detail: 'Custom filter',
+                gradient: 'icon-gradient-1'
+            };
+        }
+
+        function updateAudienceCount() {
+            const baseCount = 12487;
+            const reduction = addedFilters.length * 1500; // Each filter reduces by ~1500
+            const newCount = Math.max(3000, baseCount - reduction);
+            
+            const audienceEl = document.getElementById('audienceCount');
+            const vennCurrentEl = document.getElementById('vennCurrentCount');
+            const vennOverlapEl = document.getElementById('vennOverlapCount');
+            const vennTextEl = document.getElementById('vennOverlapText');
+            
+            audienceEl.textContent = newCount.toLocaleString() + ' people';
+            
+            // Update venn diagram
+            const vennCurrent = (newCount / 1000).toFixed(1);
+            const vennOverlap = Math.floor(newCount * 0.36 / 1000 * 10) / 10;
+            const overlapPercent = 36;
+            
+            vennCurrentEl.textContent = vennCurrent + 'K';
+            vennOverlapEl.textContent = vennOverlap + 'K';
+            vennTextEl.textContent = `${overlapPercent}% of your current segment also belongs to General Outdoor segment`;
+        }
+
+
+        function createSplit() {
+            document.getElementById('splitPrompt').style.display = 'none';
+            document.getElementById('splitResult').style.display = 'block';
+            
+            // Initialize split with current audience
+            updateSplitAudience();
+            
+            // Auto-advance after 2 seconds
+            setTimeout(() => {
+                document.getElementById('step3Continue').style.display = 'block';
+            }, 2000);
+        }
+
+        function updateSplitPercentages(value) {
+            const percentA = parseInt(value);
+            const percentB = 100 - percentA;
+            
+            // Update all percentage displays
+            document.getElementById('splitAPercent').textContent = percentA;
+            document.getElementById('splitBPercent').textContent = percentB;
+            document.getElementById('splitAPercentCard').textContent = percentA;
+            document.getElementById('splitBPercentCard').textContent = percentB;
+            
+            // Update slider gradient
+            const slider = document.getElementById('splitSlider');
+            slider.style.background = `linear-gradient(to right, 
+                #8b5cf6 0%, 
+                #8b5cf6 ${percentA}%, 
+                #3b82f6 ${percentA}%, 
+                #3b82f6 100%)`;
+            
+            // Update audience counts
+            updateSplitAudience();
+        }
+
+        function updateSplitAudience() {
+            const percentA = parseInt(document.getElementById('splitAPercent').textContent);
+            const percentB = parseInt(document.getElementById('splitBPercent').textContent);
+            
+            // Get current total audience (remove commas and parse)
+            const audienceText = document.getElementById('audienceCount').textContent;
+            const totalAudience = parseInt(audienceText.replace(/,/g, '').replace(' people', ''));
+            
+            const audienceA = Math.floor(totalAudience * percentA / 100);
+            const audienceB = totalAudience - audienceA;
+            
+            document.getElementById('totalAudience').textContent = totalAudience.toLocaleString();
+            document.getElementById('splitAAudience').textContent = audienceA.toLocaleString();
+            document.getElementById('splitBAudience').textContent = audienceB.toLocaleString();
+        }
+
+        function resetSplitPercentages() {
+            document.getElementById('splitSlider').value = 50;
+            updateSplitPercentages(50);
+        }
+
+        function createSegment() {
+            document.getElementById('createPrompt').style.display = 'none';
+            document.getElementById('performanceResults').style.display = 'block';
+            
+            // Scroll to see performance
+            setTimeout(() => {
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            }, 500);
+        }
+
+        // Close panel when clicking outside
+        document.addEventListener('click', function(event) {
+            const panel = document.getElementById('quickFiltersPanel');
+            const searchBar = event.target.closest('.search-bar');
+            const arrow = document.getElementById('quickFiltersArrow');
+            
+            if (panel && !searchBar && !event.target.closest('.quick-filters-panel')) {
+                panel.style.display = 'none';
+                if (arrow) arrow.classList.remove('open');
+            }
+        });
+
+        // Add some example goals on click
+        document.getElementById('agentInput').addEventListener('focus', function() {
+            if (!this.value) {
+                // You can add a list of suggestions here
+            }
+        });
+    </script>
+</body>
+</html>
