@@ -3712,7 +3712,7 @@
 
                         <!-- Inline Metric Builder (Hidden by default) -->
                         <div id="inlineMetricBuilder" style="display: none; margin-top: 1.5rem; padding: 1.5rem; background: #f9fafb; border: 2px solid #1d72f3; border-radius: 0.5rem; animation: slideDown 0.3s ease-out;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
                                 <h4 style="font-size: 1rem; font-weight: 600; color: #1f2937; display: flex; align-items: center; gap: 0.5rem;">
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1d72f3" stroke-width="2">
                                         <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
@@ -3726,120 +3726,59 @@
                                 </button>
                             </div>
 
-                            <!-- Initial Single-Column Layout -->
-                            <div id="metricInitialView">
-                                <!-- Commonly Used Marketing Insights -->
-                                <div style="margin-bottom: 1.25rem; padding: 1rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem;">
-                                    <div style="font-size: 0.75rem; font-weight: 600; color: #6b7280; margin-bottom: 0.625rem; text-transform: uppercase; letter-spacing: 0.05em;">Quick Marketing Insights</div>
-                                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-                                        <button onclick="addQuickFilter('Recent Interest Level (Website Visits in Last 7 Days) is at least 3', '📊', exclusionMode, 'metric'); closeMetricBuilder();" style="padding: 0.5rem 0.75rem; background: #f9fafb; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.75rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#eff6ff'; this.style.borderColor='#1d72f3'" onmouseout="this.style.background='#f9fafb'; this.style.borderColor='#d1d5db'">
-                                            🔥 Recent Interest Level
-                                        </button>
-                                        <button onclick="addQuickFilter('Average Basket Size (Total Spend ÷ Order Count) is greater than 150', '📊', exclusionMode, 'metric'); closeMetricBuilder();" style="padding: 0.5rem 0.75rem; background: #f9fafb; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.75rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#eff6ff'; this.style.borderColor='#1d72f3'" onmouseout="this.style.background='#f9fafb'; this.style.borderColor='#d1d5db'">
-                                            🛒 Average Basket Size
-                                        </button>
-                                        <button onclick="addQuickFilter('Communication Engagement (Email Opens in Last 90 Days) is at least 5', '📊', exclusionMode, 'metric'); closeMetricBuilder();" style="padding: 0.5rem 0.75rem; background: #f9fafb; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.75rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#eff6ff'; this.style.borderColor='#1d72f3'" onmouseout="this.style.background='#f9fafb'; this.style.borderColor='#d1d5db'">
-                                            📧 Communication Engaged
-                                        </button>
-                                        <button onclick="addQuickFilter('Trekking Gear Enthusiasts (high affinity + frequent purchases) is at least 5 orders', '📊', exclusionMode, 'metric'); closeMetricBuilder();" style="padding: 0.5rem 0.75rem; background: #f9fafb; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.75rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#eff6ff'; this.style.borderColor='#1d72f3'" onmouseout="this.style.background='#f9fafb'; this.style.borderColor='#d1d5db'">
-                                            🎯 Trekking Gear Enthusiasts
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- Agentic Input Section -->
-                                <div style="margin-bottom: 1.5rem;">
-                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
-                                        <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1d72f3" stroke-width="2">
-                                                <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
-                                            </svg>
-                                            <label style="font-size: 0.8125rem; font-weight: 600; color: #1d72f3;">Describe Your Metric (AI-Powered)</label>
-                                        </div>
-                                    </div>
-                                    <textarea id="metricAgentInput" placeholder="E.g., 'customers who love trekking gear and buy frequently'" style="width: 100%; padding: 0.75rem; border: 2px solid #1d72f3; border-radius: 0.375rem; font-size: 0.875rem; min-height: 70px; resize: vertical; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;" onkeydown="if(event.key === 'Enter' && (event.metaKey || event.ctrlKey)) { parseMetricFromAgent(); event.preventDefault(); }"></textarea>
-                                    <button onclick="parseMetricFromAgent()" style="margin-top: 0.5rem; padding: 0.625rem 1.25rem; background: linear-gradient(135deg, #1d72f3 0%, #0d52c4 100%); color: white; border: none; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 2px 4px rgba(29, 114, 243, 0.2);">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <!-- Agentic Input Section -->
+                            <div style="margin-bottom: 1.5rem;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1d72f3" stroke-width="2">
                                             <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
                                         </svg>
-                                        Generate Metric
+                                        <label style="font-size: 0.8125rem; font-weight: 600; color: #1d72f3;">Describe Your Metric (AI-Powered)</label>
+                                    </div>
+                                    <button onclick="toggleMetricExamples()" style="background: none; border: none; color: #6b7280; font-size: 0.75rem; cursor: pointer; text-decoration: underline;">
+                                        See examples
                                     </button>
-                                    <div style="font-size: 0.6875rem; color: #9ca3af; margin-top: 0.375rem;">
-                                        💡 Tip: Press Cmd/Ctrl + Enter to generate
+                                </div>
+                                <textarea id="metricAgentInput" placeholder="Describe what you want to measure (e.g., 'customers who spend more than $500 per order')" style="width: 100%; padding: 0.75rem; border: 2px solid #1d72f3; border-radius: 0.375rem; font-size: 0.875rem; min-height: 70px; resize: vertical; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;" onkeydown="if(event.key === 'Enter' && (event.metaKey || event.ctrlKey)) { parseMetricFromAgent(); event.preventDefault(); }"></textarea>
+                                <div id="metricExamples" style="display: none; margin-top: 0.5rem; padding: 0.75rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem; font-size: 0.75rem; color: #6b7280;">
+                                    <div style="font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Try these examples:</div>
+                                    <div style="display: flex; flex-direction: column; gap: 0.375rem;">
+                                        <div style="cursor: pointer; padding: 0.375rem; border-radius: 0.25rem; transition: background 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='white'" onclick="document.getElementById('metricAgentInput').value = this.textContent; parseMetricFromAgent();">
+                                            • customers who spend more than $500 per order
+                                        </div>
+                                        <div style="cursor: pointer; padding: 0.375rem; border-radius: 0.25rem; transition: background 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='white'" onclick="document.getElementById('metricAgentInput').value = this.textContent; parseMetricFromAgent();">
+                                            • average lifetime value above 1000
+                                        </div>
+                                        <div style="cursor: pointer; padding: 0.375rem; border-radius: 0.25rem; transition: background 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='white'" onclick="document.getElementById('metricAgentInput').value = this.textContent; parseMetricFromAgent();">
+                                            • total revenue divided by marketing cost greater than 5
+                                        </div>
+                                        <div style="cursor: pointer; padding: 0.375rem; border-radius: 0.25rem; transition: background 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='white'" onclick="document.getElementById('metricAgentInput').value = this.textContent; parseMetricFromAgent();">
+                                            • purchase frequency more than 3 per month
+                                        </div>
+                                        <div style="cursor: pointer; padding: 0.375rem; border-radius: 0.25rem; transition: background 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='white'" onclick="document.getElementById('metricAgentInput').value = this.textContent; parseMetricFromAgent();">
+                                            • engagement score at least 75
+                                        </div>
                                     </div>
                                 </div>
-
-                                <!-- Manual Builder Toggle -->
-                                <div style="text-align: center; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
-                                    <button onclick="toggleManualForm()" id="toggleManualBtn" style="background: none; border: none; color: #6b7280; font-size: 0.8125rem; cursor: pointer; text-decoration: underline; padding: 0.5rem 1rem; transition: color 0.2s;">
-                                        Need more control? Build Manually →
-                                    </button>
+                                <button onclick="parseMetricFromAgent()" style="margin-top: 0.5rem; padding: 0.625rem 1.25rem; background: linear-gradient(135deg, #1d72f3 0%, #0d52c4 100%); color: white; border: none; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 2px 4px rgba(29, 114, 243, 0.2);">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+                                    </svg>
+                                    Generate Metric
+                                </button>
+                                <div style="font-size: 0.6875rem; color: #9ca3af; margin-top: 0.375rem;">
+                                    💡 Tip: Press Cmd/Ctrl + Enter to generate
                                 </div>
                             </div>
 
-                            <!-- Two-Panel Conversational Layout (Hidden initially) -->
-                            <div id="metricConversationView" style="display: none;">
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-                                    <!-- Left Panel: Formula Preview -->
-                                    <div>
-                                        <div style="font-size: 0.75rem; font-weight: 700; color: #6b7280; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em;">Current Formula</div>
-                                        
-                                        <div id="metricBuilderPreview" style="padding: 1.25rem; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 2px solid #1d72f3; border-radius: 0.375rem; min-height: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                                            <div style="font-size: 0.6875rem; font-weight: 600; color: #1e40af; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Formula</div>
-                                            <div style="font-size: 1rem; font-weight: 700; color: #1e40af; text-align: center; font-family: 'Courier New', monospace;">
-                                                —
-                                            </div>
-                                        </div>
-                                        
-                                        <div id="metricDetailsDisplay" style="margin-top: 1.25rem;">
-                                            <div style="font-size: 0.75rem; font-weight: 700; color: #6b7280; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Metric Details</div>
-                                            <div style="display: flex; flex-direction: column; gap: 0.625rem; font-size: 0.8125rem;">
-                                                <div style="display: flex; justify-content: space-between; padding: 0.5rem; background: white; border-radius: 0.25rem; border: 1px solid #e5e7eb;">
-                                                    <span style="color: #6b7280;">Name:</span>
-                                                    <span id="metricPreviewName" style="font-weight: 600; color: #1f2937;">—</span>
-                                                </div>
-                                                <div style="display: flex; justify-content: space-between; padding: 0.5rem; background: white; border-radius: 0.25rem; border: 1px solid #e5e7eb;">
-                                                    <span style="color: #6b7280;">Time Period:</span>
-                                                    <span id="metricPreviewTime" style="font-weight: 600; color: #1f2937;">—</span>
-                                                </div>
-                                                <div style="display: flex; justify-content: space-between; padding: 0.5rem; background: white; border-radius: 0.25rem; border: 1px solid #e5e7eb;">
-                                                    <span style="color: #6b7280;">Condition:</span>
-                                                    <span id="metricPreviewCondition" style="font-weight: 600; color: #1f2937;">—</span>
-                                                </div>
-                                            </div>
-                                            
-                                            <button onclick="saveCustomMetric(); closeMetricBuilder();" style="width: 100%; margin-top: 1.5rem; padding: 0.75rem; background: #10b981; color: white; border: none; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
-                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                    <polyline points="20 6 9 17 4 12"/>
-                                                </svg>
-                                                Add to Segment
-                                            </button>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Right Panel: Agent Conversation -->
-                                    <div>
-                                        <div style="font-size: 0.75rem; font-weight: 700; color: #6b7280; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em;">Refine with Agent</div>
-                                        
-                                        <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem; display: flex; flex-direction: column; height: 400px;">
-                                            <!-- Chat History -->
-                                            <div id="metricChatHistory" style="flex: 1; padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.75rem;"></div>
-                                            
-                                            <!-- Chat Input -->
-                                            <div style="padding: 1rem; background: #fafafa; border-top: 1px solid #e5e7eb;">
-                                                <div style="display: flex; gap: 0.5rem;">
-                                                    <input type="text" id="metricChatInput" placeholder="Refine the metric..." style="flex: 1; padding: 0.625rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.8125rem;" onkeydown="if(event.key === 'Enter') { sendMetricMessage(); event.preventDefault(); }">
-                                                    <button onclick="sendMetricMessage()" style="padding: 0.625rem 1rem; background: #1d72f3; color: white; border: none; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer;">
-                                                        Send
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <!-- Manual Builder Toggle -->
+                            <div style="text-align: center; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
+                                <button onclick="toggleManualForm()" id="toggleManualBtn" style="background: none; border: none; color: #6b7280; font-size: 0.8125rem; cursor: pointer; text-decoration: underline; padding: 0.5rem 1rem; transition: color 0.2s;">
+                                    Need more control? Build Manually →
+                                </button>
                             </div>
 
-                            <!-- Manual Form (Hidden by default, for power users) -->
+                            <!-- Manual Form (Hidden by default) -->
                             <div id="manualMetricForm" style="display: none; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px solid #d1d5db;">
                                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                                     <h5 style="font-size: 0.875rem; font-weight: 600; color: #374151;">Manual Metric Builder</h5>
@@ -3848,106 +3787,85 @@
                                     </button>
                                 </div>
 
-                            <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1rem;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
                                 <!-- Metric Name -->
-                                <div>
+                                <div style="grid-column: 1 / -1;">
                                     <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.375rem;">Metric Name</label>
-                                    <input type="text" id="metricNameInput" placeholder="e.g., High Value Customers" style="width: 100%; padding: 0.625rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem;">
+                                    <input type="text" id="metricNameInput" placeholder="e.g., High Value Shoppers" style="width: 100%; padding: 0.625rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem;">
                                 </div>
 
-                                <!-- Build Formula (Simplified - supports up to 2 operations) -->
-                                <div style="background: #f9fafb; padding: 1rem; border-radius: 0.375rem; border: 1px solid #e5e7eb;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                                        <label style="font-size: 0.8125rem; font-weight: 600; color: #374151;">Build Formula</label>
-                                        <div style="font-size: 0.6875rem; color: #6b7280; font-style: italic;">For complex formulas, use the AI above</div>
-                                    </div>
-                                    
-                                    <!-- Formula Builder Input (Text-based with autocomplete) -->
-                                    <input type="text" id="formulaTextInput" placeholder="Type formula (e.g., 'Total Spend / Order Count') or use dropdowns below" oninput="updateFormulaFromText()" style="width: 100%; padding: 0.625rem; border: 2px solid #1d72f3; border-radius: 0.375rem; font-size: 0.875rem; margin-bottom: 0.75rem; font-family: 'Courier New', monospace;">
-                                    
-                                    <div style="text-align: center; margin: 0.75rem 0; color: #9ca3af; font-size: 0.75rem; font-weight: 600;">OR BUILD STEP-BY-STEP</div>
-                                    
-                                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
-                                        <!-- Attribute 1 -->
-                                        <select id="metricAttribute1" onchange="updateFormulaPreview()" style="flex: 1; padding: 0.625rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem; background: white;">
-                                            <option value="">First attribute...</option>
-                                            <option value="TotalSpend">Total Spend</option>
-                                            <option value="OrderCount">Order Count</option>
-                                            <option value="Revenue">Revenue</option>
-                                            <option value="LifetimeValue">Lifetime Value</option>
-                                            <option value="EmailOpens">Email Opens</option>
-                                            <option value="SiteVisits">Website Visits</option>
-                                            <option value="MarketingCost">Marketing Cost</option>
-                                        </select>
-                                        
-                                        <!-- Operation -->
-                                        <select id="metricOperation" onchange="toggleAttribute2(); updateFormulaPreview()" style="width: 80px; padding: 0.625rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 1rem; background: white; text-align: center; font-weight: 600;">
-                                            <option value="none">—</option>
-                                            <option value="divide">÷</option>
-                                            <option value="multiply">×</option>
-                                            <option value="add">+</option>
-                                            <option value="subtract">−</option>
-                                        </select>
-                                        
-                                        <!-- Attribute 2 -->
-                                        <select id="metricAttribute2" onchange="updateFormulaPreview()" style="flex: 1; padding: 0.625rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem; background: white; display: none;">
-                                            <option value="">Second attribute...</option>
-                                            <option value="TotalSpend">Total Spend</option>
-                                            <option value="OrderCount">Order Count</option>
-                                            <option value="LifetimeValue">Lifetime Value</option>
-                                            <option value="Revenue">Revenue</option>
-                                            <option value="MarketingCost">Marketing Cost</option>
-                                            <option value="MonthsActive">Months Active</option>
-                                        </select>
-                                    </div>
+                                <!-- Select Attributes -->
+                                <div style="grid-column: 1 / -1;">
+                                    <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.375rem;">Select Attributes</label>
+                                    <select id="metricAttribute1" style="width: 48%; padding: 0.625rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem; margin-right: 1%;">
+                                        <option value="">Choose first attribute...</option>
+                                        <option value="TotalSpend">Total Spend</option>
+                                        <option value="OrderCount">Order Count</option>
+                                        <option value="EmailOpens">Email Opens</option>
+                                        <option value="SiteVisits">Site Visits</option>
+                                        <option value="LifetimeValue">Lifetime Value</option>
+                                        <option value="ProjectedValue">Projected Value</option>
+                                        <option value="MonthsActive">Months Active</option>
+                                        <option value="MarketingCost">Marketing Cost</option>
+                                        <option value="Revenue">Revenue</option>
+                                    </select>
+                                    <select id="metricAttribute2" style="width: 48%; padding: 0.625rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem; margin-left: 1%;">
+                                        <option value="">Choose second attribute (optional)...</option>
+                                        <option value="TotalSpend">Total Spend</option>
+                                        <option value="OrderCount">Order Count</option>
+                                        <option value="EmailOpens">Email Opens</option>
+                                        <option value="SiteVisits">Site Visits</option>
+                                        <option value="LifetimeValue">Lifetime Value</option>
+                                        <option value="ProjectedValue">Projected Value</option>
+                                        <option value="MonthsActive">Months Active</option>
+                                        <option value="MarketingCost">Marketing Cost</option>
+                                        <option value="Revenue">Revenue</option>
+                                    </select>
+                                </div>
 
-                                    <!-- Time Window & Condition in one row -->
-                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
-                                        <div>
-                                            <label style="display: block; font-size: 0.75rem; color: #6b7280; margin-bottom: 0.375rem;">Time Period</label>
-                                            <select id="metricTimeWindow" onchange="updateFormulaPreview()" style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.8125rem; background: white;">
-                                                <option value="all">All Time</option>
-                                                <option value="7days">Last 7 Days</option>
-                                                <option value="30days">Last 30 Days</option>
-                                                <option value="90days">Last 90 Days</option>
-                                                <option value="6months">Last 6 Months</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label style="display: block; font-size: 0.75rem; color: #6b7280; margin-bottom: 0.375rem;">Condition</label>
-                                            <div style="display: flex; gap: 0.375rem;">
-                                                <select id="metricOperator" onchange="updateFormulaPreview()" style="flex: 1; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.8125rem; background: white;">
-                                                    <option value=">">></option>
-                                                    <option value="<"><</option>
-                                                    <option value=">=">≥</option>
-                                                    <option value="<=">≤</option>
-                                                </select>
-                                                <input type="text" id="metricThreshold" oninput="updateFormulaPreview()" placeholder="Value" style="flex: 1; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.8125rem;">
-                                            </div>
-                                        </div>
+                                <!-- Formula -->
+                                <div>
+                                    <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.375rem;">Formula</label>
+                                    <select id="metricFormula" style="width: 100%; padding: 0.625rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem;">
+                                        <option value="">Choose formula...</option>
+                                        <option value="SUM">SUM - Add attributes</option>
+                                        <option value="AVG">AVG - Average of attributes</option>
+                                        <option value="DIVIDE">DIVIDE - Attr1 / Attr2</option>
+                                        <option value="MULTIPLY">MULTIPLY - Attr1 × Attr2</option>
+                                        <option value="COUNT">COUNT - Count of records</option>
+                                        <option value="MIN">MIN - Minimum value</option>
+                                        <option value="MAX">MAX - Maximum value</option>
+                                    </select>
+                                </div>
+
+                                <!-- Operator & Threshold -->
+                                <div>
+                                    <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.375rem;">Condition</label>
+                                    <div style="display: flex; gap: 0.5rem;">
+                                        <select id="metricOperator" style="flex: 1; padding: 0.625rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem;">
+                                            <option value=">">Greater than (>)</option>
+                                            <option value="<">Less than (<)</option>
+                                            <option value=">=">Greater than or equal (≥)</option>
+                                            <option value="<=">Less than or equal (≤)</option>
+                                            <option value="=">Equal to (=)</option>
+                                        </select>
+                                        <input type="number" id="metricThreshold" placeholder="Value" style="flex: 1; padding: 0.625rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem;">
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Preview Formula -->
-                            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem; padding: 0.875rem; margin-top: 1rem;">
-                                <div style="font-size: 0.75rem; font-weight: 600; color: #6b7280; margin-bottom: 0.5rem;">FORMULA PREVIEW</div>
-                                <div id="formulaPreview" style="font-size: 0.875rem; color: #1f2937; font-family: 'Courier New', monospace; padding: 0.5rem; background: #f9fafb; border-radius: 0.25rem;">
+                            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem; padding: 0.875rem; margin-bottom: 1rem;">
+                                <div style="font-size: 0.75rem; font-weight: 600; color: #6b7280; margin-bottom: 0.375rem;">FORMULA PREVIEW</div>
+                                <div id="formulaPreview" style="font-family: 'Courier New', monospace; font-size: 0.875rem; color: #1f2937; font-weight: 600;">
                                     Select attributes and formula to see preview
-                                </div>
-                                <div id="metricPreviewStats" style="display: none; margin-top: 0.75rem; padding: 0.75rem; background: #eff6ff; border-radius: 0.375rem; font-size: 0.75rem; color: #1e40af;">
-                                    <div style="font-weight: 600; margin-bottom: 0.25rem;">📊 Estimated Impact</div>
-                                    <div id="metricEstimate" style="color: #3b82f6;">~3,421 customers match this metric</div>
                                 </div>
                             </div>
 
                             <!-- Action Buttons -->
-                            <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1rem;">
+                            <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
                                 <button onclick="closeMetricBuilder()" style="padding: 0.625rem 1.25rem; border: 1px solid #d1d5db; background: white; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600; color: #374151; cursor: pointer;">
                                     Cancel
-                                </button>
-                                <button onclick="previewMetric()" style="padding: 0.625rem 1.25rem; border: 1px solid #1d72f3; background: white; color: #1d72f3; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600; cursor: pointer;">
-                                    Preview Results
                                 </button>
                                 <button onclick="saveCustomMetric()" style="padding: 0.625rem 1.25rem; border: none; background: #1d72f3; color: white; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -5968,42 +5886,42 @@
                     <!-- Template 1: Standard Email & SMS Activation -->
                     <label style="display: block; padding: 1rem; border: 2px solid #10b981; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s; background: #f0fdf4; position: relative;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
                         <input type="radio" name="activation" value="reengagement" checked style="position: absolute; top: 0.875rem; right: 0.875rem;">
-                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.625rem;">
                             <div style="font-size: 1.5rem;">✉️</div>
                             <div style="flex: 1;">
-                                <div style="font-weight: 700; color: #065f46; font-size: 1rem;">Standard Email & SMS Activation</div>
-                                <div style="font-size: 0.8125rem; color: #166534; margin-top: 0.125rem;">GDPR-compliant multi-channel messaging</div>
+                                <div style="font-weight: 700; color: #065f46; font-size: 0.9375rem;">Standard Email & SMS Activation</div>
+                                <div style="font-size: 0.75rem; color: #166534; margin-top: 0.125rem;">GDPR-compliant multi-channel messaging</div>
                             </div>
-                            <span style="background: #bbf7d0; color: #065f46; font-size: 0.6875rem; padding: 0.1875rem 0.5rem; border-radius: 0.25rem; font-weight: 600;">RECOMMENDED</span>
+                            <span style="background: #bbf7d0; color: #065f46; font-size: 0.625rem; padding: 0.125rem 0.5rem; border-radius: 0.25rem; font-weight: 600;">RECOMMENDED</span>
                         </div>
                         
-                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.625rem;">
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
                             <!-- Platform & Contact Points -->
-                            <div style="background: white; border-radius: 0.375rem; padding: 0.75rem;">
-                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase;">Platform</div>
-                                <div style="display: flex; align-items: center; gap: 0.375rem; font-size: 0.8125rem; color: #1f2937; font-weight: 600; margin-bottom: 0.625rem;">
-                                    <span style="font-size: 1rem;">☁️</span> Marketing Cloud
+                            <div style="background: white; border-radius: 0.375rem; padding: 0.625rem;">
+                                <div style="font-size: 0.625rem; font-weight: 700; color: #6b7280; margin-bottom: 0.375rem; text-transform: uppercase;">Platform</div>
+                                <div style="display: flex; align-items: center; gap: 0.375rem; font-size: 0.75rem; color: #1f2937; font-weight: 600; margin-bottom: 0.5rem;">
+                                    <span style="font-size: 0.875rem;">☁️</span> Marketing Cloud
                                 </div>
-                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase;">Contact Points</div>
-                                <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; font-size: 0.75rem;">
-                                    <span style="background: #f3f4f6; padding: 0.25rem 0.375rem; border-radius: 0.1875rem;">✉️ Email</span>
-                                    <span style="background: #f3f4f6; padding: 0.25rem 0.375rem; border-radius: 0.1875rem;">📱 Mobile</span>
-                                    <span style="background: #f3f4f6; padding: 0.25rem 0.375rem; border-radius: 0.1875rem;">📲 SMS</span>
+                                <div style="font-size: 0.625rem; font-weight: 700; color: #6b7280; margin-bottom: 0.375rem; text-transform: uppercase;">Contact Points</div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; font-size: 0.6875rem;">
+                                    <span style="background: #f3f4f6; padding: 0.1875rem 0.375rem; border-radius: 0.1875rem;">✉️ Email</span>
+                                    <span style="background: #f3f4f6; padding: 0.1875rem 0.375rem; border-radius: 0.1875rem;">📱 Mobile</span>
+                                    <span style="background: #f3f4f6; padding: 0.1875rem 0.375rem; border-radius: 0.1875rem;">📲 SMS</span>
                                 </div>
                             </div>
                             
                             <!-- Membership & Personalization -->
-                            <div style="background: white; border-radius: 0.375rem; padding: 0.75rem;">
-                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase;">Membership</div>
-                                <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; font-size: 0.75rem; margin-bottom: 0.625rem;">
-                                    <span style="background: #ecfdf5; padding: 0.25rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #86efac; color: #065f46;">🛡️ GDPR</span>
-                                    <span style="background: #ecfdf5; padding: 0.25rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #86efac; color: #065f46;">✅ Active</span>
+                            <div style="background: white; border-radius: 0.375rem; padding: 0.625rem;">
+                                <div style="font-size: 0.625rem; font-weight: 700; color: #6b7280; margin-bottom: 0.375rem; text-transform: uppercase;">Membership</div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; font-size: 0.6875rem; margin-bottom: 0.5rem;">
+                                    <span style="background: #ecfdf5; padding: 0.1875rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #86efac; color: #065f46;">🛡️ GDPR</span>
+                                    <span style="background: #ecfdf5; padding: 0.1875rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #86efac; color: #065f46;">✅ Active</span>
                                 </div>
-                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase;">Personalization</div>
-                                <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; font-size: 0.75rem;">
-                                    <span style="background: #f3f4f6; padding: 0.25rem 0.375rem; border-radius: 0.1875rem;">Name</span>
-                                    <span style="background: #f3f4f6; padding: 0.25rem 0.375rem; border-radius: 0.1875rem;">LTV</span>
-                                    <span style="background: #f3f4f6; padding: 0.25rem 0.375rem; border-radius: 0.1875rem;">Category</span>
+                                <div style="font-size: 0.625rem; font-weight: 700; color: #6b7280; margin-bottom: 0.375rem; text-transform: uppercase;">Personalization</div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; font-size: 0.6875rem;">
+                                    <span style="background: #f3f4f6; padding: 0.1875rem 0.375rem; border-radius: 0.1875rem;">Name</span>
+                                    <span style="background: #f3f4f6; padding: 0.1875rem 0.375rem; border-radius: 0.1875rem;">LTV</span>
+                                    <span style="background: #f3f4f6; padding: 0.1875rem 0.375rem; border-radius: 0.1875rem;">Category</span>
                                 </div>
                             </div>
                         </div>
@@ -6012,40 +5930,40 @@
                     <!-- Template 2: Smart Product Recommendations -->
                     <label style="display: block; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s; background: white; position: relative;" onmouseover="this.style.borderColor='#6b7280'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.borderColor='#e5e7eb'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
                         <input type="radio" name="activation" value="emailsocial" style="position: absolute; top: 0.875rem; right: 0.875rem;">
-                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.625rem;">
                             <div style="font-size: 1.5rem;">🎯</div>
                             <div style="flex: 1;">
-                                <div style="font-weight: 700; color: #1f2937; font-size: 1rem;">Smart Product Recommendations</div>
-                                <div style="font-size: 0.8125rem; color: #6b7280; margin-top: 0.125rem;">AI-powered personalized product suggestions</div>
+                                <div style="font-weight: 700; color: #1f2937; font-size: 0.9375rem;">Smart Product Recommendations</div>
+                                <div style="font-size: 0.75rem; color: #6b7280; margin-top: 0.125rem;">AI-powered personalized product suggestions</div>
                             </div>
                         </div>
                         
-                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.625rem;">
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
                             <!-- Platform & Contact Points -->
-                            <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
-                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase;">Platform</div>
-                                <div style="display: flex; align-items: center; gap: 0.375rem; font-size: 0.8125rem; color: #1f2937; font-weight: 600; margin-bottom: 0.625rem;">
-                                    <span style="font-size: 1rem;">💎</span> Data Cloud
+                            <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.625rem;">
+                                <div style="font-size: 0.625rem; font-weight: 700; color: #6b7280; margin-bottom: 0.375rem; text-transform: uppercase;">Platform</div>
+                                <div style="display: flex; align-items: center; gap: 0.375rem; font-size: 0.75rem; color: #1f2937; font-weight: 600; margin-bottom: 0.5rem;">
+                                    <span style="font-size: 0.875rem;">💎</span> Data Cloud
                                 </div>
-                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase;">Contact Points</div>
-                                <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; font-size: 0.75rem;">
-                                    <span style="background: white; padding: 0.25rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #e5e7eb;">✉️ Email</span>
-                                    <span style="background: white; padding: 0.25rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #e5e7eb;">📱 Mobile</span>
+                                <div style="font-size: 0.625rem; font-weight: 700; color: #6b7280; margin-bottom: 0.375rem; text-transform: uppercase;">Contact Points</div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; font-size: 0.6875rem;">
+                                    <span style="background: white; padding: 0.1875rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #e5e7eb;">✉️ Email</span>
+                                    <span style="background: white; padding: 0.1875rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #e5e7eb;">📱 Mobile</span>
                                 </div>
                             </div>
                             
                             <!-- Membership & Personalization -->
-                            <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
-                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase;">Membership</div>
-                                <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; font-size: 0.75rem; margin-bottom: 0.625rem;">
-                                    <span style="background: #ecfdf5; padding: 0.25rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #86efac; color: #065f46;">✅ Active</span>
-                                    <span style="background: #ecfdf5; padding: 0.25rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #86efac; color: #065f46;">✔️ Valid Email</span>
+                            <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.625rem;">
+                                <div style="font-size: 0.625rem; font-weight: 700; color: #6b7280; margin-bottom: 0.375rem; text-transform: uppercase;">Membership</div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; font-size: 0.6875rem; margin-bottom: 0.5rem;">
+                                    <span style="background: #ecfdf5; padding: 0.1875rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #86efac; color: #065f46;">✅ Active</span>
+                                    <span style="background: #ecfdf5; padding: 0.1875rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #86efac; color: #065f46;">✔️ Valid Email</span>
                                 </div>
-                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase;">Personalization</div>
-                                <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; font-size: 0.75rem;">
-                                    <span style="background: white; padding: 0.25rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #e5e7eb;">Products</span>
-                                    <span style="background: white; padding: 0.25rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #e5e7eb;">Browse</span>
-                                    <span style="background: white; padding: 0.25rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #e5e7eb;">Cart</span>
+                                <div style="font-size: 0.625rem; font-weight: 700; color: #6b7280; margin-bottom: 0.375rem; text-transform: uppercase;">Personalization</div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; font-size: 0.6875rem;">
+                                    <span style="background: white; padding: 0.1875rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #e5e7eb;">Products</span>
+                                    <span style="background: white; padding: 0.1875rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #e5e7eb;">Browse</span>
+                                    <span style="background: white; padding: 0.1875rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #e5e7eb;">Cart</span>
                                 </div>
                             </div>
                         </div>
@@ -6054,39 +5972,39 @@
                     <!-- Template 3: Premium Account Engagement -->
                     <label style="display: block; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s; background: white; position: relative;" onmouseover="this.style.borderColor='#6b7280'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.borderColor='#e5e7eb'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
                         <input type="radio" name="activation" value="vip" style="position: absolute; top: 0.875rem; right: 0.875rem;">
-                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.625rem;">
                             <div style="font-size: 1.5rem;">👑</div>
                             <div style="flex: 1;">
-                                <div style="font-weight: 700; color: #1f2937; font-size: 1rem;">Premium Account Engagement</div>
-                                <div style="font-size: 0.8125rem; color: #6b7280; margin-top: 0.125rem;">High-value customer outreach with account insights</div>
+                                <div style="font-weight: 700; color: #1f2937; font-size: 0.9375rem;">Premium Account Engagement</div>
+                                <div style="font-size: 0.75rem; color: #6b7280; margin-top: 0.125rem;">High-value customer outreach with account insights</div>
                             </div>
                         </div>
                         
-                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.625rem;">
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
                             <!-- Platform & Contact Points -->
-                            <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
-                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase;">Platform</div>
-                                <div style="display: flex; align-items: center; gap: 0.375rem; font-size: 0.8125rem; color: #1f2937; font-weight: 600; margin-bottom: 0.625rem;">
-                                    <span style="font-size: 1rem;">💎</span> Data Cloud
+                            <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.625rem;">
+                                <div style="font-size: 0.625rem; font-weight: 700; color: #6b7280; margin-bottom: 0.375rem; text-transform: uppercase;">Platform</div>
+                                <div style="display: flex; align-items: center; gap: 0.375rem; font-size: 0.75rem; color: #1f2937; font-weight: 600; margin-bottom: 0.5rem;">
+                                    <span style="font-size: 0.875rem;">💎</span> Data Cloud
                                 </div>
-                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase;">Contact Points</div>
-                                <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; font-size: 0.75rem;">
-                                    <span style="background: white; padding: 0.25rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #e5e7eb;">✉️ Email</span>
-                                    <span style="background: white; padding: 0.25rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #e5e7eb;">📞 Phone</span>
+                                <div style="font-size: 0.625rem; font-weight: 700; color: #6b7280; margin-bottom: 0.375rem; text-transform: uppercase;">Contact Points</div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; font-size: 0.6875rem;">
+                                    <span style="background: white; padding: 0.1875rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #e5e7eb;">✉️ Email</span>
+                                    <span style="background: white; padding: 0.1875rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #e5e7eb;">📞 Phone</span>
                                 </div>
                             </div>
                             
                             <!-- Membership & Personalization -->
-                            <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
-                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase;">Membership</div>
-                                <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; font-size: 0.75rem; margin-bottom: 0.625rem;">
-                                    <span style="background: #ecfdf5; padding: 0.25rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #86efac; color: #065f46;">🛡️ GDPR</span>
-                                    <span style="background: #ecfdf5; padding: 0.25rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #86efac; color: #065f46;">✔️ Valid Email</span>
+                            <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.625rem;">
+                                <div style="font-size: 0.625rem; font-weight: 700; color: #6b7280; margin-bottom: 0.375rem; text-transform: uppercase;">Membership</div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; font-size: 0.6875rem; margin-bottom: 0.5rem;">
+                                    <span style="background: #ecfdf5; padding: 0.1875rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #86efac; color: #065f46;">🛡️ GDPR</span>
+                                    <span style="background: #ecfdf5; padding: 0.1875rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #86efac; color: #065f46;">✔️ Valid Email</span>
                                 </div>
-                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase;">Personalization</div>
-                                <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; font-size: 0.75rem;">
-                                    <span style="background: white; padding: 0.25rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #e5e7eb;">Account Value</span>
-                                    <span style="background: white; padding: 0.25rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #e5e7eb;">VIP Benefits</span>
+                                <div style="font-size: 0.625rem; font-weight: 700; color: #6b7280; margin-bottom: 0.375rem; text-transform: uppercase;">Personalization</div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; font-size: 0.6875rem;">
+                                    <span style="background: white; padding: 0.1875rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #e5e7eb;">Account Value</span>
+                                    <span style="background: white; padding: 0.1875rem 0.375rem; border-radius: 0.1875rem; border: 1px solid #e5e7eb;">VIP Benefits</span>
                                 </div>
                             </div>
                         </div>
@@ -6108,101 +6026,98 @@
             </div>
 
             <!-- Custom Template Configuration (Hidden by default) -->
-            <div id="customTemplateConfig" style="display: none; background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.25rem; margin-bottom: 1.25rem;">
-                <div style="display: flex; align-items: center; gap: 0.625rem; margin-bottom: 1rem;">
+            <div id="customTemplateConfig" style="display: none; background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1.5rem;">
+                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem;">
                     <button onclick="hideCustomTemplateConfig()" style="background: #f3f4f6; border: none; padding: 0.5rem; border-radius: 0.375rem; cursor: pointer; display: flex; align-items: center;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2">
                             <path d="M19 12H5M12 19l-7-7 7-7"/>
                         </svg>
                     </button>
                     <div>
-                        <h3 style="font-size: 1rem; font-weight: 600; color: #1f2937;">Configure Custom Template</h3>
-                        <p style="font-size: 0.8125rem; color: #6b7280;">Build your activation template with channels and personalization</p>
+                        <h3 style="font-size: 1.125rem; font-weight: 600; color: #1f2937;">Configure Custom Template</h3>
+                        <p style="font-size: 0.875rem; color: #6b7280;">Build your activation template with channels and personalization</p>
                     </div>
                 </div>
 
                 <!-- Step 1: Channels & Contact Points -->
-                <div style="background: linear-gradient(to right, #eff6ff, #f9fafb); border-left: 4px solid #1d72f3; border-radius: 0.5rem; padding: 1rem; margin-bottom: 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                    <div style="display: flex; align-items: center; gap: 0.625rem; margin-bottom: 0.625rem;">
-                        <div style="background: #1d72f3; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; flex-shrink: 0;">1</div>
-                        <div style="font-size: 0.9375rem; font-weight: 700; color: #1f2937;">Channels & Contact Points</div>
-                    </div>
-                    <p style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.875rem; padding-left: 2.25rem;">Select activation platform and choose which contact points to include</p>
+                <div style="background: #f9fafb; border-radius: 0.5rem; padding: 1.25rem; margin-bottom: 1.25rem;">
+                    <div style="font-size: 0.9375rem; font-weight: 600; color: #1f2937; margin-bottom: 0.75rem;">Step 1: Channels & Contact Points</div>
+                    <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 1rem;">Select activation platform and choose which contact points to include</p>
                     
                     <!-- Activation Platform -->
-                    <div style="margin-bottom: 1rem; padding-left: 2.25rem;">
-                        <div style="font-size: 0.75rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Platform Selection</div>
-                        <div style="display: flex; gap: 0.625rem; flex-wrap: wrap;">
-                            <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#1d72f3'; this.style.boxShadow='0 2px 8px rgba(29,114,243,0.15)'" onmouseout="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+                    <div style="margin-bottom: 1.5rem;">
+                        <div style="font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Activation Platform</div>
+                        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                            <label style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#1d72f3'; this.style.boxShadow='0 2px 8px rgba(29,114,243,0.15)'" onmouseout="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
                                 <input type="radio" name="platform" value="mc" checked>
-                                <div style="font-size: 1.25rem;">☁️</div>
+                                <div style="font-size: 1.5rem;">☁️</div>
                                 <div>
-                                    <div style="font-weight: 600; color: #1f2937; font-size: 0.8125rem;">Marketing Cloud</div>
-                                    <div style="font-size: 0.6875rem; color: #6b7280;">Email, SMS, Push</div>
+                                    <div style="font-weight: 600; color: #1f2937; font-size: 0.875rem;">Marketing Cloud</div>
+                                    <div style="font-size: 0.75rem; color: #6b7280;">Email, SMS, Push</div>
                                 </div>
                             </label>
-                            <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#1d72f3'; this.style.boxShadow='0 2px 8px rgba(29,114,243,0.15)'" onmouseout="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+                            <label style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#1d72f3'; this.style.boxShadow='0 2px 8px rgba(29,114,243,0.15)'" onmouseout="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
                                 <input type="radio" name="platform" value="dc">
-                                <div style="font-size: 1.25rem;">💎</div>
+                                <div style="font-size: 1.5rem;">💎</div>
                                 <div>
-                                    <div style="font-weight: 600; color: #1f2937; font-size: 0.8125rem;">Data Cloud</div>
-                                    <div style="font-size: 0.6875rem; color: #6b7280;">Multi-channel activation</div>
+                                    <div style="font-weight: 600; color: #1f2937; font-size: 0.875rem;">Data Cloud</div>
+                                    <div style="font-size: 0.75rem; color: #6b7280;">Multi-channel activation</div>
                                 </div>
                             </label>
                         </div>
                     </div>
 
                     <!-- Contact Point Selection -->
-                    <div style="padding-left: 2.25rem;">
-                        <div style="font-size: 0.75rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Contact Points</div>
-                        <p style="font-size: 0.6875rem; color: #6b7280; margin-bottom: 0.625rem;">Select which contact points to use. You can set priority for multiple emails or phones within each type.</p>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.625rem;">
-                            <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#1d72f3'" onmouseout="if(!this.querySelector('input').checked) this.style.borderColor='#e5e7eb'">
+                    <div>
+                        <div style="font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Contact Point Selection</div>
+                        <p style="font-size: 0.75rem; color: #6b7280; margin-bottom: 0.75rem;">Select which contact points to use for this activation. You can set priority for multiple emails or phones within each type.</p>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem;">
+                            <label style="display: flex; align-items: center; gap: 0.75rem; padding: 0.875rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#1d72f3'" onmouseout="if(!this.querySelector('input').checked) this.style.borderColor='#e5e7eb'">
                                 <input type="checkbox" name="contactPoint" value="email" checked onchange="if(this.checked) { this.parentElement.style.borderColor='#1d72f3'; this.parentElement.style.background='#eff6ff'; } else { this.parentElement.style.borderColor='#e5e7eb'; this.parentElement.style.background='white'; }">
-                                <div style="font-size: 1.125rem;">✉️</div>
+                                <div style="font-size: 1.25rem;">✉️</div>
                                 <div style="flex: 1;">
-                                    <div style="font-weight: 600; color: #1f2937; font-size: 0.8125rem;">Email</div>
-                                    <div style="font-size: 0.6875rem; color: #6b7280;">Email address</div>
+                                    <div style="font-weight: 600; color: #1f2937; font-size: 0.875rem;">Email</div>
+                                    <div style="font-size: 0.75rem; color: #6b7280;">Email address</div>
                                 </div>
                             </label>
-                            <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#1d72f3'" onmouseout="if(!this.querySelector('input').checked) this.style.borderColor='#e5e7eb'">
+                            <label style="display: flex; align-items: center; gap: 0.75rem; padding: 0.875rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#1d72f3'" onmouseout="if(!this.querySelector('input').checked) this.style.borderColor='#e5e7eb'">
                                 <input type="checkbox" name="contactPoint" value="phone" checked onchange="if(this.checked) { this.parentElement.style.borderColor='#1d72f3'; this.parentElement.style.background='#eff6ff'; } else { this.parentElement.style.borderColor='#e5e7eb'; this.parentElement.style.background='white'; }">
-                                <div style="font-size: 1.125rem;">📞</div>
+                                <div style="font-size: 1.25rem;">📞</div>
                                 <div style="flex: 1;">
-                                    <div style="font-weight: 600; color: #1f2937; font-size: 0.8125rem;">Phone</div>
-                                    <div style="font-size: 0.6875rem; color: #6b7280;">Phone number</div>
+                                    <div style="font-weight: 600; color: #1f2937; font-size: 0.875rem;">Phone</div>
+                                    <div style="font-size: 0.75rem; color: #6b7280;">Phone number</div>
                                 </div>
                             </label>
-                            <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#1d72f3'" onmouseout="if(!this.querySelector('input').checked) this.style.borderColor='#e5e7eb'">
+                            <label style="display: flex; align-items: center; gap: 0.75rem; padding: 0.875rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#1d72f3'" onmouseout="if(!this.querySelector('input').checked) this.style.borderColor='#e5e7eb'">
                                 <input type="checkbox" name="contactPoint" value="mobile" checked onchange="if(this.checked) { this.parentElement.style.borderColor='#1d72f3'; this.parentElement.style.background='#eff6ff'; } else { this.parentElement.style.borderColor='#e5e7eb'; this.parentElement.style.background='white'; }">
-                                <div style="font-size: 1.125rem;">📱</div>
+                                <div style="font-size: 1.25rem;">📱</div>
                                 <div style="flex: 1;">
-                                    <div style="font-weight: 600; color: #1f2937; font-size: 0.8125rem;">Mobile</div>
-                                    <div style="font-size: 0.6875rem; color: #6b7280;">Mobile number</div>
+                                    <div style="font-weight: 600; color: #1f2937; font-size: 0.875rem;">Mobile</div>
+                                    <div style="font-size: 0.75rem; color: #6b7280;">Mobile number</div>
                                 </div>
                             </label>
-                            <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#1d72f3'" onmouseout="if(!this.querySelector('input').checked) this.style.borderColor='#e5e7eb'">
+                            <label style="display: flex; align-items: center; gap: 0.75rem; padding: 0.875rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#1d72f3'" onmouseout="if(!this.querySelector('input').checked) this.style.borderColor='#e5e7eb'">
                                 <input type="checkbox" name="contactPoint" value="sms" onchange="if(this.checked) { this.parentElement.style.borderColor='#1d72f3'; this.parentElement.style.background='#eff6ff'; } else { this.parentElement.style.borderColor='#e5e7eb'; this.parentElement.style.background='white'; }">
-                                <div style="font-size: 1.125rem;">📲</div>
+                                <div style="font-size: 1.25rem;">📲</div>
                                 <div style="flex: 1;">
-                                    <div style="font-weight: 600; color: #1f2937; font-size: 0.8125rem;">SMS</div>
-                                    <div style="font-size: 0.6875rem; color: #6b7280;">Text message</div>
+                                    <div style="font-weight: 600; color: #1f2937; font-size: 0.875rem;">SMS</div>
+                                    <div style="font-size: 0.75rem; color: #6b7280;">Text message</div>
                                 </div>
                             </label>
-                            <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#1d72f3'" onmouseout="if(!this.querySelector('input').checked) this.style.borderColor='#e5e7eb'">
+                            <label style="display: flex; align-items: center; gap: 0.75rem; padding: 0.875rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#1d72f3'" onmouseout="if(!this.querySelector('input').checked) this.style.borderColor='#e5e7eb'">
                                 <input type="checkbox" name="contactPoint" value="push" onchange="if(this.checked) { this.parentElement.style.borderColor='#1d72f3'; this.parentElement.style.background='#eff6ff'; } else { this.parentElement.style.borderColor='#e5e7eb'; this.parentElement.style.background='white'; }">
-                                <div style="font-size: 1.125rem;">📱</div>
+                                <div style="font-size: 1.25rem;">📱</div>
                                 <div style="flex: 1;">
-                                    <div style="font-weight: 600; color: #1f2937; font-size: 0.8125rem;">Mobile Push</div>
-                                    <div style="font-size: 0.6875rem; color: #6b7280;">App notifications</div>
+                                    <div style="font-weight: 600; color: #1f2937; font-size: 0.875rem;">Mobile Push</div>
+                                    <div style="font-size: 0.75rem; color: #6b7280;">App notifications</div>
                                 </div>
                             </label>
-                            <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#1d72f3'" onmouseout="if(!this.querySelector('input').checked) this.style.borderColor='#e5e7eb'">
+                            <label style="display: flex; align-items: center; gap: 0.75rem; padding: 0.875rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#1d72f3'" onmouseout="if(!this.querySelector('input').checked) this.style.borderColor='#e5e7eb'">
                                 <input type="checkbox" name="contactPoint" value="whatsapp" onchange="if(this.checked) { this.parentElement.style.borderColor='#1d72f3'; this.parentElement.style.background='#eff6ff'; } else { this.parentElement.style.borderColor='#e5e7eb'; this.parentElement.style.background='white'; }">
-                                <div style="font-size: 1.125rem;">💬</div>
+                                <div style="font-size: 1.25rem;">💬</div>
                                 <div style="flex: 1;">
-                                    <div style="font-weight: 600; color: #1f2937; font-size: 0.8125rem;">WhatsApp</div>
-                                    <div style="font-size: 0.6875rem; color: #6b7280;">WhatsApp messaging</div>
+                                    <div style="font-weight: 600; color: #1f2937; font-size: 0.875rem;">WhatsApp</div>
+                                    <div style="font-size: 0.75rem; color: #6b7280;">WhatsApp messaging</div>
                                 </div>
                             </label>
                         </div>
@@ -6210,45 +6125,43 @@
                 </div>
 
                 <!-- Step 2: Activation Membership Filtering -->
-                <div style="background: linear-gradient(to right, #f0fdf4, #f9fafb); border-left: 4px solid #10b981; border-radius: 0.5rem; padding: 1rem; margin-bottom: 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                    <div style="display: flex; align-items: center; gap: 0.625rem; margin-bottom: 0.625rem;">
-                        <div style="background: #10b981; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; flex-shrink: 0;">2</div>
-                        <div style="font-size: 0.9375rem; font-weight: 700; color: #1f2937;">Activation Membership Filtering</div>
-                    </div>
-                    <p style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.875rem; padding-left: 2.25rem;">Apply compliance and membership filters to control who receives this activation</p>
+                <div style="background: #f9fafb; border-radius: 0.5rem; padding: 1.25rem; margin-bottom: 1.25rem;">
+                    <div style="font-size: 0.9375rem; font-weight: 600; color: #1f2937; margin-bottom: 0.75rem;">Step 2: Activation Membership Filtering</div>
+                    <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 1rem;">Apply compliance and membership filters to control who receives this activation</p>
                     
-                    <!-- Membership Filters -->
-                    <div style="margin-bottom: 0.875rem; padding-left: 2.25rem;">
+                    <!-- Quick Safety Filters -->
+                    <div style="margin-bottom: 1.5rem;">
+                        <div style="font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">Quick Safety Filters</div>
                         <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-                            <label style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.5rem 0.75rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s; font-size: 0.75rem;" onmouseover="this.style.borderColor='#10b981'; this.style.background='#f0fdf4'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'; this.style.background='white'}">
+                            <label style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s; font-size: 0.8125rem;" onmouseover="this.style.borderColor='#10b981'; this.style.background='#f0fdf4'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'; this.style.background='white'}">
                                 <input type="checkbox" name="safety" value="gdpr" checked onchange="if(this.checked) { this.parentElement.style.borderColor='#10b981'; this.parentElement.style.background='#ecfdf5'; } else { this.parentElement.style.borderColor='#e5e7eb'; this.parentElement.style.background='white'; }">
                                 <span style="font-weight: 600;">🛡️ GDPR Compliant</span>
                             </label>
-                            <label style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.5rem 0.75rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s; font-size: 0.75rem;" onmouseover="this.style.borderColor='#10b981'; this.style.background='#f0fdf4'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'; this.style.background='white'}">
+                            <label style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s; font-size: 0.8125rem;" onmouseover="this.style.borderColor='#10b981'; this.style.background='#f0fdf4'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'; this.style.background='white'}">
                                 <input type="checkbox" name="safety" value="active_subs" checked onchange="if(this.checked) { this.parentElement.style.borderColor='#10b981'; this.parentElement.style.background='#ecfdf5'; } else { this.parentElement.style.borderColor='#e5e7eb'; this.parentElement.style.background='white'; }">
                                 <span style="font-weight: 600;">✅ Active Subscribers Only</span>
                             </label>
-                            <label style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.5rem 0.75rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s; font-size: 0.75rem;" onmouseover="this.style.borderColor='#10b981'; this.style.background='#f0fdf4'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'; this.style.background='white'}">
+                            <label style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s; font-size: 0.8125rem;" onmouseover="this.style.borderColor='#10b981'; this.style.background='#f0fdf4'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'; this.style.background='white'}">
                                 <input type="checkbox" name="safety" value="ccpa" onchange="if(this.checked) { this.parentElement.style.borderColor='#10b981'; this.parentElement.style.background='#ecfdf5'; } else { this.parentElement.style.borderColor='#e5e7eb'; this.parentElement.style.background='white'; }">
                                 <span style="font-weight: 600;">🛡️ CCPA Opt-In Only</span>
                             </label>
-                            <label style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.5rem 0.75rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s; font-size: 0.75rem;" onmouseover="this.style.borderColor='#10b981'; this.style.background='#f0fdf4'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'; this.style.background='white'}">
+                            <label style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s; font-size: 0.8125rem;" onmouseover="this.style.borderColor='#10b981'; this.style.background='#f0fdf4'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'; this.style.background='white'}">
                                 <input type="checkbox" name="safety" value="email_consent" onchange="if(this.checked) { this.parentElement.style.borderColor='#10b981'; this.parentElement.style.background='#ecfdf5'; } else { this.parentElement.style.borderColor='#e5e7eb'; this.parentElement.style.background='white'; }">
                                 <span style="font-weight: 600;">📧 Email Consent Given</span>
                             </label>
-                            <label style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.5rem 0.75rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s; font-size: 0.75rem;" onmouseover="this.style.borderColor='#10b981'; this.style.background='#f0fdf4'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'; this.style.background='white'}">
+                            <label style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s; font-size: 0.8125rem;" onmouseover="this.style.borderColor='#10b981'; this.style.background='#f0fdf4'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'; this.style.background='white'}">
                                 <input type="checkbox" name="safety" value="exclude_unsubs" onchange="if(this.checked) { this.parentElement.style.borderColor='#10b981'; this.parentElement.style.background='#ecfdf5'; } else { this.parentElement.style.borderColor='#e5e7eb'; this.parentElement.style.background='white'; }">
                                 <span style="font-weight: 600;">🚫 Exclude Unsubscribes</span>
                             </label>
-                            <label style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.5rem 0.75rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s; font-size: 0.75rem;" onmouseover="this.style.borderColor='#10b981'; this.style.background='#f0fdf4'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'; this.style.background='white'}">
+                            <label style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s; font-size: 0.8125rem;" onmouseover="this.style.borderColor='#10b981'; this.style.background='#f0fdf4'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'; this.style.background='white'}">
                                 <input type="checkbox" name="safety" value="no_contact_7days" onchange="if(this.checked) { this.parentElement.style.borderColor='#10b981'; this.parentElement.style.background='#ecfdf5'; } else { this.parentElement.style.borderColor='#e5e7eb'; this.parentElement.style.background='white'; }">
                                 <span style="font-weight: 600;">⏰ Not Contacted (Last 7 Days)</span>
                             </label>
-                            <label style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.5rem 0.75rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s; font-size: 0.75rem;" onmouseover="this.style.borderColor='#10b981'; this.style.background='#f0fdf4'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'; this.style.background='white'}">
+                            <label style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s; font-size: 0.8125rem;" onmouseover="this.style.borderColor='#10b981'; this.style.background='#f0fdf4'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'; this.style.background='white'}">
                                 <input type="checkbox" name="safety" value="sms_consent" onchange="if(this.checked) { this.parentElement.style.borderColor='#10b981'; this.parentElement.style.background='#ecfdf5'; } else { this.parentElement.style.borderColor='#e5e7eb'; this.parentElement.style.background='white'; }">
                                 <span style="font-weight: 600;">📲 SMS Consent Given</span>
                             </label>
-                            <label style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.5rem 0.75rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s; font-size: 0.75rem;" onmouseover="this.style.borderColor='#10b981'; this.style.background='#f0fdf4'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'; this.style.background='white'}">
+                            <label style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s; font-size: 0.8125rem;" onmouseover="this.style.borderColor='#10b981'; this.style.background='#f0fdf4'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'; this.style.background='white'}">
                                 <input type="checkbox" name="safety" value="valid_email" onchange="if(this.checked) { this.parentElement.style.borderColor='#10b981'; this.parentElement.style.background='#ecfdf5'; } else { this.parentElement.style.borderColor='#e5e7eb'; this.parentElement.style.background='white'; }">
                                 <span style="font-weight: 600;">✔️ Valid Email Address</span>
                             </label>
@@ -6256,56 +6169,58 @@
                     </div>
 
                     <!-- Add Custom Filter -->
-                    <div style="padding-left: 2.25rem;">
-                        <button onclick="showActivationFilterModal()" style="background: white; border: 1px solid #d1d5db; color: #374151; padding: 0.5rem 1rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.375rem;">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-                            </svg>
-                            Add Custom Filter
-                        </button>
-                    </div>
+                    <button onclick="showActivationFilterModal()" style="background: white; border: 1px solid #d1d5db; color: #374151; padding: 0.625rem 1.25rem; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        Add Custom Filter
+                    </button>
                 </div>
 
                 <!-- Step 3: Personalization Attributes -->
-                <div style="background: linear-gradient(to right, #fef3c7, #f9fafb); border-left: 4px solid #f59e0b; border-radius: 0.5rem; padding: 1rem; margin-bottom: 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                    <div style="display: flex; align-items: center; gap: 0.625rem; margin-bottom: 0.625rem;">
-                        <div style="background: #f59e0b; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; flex-shrink: 0;">3</div>
-                        <div style="font-size: 0.9375rem; font-weight: 700; color: #1f2937;">Personalization Attributes & Metrics</div>
-                    </div>
-                    <p style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.875rem; padding-left: 2.25rem;">Select attributes and metrics to personalize your messages</p>
+                <div style="background: #f9fafb; border-radius: 0.5rem; padding: 1.25rem; margin-bottom: 1.25rem;">
+                    <div style="font-size: 0.9375rem; font-weight: 600; color: #1f2937; margin-bottom: 0.75rem;">Step 3: Add Personalization Attributes & Metrics</div>
+                    <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 1rem;">Select attributes and metrics to personalize your messages</p>
                     
-                    <!-- Selected Attributes -->
-                    <div style="padding-left: 2.25rem;">
-                        <div style="font-size: 0.75rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Selected Attributes</div>
-                        <div id="selectedAttributes" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.625rem; margin-bottom: 0.875rem;">
-                        <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer;">
-                            <input type="checkbox" name="attribute" value="name" checked>
-                            <span style="font-size: 0.8125rem;">Customer Name</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer;">
-                            <input type="checkbox" name="attribute" value="ltv" checked>
-                            <span style="font-size: 0.8125rem;">LTV Tier</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer;">
-                            <input type="checkbox" name="attribute" value="loyalty" checked>
-                            <span style="font-size: 0.8125rem;">Loyalty Status</span>
-                        </label>
-                        </div>
-                        <button onclick="showPersonalizationModal()" style="background: white; border: 1px solid #d1d5db; color: #374151; padding: 0.5rem 1rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.375rem;">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                    <!-- Search and Add Attributes -->
+                    <div style="margin-bottom: 1rem;">
+                        <div style="position: relative;">
+                            <input type="text" id="attributeSearch" placeholder="Search attributes and metrics..." oninput="searchAttributesForPersonalization(this.value)" style="width: 100%; padding: 0.75rem 0.75rem 0.75rem 2.5rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%);">
+                                <circle cx="11" cy="11" r="8"/>
+                                <path d="m21 21-4.35-4.35"/>
                             </svg>
-                            Browse All Attributes & Metrics
-                        </button>
+                        </div>
+                        <div id="attributeSearchResults" style="display: none; background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem; margin-top: 0.5rem; max-height: 200px; overflow-y: auto;"></div>
                     </div>
+
+                    <!-- Selected Attributes -->
+                    <div id="selectedAttributes" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; margin-bottom: 1rem;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer;">
+                            <input type="checkbox" name="attribute" value="name" checked>
+                            <span>Customer Name</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer;">
+                            <input type="checkbox" name="attribute" value="ltv" checked>
+                            <span>LTV Tier</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer;">
+                            <input type="checkbox" name="attribute" value="loyalty" checked>
+                            <span>Loyalty Status</span>
+                        </label>
+                    </div>
+
+                    <button onclick="showAllAttributesForPersonalization()" style="background: white; border: 1px solid #d1d5db; color: #374151; padding: 0.5rem 1rem; border-radius: 0.375rem; font-size: 0.875rem; cursor: pointer;">
+                        + Browse All Attributes & Metrics
+                    </button>
                 </div>
 
                 <!-- Save Template Button -->
-                <div style="display: flex; justify-content: flex-end; gap: 0.625rem; margin-top: 0.5rem;">
-                    <button onclick="hideCustomTemplateConfig()" style="background: white; border: 1px solid #d1d5db; color: #374151; padding: 0.625rem 1.25rem; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer;">
+                <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+                    <button onclick="hideCustomTemplateConfig()" style="background: white; border: 1px solid #d1d5db; color: #374151; padding: 0.75rem 1.5rem; border-radius: 0.375rem; font-size: 0.9375rem; font-weight: 600; cursor: pointer;">
                         Cancel
                     </button>
-                    <button onclick="saveCustomTemplate()" style="background: linear-gradient(135deg, #1d72f3 0%, #1e40af 100%); color: white; border: none; padding: 0.625rem 1.25rem; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer; box-shadow: 0 2px 4px rgba(29, 114, 243, 0.3);">
+                    <button onclick="saveCustomTemplate()" style="background: linear-gradient(135deg, #1d72f3 0%, #1e40af 100%); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.375rem; font-size: 0.9375rem; font-weight: 600; cursor: pointer; box-shadow: 0 2px 4px rgba(29, 114, 243, 0.3);">
                         Save & Use Template
                     </button>
                 </div>
@@ -7829,12 +7744,8 @@
 
         // Segments List Page Functions
         function showCreationModal() {
-            const modal = document.getElementById('creationModal');
-            if (modal) {
-                modal.style.display = 'flex';
-                modal.style.zIndex = '10000';
-                document.body.style.overflow = 'hidden';
-            }
+            document.getElementById('creationModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
         }
 
         function closeCreationModal() {
@@ -9365,7 +9276,6 @@
         }
 
         let exclusionMode = false;
-        let lastBuiltMetric = null; // Track last metric for refinement
 
         // Filter Builder Functions
         function toggleFilterBuilder() {
@@ -9581,9 +9491,6 @@
                 closeMetricBuilder();
             } else {
                 builder.style.display = 'block';
-                // Ensure initial view is shown
-                document.getElementById('metricInitialView').style.display = 'block';
-                document.getElementById('metricConversationView').style.display = 'none';
                 // Focus on agent input
                 setTimeout(() => {
                     builder.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -9612,758 +9519,204 @@
             }
         }
 
-        function sendMetricMessage() {
-            const chatInput = document.getElementById('metricChatInput');
-            const userMessage = chatInput.value.trim();
+        function parseMetricFromAgent() {
+            const input = document.getElementById('metricAgentInput').value.trim().toLowerCase();
             
-            if (!userMessage) return;
-            
-            // Add user message to chat
-            addMetricChatMessage(userMessage, 'user');
-            
-            // Clear input
-            chatInput.value = '';
-            
-            // Process the message
-            setTimeout(() => {
-                processMetricCommand(userMessage);
-            }, 500);
-        }
-
-        function addMetricChatMessage(message, sender) {
-            const chatHistory = document.getElementById('metricChatHistory');
-            
-            const messageDiv = document.createElement('div');
-            messageDiv.style.cssText = 'display: flex; gap: 0.625rem; align-items: start; animation: slideDown 0.3s ease-out;';
-            
-            if (sender === 'agent') {
-                messageDiv.innerHTML = `
-                    <div style="width: 28px; height: 28px; background: linear-gradient(135deg, #1d72f3 0%, #1e40af 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-                            <circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>
-                        </svg>
-                    </div>
-                    <div style="background: white; padding: 0.75rem; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-size: 0.8125rem; color: #1f2937; max-width: 85%; line-height: 1.5;">
-                        ${message}
-                    </div>
-                `;
-            } else {
-                messageDiv.style.justifyContent = 'flex-end';
-                messageDiv.innerHTML = `
-                    <div style="background: #1d72f3; color: white; padding: 0.75rem; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-size: 0.8125rem; max-width: 85%; line-height: 1.5;">
-                        ${message}
-                    </div>
-                `;
+            if (!input) {
+                alert('Please describe the metric you want to build');
+                return;
             }
             
-            chatHistory.appendChild(messageDiv);
+            // Remove any previous guidance messages
+            const builder = document.getElementById('inlineMetricBuilder');
+            const prevGuidance = builder.querySelector('[style*="fef3c7"]');
+            if (prevGuidance) prevGuidance.remove();
             
-            // Auto-scroll to bottom
-            chatHistory.scrollTop = chatHistory.scrollHeight;
-        }
-
-        function updateMetricPreviewPanel(metricName, formula, timeWindow, operator, threshold) {
-            const previewDiv = document.getElementById('metricBuilderPreview');
-            const detailsDiv = document.getElementById('metricDetailsDisplay');
-            
-            // Update main formula display
-            previewDiv.style.cssText = 'padding: 1.25rem; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 2px solid #1d72f3; border-radius: 0.375rem; min-height: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center;';
-            previewDiv.innerHTML = `
-                <div style="font-size: 0.6875rem; font-weight: 600; color: #1e40af; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Formula</div>
-                <div style="font-size: 1rem; font-weight: 700; color: #1e40af; text-align: center; font-family: 'Courier New', monospace;">
-                    ${formula}
-                </div>
-            `;
-            
-            // Update details
-            document.getElementById('metricPreviewName').textContent = metricName;
-            document.getElementById('metricPreviewTime').textContent = timeWindow === 'all' ? 'All Time' : document.getElementById('metricTimeWindow').options[document.getElementById('metricTimeWindow').selectedIndex].text;
-            document.getElementById('metricPreviewCondition').textContent = threshold ? `${operator} ${threshold}` : 'Not set';
-            
-            // Show details section
-            detailsDiv.style.display = 'block';
-        }
-
-        function processMetricCommand(input) {
-            const inputLower = input.toLowerCase();
-            
-            // Check if this is a refinement or new metric
-            const isRefinement = lastBuiltMetric && (
-                inputLower.includes('change') || 
-                inputLower.includes('update') || 
-                inputLower.includes('modify') ||
-                inputLower.includes('make it') ||
-                inputLower.includes('use ') ||
-                inputLower.includes('instead') ||
-                inputLower.includes('to ')
-            );
-            
-            if (isRefinement) {
-                handleMetricRefinementChat(input, inputLower);
-            } else {
-                parseMetricFromChat(input, inputLower);
-            }
-        }
-
-        function parseMetricFromChat(input, inputLower) {
-            // Initialize parsing variables
+            // Parse the description
             let metricName = '';
             let attr1 = '';
             let attr2 = '';
-            let operation = 'none';
+            let formula = '';
             let operator = '>';
             let threshold = '';
-            let timeWindow = 'all';
             
-            // 1. DETECT OPERATIONS
-            if (inputLower.includes('divided by') || inputLower.includes('divide by') || inputLower.includes(' per ') || inputLower.includes('/')) {
-                operation = 'divide';
-            } else if (inputLower.includes('multiplied by') || inputLower.includes('times') || inputLower.includes('×')) {
-                operation = 'multiply';
-            } else if (inputLower.includes(' plus ') || inputLower.includes(' and ') || inputLower.includes('+')) {
-                operation = 'add';
-            }
-            
-            // 2. DETECT TIME WINDOW
-            if (inputLower.includes('last 7 days') || inputLower.includes('past week') || inputLower.includes('last week')) {
-                timeWindow = '7days';
-            } else if (inputLower.includes('last 30 days') || inputLower.includes('past month') || inputLower.includes('last month')) {
-                timeWindow = '30days';
-            } else if (inputLower.includes('last 90 days') || inputLower.includes('past 3 months') || inputLower.includes('last 3 months')) {
-                timeWindow = '90days';
-            } else if (inputLower.includes('last 6 months')) {
-                timeWindow = '6months';
-            }
-            
-            // 3. DETECT SPECIAL PATTERNS
-            const hasProductAffinity = inputLower.includes('love') || inputLower.includes('affinity') || inputLower.includes('mostly') || inputLower.includes('enthusiast');
-            const hasPurchaseFrequency = inputLower.includes('frequently') || inputLower.includes('often') || inputLower.includes('buy') || inputLower.includes('purchase');
-            const hasProductMention = inputLower.includes('trekking') || inputLower.includes('outdoor') || inputLower.includes('gear');
-            
-            if (hasProductAffinity && hasPurchaseFrequency) {
-                attr1 = 'OrderCount';
-                metricName = 'Trekking Gear Enthusiasts';
-                threshold = threshold || '5';
-                operator = '>=';
-                timeWindow = timeWindow || '90days';
-                
-                addMetricChatMessage('Got it! Building a metric for frequent buyers who prefer trekking gear...', 'agent');
-            } else if (inputLower.includes('per order') || (inputLower.includes('average') && inputLower.includes('spend'))) {
-                attr1 = 'TotalSpend';
-                attr2 = 'OrderCount';
-                operation = 'divide';
-                metricName = 'Average Order Value';
-                addMetricChatMessage('Building average order value metric...', 'agent');
-            } else if (inputLower.includes('visited') || inputLower.includes('visit')) {
-                attr1 = 'SiteVisits';
-                metricName = 'Recent Website Visitors';
-                addMetricChatMessage('Building website visit metric...', 'agent');
-            } else if (inputLower.includes('email') && inputLower.includes('open')) {
-                attr1 = 'EmailOpens';
-                metricName = 'Email Engaged Customers';
-                addMetricChatMessage('Building email engagement metric...', 'agent');
-            } else if (inputLower.includes('webinar') || inputLower.includes('download')) {
-                attr1 = 'WebinarAttendance';
-                attr2 = 'Downloads';
-                operation = 'add';
-                metricName = 'Content Engaged';
-                addMetricChatMessage('Building content engagement metric...', 'agent');
-            } else if (inputLower.includes('roi') || inputLower.includes('return')) {
-                attr1 = 'Revenue';
-                attr2 = 'MarketingCost';
-                operation = 'divide';
-                metricName = 'Marketing ROI';
-                addMetricChatMessage('Building ROI metric...', 'agent');
-            } else {
-                // Generic detection
-                const attributeMap = {
-                    'spend': 'TotalSpend',
-                    'revenue': 'Revenue',
-                    'orders': 'OrderCount',
-                    'visits': 'SiteVisits',
-                    'opens': 'EmailOpens'
-                };
-                
-                for (const [key, value] of Object.entries(attributeMap)) {
-                    if (inputLower.includes(key) && !attr1) {
-                        attr1 = value;
-                        metricName = `High ${value}`;
-                        break;
-                    }
-                }
-                
-                if (attr1) {
-                    addMetricChatMessage('Building your metric...', 'agent');
-                } else {
-                    addMetricChatMessage('I need more details. Can you describe what you want to measure? For example: "customers who visited our site at least 3 times recently"', 'agent');
-                    return;
-                }
-            }
-            
-            // Extract threshold
-            const numberMatch = input.match(/(\d+(?:,\d{3})*(?:\.\d+)?)/);
+            // Extract threshold (any number in the description)
+            const numberMatch = input.match(/(\d+(?:\.\d+)?)/);
             if (numberMatch) {
-                threshold = numberMatch[1].replace(/,/g, '');
+                threshold = numberMatch[1];
             }
             
             // Detect operator
-            if (inputLower.includes('at least') || inputLower.includes('minimum')) {
-                operator = '>=';
-            } else if (inputLower.includes('greater than') || inputLower.includes('more than') || inputLower.includes('above')) {
+            if (input.includes('more than') || input.includes('greater than') || input.includes('above') || input.includes('over') || input.includes('>')) {
                 operator = '>';
-            } else if (inputLower.includes('less than') || inputLower.includes('below')) {
+            } else if (input.includes('less than') || input.includes('below') || input.includes('under') || input.includes('<')) {
                 operator = '<';
-            }
-            
-            // Auto-fill form
-            document.getElementById('metricNameInput').value = metricName;
-            document.getElementById('metricAttribute1').value = attr1;
-            document.getElementById('metricOperation').value = operation;
-            if (attr2) {
-                document.getElementById('metricAttribute2').value = attr2;
-                document.getElementById('metricAttribute2').style.display = 'block';
-            }
-            document.getElementById('metricTimeWindow').value = timeWindow;
-            document.getElementById('metricOperator').value = operator;
-            if (threshold) {
-                document.getElementById('metricThreshold').value = threshold;
-            }
-            
-            // Save metric state
-            lastBuiltMetric = {
-                name: metricName,
-                attr1: attr1,
-                attr2: attr2,
-                operation: operation,
-                timeWindow: timeWindow,
-                operator: operator,
-                threshold: threshold
-            };
-            
-            // Update preview
-            updateFormulaPreview();
-            const formulaText = document.getElementById('formulaPreview').textContent;
-            
-            // Update left panel
-            setTimeout(() => {
-                updateMetricPreviewPanel(metricName, formulaText, timeWindow, operator, threshold);
-                
-                // Show agent response
-                addMetricChatMessage(`✓ Done! I've built: <strong>${metricName}</strong><br><br>Formula: <code>${formulaText}</code><br><br>Look good? Click "Add to Segment" or tell me what to change.`, 'agent');
-            }, 800);
-        }
-
-        function handleMetricRefinementChat(input, inputLower) {
-            // Start with last metric
-            let metricName = lastBuiltMetric.name;
-            let attr1 = lastBuiltMetric.attr1;
-            let attr2 = lastBuiltMetric.attr2;
-            let operation = lastBuiltMetric.operation;
-            let timeWindow = lastBuiltMetric.timeWindow;
-            let operator = lastBuiltMetric.operator;
-            let threshold = lastBuiltMetric.threshold;
-            
-            let changesMade = [];
-            
-            // Detect changes
-            const numberMatch = input.match(/(\d+(?:,\d{3})*(?:\.\d+)?)/);
-            if (numberMatch) {
-                threshold = numberMatch[1].replace(/,/g, '');
-                changesMade.push(`threshold to ${threshold}`);
-            }
-            
-            if (inputLower.includes('last 7 days') || inputLower.includes('last week')) {
-                timeWindow = '7days';
-                changesMade.push('time to last 7 days');
-            } else if (inputLower.includes('last 30 days') || inputLower.includes('last month')) {
-                timeWindow = '30days';
-                changesMade.push('time to last 30 days');
-            } else if (inputLower.includes('last 90 days')) {
-                timeWindow = '90days';
-                changesMade.push('time to last 90 days');
-            }
-            
-            if (inputLower.includes('at least')) {
+            } else if (input.includes('at least') || input.includes('minimum') || input.includes('>=')) {
                 operator = '>=';
-                changesMade.push('condition to at least');
-            } else if (inputLower.includes('greater than') || inputLower.includes('more than')) {
-                operator = '>';
-                changesMade.push('condition to greater than');
-            }
-            
-            // Apply changes
-            document.getElementById('metricNameInput').value = metricName;
-            document.getElementById('metricAttribute1').value = attr1;
-            document.getElementById('metricOperation').value = operation;
-            if (attr2) {
-                document.getElementById('metricAttribute2').value = attr2;
-                document.getElementById('metricAttribute2').style.display = 'block';
-            }
-            document.getElementById('metricTimeWindow').value = timeWindow;
-            document.getElementById('metricOperator').value = operator;
-            document.getElementById('metricThreshold').value = threshold;
-            
-            // Update state
-            lastBuiltMetric = {
-                name: metricName,
-                attr1: attr1,
-                attr2: attr2,
-                operation: operation,
-                timeWindow: timeWindow,
-                operator: operator,
-                threshold: threshold
-            };
-            
-            // Update preview
-            updateFormulaPreview();
-            const formulaText = document.getElementById('formulaPreview').textContent;
-            
-            // Update left panel
-            setTimeout(() => {
-                updateMetricPreviewPanel(metricName, formulaText, timeWindow, operator, threshold);
-                
-                // Show agent response
-                const changesText = changesMade.length > 0 ? changesMade.join(', ') : 'your requested changes';
-                addMetricChatMessage(`✓ Updated! Changed ${changesText}.<br><br>New formula: <code>${formulaText}</code><br><br>Need more changes or ready to add?`, 'agent');
-            }, 800);
-        }
-
-        function parseMetricFromAgent() {
-            const input = document.getElementById('metricAgentInput').value.trim();
-            const inputLower = input.toLowerCase();
-            
-            if (!input) {
-                alert('Please describe the metric formula you want to build');
-                return;
-            }
-            
-            // Transition to conversation view
-            document.getElementById('metricInitialView').style.display = 'none';
-            document.getElementById('metricConversationView').style.display = 'block';
-            
-            // Add user message to chat
-            addMetricChatMessage(input, 'user');
-            
-            // Process the command
-            setTimeout(() => {
-                processMetricCommand(input);
-            }, 500);
-            
-        }
-        
-        function addRefinementLabel() {
-            const agentInput = document.getElementById('metricAgentInput');
-            
-            // CHECK IF THIS IS A REFINEMENT COMMAND
-            const isRefinement = lastBuiltMetric && (
-                inputLower.includes('change') || 
-                inputLower.includes('update') || 
-                inputLower.includes('modify') ||
-                inputLower.includes('make it') ||
-                inputLower.includes('use ') ||
-                inputLower.includes('instead')
-            );
-            
-            if (isRefinement) {
-                // User wants to refine the last metric
-                handleMetricRefinement(input, inputLower);
-                return;
-            }
-            
-            // Initialize parsing variables
-            let metricName = '';
-            let attr1 = '';
-            let attr2 = '';
-            let operation = 'none';
-            let operator = '>';
-            let threshold = '';
-            let timeWindow = 'all';
-            
-            // 1. DETECT OPERATIONS (CRITICAL FOR COMPLEX FORMULAS)
-            if (inputLower.includes('divided by') || inputLower.includes('divide by') || inputLower.includes(' / ')) {
-                operation = 'divide';
-            } else if (inputLower.includes('multiplied by') || inputLower.includes('multiply by') || inputLower.includes('times') || inputLower.includes(' * ') || inputLower.includes(' × ')) {
-                operation = 'multiply';
-            } else if (inputLower.includes(' plus ') || inputLower.includes(' add ') || inputLower.includes(' + ')) {
-                operation = 'add';
-            } else if (inputLower.includes(' minus ') || inputLower.includes(' subtract ') || inputLower.includes(' - ')) {
-                operation = 'subtract';
-            }
-            
-            // 2. DETECT TIME WINDOW
-            if (inputLower.includes('last 7 days') || inputLower.includes('past week')) {
-                timeWindow = '7days';
-            } else if (inputLower.includes('last 30 days') || inputLower.includes('past month') || inputLower.includes('last month')) {
-                timeWindow = '30days';
-            } else if (inputLower.includes('last 90 days')) {
-                timeWindow = '90days';
-            } else if (inputLower.includes('last 6 months')) {
-                timeWindow = '6months';
-            } else if (inputLower.includes('last 12 months') || inputLower.includes('past year')) {
-                timeWindow = '12months';
-            }
-            
-            // 3. EXTRACT THRESHOLD (numbers)
-            const numberMatch = input.match(/(\d+(?:,\d{3})*(?:\.\d+)?)/);
-            if (numberMatch) {
-                threshold = numberMatch[1].replace(/,/g, '');
-            }
-            
-            // 4. DETECT OPERATOR
-            if (inputLower.includes('greater than') || inputLower.includes('above') || inputLower.includes('over') || inputLower.includes(' > ')) {
-                operator = '>';
-            } else if (inputLower.includes('less than') || inputLower.includes('below') || inputLower.includes('under') || inputLower.includes(' < ')) {
-                operator = '<';
-            } else if (inputLower.includes('at least') || inputLower.includes('minimum')) {
-                operator = '>=';
-            } else if (inputLower.includes('at most') || inputLower.includes('maximum')) {
+            } else if (input.includes('at most') || input.includes('maximum') || input.includes('<=')) {
                 operator = '<=';
-            } else if (inputLower.includes('equal to') || inputLower.includes('equals')) {
+            } else if (input.includes('equal to') || input.includes('exactly') || input.includes('=')) {
                 operator = '=';
             }
             
-            // 5. DETECT SPECIAL PATTERNS (product affinity + purchase frequency)
-            const hasProductAffinity = inputLower.includes('love') || inputLower.includes('affinity') || inputLower.includes('mostly buy') || inputLower.includes('prefer');
-            const hasPurchaseFrequency = inputLower.includes('frequently') || inputLower.includes('often') || inputLower.includes('regular');
-            const hasProductMention = inputLower.includes('trekking') || inputLower.includes('outdoor') || inputLower.includes('gear') || inputLower.includes('equipment');
-            
-            // Handle combined patterns like "love trekking gear and buy frequently"
-            if (hasProductAffinity && hasPurchaseFrequency && hasProductMention && inputLower.includes('and')) {
-                // This is a multi-condition query - suggest simpler approach
-                attr1 = 'OrderCount'; // Frequent purchases
-                metricName = 'Trekking Gear Enthusiasts';
-                threshold = threshold || '5'; // Default to 5 purchases
-                operator = '>=';
-                timeWindow = '90days'; // Recent purchases
-            } else if (hasPurchaseFrequency || inputLower.includes('buy') || inputLower.includes('purchase')) {
-                if (inputLower.includes('frequently') || inputLower.includes('often')) {
-                    attr1 = 'OrderCount';
-                    metricName = 'Frequent Buyers';
-                    threshold = threshold || '3';
-                    operator = '>=';
-                }
+            // Detect attributes and formulas
+            // Revenue/Money related
+            if (input.includes('spend') || input.includes('spending')) {
+                attr1 = 'TotalSpend';
+                if (!metricName) metricName = 'High Spenders';
+            }
+            if (input.includes('revenue')) {
+                attr1 = 'Revenue';
+                if (!metricName) metricName = 'High Revenue';
+            }
+            if (input.includes('lifetime value') || input.includes('ltv')) {
+                attr1 = 'LifetimeValue';
+                if (!metricName) metricName = 'High LTV';
+            }
+            if (input.includes('projected value')) {
+                attr1 = 'ProjectedValue';
+                if (!metricName) metricName = 'High Projected Value';
             }
             
-            // 6. SMART ATTRIBUTE DETECTION (Order matters based on operation)
-            const attributeMap = {
-                // Engagement & Activity
-                'website visits': 'SiteVisits',
-                'site visits': 'SiteVisits',
-                'visited': 'SiteVisits',
-                'email opens': 'EmailOpens',
-                'opened': 'EmailOpens',
-                'opens': 'EmailOpens',
-                'email clicks': 'EmailClicks',
-                'clicks': 'EmailClicks',
-                'emails sent': 'EmailsSent',
-                'form submissions': 'FormSubmissions',
-                'webinar attendance': 'WebinarAttendance',
-                'attended': 'WebinarAttendance',
-                'downloads': 'Downloads',
-                'downloaded': 'Downloads',
-                
-                // Monetary & Value
-                'total spend': 'TotalSpend',
-                'spend': 'TotalSpend',
-                'spent': 'TotalSpend',
-                'lifetime spend': 'LifetimeValue',
-                'lifetime value': 'LifetimeValue',
-                'ltv': 'LifetimeValue',
-                'revenue': 'Revenue',
-                'generate': 'Revenue',
-                'order count': 'OrderCount',
-                'orders': 'OrderCount',
-                'purchase': 'OrderCount',
-                'buy': 'OrderCount',
-                'transaction value': 'TotalSpend',
-                'order amount': 'OrderCount',
-                
-                // Marketing Costs & ROI
-                'marketing cost': 'MarketingCost',
-                'marketing spend': 'MarketingCost',
-                'customer acquisition cost': 'CAC',
-                'cac': 'CAC',
-                
-                // Time & Health
-                'months active': 'MonthsActive',
-                'active users': 'EmailOpens',
-                'licensed seats': 'MonthsActive'
-            };
-            
-            // Parse attributes in order (for complex formulas like "A divided by B")
-            // But only if not already detected by special patterns
-            if (!attr1) {
-                let remainingInput = inputLower;
-                let detectedAttrs = [];
-                
-                // Find all attribute mentions
-                for (const [key, value] of Object.entries(attributeMap)) {
-                    if (remainingInput.includes(key)) {
-                        const index = remainingInput.indexOf(key);
-                        detectedAttrs.push({ attr: value, index, key });
-                    }
-                }
-                
-                // Sort by position in the input
-                detectedAttrs.sort((a, b) => a.index - b.index);
-                
-                if (detectedAttrs.length >= 1) {
-                    attr1 = detectedAttrs[0].attr;
-                }
-                if (detectedAttrs.length >= 2 && operation !== 'none') {
-                    attr2 = detectedAttrs[1].attr;
-                }
-            }
-            
-            // 7. GENERATE METRIC NAME (if not already set by special patterns)
-            if (!metricName) {
-                if (attr1 && attr2 && operation) {
-                    const opName = {
-                        'divide': 'Ratio',
-                        'multiply': 'Product',
-                        'add': 'Combined',
-                        'subtract': 'Net'
-                    }[operation] || '';
-                    metricName = `${attr1} ${opName}`;
-                } else if (attr1) {
-                    metricName = `High ${attr1}`;
+            // Activity related
+            if (input.includes('order') || input.includes('purchase')) {
+                if (input.includes('count') || input.includes('number of')) {
+                    attr2 = 'OrderCount';
                 } else {
-                    const words = input.split(' ').filter(w => {
-                        const wl = w.toLowerCase();
-                        return !['who', 'with', 'the', 'a', 'an', 'in', 'on', 'at', 'to', 'for', 'of', 'is', 'are', 'by'].includes(wl);
-                    });
-                    metricName = words.slice(0, 3).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                    attr2 = 'OrderCount';
+                }
+            }
+            if (input.includes('email open') || input.includes('opens')) {
+                if (!attr1) {
+                    attr1 = 'EmailOpens';
+                    if (!metricName) metricName = 'Email Engagement';
+                } else {
+                    attr2 = 'EmailOpens';
+                }
+            }
+            if (input.includes('site visit') || input.includes('website visit')) {
+                if (!attr1) {
+                    attr1 = 'SiteVisits';
+                    if (!metricName) metricName = 'Site Engagement';
+                } else {
+                    attr2 = 'SiteVisits';
+                }
+            }
+            if (input.includes('marketing cost')) {
+                attr2 = 'MarketingCost';
+            }
+            if (input.includes('months active')) {
+                attr2 = 'MonthsActive';
+            }
+            
+            // Detect formula type
+            if (input.includes('per order') || input.includes('per purchase') || (input.includes('spend') && input.includes('order'))) {
+                attr1 = 'TotalSpend';
+                attr2 = 'OrderCount';
+                formula = 'DIVIDE';
+                if (!metricName) metricName = 'High AOV Shoppers';
+            } else if (input.includes('average order value') || input.includes('aov')) {
+                attr1 = 'TotalSpend';
+                attr2 = 'OrderCount';
+                formula = 'DIVIDE';
+                metricName = 'High AOV Shoppers';
+            } else if (input.includes('average') || input.includes('avg')) {
+                formula = 'AVG';
+            } else if (input.includes('total') || input.includes('sum')) {
+                formula = 'SUM';
+            } else if (input.includes('divided by') || input.includes('divide by') || input.includes('/') || input.includes('ratio')) {
+                formula = 'DIVIDE';
+            } else if (input.includes('multiplied by') || input.includes('multiply by') || input.includes('×') || input.includes('*')) {
+                formula = 'MULTIPLY';
+            } else if (input.includes('count')) {
+                formula = 'COUNT';
+            } else if (input.includes('roi') || input.includes('return on investment')) {
+                attr1 = 'Revenue';
+                attr2 = 'MarketingCost';
+                formula = 'DIVIDE';
+                metricName = 'High ROI Customers';
+            } else if (input.includes('engagement score') || input.includes('engagement rate')) {
+                attr1 = 'EmailOpens';
+                attr2 = 'SiteVisits';
+                formula = 'AVG';
+                metricName = 'Highly Engaged';
+            } else if (input.includes('frequency') || (input.includes('per month') && input.includes('order'))) {
+                attr1 = 'OrderCount';
+                attr2 = 'MonthsActive';
+                formula = 'DIVIDE';
+                metricName = 'Frequent Buyers';
+            } else {
+                // Default to single attribute threshold
+                if (attr1 && !formula) {
+                    formula = 'SUM'; // Just use the attribute as-is
                 }
             }
             
-            // 8. VALIDATE
+            // If no attribute detected, try to infer from context
             if (!attr1) {
+                if (input.includes('customer') || input.includes('shopper') || input.includes('buyer')) {
+                    attr1 = 'TotalSpend';
+                    formula = 'SUM';
+                    metricName = 'Custom Metric';
+                }
+            }
+            
+            // Generate metric name from description if not already set
+            if (!metricName) {
+                // Extract first few meaningful words
+                const words = input.split(' ').filter(w => !['who', 'with', 'the', 'a', 'an', 'in', 'on', 'at', 'to', 'for', 'of'].includes(w));
+                metricName = words.slice(0, 3).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+            }
+            
+            // Validate we have enough information
+            if (!attr1 || !formula || !threshold) {
+                // Show helpful guidance
                 const guidance = document.createElement('div');
                 guidance.style.cssText = 'margin-top: 1rem; padding: 1rem; background: #fef3c7; border: 1px solid #fcd34d; border-radius: 0.375rem; font-size: 0.8125rem; color: #92400e;';
                 guidance.innerHTML = `
-                    <div style="font-weight: 600; margin-bottom: 0.5rem;">💡 I need more details to build this formula</div>
-                    <div style="margin-bottom: 0.75rem;">Try describing a complete formula with:</div>
-                    <ul style="margin: 0 0 0.75rem 1.5rem; line-height: 1.5;">
-                        <li><strong>Attributes</strong>: What to measure (e.g., "revenue", "email opens")</li>
-                        <li><strong>Operations</strong>: How to calculate (e.g., "divided by", "plus", "times")</li>
-                        <li><strong>Threshold</strong>: Target value (e.g., "greater than 5")</li>
+                    <div style="font-weight: 600; margin-bottom: 0.5rem;">💡 I need more details to build this metric</div>
+                    <div style="margin-bottom: 0.5rem;">Try being more specific with:</div>
+                    <ul style="margin: 0; padding-left: 1.5rem;">
+                        <li>What to measure (e.g., "spend", "orders", "revenue")</li>
+                        <li>How to calculate (e.g., "divided by", "average", "total")</li>
+                        <li>The threshold (e.g., "more than 500", "above 75")</li>
                     </ul>
-                    <div style="margin: 0.75rem 0; padding-top: 0.75rem; border-top: 1px solid #fcd34d; font-weight: 600;">Complex formula examples:</div>
-                    <div style="margin-top: 0.25rem; font-size: 0.75rem; line-height: 1.6;">
-                        <div>• "total spend divided by order count greater than 250"</div>
-                        <div>• "revenue divided by marketing cost over 5"</div>
-                        <div>• "email opens plus email clicks divided by emails sent"</div>
-                    </div>
+                    <div style="margin-top: 0.75rem; font-weight: 600;">Examples:</div>
+                    <div style="margin-top: 0.25rem;">• "customers who spend more than $500 per order"</div>
+                    <div>• "average lifetime value above 1000"</div>
+                    <div>• "total revenue divided by marketing cost greater than 5"</div>
                     <div style="margin-top: 0.75rem;">
                         <button onclick="toggleManualForm(); this.parentElement.parentElement.remove();" style="padding: 0.5rem 1rem; background: #1d72f3; color: white; border: none; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer;">
-                            Build Manually Instead
+                            Or Build Manually
                         </button>
                     </div>
                 `;
                 
                 const agentInput = document.getElementById('metricAgentInput');
                 agentInput.parentNode.insertBefore(guidance, agentInput.nextSibling.nextSibling);
+                
                 return;
             }
             
-            // 9. AUTO-FILL THE SIMPLIFIED FORM
+            // Auto-fill the form (for if user wants to refine manually later)
             document.getElementById('metricNameInput').value = metricName;
             document.getElementById('metricAttribute1').value = attr1;
-            document.getElementById('metricOperation').value = operation;
-            if (attr2) {
-                document.getElementById('metricAttribute2').value = attr2;
-                document.getElementById('metricAttribute2').style.display = 'block';
-            }
-            document.getElementById('metricTimeWindow').value = timeWindow;
-            document.getElementById('metricOperator').value = operator;
-            if (threshold) {
-                document.getElementById('metricThreshold').value = threshold;
-            }
-            
-            // Save metric state for refinement
-            lastBuiltMetric = {
-                name: metricName,
-                attr1: attr1,
-                attr2: attr2,
-                operation: operation,
-                timeWindow: timeWindow,
-                operator: operator,
-                threshold: threshold
-            };
-            
-            // Trigger preview update
-            updateFormulaPreview();
-            
-            // Show success feedback
-            const agentInput = document.getElementById('metricAgentInput');
-            agentInput.style.borderColor = '#10b981';
-            
-            const confirmation = document.createElement('div');
-            confirmation.style.cssText = 'margin-top: 1rem; padding: 1rem; background: #ecfdf5; border: 1px solid #10b981; border-radius: 0.375rem; font-size: 0.8125rem; color: #065f46; animation: slideDown 0.3s ease-out;';
-            
-            let formulaDisplay = document.getElementById('formulaPreview').textContent;
-            
-            confirmation.innerHTML = `
-                <div style="display: flex; align-items: start; gap: 0.75rem;">
-                    <div style="flex-shrink: 0; margin-top: 2px;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
-                            <polyline points="20 6 9 17 4 12"/>
-                        </svg>
-                    </div>
-                    <div style="flex: 1;">
-                        <div style="font-weight: 600; margin-bottom: 0.5rem;">✓ Formula Built Successfully</div>
-                        <div style="margin-bottom: 0.375rem;"><strong>Name:</strong> ${metricName}</div>
-                        <div style="margin-bottom: 0.5rem;"><strong>Formula:</strong> ${formulaDisplay}</div>
-                        
-                        <!-- Refinement Instructions -->
-                        <div style="padding: 0.75rem; background: #eff6ff; border: 2px solid #1d72f3; border-radius: 0.375rem; margin-bottom: 0.75rem;">
-                            <div style="font-weight: 700; color: #1e40af; margin-bottom: 0.625rem; font-size: 0.875rem; display: flex; align-items: center; gap: 0.5rem;">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1d72f3" stroke-width="2">
-                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                                </svg>
-                                Want to refine? Type in the box above ↑
-                            </div>
-                            <div style="font-size: 0.75rem; color: #3b82f6; line-height: 1.6;">
-                                <div><strong>Try:</strong></div>
-                                <div>• "change threshold to 10"</div>
-                                <div>• "use last 30 days instead"</div>
-                                <div>• "make it at least 5"</div>
-                            </div>
-                        </div>
-                        
-                        <div style="display: flex; gap: 0.75rem;">
-                            <button onclick="saveCustomMetric(); this.parentElement.parentElement.parentElement.parentElement.remove();" style="flex: 1; padding: 0.625rem 1.25rem; background: #10b981; color: white; border: none; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <polyline points="20 6 9 17 4 12"/>
-                                </svg>
-                                Add to Segment
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            agentInput.parentNode.insertBefore(confirmation, agentInput.nextSibling.nextSibling);
-            
-            // Add visual indicator above input box
-            addRefinementLabel();
-            
-            setTimeout(() => {
-                agentInput.style.borderColor = '#1d72f3';
-            }, 1500);
-        }
-        
-        function addRefinementLabel() {
-            const agentInput = document.getElementById('metricAgentInput');
-            
-            // Remove existing label if present
-            const existingLabel = document.getElementById('refinementInputLabel');
-            if (existingLabel) existingLabel.remove();
-            
-            // Add new label with pointer
-            const label = document.createElement('div');
-            label.id = 'refinementInputLabel';
-            label.style.cssText = 'padding: 0.625rem 0.875rem; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border-radius: 0.375rem 0.375rem 0 0; font-size: 0.8125rem; font-weight: 700; margin-bottom: -2px; display: flex; align-items: center; gap: 0.625rem; box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);';
-            label.innerHTML = `
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <polyline points="7 13 12 18 17 13"/><polyline points="7 6 12 11 17 6"/>
-                </svg>
-                Type your refinement below
-            `;
-            
-            agentInput.parentNode.insertBefore(label, agentInput);
-            
-            // Update input styling with pulse animation
-            agentInput.style.borderTopLeftRadius = '0';
-            agentInput.style.borderTopRightRadius = '0';
-            agentInput.style.borderColor = '#10b981';
-            agentInput.style.borderWidth = '2px';
-            agentInput.style.boxShadow = '0 0 0 3px rgba(16, 185, 129, 0.1)';
-            agentInput.placeholder = 'e.g., "change threshold to 10" or "use last 30 days"';
-            
-            // Focus the input to make it obvious
-            agentInput.focus();
-        }
-
-        function handleMetricRefinement(input, inputLower) {
-            // Start with last metric state
-            let metricName = lastBuiltMetric.name;
-            let attr1 = lastBuiltMetric.attr1;
-            let attr2 = lastBuiltMetric.attr2;
-            let operation = lastBuiltMetric.operation;
-            let timeWindow = lastBuiltMetric.timeWindow;
-            let operator = lastBuiltMetric.operator;
-            let threshold = lastBuiltMetric.threshold;
-            
-            // Detect what needs to change
-            
-            // 1. Change threshold/value
-            const numberMatch = input.match(/(\d+(?:,\d{3})*(?:\.\d+)?)/);
-            if (numberMatch && (inputLower.includes('change') || inputLower.includes('make it') || inputLower.includes('update'))) {
-                threshold = numberMatch[1].replace(/,/g, '');
-            }
-            
-            // 2. Change time window
-            if (inputLower.includes('last 7 days') || inputLower.includes('past week')) {
-                timeWindow = '7days';
-            } else if (inputLower.includes('last 30 days') || inputLower.includes('past month') || inputLower.includes('last month')) {
-                timeWindow = '30days';
-            } else if (inputLower.includes('last 90 days') || inputLower.includes('past 3 months')) {
-                timeWindow = '90days';
-            } else if (inputLower.includes('last 6 months')) {
-                timeWindow = '6months';
-            } else if (inputLower.includes('last 12 months') || inputLower.includes('past year')) {
-                timeWindow = '12months';
-            } else if (inputLower.includes('all time')) {
-                timeWindow = 'all';
-            }
-            
-            // 3. Change operator
-            if (inputLower.includes('greater than') || inputLower.includes('more than') || inputLower.includes('above')) {
-                operator = '>';
-            } else if (inputLower.includes('less than') || inputLower.includes('below') || inputLower.includes('under')) {
-                operator = '<';
-            } else if (inputLower.includes('at least')) {
-                operator = '>=';
-            } else if (inputLower.includes('at most')) {
-                operator = '<=';
-            }
-            
-            // Apply changes to form
-            document.getElementById('metricNameInput').value = metricName;
-            document.getElementById('metricAttribute1').value = attr1;
-            document.getElementById('metricOperation').value = operation;
-            if (attr2) {
-                document.getElementById('metricAttribute2').value = attr2;
-                document.getElementById('metricAttribute2').style.display = 'block';
-            }
-            document.getElementById('metricTimeWindow').value = timeWindow;
+            document.getElementById('metricAttribute2').value = attr2;
+            document.getElementById('metricFormula').value = formula;
             document.getElementById('metricOperator').value = operator;
             document.getElementById('metricThreshold').value = threshold;
             
-            // Update lastBuiltMetric
-            lastBuiltMetric = {
-                name: metricName,
-                attr1: attr1,
-                attr2: attr2,
-                operation: operation,
-                timeWindow: timeWindow,
-                operator: operator,
-                threshold: threshold
-            };
-            
             // Trigger preview update
-            updateFormulaPreview();
+            const event = new Event('change');
+            document.getElementById('metricAttribute1').dispatchEvent(event);
             
-            // Show refinement success feedback
+            // Show success feedback with parsed metric details
             const agentInput = document.getElementById('metricAgentInput');
             agentInput.style.borderColor = '#10b981';
             
+            // Show parsed metric confirmation
             const confirmation = document.createElement('div');
             confirmation.style.cssText = 'margin-top: 1rem; padding: 1rem; background: #ecfdf5; border: 1px solid #10b981; border-radius: 0.375rem; font-size: 0.8125rem; color: #065f46; animation: slideDown 0.3s ease-out;';
-            
-            let formulaDisplay = document.getElementById('formulaPreview').textContent;
-            
             confirmation.innerHTML = `
                 <div style="display: flex; align-items: start; gap: 0.75rem;">
                     <div style="flex-shrink: 0; margin-top: 2px;">
@@ -10372,17 +9725,15 @@
                         </svg>
                     </div>
                     <div style="flex: 1;">
-                        <div style="font-weight: 600; margin-bottom: 0.5rem;">✓ Metric Updated</div>
-                        <div style="margin-bottom: 0.625rem;"><strong>New Formula:</strong> ${formulaDisplay}</div>
-                        <div style="padding: 0.5rem; background: #f0f9ff; border-radius: 0.25rem; margin-bottom: 0.75rem; font-size: 0.6875rem; color: #0369a1;">
-                            💬 Want more changes? Type another refinement above or add to segment
-                        </div>
-                        <div>
-                            <button onclick="saveCustomMetric(); this.parentElement.parentElement.parentElement.parentElement.remove();" style="width: 100%; padding: 0.625rem 1.25rem; background: #10b981; color: white; border: none; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <polyline points="20 6 9 17 4 12"/>
-                                </svg>
+                        <div style="font-weight: 600; margin-bottom: 0.5rem;">✓ Metric Parsed Successfully</div>
+                        <div style="margin-bottom: 0.375rem;"><strong>Name:</strong> ${metricName}</div>
+                        <div style="margin-bottom: 0.75rem;"><strong>Formula:</strong> ${document.getElementById('formulaPreview').textContent}</div>
+                        <div style="display: flex; gap: 0.75rem;">
+                            <button onclick="saveCustomMetric(); this.parentElement.parentElement.parentElement.parentElement.remove();" style="padding: 0.5rem 1rem; background: #10b981; color: white; border: none; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer;">
                                 Add to Segment
+                            </button>
+                            <button onclick="toggleManualForm(); this.parentElement.parentElement.parentElement.parentElement.remove();" style="padding: 0.5rem 1rem; background: white; color: #374151; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer;">
+                                Refine Manually
                             </button>
                         </div>
                     </div>
@@ -10391,14 +9742,8 @@
             
             agentInput.parentNode.insertBefore(confirmation, agentInput.nextSibling.nextSibling);
             
-            // Keep the refinement label visible
-            addRefinementLabel();
-            
-            // Clear input for next refinement
-            agentInput.value = '';
-            
             setTimeout(() => {
-                agentInput.style.borderColor = '#10b981';
+                agentInput.style.borderColor = '#1d72f3';
             }, 1500);
         }
 
@@ -10406,181 +9751,32 @@
             const builder = document.getElementById('inlineMetricBuilder');
             builder.style.display = 'none';
             
-            // Reset views - show initial, hide conversation
-            document.getElementById('metricInitialView').style.display = 'block';
-            document.getElementById('metricConversationView').style.display = 'none';
-            
             // Hide manual form
             document.getElementById('manualMetricForm').style.display = 'none';
             
-            // Reset agent input
+            // Reset form
             document.getElementById('metricAgentInput').value = '';
-            
-            // Reset chat
-            const chatHistory = document.getElementById('metricChatHistory');
-            const chatInput = document.getElementById('metricChatInput');
-            chatInput.value = '';
-            chatHistory.innerHTML = '';
-            
-            // Reset form fields
+            document.getElementById('metricExamples').style.display = 'none';
             document.getElementById('metricNameInput').value = '';
-            document.getElementById('formulaTextInput').value = '';
-            document.getElementById('metricTimeWindow').value = 'all';
             document.getElementById('metricAttribute1').value = '';
-            document.getElementById('metricOperation').value = 'none';
             document.getElementById('metricAttribute2').value = '';
-            document.getElementById('metricAttribute2').style.display = 'none';
+            document.getElementById('metricFormula').value = '';
             document.getElementById('metricOperator').value = '>';
             document.getElementById('metricThreshold').value = '';
-            document.getElementById('formulaPreview').textContent = 'Select attributes to build your formula';
-            
-            // Hide preview stats
-            document.getElementById('metricPreviewStats').style.display = 'none';
+            document.getElementById('formulaPreview').textContent = 'Select attributes and formula to see preview';
             
             // Remove any guidance or confirmation messages
             const guidance = builder.querySelector('[style*="fef3c7"]');
             if (guidance) guidance.remove();
             const confirmation = builder.querySelector('[style*="ecfdf5"]');
             if (confirmation) confirmation.remove();
-            
-            // Clear last metric for fresh start
-            lastBuiltMetric = null;
-        }
-
-        function toggleAttribute2() {
-            const operation = document.getElementById('metricOperation').value;
-            const attr2 = document.getElementById('metricAttribute2');
-            
-            if (operation === 'none') {
-                attr2.style.display = 'none';
-                attr2.value = '';
-            } else {
-                attr2.style.display = 'block';
-            }
-        }
-
-        function updateFormulaFromText() {
-            const textInput = document.getElementById('formulaTextInput').value.trim();
-            if (!textInput) return;
-            
-            const inputLower = textInput.toLowerCase();
-            
-            // Attribute mapping (short names allowed)
-            const attrMap = {
-                'total spend': 'TotalSpend', 'spend': 'TotalSpend',
-                'order count': 'OrderCount', 'orders': 'OrderCount',
-                'revenue': 'Revenue',
-                'lifetime value': 'LifetimeValue', 'ltv': 'LifetimeValue',
-                'email opens': 'EmailOpens', 'opens': 'EmailOpens',
-                'website visits': 'SiteVisits', 'visits': 'SiteVisits',
-                'marketing cost': 'MarketingCost', 'cost': 'MarketingCost',
-                'months active': 'MonthsActive'
-            };
-            
-            // Detect operation
-            let operation = 'none';
-            if (inputLower.includes('/') || inputLower.includes('÷') || inputLower.includes('divide')) {
-                operation = 'divide';
-            } else if (inputLower.includes('*') || inputLower.includes('×') || inputLower.includes('times')) {
-                operation = 'multiply';
-            } else if (inputLower.includes('+') || inputLower.includes('plus')) {
-                operation = 'add';
-            } else if (inputLower.includes('-') || inputLower.includes('minus')) {
-                operation = 'subtract';
-            }
-            
-            // Find attributes
-            let attrs = [];
-            for (const [key, value] of Object.entries(attrMap)) {
-                if (inputLower.includes(key)) {
-                    const index = inputLower.indexOf(key);
-                    attrs.push({ value, index });
-                }
-            }
-            attrs.sort((a, b) => a.index - b.index);
-            
-            // Auto-fill dropdowns
-            if (attrs.length >= 1) {
-                document.getElementById('metricAttribute1').value = attrs[0].value;
-            }
-            if (attrs.length >= 2 && operation !== 'none') {
-                document.getElementById('metricOperation').value = operation;
-                document.getElementById('metricAttribute2').value = attrs[1].value;
-                document.getElementById('metricAttribute2').style.display = 'block';
-            }
-            
-            updateFormulaPreview();
-        }
-
-        function updateFormulaPreview() {
-            const attr1 = document.getElementById('metricAttribute1').value;
-            const operation = document.getElementById('metricOperation').value;
-            const attr2 = document.getElementById('metricAttribute2').value;
-            const operator = document.getElementById('metricOperator').value;
-            const threshold = document.getElementById('metricThreshold').value;
-            const timeWindow = document.getElementById('metricTimeWindow').value;
-            
-            const preview = document.getElementById('formulaPreview');
-            
-            if (!attr1) {
-                preview.textContent = 'Select attributes to build your formula';
-                return;
-            }
-            
-            let formulaText = attr1;
-            
-            // Add operation and second attribute if applicable
-            if (operation !== 'none' && attr2) {
-                const opSymbol = {
-                    'divide': '÷',
-                    'multiply': '×',
-                    'add': '+',
-                    'subtract': '−'
-                }[operation] || operation;
-                
-                formulaText = `${attr1} ${opSymbol} ${attr2}`;
-            }
-            
-            // Add time window if not "all"
-            if (timeWindow && timeWindow !== 'all') {
-                const timeWindowText = document.getElementById('metricTimeWindow').options[document.getElementById('metricTimeWindow').selectedIndex].text;
-                formulaText = `${formulaText} (${timeWindowText})`;
-            }
-            
-            // Add threshold if present
-            if (threshold) {
-                const operatorText = operator === '>' ? 'greater than' : operator === '<' ? 'less than' : operator === '>=' ? 'at least' : operator === '<=' ? 'at most' : 'equal to';
-                formulaText = `${formulaText} is ${operatorText} ${threshold}`;
-            }
-            
-            preview.textContent = formulaText;
-        }
-
-        function previewMetric() {
-            // Simulate metric preview
-            const statsDiv = document.getElementById('metricPreviewStats');
-            const estimateDiv = document.getElementById('metricEstimate');
-            
-            // Generate a random-ish estimate based on the threshold
-            const threshold = document.getElementById('metricThreshold').value || 100;
-            const randomFactor = Math.random() * 0.5 + 0.75; // 0.75 to 1.25
-            const estimate = Math.floor(parseFloat(threshold) * randomFactor * 50);
-            
-            estimateDiv.textContent = `~${estimate.toLocaleString()} customers match this metric`;
-            statsDiv.style.display = 'block';
-            
-            // Auto-hide after a few seconds
-            setTimeout(() => {
-                statsDiv.style.display = 'none';
-            }, 5000);
         }
 
         function saveCustomMetric() {
             const metricName = document.getElementById('metricNameInput').value.trim();
-            const timeWindow = document.getElementById('metricTimeWindow').value;
             const attr1 = document.getElementById('metricAttribute1').value;
-            const operation = document.getElementById('metricOperation').value;
             const attr2 = document.getElementById('metricAttribute2').value;
+            const formula = document.getElementById('metricFormula').value;
             const operator = document.getElementById('metricOperator').value;
             const threshold = document.getElementById('metricThreshold').value;
             
@@ -10593,22 +9789,42 @@
                 alert('Please select at least one attribute');
                 return;
             }
-            
-            // Build human-readable filter string for display (use formula preview)
-            const formulaPreviewText = document.getElementById('formulaPreview').textContent;
-            let filterString = formulaPreviewText;
-            
-            // If formula preview doesn't have the metric name, prepend it
-            if (!filterString.includes(metricName)) {
-                filterString = `${metricName}: ${filterString}`;
+            if (!formula) {
+                alert('Please select a formula');
+                return;
             }
+            if (!threshold) {
+                alert('Please enter a threshold value');
+                return;
+            }
+            
+            // Build formula string
+            let formulaStr = '';
+            if (formula === 'SUM') {
+                formulaStr = attr2 ? `${attr1} + ${attr2}` : `SUM(${attr1})`;
+            } else if (formula === 'AVG') {
+                formulaStr = attr2 ? `(${attr1} + ${attr2}) / 2` : `AVG(${attr1})`;
+            } else if (formula === 'DIVIDE') {
+                formulaStr = attr2 ? `${attr1} / ${attr2}` : `${attr1} / 1`;
+            } else if (formula === 'MULTIPLY') {
+                formulaStr = attr2 ? `${attr1} × ${attr2}` : `${attr1} × 1`;
+            } else if (formula === 'COUNT') {
+                formulaStr = `COUNT(${attr1})`;
+            } else if (formula === 'MIN') {
+                formulaStr = `MIN(${attr1})`;
+            } else if (formula === 'MAX') {
+                formulaStr = `MAX(${attr1})`;
+            }
+            
+            // Build filter string for display
+            const filterString = `${metricName}: ${operator} ${threshold}`;
             
             // Add to segment using existing function
             addQuickFilter(filterString, '📊', exclusionMode, 'metric');
             
             // Show success message before closing
             const successMsg = document.createElement('div');
-            successMsg.textContent = `✓ Metric "${metricName}" added to segment`;
+            successMsg.textContent = `✓ Custom metric "${metricName}" added to segment`;
             successMsg.style.cssText = 'position: fixed; top: 80px; right: 20px; background: #10b981; color: white; padding: 0.75rem 1.25rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 600; z-index: 10000; box-shadow: 0 4px 6px rgba(0,0,0,0.1); animation: slideInRight 0.3s ease-out, fadeOut 0.3s ease-out 2.7s forwards;';
             document.body.appendChild(successMsg);
             setTimeout(() => successMsg.remove(), 3000);
@@ -10619,23 +9835,52 @@
 
         // Update formula preview as user selects options
         document.addEventListener('DOMContentLoaded', function() {
-            const timeWindowSelect = document.getElementById('metricTimeWindow');
             const attr1Select = document.getElementById('metricAttribute1');
-            const operationSelect = document.getElementById('metricOperation');
             const attr2Select = document.getElementById('metricAttribute2');
+            const formulaSelect = document.getElementById('metricFormula');
             const operatorSelect = document.getElementById('metricOperator');
             const thresholdInput = document.getElementById('metricThreshold');
             
-            if (attr1Select) {
-                attr1Select.addEventListener('change', updateFormulaPreview);
-                operationSelect.addEventListener('change', function() {
-                    toggleAttribute2();
-                    updateFormulaPreview();
-                });
-                attr2Select.addEventListener('change', updateFormulaPreview);
-                timeWindowSelect.addEventListener('change', updateFormulaPreview);
-                operatorSelect.addEventListener('change', updateFormulaPreview);
-                thresholdInput.addEventListener('input', updateFormulaPreview);
+            if (attr1Select && attr2Select && formulaSelect && operatorSelect && thresholdInput) {
+                const updatePreview = () => {
+                    const attr1 = attr1Select.value;
+                    const attr2 = attr2Select.value;
+                    const formula = formulaSelect.value;
+                    const operator = operatorSelect.value;
+                    const threshold = thresholdInput.value;
+                    
+                    const preview = document.getElementById('formulaPreview');
+                    if (!attr1 || !formula) {
+                        preview.textContent = 'Select attributes and formula to see preview';
+                        return;
+                    }
+                    
+                    let formulaStr = '';
+                    if (formula === 'SUM') {
+                        formulaStr = attr2 ? `${attr1} + ${attr2}` : `SUM(${attr1})`;
+                    } else if (formula === 'AVG') {
+                        formulaStr = attr2 ? `(${attr1} + ${attr2}) / 2` : `AVG(${attr1})`;
+                    } else if (formula === 'DIVIDE') {
+                        formulaStr = attr2 ? `${attr1} / ${attr2}` : `${attr1}`;
+                    } else if (formula === 'MULTIPLY') {
+                        formulaStr = attr2 ? `${attr1} × ${attr2}` : `${attr1}`;
+                    } else if (formula === 'COUNT') {
+                        formulaStr = `COUNT(${attr1})`;
+                    } else if (formula === 'MIN') {
+                        formulaStr = `MIN(${attr1})`;
+                    } else if (formula === 'MAX') {
+                        formulaStr = `MAX(${attr1})`;
+                    }
+                    
+                    const fullFormula = threshold ? `${formulaStr} ${operator} ${threshold}` : formulaStr;
+                    preview.textContent = fullFormula;
+                };
+                
+                attr1Select.addEventListener('change', updatePreview);
+                attr2Select.addEventListener('change', updatePreview);
+                formulaSelect.addEventListener('change', updatePreview);
+                operatorSelect.addEventListener('change', updatePreview);
+                thresholdInput.addEventListener('input', updatePreview);
             }
         });
 
