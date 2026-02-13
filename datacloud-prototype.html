@@ -9577,10 +9577,13 @@
                 closeMetricBuilder();
             } else {
                 builder.style.display = 'block';
-                // Focus on chat input
+                // Ensure initial view is shown
+                document.getElementById('metricInitialView').style.display = 'block';
+                document.getElementById('metricConversationView').style.display = 'none';
+                // Focus on agent input
                 setTimeout(() => {
                     builder.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                    document.getElementById('metricChatInput').focus();
+                    document.getElementById('metricAgentInput').focus();
                 }, 100);
             }
         }
