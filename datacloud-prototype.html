@@ -6040,13 +6040,16 @@
                 </div>
 
                 <!-- Step 1: Channels & Contact Points -->
-                <div style="background: #f9fafb; border-radius: 0.5rem; padding: 1rem; margin-bottom: 1rem;">
-                    <div style="font-size: 0.875rem; font-weight: 600; color: #1f2937; margin-bottom: 0.5rem;">Step 1: Channels & Contact Points</div>
-                    <p style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.875rem;">Select activation platform and choose which contact points to include</p>
+                <div style="background: linear-gradient(to right, #eff6ff, #f9fafb); border-left: 4px solid #1d72f3; border-radius: 0.5rem; padding: 1rem; margin-bottom: 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                    <div style="display: flex; align-items: center; gap: 0.625rem; margin-bottom: 0.625rem;">
+                        <div style="background: #1d72f3; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; flex-shrink: 0;">1</div>
+                        <div style="font-size: 0.9375rem; font-weight: 700; color: #1f2937;">Channels & Contact Points</div>
+                    </div>
+                    <p style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.875rem; padding-left: 2.25rem;">Select activation platform and choose which contact points to include</p>
                     
                     <!-- Activation Platform -->
-                    <div style="margin-bottom: 1rem;">
-                        <div style="font-size: 0.75rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Activation Platform</div>
+                    <div style="margin-bottom: 1rem; padding-left: 2.25rem;">
+                        <div style="font-size: 0.75rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Platform Selection</div>
                         <div style="display: flex; gap: 0.625rem; flex-wrap: wrap;">
                             <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#1d72f3'; this.style.boxShadow='0 2px 8px rgba(29,114,243,0.15)'" onmouseout="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
                                 <input type="radio" name="platform" value="mc" checked>
@@ -6068,9 +6071,9 @@
                     </div>
 
                     <!-- Contact Point Selection -->
-                    <div>
-                        <div style="font-size: 0.75rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Contact Point Selection</div>
-                        <p style="font-size: 0.6875rem; color: #6b7280; margin-bottom: 0.625rem;">Select which contact points to use for this activation. You can set priority for multiple emails or phones within each type.</p>
+                    <div style="padding-left: 2.25rem;">
+                        <div style="font-size: 0.75rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Contact Points</div>
+                        <p style="font-size: 0.6875rem; color: #6b7280; margin-bottom: 0.625rem;">Select which contact points to use. You can set priority for multiple emails or phones within each type.</p>
                         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.625rem;">
                             <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#1d72f3'" onmouseout="if(!this.querySelector('input').checked) this.style.borderColor='#e5e7eb'">
                                 <input type="checkbox" name="contactPoint" value="email" checked onchange="if(this.checked) { this.parentElement.style.borderColor='#1d72f3'; this.parentElement.style.background='#eff6ff'; } else { this.parentElement.style.borderColor='#e5e7eb'; this.parentElement.style.background='white'; }">
@@ -6125,12 +6128,15 @@
                 </div>
 
                 <!-- Step 2: Activation Membership Filtering -->
-                <div style="background: #f9fafb; border-radius: 0.5rem; padding: 1rem; margin-bottom: 1rem;">
-                    <div style="font-size: 0.875rem; font-weight: 600; color: #1f2937; margin-bottom: 0.5rem;">Step 2: Activation Membership Filtering</div>
-                    <p style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.875rem;">Apply compliance and membership filters to control who receives this activation</p>
+                <div style="background: linear-gradient(to right, #f0fdf4, #f9fafb); border-left: 4px solid #10b981; border-radius: 0.5rem; padding: 1rem; margin-bottom: 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                    <div style="display: flex; align-items: center; gap: 0.625rem; margin-bottom: 0.625rem;">
+                        <div style="background: #10b981; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; flex-shrink: 0;">2</div>
+                        <div style="font-size: 0.9375rem; font-weight: 700; color: #1f2937;">Activation Membership Filtering</div>
+                    </div>
+                    <p style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.875rem; padding-left: 2.25rem;">Apply compliance and membership filters to control who receives this activation</p>
                     
                     <!-- Membership Filters -->
-                    <div style="margin-bottom: 0.875rem;">
+                    <div style="margin-bottom: 0.875rem; padding-left: 2.25rem;">
                         <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
                             <label style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.5rem 0.75rem; background: white; border: 2px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s; font-size: 0.75rem;" onmouseover="this.style.borderColor='#10b981'; this.style.background='#f0fdf4'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'; this.style.background='white'}">
                                 <input type="checkbox" name="safety" value="gdpr" checked onchange="if(this.checked) { this.parentElement.style.borderColor='#10b981'; this.parentElement.style.background='#ecfdf5'; } else { this.parentElement.style.borderColor='#e5e7eb'; this.parentElement.style.background='white'; }">
@@ -6168,50 +6174,48 @@
                     </div>
 
                     <!-- Add Custom Filter -->
-                    <button onclick="showActivationFilterModal()" style="background: white; border: 1px solid #d1d5db; color: #374151; padding: 0.625rem 1.25rem; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-                        </svg>
-                        Add Custom Filter
-                    </button>
+                    <div style="padding-left: 2.25rem;">
+                        <button onclick="showActivationFilterModal()" style="background: white; border: 1px solid #d1d5db; color: #374151; padding: 0.5rem 1rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.375rem;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                            </svg>
+                            Add Custom Filter
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Step 3: Personalization Attributes -->
-                <div style="background: #f9fafb; border-radius: 0.5rem; padding: 1rem; margin-bottom: 1rem;">
-                    <div style="font-size: 0.875rem; font-weight: 600; color: #1f2937; margin-bottom: 0.5rem;">Step 3: Add Personalization Attributes & Metrics</div>
-                    <p style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.875rem;">Select attributes and metrics to personalize your messages</p>
+                <div style="background: linear-gradient(to right, #fef3c7, #f9fafb); border-left: 4px solid #f59e0b; border-radius: 0.5rem; padding: 1rem; margin-bottom: 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                    <div style="display: flex; align-items: center; gap: 0.625rem; margin-bottom: 0.625rem;">
+                        <div style="background: #f59e0b; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; flex-shrink: 0;">3</div>
+                        <div style="font-size: 0.9375rem; font-weight: 700; color: #1f2937;">Personalization Attributes & Metrics</div>
+                    </div>
+                    <p style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.875rem; padding-left: 2.25rem;">Select attributes and metrics to personalize your messages</p>
                     
-                    <!-- Search and Add Attributes -->
-                    <div style="margin-bottom: 1rem;">
-                        <div style="position: relative;">
-                            <input type="text" id="attributeSearch" placeholder="Search attributes and metrics..." oninput="searchAttributesForPersonalization(this.value)" style="width: 100%; padding: 0.75rem 0.75rem 0.75rem 2.5rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%);">
-                                <circle cx="11" cy="11" r="8"/>
-                                <path d="m21 21-4.35-4.35"/>
-                            </svg>
-                        </div>
-                        <div id="attributeSearchResults" style="display: none; background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem; margin-top: 0.5rem; max-height: 200px; overflow-y: auto;"></div>
-                    </div>
-
                     <!-- Selected Attributes -->
-                    <div id="selectedAttributes" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; margin-bottom: 1rem;">
-                        <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer;">
+                    <div style="padding-left: 2.25rem;">
+                        <div style="font-size: 0.75rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Selected Attributes</div>
+                        <div id="selectedAttributes" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.625rem; margin-bottom: 0.875rem;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer;">
                             <input type="checkbox" name="attribute" value="name" checked>
-                            <span>Customer Name</span>
+                            <span style="font-size: 0.8125rem;">Customer Name</span>
                         </label>
-                        <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer;">
                             <input type="checkbox" name="attribute" value="ltv" checked>
-                            <span>LTV Tier</span>
+                            <span style="font-size: 0.8125rem;">LTV Tier</span>
                         </label>
-                        <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer;">
                             <input type="checkbox" name="attribute" value="loyalty" checked>
-                            <span>Loyalty Status</span>
+                            <span style="font-size: 0.8125rem;">Loyalty Status</span>
                         </label>
+                        </div>
+                        <button onclick="showPersonalizationModal()" style="background: white; border: 1px solid #d1d5db; color: #374151; padding: 0.5rem 1rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.375rem;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                            </svg>
+                            Browse All Attributes & Metrics
+                        </button>
                     </div>
-
-                    <button onclick="showAllAttributesForPersonalization()" style="background: white; border: 1px solid #d1d5db; color: #374151; padding: 0.5rem 1rem; border-radius: 0.375rem; font-size: 0.875rem; cursor: pointer;">
-                        + Browse All Attributes & Metrics
-                    </button>
                 </div>
 
                 <!-- Save Template Button -->
