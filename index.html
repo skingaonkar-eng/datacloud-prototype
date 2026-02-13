@@ -8007,17 +8007,312 @@
             journeySteps.appendChild(stepDiv);
         }
 
-        function addPersonalizationAttribute() {
-            alert('This would open a modal to search and add attributes/metrics from your segment definition');
-        }
+        // Personalization Attribute Selector
+        let selectedPersonalizationAttrs = ['Customer Name', 'LTV Tier', 'Loyalty Status'];
 
-        function searchAttributesForPersonalization(query) {
-            // Placeholder for attribute search
-            console.log('Searching for:', query);
+        function addPersonalizationAttribute() {
+            showPersonalizationModal();
         }
 
         function showAllAttributesForPersonalization() {
-            alert('This would show all available attributes and metrics to add for personalization');
+            showPersonalizationModal();
+        }
+
+        function showPersonalizationModal() {
+            // Create modal overlay
+            const overlay = document.createElement('div');
+            overlay.id = 'personalizationModal';
+            overlay.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 10000; display: flex; align-items: center; justify-content: center; animation: fadeIn 0.2s ease-out;';
+            
+            overlay.innerHTML = `
+                <div style="background: white; border-radius: 0.75rem; max-width: 900px; width: 90%; max-height: 85vh; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); animation: slideDown 0.3s ease-out;">
+                    <!-- Header -->
+                    <div style="background: linear-gradient(135deg, #1d72f3 0%, #1e40af 100%); padding: 1.5rem; color: white;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h2 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.375rem;">Add Personalization Attributes & Metrics</h2>
+                                <p style="font-size: 0.875rem; opacity: 0.9;">Select data fields to personalize your messages to customers</p>
+                            </div>
+                            <button onclick="closePersonalizationModal()" style="background: rgba(255,255,255,0.2); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Selected Items Bar -->
+                    <div style="background: #f0f9ff; border-bottom: 1px solid #bae6fd; padding: 1rem 1.5rem;">
+                        <div style="font-size: 0.8125rem; font-weight: 600; color: #0c4a6e; margin-bottom: 0.5rem;">
+                            Selected (<span id="selectedCount">${selectedPersonalizationAttrs.length}</span>)
+                        </div>
+                        <div id="selectedItemsDisplay" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                            ${selectedPersonalizationAttrs.map(attr => `
+                                <div style="background: white; border: 1px solid #93c5fd; padding: 0.375rem 0.75rem; border-radius: 0.375rem; font-size: 0.875rem; display: flex; align-items: center; gap: 0.5rem;">
+                                    ${attr}
+                                    <button onclick="removePersonalizationAttr('${attr}')" style="background: none; border: none; color: #6b7280; cursor: pointer; padding: 0; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center;">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Search -->
+                    <div style="padding: 1.5rem 1.5rem 0 1.5rem;">
+                        <div style="position: relative;">
+                            <input type="text" id="personalizationSearch" placeholder="Search attributes, metrics, scores..." onkeyup="searchPersonalizationItems(this.value)" style="width: 100%; padding: 0.75rem 0.75rem 0.75rem 2.75rem; border: 2px solid #d1d5db; border-radius: 0.5rem; font-size: 0.875rem;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" style="position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%);">
+                                <circle cx="11" cy="11" r="8"/>
+                                <path d="m21 21-4.35-4.35"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Tabs -->
+                    <div style="padding: 0 1.5rem;">
+                        <div style="display: flex; gap: 0.5rem; border-bottom: 2px solid #e5e7eb; margin-top: 1rem;">
+                            <button class="personalization-tab active" onclick="switchPersonalizationTab('attributes')" id="ptab-attributes" style="padding: 0.75rem 1rem; border: none; background: none; font-size: 0.875rem; font-weight: 600; color: #6b7280; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s;">
+                                Attributes
+                            </button>
+                            <button class="personalization-tab" onclick="switchPersonalizationTab('metrics')" id="ptab-metrics" style="padding: 0.75rem 1rem; border: none; background: none; font-size: 0.875rem; font-weight: 600; color: #6b7280; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s;">
+                                Metrics
+                            </button>
+                            <button class="personalization-tab" onclick="switchPersonalizationTab('scores')" id="ptab-scores" style="padding: 0.75rem 1rem; border: none; background: none; font-size: 0.875rem; font-weight: 600; color: #6b7280; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s;">
+                                Predictive Scores
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Content Area -->
+                    <div style="padding: 1.5rem; max-height: 400px; overflow-y: auto;" id="personalizationContent">
+                        ${getPersonalizationTabContent('attributes')}
+                    </div>
+
+                    <!-- Footer -->
+                    <div style="background: #f9fafb; border-top: 1px solid #e5e7eb; padding: 1rem 1.5rem; display: flex; justify-content: flex-end; gap: 0.75rem;">
+                        <button onclick="closePersonalizationModal()" style="padding: 0.625rem 1.25rem; border: 1px solid #d1d5db; background: white; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600; color: #374151; cursor: pointer;">
+                            Cancel
+                        </button>
+                        <button onclick="savePersonalizationSelection()" style="padding: 0.625rem 1.25rem; border: none; background: #1d72f3; color: white; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; box-shadow: 0 2px 4px rgba(29, 114, 243, 0.3);">
+                            Add Selected (${selectedPersonalizationAttrs.length})
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(overlay);
+            
+            // Focus on search
+            setTimeout(() => {
+                document.getElementById('personalizationSearch').focus();
+            }, 100);
+        }
+
+        function getPersonalizationTabContent(tab) {
+            const items = {
+                attributes: [
+                    { name: 'Customer Name', icon: '👤', desc: 'First and last name' },
+                    { name: 'Email Address', icon: '📧', desc: 'Contact email' },
+                    { name: 'Phone Number', icon: '📱', desc: 'Primary phone' },
+                    { name: 'Location', icon: '📍', desc: 'City, state, country' },
+                    { name: 'Age', icon: '🎂', desc: 'Customer age' },
+                    { name: 'Gender', icon: '👥', desc: 'Gender identity' },
+                    { name: 'LTV Tier', icon: '💎', desc: 'Lifetime value tier' },
+                    { name: 'Loyalty Status', icon: '⭐', desc: 'Loyalty program tier' },
+                    { name: 'Last Purchase Date', icon: '📅', desc: 'Most recent order date' },
+                    { name: 'Last Purchase Amount', icon: '💰', desc: 'Most recent order value' },
+                    { name: 'Favorite Category', icon: '🏷️', desc: 'Top product category' },
+                    { name: 'Favorite Product', icon: '🛍️', desc: 'Most purchased item' },
+                    { name: 'Account Creation Date', icon: '📆', desc: 'When account was created' },
+                    { name: 'Birthday', icon: '🎉', desc: 'Date of birth' },
+                    { name: 'Membership Level', icon: '🎖️', desc: 'Current membership tier' },
+                    { name: 'Preferred Channel', icon: '📲', desc: 'Email, SMS, or Push' },
+                    { name: 'Language', icon: '🌐', desc: 'Preferred language' },
+                    { name: 'Time Zone', icon: '🕐', desc: 'Customer time zone' }
+                ],
+                metrics: [
+                    { name: 'Total Spend', icon: '💵', desc: 'All-time purchase total' },
+                    { name: 'Average Order Value', icon: '🎯', desc: 'Avg spend per order' },
+                    { name: 'Order Count', icon: '📦', desc: 'Total number of orders' },
+                    { name: 'Purchase Frequency', icon: '🔄', desc: 'Orders per month' },
+                    { name: 'Days Since Last Purchase', icon: '📅', desc: 'Recency in days' },
+                    { name: 'Engagement Score', icon: '📊', desc: 'Overall engagement metric' },
+                    { name: 'Email Open Rate', icon: '📬', desc: 'Email engagement %' },
+                    { name: 'Site Visit Count', icon: '🖱️', desc: 'Website visits' },
+                    { name: 'Customer Health Score', icon: '💪', desc: 'Composite health metric' },
+                    { name: 'ROI Score', icon: '📈', desc: 'Revenue / marketing cost' },
+                    { name: 'Cart Abandonment Rate', icon: '🛒', desc: 'Abandoned cart %' },
+                    { name: 'Product Views', icon: '👁️', desc: 'Total product page views' }
+                ],
+                scores: [
+                    { name: 'Purchase Propensity', icon: '🎯', desc: 'Likelihood to buy soon' },
+                    { name: 'Churn Risk', icon: '⚠️', desc: 'Probability of churning' },
+                    { name: 'Product Affinity - Outdoor', icon: '🏔️', desc: 'Interest in outdoor gear' },
+                    { name: 'Product Affinity - Electronics', icon: '💻', desc: 'Interest in electronics' },
+                    { name: 'Upsell Potential', icon: '⬆️', desc: 'Upgrade likelihood' },
+                    { name: 'Cross-sell Potential', icon: '🔀', desc: 'Additional product interest' },
+                    { name: 'Brand Loyalty Score', icon: '❤️', desc: 'Brand affinity level' },
+                    { name: 'Email Response Propensity', icon: '📧', desc: 'Email engagement likelihood' },
+                    { name: 'Win-back Opportunity', icon: '🔄', desc: 'Reactivation potential' },
+                    { name: 'Referral Likelihood', icon: '🎁', desc: 'Propensity to refer' }
+                ]
+            };
+
+            const tabItems = items[tab] || [];
+            
+            return `
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
+                    ${tabItems.map(item => {
+                        const isSelected = selectedPersonalizationAttrs.includes(item.name);
+                        return `
+                            <div onclick="togglePersonalizationItem('${item.name}')" style="padding: 1rem; border: 2px solid ${isSelected ? '#1d72f3' : '#e5e7eb'}; background: ${isSelected ? '#eff6ff' : 'white'}; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s;" onmouseover="if (!this.querySelector('input').checked) { this.style.borderColor='#9ca3af'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.05)'; }" onmouseout="if (!this.querySelector('input').checked) { this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; }">
+                                <div style="display: flex; align-items: start; gap: 0.75rem;">
+                                    <input type="checkbox" ${isSelected ? 'checked' : ''} style="margin-top: 0.125rem; pointer-events: none;">
+                                    <div style="flex: 1;">
+                                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                                            <span style="font-size: 1.125rem;">${item.icon}</span>
+                                            <span style="font-size: 0.875rem; font-weight: 600; color: #1f2937;">${item.name}</span>
+                                        </div>
+                                        <div style="font-size: 0.75rem; color: #6b7280;">${item.desc}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        function switchPersonalizationTab(tab) {
+            // Update tab styling
+            document.querySelectorAll('.personalization-tab').forEach(btn => {
+                btn.style.color = '#6b7280';
+                btn.style.borderColor = 'transparent';
+            });
+            const activeTab = document.getElementById(`ptab-${tab}`);
+            activeTab.style.color = '#1d72f3';
+            activeTab.style.borderColor = '#1d72f3';
+            
+            // Update content
+            document.getElementById('personalizationContent').innerHTML = getPersonalizationTabContent(tab);
+        }
+
+        function togglePersonalizationItem(name) {
+            const index = selectedPersonalizationAttrs.indexOf(name);
+            if (index > -1) {
+                selectedPersonalizationAttrs.splice(index, 1);
+            } else {
+                selectedPersonalizationAttrs.push(name);
+            }
+            
+            // Update display
+            updatePersonalizationDisplay();
+        }
+
+        function removePersonalizationAttr(name) {
+            const index = selectedPersonalizationAttrs.indexOf(name);
+            if (index > -1) {
+                selectedPersonalizationAttrs.splice(index, 1);
+            }
+            updatePersonalizationDisplay();
+        }
+
+        function updatePersonalizationDisplay() {
+            const selectedItemsDisplay = document.getElementById('selectedItemsDisplay');
+            const selectedCount = document.getElementById('selectedCount');
+            
+            if (selectedItemsDisplay) {
+                selectedItemsDisplay.innerHTML = selectedPersonalizationAttrs.map(attr => `
+                    <div style="background: white; border: 1px solid #93c5fd; padding: 0.375rem 0.75rem; border-radius: 0.375rem; font-size: 0.875rem; display: flex; align-items: center; gap: 0.5rem;">
+                        ${attr}
+                        <button onclick="removePersonalizationAttr('${attr}')" style="background: none; border: none; color: #6b7280; cursor: pointer; padding: 0; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                            </svg>
+                        </button>
+                    </div>
+                `).join('');
+            }
+            
+            if (selectedCount) {
+                selectedCount.textContent = selectedPersonalizationAttrs.length;
+            }
+            
+            // Update button text in footer
+            const saveBtn = document.querySelector('#personalizationModal button[onclick="savePersonalizationSelection()"]');
+            if (saveBtn) {
+                saveBtn.textContent = `Add Selected (${selectedPersonalizationAttrs.length})`;
+            }
+            
+            // Refresh current tab to update checkboxes
+            const activeTab = document.querySelector('.personalization-tab[style*="color: rgb(29, 114, 243)"]');
+            if (activeTab) {
+                const tabName = activeTab.id.replace('ptab-', '');
+                document.getElementById('personalizationContent').innerHTML = getPersonalizationTabContent(tabName);
+            }
+        }
+
+        function searchPersonalizationItems(query) {
+            if (!query) {
+                // Reset to current tab
+                const activeTab = document.querySelector('.personalization-tab[style*="color: rgb(29, 114, 243)"]');
+                if (activeTab) {
+                    const tabName = activeTab.id.replace('ptab-', '');
+                    document.getElementById('personalizationContent').innerHTML = getPersonalizationTabContent(tabName);
+                }
+                return;
+            }
+            
+            // Search across all tabs
+            const allItems = [
+                ...getPersonalizationTabContent('attributes').match(/name="([^"]+)"/g).map(m => m.match(/name="([^"]+)"/)[1]),
+                ...getPersonalizationTabContent('metrics').match(/name="([^"]+)"/g).map(m => m.match(/name="([^"]+)"/)[1]),
+                ...getPersonalizationTabContent('scores').match(/name="([^"]+)"/g).map(m => m.match(/name="([^"]+)"/)[1])
+            ];
+            
+            // Simple filter for now - just refresh with current tab
+            const activeTab = document.querySelector('.personalization-tab[style*="color: rgb(29, 114, 243)"]');
+            if (activeTab) {
+                const tabName = activeTab.id.replace('ptab-', '');
+                document.getElementById('personalizationContent').innerHTML = getPersonalizationTabContent(tabName);
+            }
+        }
+
+        function closePersonalizationModal() {
+            const modal = document.getElementById('personalizationModal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        function savePersonalizationSelection() {
+            // Update the displayed attributes in the template
+            const selectedAttrsContainer = document.getElementById('selectedAttributes');
+            if (selectedAttrsContainer) {
+                selectedAttrsContainer.innerHTML = selectedPersonalizationAttrs.map(attr => `
+                    <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer;">
+                        <input type="checkbox" name="attribute" value="${attr.toLowerCase().replace(/\s+/g, '_')}" checked>
+                        <span>${attr}</span>
+                    </label>
+                `).join('');
+            }
+            
+            closePersonalizationModal();
+            
+            // Show success message
+            const successMsg = document.createElement('div');
+            successMsg.textContent = `✓ ${selectedPersonalizationAttrs.length} attributes added for personalization`;
+            successMsg.style.cssText = 'position: fixed; top: 80px; right: 20px; background: #10b981; color: white; padding: 0.75rem 1.25rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 600; z-index: 10000; box-shadow: 0 4px 6px rgba(0,0,0,0.1); animation: slideInRight 0.3s ease-out, fadeOut 0.3s ease-out 2.7s forwards;';
+            document.body.appendChild(successMsg);
+            setTimeout(() => successMsg.remove(), 3000);
+        }
+
+        function searchAttributesForPersonalization(query) {
+            // Existing search functionality - now integrated into modal
+            console.log('Search for:', query);
         }
 
         function showRowActions(button) {
