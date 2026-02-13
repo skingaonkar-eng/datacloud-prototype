@@ -3711,8 +3711,9 @@
                         </div>
 
                         <!-- Inline Metric Builder (Hidden by default) -->
-                        <div id="inlineMetricBuilder" style="display: none; margin-top: 1.5rem; padding: 1.5rem; background: #f9fafb; border: 2px solid #1d72f3; border-radius: 0.5rem; animation: slideDown 0.3s ease-out;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <div id="inlineMetricBuilder" style="display: none; margin-top: 1.5rem; background: #f9fafb; border: 2px solid #1d72f3; border-radius: 0.5rem; animation: slideDown 0.3s ease-out; overflow: hidden;">
+                            <!-- Header -->
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; background: white; border-bottom: 1px solid #e5e7eb;">
                                 <h4 style="font-size: 1rem; font-weight: 600; color: #1f2937; display: flex; align-items: center; gap: 0.5rem;">
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1d72f3" stroke-width="2">
                                         <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
@@ -3726,87 +3727,97 @@
                                 </button>
                             </div>
 
-                            <!-- Commonly Used Marketing Insights -->
-                            <div style="margin-bottom: 1.25rem; padding: 1rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem;">
-                                <div style="font-size: 0.75rem; font-weight: 600; color: #6b7280; margin-bottom: 0.625rem; text-transform: uppercase; letter-spacing: 0.05em;">Quick Marketing Insights</div>
+                            <!-- Two Panel Layout -->
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0; min-height: 400px;">
+                                <!-- Left Panel: Formula Preview -->
+                                <div style="padding: 1.5rem; background: white; border-right: 1px solid #e5e7eb;">
+                                    <div style="font-size: 0.75rem; font-weight: 700; color: #6b7280; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em;">Current Formula</div>
+                                    
+                                    <div id="metricBuilderPreview" style="padding: 1rem; background: #f9fafb; border: 2px dashed #d1d5db; border-radius: 0.375rem; min-height: 120px; display: flex; align-items: center; justify-content: center; font-size: 0.875rem; color: #9ca3af; text-align: center;">
+                                        Start describing your metric in the chat →
+                                    </div>
+                                    
+                                    <div id="metricDetailsDisplay" style="display: none; margin-top: 1.25rem;">
+                                        <div style="font-size: 0.75rem; font-weight: 700; color: #6b7280; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Metric Details</div>
+                                        <div style="display: flex; flex-direction: column; gap: 0.625rem; font-size: 0.8125rem;">
+                                            <div style="display: flex; justify-content: space-between; padding: 0.5rem; background: #f9fafb; border-radius: 0.25rem;">
+                                                <span style="color: #6b7280;">Name:</span>
+                                                <span id="metricPreviewName" style="font-weight: 600; color: #1f2937;">—</span>
+                                            </div>
+                                            <div style="display: flex; justify-content: space-between; padding: 0.5rem; background: #f9fafb; border-radius: 0.25rem;">
+                                                <span style="color: #6b7280;">Time Period:</span>
+                                                <span id="metricPreviewTime" style="font-weight: 600; color: #1f2937;">—</span>
+                                            </div>
+                                            <div style="display: flex; justify-content: space-between; padding: 0.5rem; background: #f9fafb; border-radius: 0.25rem;">
+                                                <span style="color: #6b7280;">Condition:</span>
+                                                <span id="metricPreviewCondition" style="font-weight: 600; color: #1f2937;">—</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <button onclick="saveCustomMetric(); closeMetricBuilder();" style="width: 100%; margin-top: 1.5rem; padding: 0.75rem; background: #10b981; color: white; border: none; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polyline points="20 6 9 17 4 12"/>
+                                            </svg>
+                                            Add to Segment
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Right Panel: Agent Conversation -->
+                                <div style="display: flex; flex-direction: column; background: #fafafa;">
+                                    <!-- Chat History -->
+                                    <div id="metricChatHistory" style="flex: 1; padding: 1.5rem; overflow-y: auto; max-height: 350px; display: flex; flex-direction: column; gap: 0.75rem;">
+                                        <!-- Initial agent message -->
+                                        <div style="display: flex; gap: 0.625rem; align-items: start;">
+                                            <div style="width: 28px; height: 28px; background: linear-gradient(135deg, #1d72f3 0%, #1e40af 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                                    <circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>
+                                                </svg>
+                                            </div>
+                                            <div style="background: white; padding: 0.75rem; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-size: 0.8125rem; color: #1f2937; max-width: 85%;">
+                                                Hi! Describe the metric you want to build in plain English. For example: "customers who love trekking gear and buy frequently"
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Chat Input -->
+                                    <div style="padding: 1rem; background: white; border-top: 1px solid #e5e7eb;">
+                                        <div style="display: flex; gap: 0.5rem;">
+                                            <input type="text" id="metricChatInput" placeholder="Describe your metric..." style="flex: 1; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem;" onkeydown="if(event.key === 'Enter') { sendMetricMessage(); event.preventDefault(); }">
+                                            <button onclick="sendMetricMessage()" style="padding: 0.75rem 1rem; background: #1d72f3; color: white; border: none; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                                                </svg>
+                                                Send
+                                            </button>
+                                        </div>
+                                        <div style="margin-top: 0.5rem; font-size: 0.6875rem; color: #9ca3af;">
+                                            Press <kbd style="padding: 0.125rem 0.375rem; background: #f3f4f6; border: 1px solid #d1d5db; border-radius: 0.1875rem; font-family: monospace;">Enter</kbd> to send
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Quick Add Options (Below panels) -->
+                            <div style="padding: 1rem 1.5rem; background: white; border-top: 1px solid #e5e7eb;">
+                                <div style="font-size: 0.75rem; font-weight: 600; color: #6b7280; margin-bottom: 0.625rem; text-transform: uppercase; letter-spacing: 0.05em;">Or Add Common Insights</div>
                                 <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-                                    <button onclick="addQuickFilter('Recent Interest Level (Website Visits in Last 7 Days) is at least 3', '📊', exclusionMode, 'metric')" style="padding: 0.5rem 0.75rem; background: #f9fafb; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.75rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#eff6ff'; this.style.borderColor='#1d72f3'" onmouseout="this.style.background='#f9fafb'; this.style.borderColor='#d1d5db'">
-                                        🔥 Recent Interest Level
+                                    <button onclick="addQuickFilter('Recent Interest Level (Website Visits in Last 7 Days) is at least 3', '📊', exclusionMode, 'metric'); closeMetricBuilder();" style="padding: 0.5rem 0.75rem; background: #f9fafb; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.75rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#eff6ff'; this.style.borderColor='#1d72f3'" onmouseout="this.style.background='#f9fafb'; this.style.borderColor='#d1d5db'">
+                                        🔥 Recent Interest
                                     </button>
-                                    <button onclick="addQuickFilter('Average Basket Size (Total Spend ÷ Order Count) is greater than 150', '📊', exclusionMode, 'metric')" style="padding: 0.5rem 0.75rem; background: #f9fafb; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.75rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#eff6ff'; this.style.borderColor='#1d72f3'" onmouseout="this.style.background='#f9fafb'; this.style.borderColor='#d1d5db'">
-                                        🛒 Average Basket Size
+                                    <button onclick="addQuickFilter('Average Basket Size (Total Spend ÷ Order Count) is greater than 150', '📊', exclusionMode, 'metric'); closeMetricBuilder();" style="padding: 0.5rem 0.75rem; background: #f9fafb; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.75rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#eff6ff'; this.style.borderColor='#1d72f3'" onmouseout="this.style.background='#f9fafb'; this.style.borderColor='#d1d5db'">
+                                        🛒 Avg Basket Size
                                     </button>
-                                    <button onclick="addQuickFilter('Communication Engagement (Email Opens in Last 90 Days) is at least 5', '📊', exclusionMode, 'metric')" style="padding: 0.5rem 0.75rem; background: #f9fafb; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.75rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#eff6ff'; this.style.borderColor='#1d72f3'" onmouseout="this.style.background='#f9fafb'; this.style.borderColor='#d1d5db'">
-                                        📧 Communication Engaged
+                                    <button onclick="addQuickFilter('Communication Engagement (Email Opens in Last 90 Days) is at least 5', '📊', exclusionMode, 'metric'); closeMetricBuilder();" style="padding: 0.5rem 0.75rem; background: #f9fafb; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.75rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#eff6ff'; this.style.borderColor='#1d72f3'" onmouseout="this.style.background='#f9fafb'; this.style.borderColor='#d1d5db'">
+                                        📧 Email Engaged
                                     </button>
-                                    <button onclick="addQuickFilter('LTV Trend (Spend Last 90 Days ÷ Lifetime Spend × 100) is greater than 20', '📊', exclusionMode, 'metric')" style="padding: 0.5rem 0.75rem; background: #f9fafb; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.75rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#eff6ff'; this.style.borderColor='#1d72f3'" onmouseout="this.style.background='#f9fafb'; this.style.borderColor='#d1d5db'">
-                                        📈 Strong LTV Trend
-                                    </button>
-                                    <button onclick="addQuickFilter('Trekking Gear Enthusiasts (high affinity + frequent purchases) is at least 5 orders', '📊', exclusionMode, 'metric')" style="padding: 0.5rem 0.75rem; background: #f9fafb; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.75rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#eff6ff'; this.style.borderColor='#1d72f3'" onmouseout="this.style.background='#f9fafb'; this.style.borderColor='#d1d5db'">
-                                        🎯 Trekking Gear Enthusiasts
-                                    </button>
-                                    <button onclick="addQuickFilter('Content Engagement Score (Downloads + Webinar Attendance) is at least 3', '📊', exclusionMode, 'metric')" style="padding: 0.5rem 0.75rem; background: #f9fafb; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.75rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#eff6ff'; this.style.borderColor='#1d72f3'" onmouseout="this.style.background='#f9fafb'; this.style.borderColor='#d1d5db'">
-                                        📚 Content Engaged
+                                    <button onclick="addQuickFilter('Trekking Gear Enthusiasts (high affinity + frequent purchases) is at least 5 orders', '📊', exclusionMode, 'metric'); closeMetricBuilder();" style="padding: 0.5rem 0.75rem; background: #f9fafb; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.75rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#eff6ff'; this.style.borderColor='#1d72f3'" onmouseout="this.style.background='#f9fafb'; this.style.borderColor='#d1d5db'">
+                                        🎯 Trekking Enthusiasts
                                     </button>
                                 </div>
                             </div>
 
-                            <!-- Agentic Input Section -->
-                            <div style="margin-bottom: 1.5rem;">
-                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
-                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1d72f3" stroke-width="2">
-                                            <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
-                                        </svg>
-                                        <label style="font-size: 0.8125rem; font-weight: 600; color: #1d72f3;">Describe Your Metric (AI-Powered)</label>
-                                    </div>
-                                    <button onclick="toggleMetricExamples()" style="background: none; border: none; color: #6b7280; font-size: 0.75rem; cursor: pointer; text-decoration: underline;">
-                                        See examples
-                                    </button>
-                                </div>
-                                <textarea id="metricAgentInput" placeholder="Type your metric or refinement here..." style="width: 100%; padding: 0.75rem; border: 2px solid #1d72f3; border-radius: 0.375rem; font-size: 0.875rem; min-height: 70px; resize: vertical; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;" onkeydown="if(event.key === 'Enter' && (event.metaKey || event.ctrlKey)) { parseMetricFromAgent(); event.preventDefault(); }"></textarea>
-                                <div id="metricExamples" style="display: none; margin-top: 0.5rem; padding: 0.75rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem; font-size: 0.75rem; color: #6b7280;">
-                                    <div style="font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Try these examples:</div>
-                                    <div style="display: flex; flex-direction: column; gap: 0.375rem;">
-                                        <div style="cursor: pointer; padding: 0.375rem; border-radius: 0.25rem; transition: background 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='white'" onclick="document.getElementById('metricAgentInput').value = this.textContent.substring(2); parseMetricFromAgent();">
-                                            • customers who love trekking gear and buy frequently
-                                        </div>
-                                        <div style="cursor: pointer; padding: 0.375rem; border-radius: 0.25rem; transition: background 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='white'" onclick="document.getElementById('metricAgentInput').value = this.textContent.substring(2); parseMetricFromAgent();">
-                                            • customers who visited our site at least 3 times in the last week
-                                        </div>
-                                        <div style="cursor: pointer; padding: 0.375rem; border-radius: 0.25rem; transition: background 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='white'" onclick="document.getElementById('metricAgentInput').value = this.textContent.substring(2); parseMetricFromAgent();">
-                                            • customers who spend more than 150 per order on average
-                                        </div>
-                                        <div style="cursor: pointer; padding: 0.375rem; border-radius: 0.25rem; transition: background 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='white'" onclick="document.getElementById('metricAgentInput').value = this.textContent.substring(2); parseMetricFromAgent();">
-                                            • customers who opened at least 5 emails in the past 3 months
-                                        </div>
-                                        <div style="cursor: pointer; padding: 0.375rem; border-radius: 0.25rem; transition: background 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='white'" onclick="document.getElementById('metricAgentInput').value = this.textContent.substring(2); parseMetricFromAgent();">
-                                            • customers who attended at least 2 webinars or downloaded resources
-                                        </div>
-                                        <div style="cursor: pointer; padding: 0.375rem; border-radius: 0.25rem; transition: background 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='white'" onclick="document.getElementById('metricAgentInput').value = this.textContent.substring(2); parseMetricFromAgent();">
-                                            • customers who generate at least 5x return on marketing spend
-                                        </div>
-                                    </div>
-                                </div>
-                                <button onclick="parseMetricFromAgent()" style="margin-top: 0.5rem; padding: 0.625rem 1.25rem; background: linear-gradient(135deg, #1d72f3 0%, #0d52c4 100%); color: white; border: none; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 2px 4px rgba(29, 114, 243, 0.2);">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
-                                    </svg>
-                                    Generate Metric
-                                </button>
-                                <div style="font-size: 0.6875rem; color: #9ca3af; margin-top: 0.375rem;">
-                                    💡 Tip: Press Cmd/Ctrl + Enter to generate
-                                </div>
-                            </div>
-
-                            <!-- Manual Builder Toggle -->
-                            <div style="text-align: center; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
-                                <button onclick="toggleManualForm()" id="toggleManualBtn" style="background: none; border: none; color: #6b7280; font-size: 0.8125rem; cursor: pointer; text-decoration: underline; padding: 0.5rem 1rem; transition: color 0.2s;">
-                                    Need more control? Build Manually →
-                                </button>
-                            </div>
-
-                            <!-- Manual Form (Hidden by default) -->
+                            <!-- Manual Form (Hidden by default, for power users) -->
                             <div id="manualMetricForm" style="display: none; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px solid #d1d5db;">
                                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                                     <h5 style="font-size: 0.875rem; font-weight: 600; color: #374151;">Manual Metric Builder</h5>
@@ -9544,10 +9555,10 @@
                 closeMetricBuilder();
             } else {
                 builder.style.display = 'block';
-                // Focus on agent input
+                // Focus on chat input
                 setTimeout(() => {
                     builder.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                    document.getElementById('metricAgentInput').focus();
+                    document.getElementById('metricChatInput').focus();
                 }, 100);
             }
         }
@@ -9570,6 +9581,322 @@
                     manualForm.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }, 100);
             }
+        }
+
+        function sendMetricMessage() {
+            const chatInput = document.getElementById('metricChatInput');
+            const userMessage = chatInput.value.trim();
+            
+            if (!userMessage) return;
+            
+            // Add user message to chat
+            addMetricChatMessage(userMessage, 'user');
+            
+            // Clear input
+            chatInput.value = '';
+            
+            // Process the message
+            setTimeout(() => {
+                processMetricCommand(userMessage);
+            }, 500);
+        }
+
+        function addMetricChatMessage(message, sender) {
+            const chatHistory = document.getElementById('metricChatHistory');
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.style.cssText = 'display: flex; gap: 0.625rem; align-items: start; animation: slideDown 0.3s ease-out;';
+            
+            if (sender === 'agent') {
+                messageDiv.innerHTML = `
+                    <div style="width: 28px; height: 28px; background: linear-gradient(135deg, #1d72f3 0%, #1e40af 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                            <circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>
+                        </svg>
+                    </div>
+                    <div style="background: white; padding: 0.75rem; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-size: 0.8125rem; color: #1f2937; max-width: 85%; line-height: 1.5;">
+                        ${message}
+                    </div>
+                `;
+            } else {
+                messageDiv.style.justifyContent = 'flex-end';
+                messageDiv.innerHTML = `
+                    <div style="background: #1d72f3; color: white; padding: 0.75rem; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-size: 0.8125rem; max-width: 85%; line-height: 1.5;">
+                        ${message}
+                    </div>
+                `;
+            }
+            
+            chatHistory.appendChild(messageDiv);
+            
+            // Auto-scroll to bottom
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
+
+        function updateMetricPreviewPanel(metricName, formula, timeWindow, operator, threshold) {
+            const previewDiv = document.getElementById('metricBuilderPreview');
+            const detailsDiv = document.getElementById('metricDetailsDisplay');
+            
+            // Update main formula display
+            previewDiv.style.cssText = 'padding: 1.25rem; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 2px solid #1d72f3; border-radius: 0.375rem; min-height: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center;';
+            previewDiv.innerHTML = `
+                <div style="font-size: 0.6875rem; font-weight: 600; color: #1e40af; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Formula</div>
+                <div style="font-size: 1rem; font-weight: 700; color: #1e40af; text-align: center; font-family: 'Courier New', monospace;">
+                    ${formula}
+                </div>
+            `;
+            
+            // Update details
+            document.getElementById('metricPreviewName').textContent = metricName;
+            document.getElementById('metricPreviewTime').textContent = timeWindow === 'all' ? 'All Time' : document.getElementById('metricTimeWindow').options[document.getElementById('metricTimeWindow').selectedIndex].text;
+            document.getElementById('metricPreviewCondition').textContent = threshold ? `${operator} ${threshold}` : 'Not set';
+            
+            // Show details section
+            detailsDiv.style.display = 'block';
+        }
+
+        function processMetricCommand(input) {
+            const inputLower = input.toLowerCase();
+            
+            // Check if this is a refinement or new metric
+            const isRefinement = lastBuiltMetric && (
+                inputLower.includes('change') || 
+                inputLower.includes('update') || 
+                inputLower.includes('modify') ||
+                inputLower.includes('make it') ||
+                inputLower.includes('use ') ||
+                inputLower.includes('instead') ||
+                inputLower.includes('to ')
+            );
+            
+            if (isRefinement) {
+                handleMetricRefinementChat(input, inputLower);
+            } else {
+                parseMetricFromChat(input, inputLower);
+            }
+        }
+
+        function parseMetricFromChat(input, inputLower) {
+            // Initialize parsing variables
+            let metricName = '';
+            let attr1 = '';
+            let attr2 = '';
+            let operation = 'none';
+            let operator = '>';
+            let threshold = '';
+            let timeWindow = 'all';
+            
+            // 1. DETECT OPERATIONS
+            if (inputLower.includes('divided by') || inputLower.includes('divide by') || inputLower.includes(' per ') || inputLower.includes('/')) {
+                operation = 'divide';
+            } else if (inputLower.includes('multiplied by') || inputLower.includes('times') || inputLower.includes('×')) {
+                operation = 'multiply';
+            } else if (inputLower.includes(' plus ') || inputLower.includes(' and ') || inputLower.includes('+')) {
+                operation = 'add';
+            }
+            
+            // 2. DETECT TIME WINDOW
+            if (inputLower.includes('last 7 days') || inputLower.includes('past week') || inputLower.includes('last week')) {
+                timeWindow = '7days';
+            } else if (inputLower.includes('last 30 days') || inputLower.includes('past month') || inputLower.includes('last month')) {
+                timeWindow = '30days';
+            } else if (inputLower.includes('last 90 days') || inputLower.includes('past 3 months') || inputLower.includes('last 3 months')) {
+                timeWindow = '90days';
+            } else if (inputLower.includes('last 6 months')) {
+                timeWindow = '6months';
+            }
+            
+            // 3. DETECT SPECIAL PATTERNS
+            const hasProductAffinity = inputLower.includes('love') || inputLower.includes('affinity') || inputLower.includes('mostly') || inputLower.includes('enthusiast');
+            const hasPurchaseFrequency = inputLower.includes('frequently') || inputLower.includes('often') || inputLower.includes('buy') || inputLower.includes('purchase');
+            const hasProductMention = inputLower.includes('trekking') || inputLower.includes('outdoor') || inputLower.includes('gear');
+            
+            if (hasProductAffinity && hasPurchaseFrequency) {
+                attr1 = 'OrderCount';
+                metricName = 'Trekking Gear Enthusiasts';
+                threshold = threshold || '5';
+                operator = '>=';
+                timeWindow = timeWindow || '90days';
+                
+                addMetricChatMessage('Got it! Building a metric for frequent buyers who prefer trekking gear...', 'agent');
+            } else if (inputLower.includes('per order') || (inputLower.includes('average') && inputLower.includes('spend'))) {
+                attr1 = 'TotalSpend';
+                attr2 = 'OrderCount';
+                operation = 'divide';
+                metricName = 'Average Order Value';
+                addMetricChatMessage('Building average order value metric...', 'agent');
+            } else if (inputLower.includes('visited') || inputLower.includes('visit')) {
+                attr1 = 'SiteVisits';
+                metricName = 'Recent Website Visitors';
+                addMetricChatMessage('Building website visit metric...', 'agent');
+            } else if (inputLower.includes('email') && inputLower.includes('open')) {
+                attr1 = 'EmailOpens';
+                metricName = 'Email Engaged Customers';
+                addMetricChatMessage('Building email engagement metric...', 'agent');
+            } else if (inputLower.includes('webinar') || inputLower.includes('download')) {
+                attr1 = 'WebinarAttendance';
+                attr2 = 'Downloads';
+                operation = 'add';
+                metricName = 'Content Engaged';
+                addMetricChatMessage('Building content engagement metric...', 'agent');
+            } else if (inputLower.includes('roi') || inputLower.includes('return')) {
+                attr1 = 'Revenue';
+                attr2 = 'MarketingCost';
+                operation = 'divide';
+                metricName = 'Marketing ROI';
+                addMetricChatMessage('Building ROI metric...', 'agent');
+            } else {
+                // Generic detection
+                const attributeMap = {
+                    'spend': 'TotalSpend',
+                    'revenue': 'Revenue',
+                    'orders': 'OrderCount',
+                    'visits': 'SiteVisits',
+                    'opens': 'EmailOpens'
+                };
+                
+                for (const [key, value] of Object.entries(attributeMap)) {
+                    if (inputLower.includes(key) && !attr1) {
+                        attr1 = value;
+                        metricName = `High ${value}`;
+                        break;
+                    }
+                }
+                
+                if (attr1) {
+                    addMetricChatMessage('Building your metric...', 'agent');
+                } else {
+                    addMetricChatMessage('I need more details. Can you describe what you want to measure? For example: "customers who visited our site at least 3 times recently"', 'agent');
+                    return;
+                }
+            }
+            
+            // Extract threshold
+            const numberMatch = input.match(/(\d+(?:,\d{3})*(?:\.\d+)?)/);
+            if (numberMatch) {
+                threshold = numberMatch[1].replace(/,/g, '');
+            }
+            
+            // Detect operator
+            if (inputLower.includes('at least') || inputLower.includes('minimum')) {
+                operator = '>=';
+            } else if (inputLower.includes('greater than') || inputLower.includes('more than') || inputLower.includes('above')) {
+                operator = '>';
+            } else if (inputLower.includes('less than') || inputLower.includes('below')) {
+                operator = '<';
+            }
+            
+            // Auto-fill form
+            document.getElementById('metricNameInput').value = metricName;
+            document.getElementById('metricAttribute1').value = attr1;
+            document.getElementById('metricOperation').value = operation;
+            if (attr2) {
+                document.getElementById('metricAttribute2').value = attr2;
+                document.getElementById('metricAttribute2').style.display = 'block';
+            }
+            document.getElementById('metricTimeWindow').value = timeWindow;
+            document.getElementById('metricOperator').value = operator;
+            if (threshold) {
+                document.getElementById('metricThreshold').value = threshold;
+            }
+            
+            // Save metric state
+            lastBuiltMetric = {
+                name: metricName,
+                attr1: attr1,
+                attr2: attr2,
+                operation: operation,
+                timeWindow: timeWindow,
+                operator: operator,
+                threshold: threshold
+            };
+            
+            // Update preview
+            updateFormulaPreview();
+            const formulaText = document.getElementById('formulaPreview').textContent;
+            
+            // Update left panel
+            setTimeout(() => {
+                updateMetricPreviewPanel(metricName, formulaText, timeWindow, operator, threshold);
+                
+                // Show agent response
+                addMetricChatMessage(`✓ Done! I've built: <strong>${metricName}</strong><br><br>Formula: <code>${formulaText}</code><br><br>Look good? Click "Add to Segment" or tell me what to change.`, 'agent');
+            }, 800);
+        }
+
+        function handleMetricRefinementChat(input, inputLower) {
+            // Start with last metric
+            let metricName = lastBuiltMetric.name;
+            let attr1 = lastBuiltMetric.attr1;
+            let attr2 = lastBuiltMetric.attr2;
+            let operation = lastBuiltMetric.operation;
+            let timeWindow = lastBuiltMetric.timeWindow;
+            let operator = lastBuiltMetric.operator;
+            let threshold = lastBuiltMetric.threshold;
+            
+            let changesMade = [];
+            
+            // Detect changes
+            const numberMatch = input.match(/(\d+(?:,\d{3})*(?:\.\d+)?)/);
+            if (numberMatch) {
+                threshold = numberMatch[1].replace(/,/g, '');
+                changesMade.push(`threshold to ${threshold}`);
+            }
+            
+            if (inputLower.includes('last 7 days') || inputLower.includes('last week')) {
+                timeWindow = '7days';
+                changesMade.push('time to last 7 days');
+            } else if (inputLower.includes('last 30 days') || inputLower.includes('last month')) {
+                timeWindow = '30days';
+                changesMade.push('time to last 30 days');
+            } else if (inputLower.includes('last 90 days')) {
+                timeWindow = '90days';
+                changesMade.push('time to last 90 days');
+            }
+            
+            if (inputLower.includes('at least')) {
+                operator = '>=';
+                changesMade.push('condition to at least');
+            } else if (inputLower.includes('greater than') || inputLower.includes('more than')) {
+                operator = '>';
+                changesMade.push('condition to greater than');
+            }
+            
+            // Apply changes
+            document.getElementById('metricNameInput').value = metricName;
+            document.getElementById('metricAttribute1').value = attr1;
+            document.getElementById('metricOperation').value = operation;
+            if (attr2) {
+                document.getElementById('metricAttribute2').value = attr2;
+                document.getElementById('metricAttribute2').style.display = 'block';
+            }
+            document.getElementById('metricTimeWindow').value = timeWindow;
+            document.getElementById('metricOperator').value = operator;
+            document.getElementById('metricThreshold').value = threshold;
+            
+            // Update state
+            lastBuiltMetric = {
+                name: metricName,
+                attr1: attr1,
+                attr2: attr2,
+                operation: operation,
+                timeWindow: timeWindow,
+                operator: operator,
+                threshold: threshold
+            };
+            
+            // Update preview
+            updateFormulaPreview();
+            const formulaText = document.getElementById('formulaPreview').textContent;
+            
+            // Update left panel
+            setTimeout(() => {
+                updateMetricPreviewPanel(metricName, formulaText, timeWindow, operator, threshold);
+                
+                // Show agent response
+                const changesText = changesMade.length > 0 ? changesMade.join(', ') : 'your requested changes';
+                addMetricChatMessage(`✓ Updated! Changed ${changesText}.<br><br>New formula: <code>${formulaText}</code><br><br>Need more changes or ready to add?`, 'agent');
+            }, 800);
         }
 
         function parseMetricFromAgent() {
@@ -10041,21 +10368,32 @@
             // Hide manual form
             document.getElementById('manualMetricForm').style.display = 'none';
             
-            // Reset input styling and label
-            const agentInput = document.getElementById('metricAgentInput');
-            agentInput.value = '';
-            agentInput.placeholder = 'Type your metric or refinement here...';
-            agentInput.style.borderColor = '#1d72f3';
-            agentInput.style.borderTopLeftRadius = '0.375rem';
-            agentInput.style.borderTopRightRadius = '0.375rem';
-            agentInput.style.borderWidth = '2px';
+            // Reset chat
+            const chatHistory = document.getElementById('metricChatHistory');
+            const chatInput = document.getElementById('metricChatInput');
+            chatInput.value = '';
             
-            // Remove refinement label
-            const refinementLabel = document.getElementById('refinementInputLabel');
-            if (refinementLabel) refinementLabel.remove();
+            // Keep only initial message
+            chatHistory.innerHTML = `
+                <div style="display: flex; gap: 0.625rem; align-items: start;">
+                    <div style="width: 28px; height: 28px; background: linear-gradient(135deg, #1d72f3 0%, #1e40af 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                            <circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>
+                        </svg>
+                    </div>
+                    <div style="background: white; padding: 0.75rem; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-size: 0.8125rem; color: #1f2937; max-width: 85%;">
+                        Hi! Describe the metric you want to build in plain English. For example: "customers who love trekking gear and buy frequently"
+                    </div>
+                </div>
+            `;
             
-            // Reset other form fields
-            document.getElementById('metricExamples').style.display = 'none';
+            // Reset preview panel
+            const previewDiv = document.getElementById('metricBuilderPreview');
+            previewDiv.style.cssText = 'padding: 1rem; background: #f9fafb; border: 2px dashed #d1d5db; border-radius: 0.375rem; min-height: 120px; display: flex; align-items: center; justify-content: center; font-size: 0.875rem; color: #9ca3af; text-align: center;';
+            previewDiv.innerHTML = 'Start describing your metric in the chat →';
+            document.getElementById('metricDetailsDisplay').style.display = 'none';
+            
+            // Reset form fields
             document.getElementById('metricNameInput').value = '';
             document.getElementById('formulaTextInput').value = '';
             document.getElementById('metricTimeWindow').value = 'all';
