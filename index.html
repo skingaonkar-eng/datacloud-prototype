@@ -9847,20 +9847,26 @@
                         <div style="margin-bottom: 0.375rem;"><strong>Name:</strong> ${metricName}</div>
                         <div style="margin-bottom: 0.5rem;"><strong>Formula:</strong> ${formulaDisplay}</div>
                         
-                        <!-- Refinement Hint -->
-                        <div style="padding: 0.625rem; background: #fffbeb; border: 1px solid #fcd34d; border-radius: 0.375rem; margin-bottom: 0.75rem; font-size: 0.75rem;">
-                            <div style="font-weight: 600; color: #92400e; margin-bottom: 0.25rem;">💡 Want to refine?</div>
-                            <div style="color: #78350f; line-height: 1.4;">
-                                Try: <span style="font-style: italic;">"change threshold to 10"</span>, <span style="font-style: italic;">"use last 30 days instead"</span>, or <span style="font-style: italic;">"make it at least 5"</span>
+                        <!-- Refinement Instructions -->
+                        <div style="padding: 0.75rem; background: #eff6ff; border: 2px solid #1d72f3; border-radius: 0.375rem; margin-bottom: 0.75rem; font-size: 0.75rem;">
+                            <div style="font-weight: 600; color: #1e40af; margin-bottom: 0.5rem;">💬 Not quite right? Just tell me!</div>
+                            <div style="color: #1e40af; line-height: 1.5; margin-bottom: 0.5rem;">
+                                Type your refinement in the box above. Examples:
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 0.25rem; color: #3b82f6; padding-left: 0.5rem;">
+                                <div>• "change threshold to 10"</div>
+                                <div>• "use last 30 days instead"</div>
+                                <div>• "make it at least 5"</div>
+                                <div>• "change to last week"</div>
                             </div>
                         </div>
                         
                         <div style="display: flex; gap: 0.75rem;">
-                            <button onclick="saveCustomMetric(); this.parentElement.parentElement.parentElement.parentElement.remove();" style="padding: 0.5rem 1rem; background: #10b981; color: white; border: none; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer;">
+                            <button onclick="saveCustomMetric(); this.parentElement.parentElement.parentElement.parentElement.remove();" style="flex: 1; padding: 0.625rem 1.25rem; background: #10b981; color: white; border: none; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
                                 Add to Segment
-                            </button>
-                            <button onclick="toggleManualForm(); this.parentElement.parentElement.parentElement.parentElement.remove();" style="padding: 0.5rem 1rem; background: white; color: #374151; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer;">
-                                Fine-tune Manually
                             </button>
                         </div>
                     </div>
@@ -9962,13 +9968,16 @@
                     </div>
                     <div style="flex: 1;">
                         <div style="font-weight: 600; margin-bottom: 0.5rem;">✓ Metric Updated</div>
-                        <div style="margin-bottom: 0.75rem;"><strong>New Formula:</strong> ${formulaDisplay}</div>
-                        <div style="display: flex; gap: 0.75rem;">
-                            <button onclick="saveCustomMetric(); this.parentElement.parentElement.parentElement.parentElement.remove();" style="padding: 0.5rem 1rem; background: #10b981; color: white; border: none; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer;">
+                        <div style="margin-bottom: 0.625rem;"><strong>New Formula:</strong> ${formulaDisplay}</div>
+                        <div style="padding: 0.5rem; background: #f0f9ff; border-radius: 0.25rem; margin-bottom: 0.75rem; font-size: 0.6875rem; color: #0369a1;">
+                            💬 Want more changes? Type another refinement above or add to segment
+                        </div>
+                        <div>
+                            <button onclick="saveCustomMetric(); this.parentElement.parentElement.parentElement.parentElement.remove();" style="width: 100%; padding: 0.625rem 1.25rem; background: #10b981; color: white; border: none; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
                                 Add to Segment
-                            </button>
-                            <button onclick="toggleManualForm(); this.parentElement.parentElement.parentElement.parentElement.remove();" style="padding: 0.5rem 1rem; background: white; color: #374151; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer;">
-                                Fine-tune Manually
                             </button>
                         </div>
                     </div>
