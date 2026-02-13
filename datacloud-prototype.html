@@ -1105,6 +1105,19 @@
             }
         }
 
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+                max-height: 0;
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+                max-height: 500px;
+            }
+        }
+
         /* Global Agentic Command Bar */
         .global-agent-bar {
             position: fixed;
@@ -3627,7 +3640,7 @@
                                     <h3>Metrics</h3>
                                     <p>Calculated metrics using multiple attributes with formulas</p>
                                 </div>
-                                <button onclick="alert('Navigate to Metric Builder')" style="background: #1d72f3; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 0.375rem;">
+                                <button onclick="toggleMetricBuilder()" id="createMetricBtn" style="background: #1d72f3; color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 0.375rem;">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
                                     </svg>
@@ -3694,6 +3707,111 @@
                                     <div class="filter-name">Brand Loyalists</div>
                                     <div class="filter-detail">Repeat Purchase Rate + NPS / 2 > 0.8</div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- Inline Metric Builder (Hidden by default) -->
+                        <div id="inlineMetricBuilder" style="display: none; margin-top: 1.5rem; padding: 1.5rem; background: #f9fafb; border: 2px solid #1d72f3; border-radius: 0.5rem; animation: slideDown 0.3s ease-out;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+                                <h4 style="font-size: 1rem; font-weight: 600; color: #1f2937; display: flex; align-items: center; gap: 0.5rem;">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1d72f3" stroke-width="2">
+                                        <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+                                    </svg>
+                                    Build Your Custom Metric
+                                </h4>
+                                <button onclick="closeMetricBuilder()" style="background: none; border: none; color: #6b7280; cursor: pointer; padding: 0.25rem;">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                                <!-- Metric Name -->
+                                <div style="grid-column: 1 / -1;">
+                                    <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.375rem;">Metric Name</label>
+                                    <input type="text" id="metricNameInput" placeholder="e.g., High Value Shoppers" style="width: 100%; padding: 0.625rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem;">
+                                </div>
+
+                                <!-- Select Attributes -->
+                                <div style="grid-column: 1 / -1;">
+                                    <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.375rem;">Select Attributes</label>
+                                    <select id="metricAttribute1" style="width: 48%; padding: 0.625rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem; margin-right: 1%;">
+                                        <option value="">Choose first attribute...</option>
+                                        <option value="TotalSpend">Total Spend</option>
+                                        <option value="OrderCount">Order Count</option>
+                                        <option value="EmailOpens">Email Opens</option>
+                                        <option value="SiteVisits">Site Visits</option>
+                                        <option value="LifetimeValue">Lifetime Value</option>
+                                        <option value="ProjectedValue">Projected Value</option>
+                                        <option value="MonthsActive">Months Active</option>
+                                        <option value="MarketingCost">Marketing Cost</option>
+                                        <option value="Revenue">Revenue</option>
+                                    </select>
+                                    <select id="metricAttribute2" style="width: 48%; padding: 0.625rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem; margin-left: 1%;">
+                                        <option value="">Choose second attribute (optional)...</option>
+                                        <option value="TotalSpend">Total Spend</option>
+                                        <option value="OrderCount">Order Count</option>
+                                        <option value="EmailOpens">Email Opens</option>
+                                        <option value="SiteVisits">Site Visits</option>
+                                        <option value="LifetimeValue">Lifetime Value</option>
+                                        <option value="ProjectedValue">Projected Value</option>
+                                        <option value="MonthsActive">Months Active</option>
+                                        <option value="MarketingCost">Marketing Cost</option>
+                                        <option value="Revenue">Revenue</option>
+                                    </select>
+                                </div>
+
+                                <!-- Formula -->
+                                <div>
+                                    <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.375rem;">Formula</label>
+                                    <select id="metricFormula" style="width: 100%; padding: 0.625rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem;">
+                                        <option value="">Choose formula...</option>
+                                        <option value="SUM">SUM - Add attributes</option>
+                                        <option value="AVG">AVG - Average of attributes</option>
+                                        <option value="DIVIDE">DIVIDE - Attr1 / Attr2</option>
+                                        <option value="MULTIPLY">MULTIPLY - Attr1 × Attr2</option>
+                                        <option value="COUNT">COUNT - Count of records</option>
+                                        <option value="MIN">MIN - Minimum value</option>
+                                        <option value="MAX">MAX - Maximum value</option>
+                                    </select>
+                                </div>
+
+                                <!-- Operator & Threshold -->
+                                <div>
+                                    <label style="display: block; font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.375rem;">Condition</label>
+                                    <div style="display: flex; gap: 0.5rem;">
+                                        <select id="metricOperator" style="flex: 1; padding: 0.625rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem;">
+                                            <option value=">">Greater than (>)</option>
+                                            <option value="<">Less than (<)</option>
+                                            <option value=">=">Greater than or equal (≥)</option>
+                                            <option value="<=">Less than or equal (≤)</option>
+                                            <option value="=">Equal to (=)</option>
+                                        </select>
+                                        <input type="number" id="metricThreshold" placeholder="Value" style="flex: 1; padding: 0.625rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Preview Formula -->
+                            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem; padding: 0.875rem; margin-bottom: 1rem;">
+                                <div style="font-size: 0.75rem; font-weight: 600; color: #6b7280; margin-bottom: 0.375rem;">FORMULA PREVIEW</div>
+                                <div id="formulaPreview" style="font-family: 'Courier New', monospace; font-size: 0.875rem; color: #1f2937; font-weight: 600;">
+                                    Select attributes and formula to see preview
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+                                <button onclick="closeMetricBuilder()" style="padding: 0.625rem 1.25rem; border: 1px solid #d1d5db; background: white; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600; color: #374151; cursor: pointer;">
+                                    Cancel
+                                </button>
+                                <button onclick="saveCustomMetric()" style="padding: 0.625rem 1.25rem; border: none; background: #1d72f3; color: white; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                    Save & Add to Segment
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -8831,6 +8949,148 @@
                 emptyState.style.display = 'block';
             }
         }
+
+        // Metric Builder Functions
+        function toggleMetricBuilder() {
+            const builder = document.getElementById('inlineMetricBuilder');
+            const isVisible = builder.style.display === 'block';
+            
+            if (isVisible) {
+                closeMetricBuilder();
+            } else {
+                builder.style.display = 'block';
+                // Scroll to builder smoothly
+                setTimeout(() => {
+                    builder.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+            }
+        }
+
+        function closeMetricBuilder() {
+            const builder = document.getElementById('inlineMetricBuilder');
+            builder.style.display = 'none';
+            
+            // Reset form
+            document.getElementById('metricNameInput').value = '';
+            document.getElementById('metricAttribute1').value = '';
+            document.getElementById('metricAttribute2').value = '';
+            document.getElementById('metricFormula').value = '';
+            document.getElementById('metricOperator').value = '>';
+            document.getElementById('metricThreshold').value = '';
+            document.getElementById('formulaPreview').textContent = 'Select attributes and formula to see preview';
+        }
+
+        function saveCustomMetric() {
+            const metricName = document.getElementById('metricNameInput').value.trim();
+            const attr1 = document.getElementById('metricAttribute1').value;
+            const attr2 = document.getElementById('metricAttribute2').value;
+            const formula = document.getElementById('metricFormula').value;
+            const operator = document.getElementById('metricOperator').value;
+            const threshold = document.getElementById('metricThreshold').value;
+            
+            // Validation
+            if (!metricName) {
+                alert('Please enter a metric name');
+                return;
+            }
+            if (!attr1) {
+                alert('Please select at least one attribute');
+                return;
+            }
+            if (!formula) {
+                alert('Please select a formula');
+                return;
+            }
+            if (!threshold) {
+                alert('Please enter a threshold value');
+                return;
+            }
+            
+            // Build formula string
+            let formulaStr = '';
+            if (formula === 'SUM') {
+                formulaStr = attr2 ? `${attr1} + ${attr2}` : `SUM(${attr1})`;
+            } else if (formula === 'AVG') {
+                formulaStr = attr2 ? `(${attr1} + ${attr2}) / 2` : `AVG(${attr1})`;
+            } else if (formula === 'DIVIDE') {
+                formulaStr = attr2 ? `${attr1} / ${attr2}` : `${attr1} / 1`;
+            } else if (formula === 'MULTIPLY') {
+                formulaStr = attr2 ? `${attr1} × ${attr2}` : `${attr1} × 1`;
+            } else if (formula === 'COUNT') {
+                formulaStr = `COUNT(${attr1})`;
+            } else if (formula === 'MIN') {
+                formulaStr = `MIN(${attr1})`;
+            } else if (formula === 'MAX') {
+                formulaStr = `MAX(${attr1})`;
+            }
+            
+            // Build filter string for display
+            const filterString = `${metricName}: ${operator} ${threshold}`;
+            
+            // Add to segment using existing function
+            addQuickFilter(filterString, '📊', exclusionMode, 'metric');
+            
+            // Close builder
+            closeMetricBuilder();
+            
+            // Show success message
+            const successMsg = document.createElement('div');
+            successMsg.textContent = `✓ Custom metric "${metricName}" added to segment`;
+            successMsg.style.cssText = 'position: fixed; top: 80px; right: 20px; background: #10b981; color: white; padding: 0.75rem 1.25rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 600; z-index: 10000; box-shadow: 0 4px 6px rgba(0,0,0,0.1); animation: slideInRight 0.3s ease-out, fadeOut 0.3s ease-out 2.7s forwards;';
+            document.body.appendChild(successMsg);
+            setTimeout(() => successMsg.remove(), 3000);
+        }
+
+        // Update formula preview as user selects options
+        document.addEventListener('DOMContentLoaded', function() {
+            const attr1Select = document.getElementById('metricAttribute1');
+            const attr2Select = document.getElementById('metricAttribute2');
+            const formulaSelect = document.getElementById('metricFormula');
+            const operatorSelect = document.getElementById('metricOperator');
+            const thresholdInput = document.getElementById('metricThreshold');
+            
+            if (attr1Select && attr2Select && formulaSelect && operatorSelect && thresholdInput) {
+                const updatePreview = () => {
+                    const attr1 = attr1Select.value;
+                    const attr2 = attr2Select.value;
+                    const formula = formulaSelect.value;
+                    const operator = operatorSelect.value;
+                    const threshold = thresholdInput.value;
+                    
+                    const preview = document.getElementById('formulaPreview');
+                    if (!attr1 || !formula) {
+                        preview.textContent = 'Select attributes and formula to see preview';
+                        return;
+                    }
+                    
+                    let formulaStr = '';
+                    if (formula === 'SUM') {
+                        formulaStr = attr2 ? `${attr1} + ${attr2}` : `SUM(${attr1})`;
+                    } else if (formula === 'AVG') {
+                        formulaStr = attr2 ? `(${attr1} + ${attr2}) / 2` : `AVG(${attr1})`;
+                    } else if (formula === 'DIVIDE') {
+                        formulaStr = attr2 ? `${attr1} / ${attr2}` : `${attr1}`;
+                    } else if (formula === 'MULTIPLY') {
+                        formulaStr = attr2 ? `${attr1} × ${attr2}` : `${attr1}`;
+                    } else if (formula === 'COUNT') {
+                        formulaStr = `COUNT(${attr1})`;
+                    } else if (formula === 'MIN') {
+                        formulaStr = `MIN(${attr1})`;
+                    } else if (formula === 'MAX') {
+                        formulaStr = `MAX(${attr1})`;
+                    }
+                    
+                    const fullFormula = threshold ? `${formulaStr} ${operator} ${threshold}` : formulaStr;
+                    preview.textContent = fullFormula;
+                };
+                
+                attr1Select.addEventListener('change', updatePreview);
+                attr2Select.addEventListener('change', updatePreview);
+                formulaSelect.addEventListener('change', updatePreview);
+                operatorSelect.addEventListener('change', updatePreview);
+                thresholdInput.addEventListener('input', updatePreview);
+            }
+        });
 
         function updateAudienceDisplay() {
             // Update final audience in Save & Activate tab
