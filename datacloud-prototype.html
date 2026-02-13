@@ -2996,7 +2996,7 @@
 
             <!-- Create Button Container -->
             <div class="create-button-container">
-                <button class="btn-create-segment" onclick="alert('Button clicked!'); showCreationModal();">
+                <button class="btn-create-segment" onclick="showCreationModal()">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem;">
                         <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
                         <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
@@ -7829,16 +7829,11 @@
 
         // Segments List Page Functions
         function showCreationModal() {
-            console.log('showCreationModal called');
             const modal = document.getElementById('creationModal');
-            console.log('Modal element:', modal);
             if (modal) {
                 modal.style.display = 'flex';
+                modal.style.zIndex = '10000';
                 document.body.style.overflow = 'hidden';
-                console.log('Modal should now be visible');
-            } else {
-                console.error('Modal element not found!');
-                alert('Error: Creation modal not found. Please refresh the page.');
             }
         }
 
