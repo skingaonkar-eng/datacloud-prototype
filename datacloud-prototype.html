@@ -3742,8 +3742,8 @@
                                     <button onclick="addQuickFilter('LTV Trend (Spend Last 90 Days ÷ Lifetime Spend × 100) is greater than 20', '📊', exclusionMode, 'metric')" style="padding: 0.5rem 0.75rem; background: #f9fafb; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.75rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#eff6ff'; this.style.borderColor='#1d72f3'" onmouseout="this.style.background='#f9fafb'; this.style.borderColor='#d1d5db'">
                                         📈 Strong LTV Trend
                                     </button>
-                                    <button onclick="addQuickFilter('Outdoor Gear Enthusiasts (mostly buy outdoor products) is at least 40%', '📊', exclusionMode, 'metric')" style="padding: 0.5rem 0.75rem; background: #f9fafb; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.75rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#eff6ff'; this.style.borderColor='#1d72f3'" onmouseout="this.style.background='#f9fafb'; this.style.borderColor='#d1d5db'">
-                                        🎯 Outdoor Gear Enthusiasts
+                                    <button onclick="addQuickFilter('Trekking Gear Enthusiasts (high affinity + frequent purchases) is at least 5 orders', '📊', exclusionMode, 'metric')" style="padding: 0.5rem 0.75rem; background: #f9fafb; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.75rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#eff6ff'; this.style.borderColor='#1d72f3'" onmouseout="this.style.background='#f9fafb'; this.style.borderColor='#d1d5db'">
+                                        🎯 Trekking Gear Enthusiasts
                                     </button>
                                     <button onclick="addQuickFilter('Content Engagement Score (Downloads + Webinar Attendance) is at least 3', '📊', exclusionMode, 'metric')" style="padding: 0.5rem 0.75rem; background: #f9fafb; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.75rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#eff6ff'; this.style.borderColor='#1d72f3'" onmouseout="this.style.background='#f9fafb'; this.style.borderColor='#d1d5db'">
                                         📚 Content Engaged
@@ -3764,10 +3764,13 @@
                                         See examples
                                     </button>
                                 </div>
-                                <textarea id="metricAgentInput" placeholder="Describe who you want to target (e.g., 'customers who visited our site at least 3 times recently')" style="width: 100%; padding: 0.75rem; border: 2px solid #1d72f3; border-radius: 0.375rem; font-size: 0.875rem; min-height: 70px; resize: vertical; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;" onkeydown="if(event.key === 'Enter' && (event.metaKey || event.ctrlKey)) { parseMetricFromAgent(); event.preventDefault(); }"></textarea>
+                                <textarea id="metricAgentInput" placeholder="Describe who you want to target (e.g., 'customers who love trekking gear and buy frequently')" style="width: 100%; padding: 0.75rem; border: 2px solid #1d72f3; border-radius: 0.375rem; font-size: 0.875rem; min-height: 70px; resize: vertical; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;" onkeydown="if(event.key === 'Enter' && (event.metaKey || event.ctrlKey)) { parseMetricFromAgent(); event.preventDefault(); }"></textarea>
                                 <div id="metricExamples" style="display: none; margin-top: 0.5rem; padding: 0.75rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem; font-size: 0.75rem; color: #6b7280;">
                                     <div style="font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Try these examples:</div>
                                     <div style="display: flex; flex-direction: column; gap: 0.375rem;">
+                                        <div style="cursor: pointer; padding: 0.375rem; border-radius: 0.25rem; transition: background 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='white'" onclick="document.getElementById('metricAgentInput').value = this.textContent.substring(2); parseMetricFromAgent();">
+                                            • customers who love trekking gear and buy frequently
+                                        </div>
                                         <div style="cursor: pointer; padding: 0.375rem; border-radius: 0.25rem; transition: background 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='white'" onclick="document.getElementById('metricAgentInput').value = this.textContent.substring(2); parseMetricFromAgent();">
                                             • customers who visited our site at least 3 times in the last week
                                         </div>
@@ -3776,9 +3779,6 @@
                                         </div>
                                         <div style="cursor: pointer; padding: 0.375rem; border-radius: 0.25rem; transition: background 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='white'" onclick="document.getElementById('metricAgentInput').value = this.textContent.substring(2); parseMetricFromAgent();">
                                             • customers who opened at least 5 emails in the past 3 months
-                                        </div>
-                                        <div style="cursor: pointer; padding: 0.375rem; border-radius: 0.25rem; transition: background 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='white'" onclick="document.getElementById('metricAgentInput').value = this.textContent.substring(2); parseMetricFromAgent();">
-                                            • customers who mostly buy outdoor gear
                                         </div>
                                         <div style="cursor: pointer; padding: 0.375rem; border-radius: 0.25rem; transition: background 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='white'" onclick="document.getElementById('metricAgentInput').value = this.textContent.substring(2); parseMetricFromAgent();">
                                             • customers who attended at least 2 webinars or downloaded resources
@@ -9654,29 +9654,59 @@
                 operator = '=';
             }
             
-            // 5. SMART ATTRIBUTE DETECTION (Order matters based on operation)
+            // 5. DETECT SPECIAL PATTERNS (product affinity + purchase frequency)
+            const hasProductAffinity = inputLower.includes('love') || inputLower.includes('affinity') || inputLower.includes('mostly buy') || inputLower.includes('prefer');
+            const hasPurchaseFrequency = inputLower.includes('frequently') || inputLower.includes('often') || inputLower.includes('regular');
+            const hasProductMention = inputLower.includes('trekking') || inputLower.includes('outdoor') || inputLower.includes('gear') || inputLower.includes('equipment');
+            
+            // Handle combined patterns like "love trekking gear and buy frequently"
+            if (hasProductAffinity && hasPurchaseFrequency && hasProductMention && inputLower.includes('and')) {
+                // This is a multi-condition query - suggest simpler approach
+                attr1 = 'OrderCount'; // Frequent purchases
+                metricName = 'Trekking Gear Enthusiasts';
+                threshold = threshold || '5'; // Default to 5 purchases
+                operator = '>=';
+                timeWindow = '90days'; // Recent purchases
+            } else if (hasPurchaseFrequency || inputLower.includes('buy') || inputLower.includes('purchase')) {
+                if (inputLower.includes('frequently') || inputLower.includes('often')) {
+                    attr1 = 'OrderCount';
+                    metricName = 'Frequent Buyers';
+                    threshold = threshold || '3';
+                    operator = '>=';
+                }
+            }
+            
+            // 6. SMART ATTRIBUTE DETECTION (Order matters based on operation)
             const attributeMap = {
                 // Engagement & Activity
                 'website visits': 'SiteVisits',
                 'site visits': 'SiteVisits',
+                'visited': 'SiteVisits',
                 'email opens': 'EmailOpens',
+                'opened': 'EmailOpens',
                 'opens': 'EmailOpens',
                 'email clicks': 'EmailClicks',
                 'clicks': 'EmailClicks',
                 'emails sent': 'EmailsSent',
                 'form submissions': 'FormSubmissions',
                 'webinar attendance': 'WebinarAttendance',
+                'attended': 'WebinarAttendance',
                 'downloads': 'Downloads',
+                'downloaded': 'Downloads',
                 
                 // Monetary & Value
                 'total spend': 'TotalSpend',
                 'spend': 'TotalSpend',
+                'spent': 'TotalSpend',
                 'lifetime spend': 'LifetimeValue',
                 'lifetime value': 'LifetimeValue',
                 'ltv': 'LifetimeValue',
                 'revenue': 'Revenue',
+                'generate': 'Revenue',
                 'order count': 'OrderCount',
                 'orders': 'OrderCount',
+                'purchase': 'OrderCount',
+                'buy': 'OrderCount',
                 'transaction value': 'TotalSpend',
                 'order amount': 'OrderCount',
                 
@@ -9693,47 +9723,52 @@
             };
             
             // Parse attributes in order (for complex formulas like "A divided by B")
-            let remainingInput = inputLower;
-            let detectedAttrs = [];
-            
-            // Find all attribute mentions
-            for (const [key, value] of Object.entries(attributeMap)) {
-                if (remainingInput.includes(key)) {
-                    const index = remainingInput.indexOf(key);
-                    detectedAttrs.push({ attr: value, index, key });
+            // But only if not already detected by special patterns
+            if (!attr1) {
+                let remainingInput = inputLower;
+                let detectedAttrs = [];
+                
+                // Find all attribute mentions
+                for (const [key, value] of Object.entries(attributeMap)) {
+                    if (remainingInput.includes(key)) {
+                        const index = remainingInput.indexOf(key);
+                        detectedAttrs.push({ attr: value, index, key });
+                    }
+                }
+                
+                // Sort by position in the input
+                detectedAttrs.sort((a, b) => a.index - b.index);
+                
+                if (detectedAttrs.length >= 1) {
+                    attr1 = detectedAttrs[0].attr;
+                }
+                if (detectedAttrs.length >= 2 && operation !== 'none') {
+                    attr2 = detectedAttrs[1].attr;
                 }
             }
             
-            // Sort by position in the input
-            detectedAttrs.sort((a, b) => a.index - b.index);
-            
-            if (detectedAttrs.length >= 1) {
-                attr1 = detectedAttrs[0].attr;
-            }
-            if (detectedAttrs.length >= 2 && operation !== 'none') {
-                attr2 = detectedAttrs[1].attr;
-            }
-            
-            // 6. GENERATE METRIC NAME
-            if (attr1 && attr2 && operation) {
-                const opName = {
-                    'divide': 'Ratio',
-                    'multiply': 'Product',
-                    'add': 'Combined',
-                    'subtract': 'Net'
-                }[operation] || '';
-                metricName = `${attr1} ${opName}`;
-            } else if (attr1) {
-                metricName = `High ${attr1}`;
-            } else {
-                const words = input.split(' ').filter(w => {
-                    const wl = w.toLowerCase();
-                    return !['who', 'with', 'the', 'a', 'an', 'in', 'on', 'at', 'to', 'for', 'of', 'is', 'are', 'by'].includes(wl);
-                });
-                metricName = words.slice(0, 3).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+            // 7. GENERATE METRIC NAME (if not already set by special patterns)
+            if (!metricName) {
+                if (attr1 && attr2 && operation) {
+                    const opName = {
+                        'divide': 'Ratio',
+                        'multiply': 'Product',
+                        'add': 'Combined',
+                        'subtract': 'Net'
+                    }[operation] || '';
+                    metricName = `${attr1} ${opName}`;
+                } else if (attr1) {
+                    metricName = `High ${attr1}`;
+                } else {
+                    const words = input.split(' ').filter(w => {
+                        const wl = w.toLowerCase();
+                        return !['who', 'with', 'the', 'a', 'an', 'in', 'on', 'at', 'to', 'for', 'of', 'is', 'are', 'by'].includes(wl);
+                    });
+                    metricName = words.slice(0, 3).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                }
             }
             
-            // 7. VALIDATE
+            // 8. VALIDATE
             if (!attr1) {
                 const guidance = document.createElement('div');
                 guidance.style.cssText = 'margin-top: 1rem; padding: 1rem; background: #fef3c7; border: 1px solid #fcd34d; border-radius: 0.375rem; font-size: 0.8125rem; color: #92400e;';
@@ -9763,7 +9798,7 @@
                 return;
             }
             
-            // 8. AUTO-FILL THE SIMPLIFIED FORM
+            // 9. AUTO-FILL THE SIMPLIFIED FORM
             document.getElementById('metricNameInput').value = metricName;
             document.getElementById('metricAttribute1').value = attr1;
             document.getElementById('metricOperation').value = operation;
@@ -9810,13 +9845,22 @@
                     <div style="flex: 1;">
                         <div style="font-weight: 600; margin-bottom: 0.5rem;">✓ Formula Built Successfully</div>
                         <div style="margin-bottom: 0.375rem;"><strong>Name:</strong> ${metricName}</div>
-                        <div style="margin-bottom: 0.75rem;"><strong>Formula:</strong> ${formulaDisplay}</div>
+                        <div style="margin-bottom: 0.5rem;"><strong>Formula:</strong> ${formulaDisplay}</div>
+                        
+                        <!-- Refinement Hint -->
+                        <div style="padding: 0.625rem; background: #fffbeb; border: 1px solid #fcd34d; border-radius: 0.375rem; margin-bottom: 0.75rem; font-size: 0.75rem;">
+                            <div style="font-weight: 600; color: #92400e; margin-bottom: 0.25rem;">💡 Want to refine?</div>
+                            <div style="color: #78350f; line-height: 1.4;">
+                                Try: <span style="font-style: italic;">"change threshold to 10"</span>, <span style="font-style: italic;">"use last 30 days instead"</span>, or <span style="font-style: italic;">"make it at least 5"</span>
+                            </div>
+                        </div>
+                        
                         <div style="display: flex; gap: 0.75rem;">
                             <button onclick="saveCustomMetric(); this.parentElement.parentElement.parentElement.parentElement.remove();" style="padding: 0.5rem 1rem; background: #10b981; color: white; border: none; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer;">
                                 Add to Segment
                             </button>
                             <button onclick="toggleManualForm(); this.parentElement.parentElement.parentElement.parentElement.remove();" style="padding: 0.5rem 1rem; background: white; color: #374151; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer;">
-                                Refine Manually
+                                Fine-tune Manually
                             </button>
                         </div>
                     </div>
