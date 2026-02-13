@@ -7829,8 +7829,17 @@
 
         // Segments List Page Functions
         function showCreationModal() {
-            document.getElementById('creationModal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
+            console.log('showCreationModal called');
+            const modal = document.getElementById('creationModal');
+            console.log('Modal element:', modal);
+            if (modal) {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                console.log('Modal should now be visible');
+            } else {
+                console.error('Modal element not found!');
+                alert('Error: Creation modal not found. Please refresh the page.');
+            }
         }
 
         function closeCreationModal() {
