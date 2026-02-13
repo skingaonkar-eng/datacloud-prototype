@@ -3726,6 +3726,56 @@
                                 </button>
                             </div>
 
+                            <!-- Agentic Input Section -->
+                            <div style="margin-bottom: 1.5rem;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1d72f3" stroke-width="2">
+                                            <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+                                        </svg>
+                                        <label style="font-size: 0.8125rem; font-weight: 600; color: #1d72f3;">Describe Your Metric (AI-Powered)</label>
+                                    </div>
+                                    <button onclick="toggleMetricExamples()" style="background: none; border: none; color: #6b7280; font-size: 0.75rem; cursor: pointer; text-decoration: underline;">
+                                        See examples
+                                    </button>
+                                </div>
+                                <textarea id="metricAgentInput" placeholder="Describe what you want to measure (e.g., 'customers who spend more than $500 per order')" style="width: 100%; padding: 0.75rem; border: 2px solid #1d72f3; border-radius: 0.375rem; font-size: 0.875rem; min-height: 70px; resize: vertical; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;" onkeydown="if(event.key === 'Enter' && (event.metaKey || event.ctrlKey)) { parseMetricFromAgent(); event.preventDefault(); }"></textarea>
+                                <div id="metricExamples" style="display: none; margin-top: 0.5rem; padding: 0.75rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem; font-size: 0.75rem; color: #6b7280;">
+                                    <div style="font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Try these examples:</div>
+                                    <div style="display: flex; flex-direction: column; gap: 0.375rem;">
+                                        <div style="cursor: pointer; padding: 0.375rem; border-radius: 0.25rem; transition: background 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='white'" onclick="document.getElementById('metricAgentInput').value = this.textContent; parseMetricFromAgent();">
+                                            • customers who spend more than $500 per order
+                                        </div>
+                                        <div style="cursor: pointer; padding: 0.375rem; border-radius: 0.25rem; transition: background 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='white'" onclick="document.getElementById('metricAgentInput').value = this.textContent; parseMetricFromAgent();">
+                                            • average lifetime value above 1000
+                                        </div>
+                                        <div style="cursor: pointer; padding: 0.375rem; border-radius: 0.25rem; transition: background 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='white'" onclick="document.getElementById('metricAgentInput').value = this.textContent; parseMetricFromAgent();">
+                                            • total revenue divided by marketing cost greater than 5
+                                        </div>
+                                        <div style="cursor: pointer; padding: 0.375rem; border-radius: 0.25rem; transition: background 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='white'" onclick="document.getElementById('metricAgentInput').value = this.textContent; parseMetricFromAgent();">
+                                            • purchase frequency more than 3 per month
+                                        </div>
+                                        <div style="cursor: pointer; padding: 0.375rem; border-radius: 0.25rem; transition: background 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='white'" onclick="document.getElementById('metricAgentInput').value = this.textContent; parseMetricFromAgent();">
+                                            • engagement score at least 75
+                                        </div>
+                                    </div>
+                                </div>
+                                <button onclick="parseMetricFromAgent()" style="margin-top: 0.5rem; padding: 0.625rem 1.25rem; background: linear-gradient(135deg, #1d72f3 0%, #0d52c4 100%); color: white; border: none; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 2px 4px rgba(29, 114, 243, 0.2);">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+                                    </svg>
+                                    Generate Metric
+                                </button>
+                                <div style="font-size: 0.6875rem; color: #9ca3af; margin-top: 0.375rem;">
+                                    💡 Tip: Press Cmd/Ctrl + Enter to generate
+                                </div>
+                            </div>
+
+                            <!-- Divider -->
+                            <div style="border-top: 1px solid #d1d5db; margin: 1.5rem 0; position: relative;">
+                                <span style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #f9fafb; padding: 0 0.75rem; font-size: 0.75rem; color: #6b7280; font-weight: 600;">OR BUILD MANUALLY</span>
+                            </div>
+
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
                                 <!-- Metric Name -->
                                 <div style="grid-column: 1 / -1;">
@@ -8959,11 +9009,192 @@
                 closeMetricBuilder();
             } else {
                 builder.style.display = 'block';
-                // Scroll to builder smoothly
+                // Focus on agent input
                 setTimeout(() => {
                     builder.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    document.getElementById('metricAgentInput').focus();
                 }, 100);
             }
+        }
+
+        function toggleMetricExamples() {
+            const examples = document.getElementById('metricExamples');
+            examples.style.display = examples.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function parseMetricFromAgent() {
+            const input = document.getElementById('metricAgentInput').value.trim().toLowerCase();
+            
+            if (!input) {
+                alert('Please describe the metric you want to build');
+                return;
+            }
+            
+            // Parse the description
+            let metricName = '';
+            let attr1 = '';
+            let attr2 = '';
+            let formula = '';
+            let operator = '>';
+            let threshold = '';
+            
+            // Extract threshold (any number in the description)
+            const numberMatch = input.match(/(\d+(?:\.\d+)?)/);
+            if (numberMatch) {
+                threshold = numberMatch[1];
+            }
+            
+            // Detect operator
+            if (input.includes('more than') || input.includes('greater than') || input.includes('above') || input.includes('over') || input.includes('>')) {
+                operator = '>';
+            } else if (input.includes('less than') || input.includes('below') || input.includes('under') || input.includes('<')) {
+                operator = '<';
+            } else if (input.includes('at least') || input.includes('minimum') || input.includes('>=')) {
+                operator = '>=';
+            } else if (input.includes('at most') || input.includes('maximum') || input.includes('<=')) {
+                operator = '<=';
+            } else if (input.includes('equal to') || input.includes('exactly') || input.includes('=')) {
+                operator = '=';
+            }
+            
+            // Detect attributes and formulas
+            // Revenue/Money related
+            if (input.includes('spend') || input.includes('spending')) {
+                attr1 = 'TotalSpend';
+                if (!metricName) metricName = 'High Spenders';
+            }
+            if (input.includes('revenue')) {
+                attr1 = 'Revenue';
+                if (!metricName) metricName = 'High Revenue';
+            }
+            if (input.includes('lifetime value') || input.includes('ltv')) {
+                attr1 = 'LifetimeValue';
+                if (!metricName) metricName = 'High LTV';
+            }
+            if (input.includes('projected value')) {
+                attr1 = 'ProjectedValue';
+                if (!metricName) metricName = 'High Projected Value';
+            }
+            
+            // Activity related
+            if (input.includes('order') || input.includes('purchase')) {
+                if (input.includes('count') || input.includes('number of')) {
+                    attr2 = 'OrderCount';
+                } else {
+                    attr2 = 'OrderCount';
+                }
+            }
+            if (input.includes('email open') || input.includes('opens')) {
+                if (!attr1) {
+                    attr1 = 'EmailOpens';
+                    if (!metricName) metricName = 'Email Engagement';
+                } else {
+                    attr2 = 'EmailOpens';
+                }
+            }
+            if (input.includes('site visit') || input.includes('website visit')) {
+                if (!attr1) {
+                    attr1 = 'SiteVisits';
+                    if (!metricName) metricName = 'Site Engagement';
+                } else {
+                    attr2 = 'SiteVisits';
+                }
+            }
+            if (input.includes('marketing cost')) {
+                attr2 = 'MarketingCost';
+            }
+            if (input.includes('months active')) {
+                attr2 = 'MonthsActive';
+            }
+            
+            // Detect formula type
+            if (input.includes('per order') || input.includes('per purchase') || (input.includes('spend') && input.includes('order'))) {
+                attr1 = 'TotalSpend';
+                attr2 = 'OrderCount';
+                formula = 'DIVIDE';
+                if (!metricName) metricName = 'High AOV Shoppers';
+            } else if (input.includes('average order value') || input.includes('aov')) {
+                attr1 = 'TotalSpend';
+                attr2 = 'OrderCount';
+                formula = 'DIVIDE';
+                metricName = 'High AOV Shoppers';
+            } else if (input.includes('average') || input.includes('avg')) {
+                formula = 'AVG';
+            } else if (input.includes('total') || input.includes('sum')) {
+                formula = 'SUM';
+            } else if (input.includes('divided by') || input.includes('divide by') || input.includes('/') || input.includes('ratio')) {
+                formula = 'DIVIDE';
+            } else if (input.includes('multiplied by') || input.includes('multiply by') || input.includes('×') || input.includes('*')) {
+                formula = 'MULTIPLY';
+            } else if (input.includes('count')) {
+                formula = 'COUNT';
+            } else if (input.includes('roi') || input.includes('return on investment')) {
+                attr1 = 'Revenue';
+                attr2 = 'MarketingCost';
+                formula = 'DIVIDE';
+                metricName = 'High ROI Customers';
+            } else if (input.includes('engagement score') || input.includes('engagement rate')) {
+                attr1 = 'EmailOpens';
+                attr2 = 'SiteVisits';
+                formula = 'AVG';
+                metricName = 'Highly Engaged';
+            } else if (input.includes('frequency') || (input.includes('per month') && input.includes('order'))) {
+                attr1 = 'OrderCount';
+                attr2 = 'MonthsActive';
+                formula = 'DIVIDE';
+                metricName = 'Frequent Buyers';
+            } else {
+                // Default to single attribute threshold
+                if (attr1 && !formula) {
+                    formula = 'SUM'; // Just use the attribute as-is
+                }
+            }
+            
+            // If no attribute detected, try to infer from context
+            if (!attr1) {
+                if (input.includes('customer') || input.includes('shopper') || input.includes('buyer')) {
+                    attr1 = 'TotalSpend';
+                    formula = 'SUM';
+                    metricName = 'Custom Metric';
+                }
+            }
+            
+            // Generate metric name from description if not already set
+            if (!metricName) {
+                // Extract first few meaningful words
+                const words = input.split(' ').filter(w => !['who', 'with', 'the', 'a', 'an', 'in', 'on', 'at', 'to', 'for', 'of'].includes(w));
+                metricName = words.slice(0, 3).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+            }
+            
+            // Validate we have enough information
+            if (!attr1 || !formula || !threshold) {
+                alert('Could not parse all metric details. Please refine your description or use manual builder.\n\nTry examples like:\n- "customers who spend more than $500 per order"\n- "average email open rate above 40"\n- "total revenue divided by marketing cost greater than 5"');
+                return;
+            }
+            
+            // Auto-fill the form
+            document.getElementById('metricNameInput').value = metricName;
+            document.getElementById('metricAttribute1').value = attr1;
+            document.getElementById('metricAttribute2').value = attr2;
+            document.getElementById('metricFormula').value = formula;
+            document.getElementById('metricOperator').value = operator;
+            document.getElementById('metricThreshold').value = threshold;
+            
+            // Trigger preview update
+            const event = new Event('change');
+            document.getElementById('metricAttribute1').dispatchEvent(event);
+            
+            // Show success feedback
+            const agentInput = document.getElementById('metricAgentInput');
+            agentInput.style.borderColor = '#10b981';
+            setTimeout(() => {
+                agentInput.style.borderColor = '#1d72f3';
+            }, 1500);
+            
+            // Scroll to manual section to show the parsed result
+            setTimeout(() => {
+                document.getElementById('metricNameInput').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 300);
         }
 
         function closeMetricBuilder() {
@@ -8971,6 +9202,8 @@
             builder.style.display = 'none';
             
             // Reset form
+            document.getElementById('metricAgentInput').value = '';
+            document.getElementById('metricExamples').style.display = 'none';
             document.getElementById('metricNameInput').value = '';
             document.getElementById('metricAttribute1').value = '';
             document.getElementById('metricAttribute2').value = '';
@@ -9030,15 +9263,15 @@
             // Add to segment using existing function
             addQuickFilter(filterString, '📊', exclusionMode, 'metric');
             
-            // Close builder
-            closeMetricBuilder();
-            
-            // Show success message
+            // Show success message before closing
             const successMsg = document.createElement('div');
             successMsg.textContent = `✓ Custom metric "${metricName}" added to segment`;
             successMsg.style.cssText = 'position: fixed; top: 80px; right: 20px; background: #10b981; color: white; padding: 0.75rem 1.25rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 600; z-index: 10000; box-shadow: 0 4px 6px rgba(0,0,0,0.1); animation: slideInRight 0.3s ease-out, fadeOut 0.3s ease-out 2.7s forwards;';
             document.body.appendChild(successMsg);
             setTimeout(() => successMsg.remove(), 3000);
+            
+            // Close builder
+            closeMetricBuilder();
         }
 
         // Update formula preview as user selects options
