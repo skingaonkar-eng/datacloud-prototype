@@ -3812,12 +3812,12 @@
                                             <h5 style="font-size: 0.8125rem; font-weight: 600; color: #1d72f3;">AI Metric Builder</h5>
                                         </div>
                                         <div style="font-size: 0.6875rem; color: #6b7280; font-style: italic;">
-                                            Refine below → See changes instantly
+                                            Chat in the panel → Formula updates live
                                         </div>
                                     </div>
                                     
                                     <!-- Compact two-column layout -->
-                                    <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+                                    <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 0.75rem;">
                                         <!-- Left: Compact Formula Preview -->
                                         <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.375rem; padding: 0.625rem;">
                                             <div style="font-size: 0.6875rem; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.375rem;">Current Formula</div>
@@ -3826,25 +3826,26 @@
                                             </div>
                                         </div>
 
-                                        <!-- Right: Compact Chat History -->
-                                        <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.375rem; padding: 0.625rem; max-height: 180px; overflow-y: auto;">
-                                            <div style="font-size: 0.6875rem; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.375rem;">Conversation History</div>
-                                            <div id="metricChatHistory" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                        <!-- Right: Chat Interface with input inside -->
+                                        <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.375rem; display: flex; flex-direction: column; height: 220px;">
+                                            <div style="padding: 0.5rem 0.625rem; border-bottom: 1px solid #e5e7eb;">
+                                                <div style="font-size: 0.6875rem; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;">Agent Conversation</div>
+                                            </div>
+                                            
+                                            <!-- Scrollable chat history -->
+                                            <div id="metricChatHistory" style="flex: 1; padding: 0.625rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.5rem;">
                                                 <!-- Chat messages will be populated here -->
                                             </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Refinement Input (Full Width) -->
-                                    <div style="background: #ecfdf5; border: 1px solid #10b981; border-radius: 0.375rem; padding: 0.625rem;">
-                                        <div style="display: flex; gap: 0.5rem; align-items: center;">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
-                                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                                            </svg>
-                                            <input type="text" id="metricRefinementInput" placeholder="Refine your metric (e.g., 'change threshold to 1000' or 'use greater than')" style="flex: 1; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.25rem; font-size: 0.8125rem; background: white;" onkeydown="if(event.key === 'Enter') { refineMetricFromChat(); event.preventDefault(); }">
-                                            <button onclick="refineMetricFromChat()" style="padding: 0.5rem 0.875rem; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; border-radius: 0.25rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer; white-space: nowrap;">
-                                                Refine
-                                            </button>
+                                            
+                                            <!-- Chat input at bottom of panel -->
+                                            <div style="padding: 0.5rem 0.625rem; border-top: 1px solid #e5e7eb; background: white; border-radius: 0 0 0.375rem 0.375rem;">
+                                                <div style="display: flex; gap: 0.375rem; align-items: center;">
+                                                    <input type="text" id="metricRefinementInput" placeholder="Type to refine (e.g., 'change to 1000')" style="flex: 1; padding: 0.4375rem 0.625rem; border: 1px solid #d1d5db; border-radius: 0.25rem; font-size: 0.75rem; background: white;" onkeydown="if(event.key === 'Enter') { refineMetricFromChat(); event.preventDefault(); }">
+                                                    <button onclick="refineMetricFromChat()" style="padding: 0.4375rem 0.75rem; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; border-radius: 0.25rem; font-size: 0.75rem; font-weight: 600; cursor: pointer; white-space: nowrap;">
+                                                        Send
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -9783,10 +9784,15 @@
             
             // Add agent's response
             const formulaText = document.getElementById('formulaPreview').textContent || buildFormulaText(metricName, attr1, attr2, formula, operator, threshold);
-            addChatMessage('agent', `✓ Built <strong>${metricName}</strong>. Formula shown on the left. Type below to refine (e.g., "change threshold to 1000").`);
+            addChatMessage('agent', `✓ Built <strong>${metricName}</strong>. Formula shown on the left. Type in the chat to refine it.`);
             
-            // Clear input
+            // Clear input and focus on chat input
             document.getElementById('metricAgentInput').value = '';
+            
+            // Focus on the refinement input
+            setTimeout(() => {
+                document.getElementById('metricRefinementInput').focus();
+            }, 100);
         }
         
         function buildFormulaText(name, attr1, attr2, formula, operator, threshold) {
@@ -9979,11 +9985,19 @@
         }
 
         function addQuickMetric(name, attr1, attr2, formula, operator, threshold, timeWindow) {
+            // Ensure metric builder is visible
+            const builder = document.getElementById('inlineMetricBuilder');
+            if (builder.style.display === 'none') {
+                builder.style.display = 'block';
+            }
+            
             // Populate form fields
             document.getElementById('metricNameInput').value = name;
             document.getElementById('metricAttribute1').value = attr1;
             if (attr2) {
                 document.getElementById('metricAttribute2').value = attr2;
+            } else {
+                document.getElementById('metricAttribute2').value = '';
             }
             
             // Set formula based on the operation
@@ -10029,7 +10043,7 @@
                 formula: formulaValue,
                 operator: operator,
                 threshold: threshold,
-                originalInput: `Quick select: ${name}`
+                originalInput: `I want to use: ${name}`
             };
             
             // Switch to conversational view
@@ -10048,7 +10062,12 @@
             
             // Add agent's response
             const formulaText = buildFormulaText(name, attr1, attr2, formulaValue, operator, threshold);
-            addChatMessage('agent', `✓ Selected <strong>${name}</strong>. Formula shown on the left. Type below to refine.`);
+            addChatMessage('agent', `✓ Selected <strong>${name}</strong>. Formula shown on the left. Type in the chat to refine it.`);
+            
+            // Focus on the chat input
+            setTimeout(() => {
+                document.getElementById('metricRefinementInput').focus();
+            }, 100);
         }
 
         function closeMetricBuilder() {
