@@ -9867,37 +9867,90 @@
             const lowerInput = input.toLowerCase();
             const state = window.currentMetricState;
             let updated = false;
+            let changes = [];
             
-            // Check for threshold changes
+            // Check for threshold changes - more flexible matching
             const thresholdMatch = input.match(/(\d+(?:\.\d+)?)/);
-            if ((lowerInput.includes('threshold') || lowerInput.includes('value')) && thresholdMatch) {
+            if (thresholdMatch && (
+                lowerInput.includes('threshold') || 
+                lowerInput.includes('value') || 
+                lowerInput.includes('change to') ||
+                lowerInput.includes('make it') ||
+                lowerInput.includes('set to') ||
+                lowerInput.includes('use')
+            )) {
+                const oldThreshold = state.threshold;
                 state.threshold = thresholdMatch[1];
+                changes.push(`threshold from ${oldThreshold} to ${state.threshold}`);
                 updated = true;
             }
             
-            // Check for operator changes
-            if (lowerInput.includes('greater than') || lowerInput.includes('more than') || lowerInput.includes('>')) {
-                state.operator = '>';
-                updated = true;
-            } else if (lowerInput.includes('less than') || lowerInput.includes('below') || lowerInput.includes('<')) {
-                state.operator = '<';
-                updated = true;
-            } else if (lowerInput.includes('at least') || lowerInput.includes('>=')) {
-                state.operator = '>=';
-                updated = true;
-            } else if (lowerInput.includes('at most') || lowerInput.includes('<=')) {
-                state.operator = '<=';
-                updated = true;
+            // Check for operator changes - more comprehensive
+            const operatorChanged = false;
+            if (lowerInput.includes('greater than') || lowerInput.includes('more than') || (lowerInput.includes('use') && lowerInput.includes('>'))) {
+                if (state.operator !== '>') {
+                    changes.push(`operator to "greater than (>)"`);
+                    state.operator = '>';
+                    updated = true;
+                }
+            } else if (lowerInput.includes('less than') || lowerInput.includes('below') || (lowerInput.includes('use') && lowerInput.includes('<'))) {
+                if (state.operator !== '<') {
+                    changes.push(`operator to "less than (<)"`);
+                    state.operator = '<';
+                    updated = true;
+                }
+            } else if (lowerInput.includes('at least') || lowerInput.includes('minimum') || lowerInput.includes('>=')) {
+                if (state.operator !== '>=') {
+                    changes.push(`operator to "at least (≥)"`);
+                    state.operator = '>=';
+                    updated = true;
+                }
+            } else if (lowerInput.includes('at most') || lowerInput.includes('maximum') || lowerInput.includes('<=')) {
+                if (state.operator !== '<=') {
+                    changes.push(`operator to "at most (≤)"`);
+                    state.operator = '<=';
+                    updated = true;
+                }
             }
             
             // Check for attribute changes
-            if (lowerInput.includes('order') && lowerInput.includes('count')) {
-                if (!state.attr1 || state.attr1 === 'TotalSpend') {
-                    state.attr2 = 'OrderCount';
-                } else {
-                    state.attr1 = 'OrderCount';
+            if (lowerInput.includes('spend') || lowerInput.includes('spending')) {
+                if (state.attr1 !== 'TotalSpend') {
+                    state.attr1 = 'TotalSpend';
+                    changes.push(`attribute to "Total Spend"`);
+                    updated = true;
                 }
-                updated = true;
+            }
+            if (lowerInput.includes('revenue')) {
+                if (state.attr1 !== 'Revenue') {
+                    state.attr1 = 'Revenue';
+                    changes.push(`attribute to "Revenue"`);
+                    updated = true;
+                }
+            }
+            if (lowerInput.includes('order') && lowerInput.includes('count')) {
+                if (!state.attr2 || state.attr2 !== 'OrderCount') {
+                    state.attr2 = 'OrderCount';
+                    changes.push(`second attribute to "Order Count"`);
+                    updated = true;
+                }
+            }
+            if (lowerInput.includes('lifetime') && lowerInput.includes('value')) {
+                if (state.attr1 !== 'LifetimeValue') {
+                    state.attr1 = 'LifetimeValue';
+                    changes.push(`attribute to "Lifetime Value"`);
+                    updated = true;
+                }
+            }
+            
+            // Check for name changes
+            if (lowerInput.includes('rename') || lowerInput.includes('call it') || lowerInput.includes('name it')) {
+                const nameMatch = input.match(/(?:rename|call it|name it)\s+["']?([^"']+)["']?/i);
+                if (nameMatch && nameMatch[1]) {
+                    state.name = nameMatch[1].trim();
+                    changes.push(`name to "${state.name}"`);
+                    updated = true;
+                }
             }
             
             if (updated) {
@@ -9916,18 +9969,16 @@
                 // Update the formula preview panel
                 updateMetricFormulaPreview();
                 
-                // Add agent response
-                addChatMessage('agent', `✓ Updated! The metric now uses <strong>${state.operator} ${state.threshold}</strong>.`);
+                // Add agent response with specific changes
+                const changeText = changes.length > 0 ? changes.join(', ') : 'the metric';
+                addChatMessage('agent', `✓ Updated ${changeText}. Check the formula on the left.`);
             } else {
                 // Agent couldn't understand
-                addChatMessage('agent', `I'm not sure how to apply that change. Try commands like:<br>• "change threshold to 1000"<br>• "use greater than operator"<br>• "make it at least 500"`);
+                addChatMessage('agent', `I'm not sure how to apply that change. Try:<br>• "change threshold to 1000"<br>• "use greater than"<br>• "rename to High Spenders"`);
             }
         }
 
         function addQuickMetric(name, attr1, attr2, formula, operator, threshold, timeWindow) {
-            // Show the manual form
-            document.getElementById('manualMetricForm').style.display = 'block';
-            
             // Populate form fields
             document.getElementById('metricNameInput').value = name;
             document.getElementById('metricAttribute1').value = attr1;
@@ -9937,11 +9988,15 @@
             
             // Set formula based on the operation
             const formulaSelect = document.getElementById('metricFormula');
+            let formulaValue = '';
             if (formula === 'divide') {
+                formulaValue = 'DIVIDE';
                 formulaSelect.value = 'DIVIDE';
             } else if (formula === 'add') {
+                formulaValue = 'SUM';
                 formulaSelect.value = 'SUM';
             } else if (formula === 'none') {
+                formulaValue = 'COUNT';
                 formulaSelect.value = 'COUNT';
             }
             
@@ -9962,8 +10017,38 @@
                 timeWindowSelect.value = 'all';
             }
             
-            // Scroll to the form
-            document.getElementById('manualMetricForm').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            // Trigger preview update
+            const event = new Event('change');
+            document.getElementById('metricAttribute1').dispatchEvent(event);
+            
+            // Store current metric in global variable
+            window.currentMetricState = {
+                name: name,
+                attr1: attr1,
+                attr2: attr2,
+                formula: formulaValue,
+                operator: operator,
+                threshold: threshold,
+                originalInput: `Quick select: ${name}`
+            };
+            
+            // Switch to conversational view
+            document.getElementById('metricInitialInput').style.display = 'none';
+            document.getElementById('metricConversationalView').style.display = 'block';
+            
+            // Update formula preview panel
+            updateMetricFormulaPreview();
+            
+            // Initialize chat history
+            const chatHistory = document.getElementById('metricChatHistory');
+            chatHistory.innerHTML = '';
+            
+            // Add user's selection message
+            addChatMessage('user', `I want to use: ${name}`);
+            
+            // Add agent's response
+            const formulaText = buildFormulaText(name, attr1, attr2, formulaValue, operator, threshold);
+            addChatMessage('agent', `✓ Selected <strong>${name}</strong>. Formula shown on the left. Type below to refine.`);
         }
 
         function closeMetricBuilder() {
