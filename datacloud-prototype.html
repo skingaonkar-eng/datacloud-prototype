@@ -9769,14 +9769,30 @@
             };
             
             // Switch to two-panel conversational view
-            document.getElementById('metricInitialInput').style.display = 'none';
-            document.getElementById('metricConversationalView').style.display = 'block';
+            console.log('Switching to conversational view');
+            const initialInput = document.getElementById('metricInitialInput');
+            const conversationalView = document.getElementById('metricConversationalView');
+            
+            if (initialInput) initialInput.style.display = 'none';
+            if (conversationalView) {
+                conversationalView.style.display = 'block';
+                console.log('Conversational view should now be visible');
+            } else {
+                console.error('Conversational view element not found!');
+            }
             
             // Update formula preview panel
             updateMetricFormulaPreview();
             
             // Initialize chat history
             const chatHistory = document.getElementById('metricChatHistory');
+            if (!chatHistory) {
+                console.error('Chat history element not found!');
+                return;
+            }
+            
+            console.log('Initializing chat history');
+            console.log('Original input:', window.currentMetricState.originalInput);
             chatHistory.innerHTML = '';
             
             // Add user's initial message
@@ -9785,6 +9801,8 @@
             // Add agent's response
             const formulaText = document.getElementById('formulaPreview').textContent || buildFormulaText(metricName, attr1, attr2, formula, operator, threshold);
             addChatMessage('agent', `✓ Built <strong>${metricName}</strong>. Formula shown on the left. Type in the chat to refine it.`);
+            
+            console.log('Chat initialized with', chatHistory.children.length, 'messages');
             
             // Clear input and focus on chat input
             document.getElementById('metricAgentInput').value = '';
@@ -9845,18 +9863,30 @@
         
         function addChatMessage(role, message) {
             const chatHistory = document.getElementById('metricChatHistory');
+            if (!chatHistory) {
+                console.error('Chat history element not found');
+                return;
+            }
+            
+            console.log(`Adding ${role} message:`, message);
+            
             const messageDiv = document.createElement('div');
             
             if (role === 'user') {
-                messageDiv.style.cssText = 'padding: 0.375rem 0.625rem; background: #dbeafe; color: #1e40af; border-left: 3px solid #1d72f3; border-radius: 0.25rem; font-size: 0.75rem; line-height: 1.4;';
+                messageDiv.style.cssText = 'padding: 0.375rem 0.625rem; background: #dbeafe; color: #1e40af; border-left: 3px solid #1d72f3; border-radius: 0.25rem; font-size: 0.75rem; line-height: 1.4; word-wrap: break-word;';
                 messageDiv.innerHTML = `<strong>You:</strong> ${message}`;
             } else {
-                messageDiv.style.cssText = 'padding: 0.375rem 0.625rem; background: white; color: #374151; border-left: 3px solid #10b981; border-radius: 0.25rem; font-size: 0.75rem; line-height: 1.4;';
+                messageDiv.style.cssText = 'padding: 0.375rem 0.625rem; background: white; color: #374151; border-left: 3px solid #10b981; border-radius: 0.25rem; font-size: 0.75rem; line-height: 1.4; word-wrap: break-word;';
                 messageDiv.innerHTML = `<strong>Agent:</strong> ${message}`;
             }
             
             chatHistory.appendChild(messageDiv);
-            chatHistory.scrollTop = chatHistory.scrollHeight;
+            console.log('Message appended, total messages now:', chatHistory.children.length);
+            
+            // Scroll to bottom
+            setTimeout(() => {
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+            }, 10);
         }
         
         function refineMetricFromChat() {
@@ -10072,22 +10102,42 @@
             };
             
             // Switch to conversational view
-            document.getElementById('metricInitialInput').style.display = 'none';
-            document.getElementById('metricConversationalView').style.display = 'block';
+            console.log('Quick metric: Switching to conversational view');
+            const initialInput = document.getElementById('metricInitialInput');
+            const conversationalView = document.getElementById('metricConversationalView');
+            
+            if (initialInput) initialInput.style.display = 'none';
+            if (conversationalView) {
+                conversationalView.style.display = 'block';
+                console.log('Quick metric: Conversational view should now be visible');
+            } else {
+                console.error('Quick metric: Conversational view element not found!');
+            }
             
             // Update formula preview panel
             updateMetricFormulaPreview();
             
             // Initialize chat history
             const chatHistory = document.getElementById('metricChatHistory');
+            if (!chatHistory) {
+                console.error('Chat history element not found!');
+                return;
+            }
+            
+            console.log('Quick metric selected:', name);
+            console.log('Initializing chat history for quick metric');
             chatHistory.innerHTML = '';
             
             // Add user's selection message
-            addChatMessage('user', `I want to use: ${name}`);
+            const userMessage = `I want to use: ${name}`;
+            console.log('Adding user selection message:', userMessage);
+            addChatMessage('user', userMessage);
             
             // Add agent's response
             const formulaText = buildFormulaText(name, attr1, attr2, formulaValue, operator, threshold);
             addChatMessage('agent', `✓ Selected <strong>${name}</strong>. Formula shown on the left. Type in the chat to refine it.`);
+            
+            console.log('Quick metric chat initialized with', chatHistory.children.length, 'messages');
             
             // Focus on the chat input
             setTimeout(() => {
