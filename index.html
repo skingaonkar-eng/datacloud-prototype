@@ -9863,6 +9863,15 @@
             const input = document.getElementById('metricRefinementInput').value.trim();
             if (!input) return;
             
+            console.log('Refining metric with input:', input);
+            
+            // Check if currentMetricState exists
+            if (!window.currentMetricState) {
+                console.error('No current metric state found');
+                alert('Please build a metric first before refining');
+                return;
+            }
+            
             // Add user message to chat
             addChatMessage('user', input);
             
@@ -9875,20 +9884,30 @@
             let updated = false;
             let changes = [];
             
-            // Check for threshold changes - more flexible matching
+            console.log('Current state:', state);
+            
+            // Check for threshold changes - very flexible matching
             const thresholdMatch = input.match(/(\d+(?:\.\d+)?)/);
-            if (thresholdMatch && (
-                lowerInput.includes('threshold') || 
-                lowerInput.includes('value') || 
-                lowerInput.includes('change to') ||
-                lowerInput.includes('make it') ||
-                lowerInput.includes('set to') ||
-                lowerInput.includes('use')
-            )) {
-                const oldThreshold = state.threshold;
-                state.threshold = thresholdMatch[1];
-                changes.push(`threshold from ${oldThreshold} to ${state.threshold}`);
-                updated = true;
+            if (thresholdMatch) {
+                // If there's a number and certain keywords, or if ONLY a number is provided
+                const hasKeyword = lowerInput.includes('threshold') || 
+                    lowerInput.includes('value') || 
+                    lowerInput.includes('change') ||
+                    lowerInput.includes('make') ||
+                    lowerInput.includes('set') ||
+                    lowerInput.includes('use') ||
+                    lowerInput.includes('to');
+                
+                // Also match if input is mostly just a number
+                const isJustNumber = input.trim() === thresholdMatch[1];
+                
+                if (hasKeyword || isJustNumber) {
+                    const oldThreshold = state.threshold;
+                    state.threshold = thresholdMatch[1];
+                    changes.push(`threshold from ${oldThreshold} to ${state.threshold}`);
+                    updated = true;
+                    console.log('Updated threshold to:', state.threshold);
+                }
             }
             
             // Check for operator changes - more comprehensive
@@ -9960,6 +9979,9 @@
             }
             
             if (updated) {
+                console.log('Changes detected:', changes);
+                console.log('Updated state:', state);
+                
                 // Update the form
                 document.getElementById('metricNameInput').value = state.name;
                 document.getElementById('metricAttribute1').value = state.attr1;
@@ -9975,12 +9997,15 @@
                 // Update the formula preview panel
                 updateMetricFormulaPreview();
                 
+                console.log('Formula preview updated');
+                
                 // Add agent response with specific changes
                 const changeText = changes.length > 0 ? changes.join(', ') : 'the metric';
                 addChatMessage('agent', `✓ Updated ${changeText}. Check the formula on the left.`);
             } else {
+                console.log('No changes detected from input:', input);
                 // Agent couldn't understand
-                addChatMessage('agent', `I'm not sure how to apply that change. Try:<br>• "change threshold to 1000"<br>• "use greater than"<br>• "rename to High Spenders"`);
+                addChatMessage('agent', `I'm not sure how to apply that change. Try:<br>• "1000" or "change to 1000"<br>• "use greater than"<br>• "rename to High Spenders"`);
             }
         }
 
