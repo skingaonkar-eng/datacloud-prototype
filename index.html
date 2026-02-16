@@ -9827,22 +9827,32 @@
                     return;
                 }
                 
-                // Clear placeholder
-                chatHistory.innerHTML = '';
+                console.log('✅ Chat history element ready');
                 
-                console.log('✅ Chat history element ready:', chatHistory);
-                console.log('Is visible?', chatHistory.offsetParent !== null);
+                // Build messages as HTML string
+                const userMessage = window.currentMetricState.originalInput;
+                const agentMessage = `✓ Built <strong>${metricName}</strong>. You can see the formula on the right →<br><br>Feel free to refine by typing commands like "change threshold to 1000" or "use a different operator".`;
                 
-                // Add user's initial message
-                console.log('About to add initial user message...');
-                addChatMessage('user', window.currentMetricState.originalInput);
-                console.log('After adding user message, DOM children:', chatHistory.children.length);
+                // Store in chat history
+                window.currentMetricState.chatHistory = [
+                    { role: 'user', message: userMessage, timestamp: Date.now() },
+                    { role: 'agent', message: agentMessage, timestamp: Date.now() }
+                ];
                 
-                // Add agent's response
-                const formulaText = document.getElementById('formulaPreview').textContent || buildFormulaText(metricName, attr1, attr2, formula, operator, threshold);
-                console.log('About to add agent response...');
-                addChatMessage('agent', `✓ Built <strong>${metricName}</strong>. You can see the formula on the right →<br><br>Feel free to refine by typing commands like "change threshold to 1000" or "use a different operator".`);
-                console.log('After adding agent message, DOM children:', chatHistory.children.length);
+                // Set innerHTML directly
+                chatHistory.innerHTML = `
+                    <div style="padding: 10px; margin-bottom: 8px; background: #dbeafe; color: #1e40af; border-left: 4px solid #1d72f3; border-radius: 4px; font-size: 13px; line-height: 1.5;">
+                        <strong>You:</strong> ${userMessage}
+                    </div>
+                    <div style="padding: 10px; margin-bottom: 8px; background: #f0fdf4; color: #166534; border-left: 4px solid #10b981; border-radius: 4px; font-size: 13px; line-height: 1.5;">
+                        <strong>Agent:</strong> ${agentMessage}
+                    </div>
+                `;
+                
+                console.log('✅ Messages added directly via innerHTML. Children:', chatHistory.children.length);
+                
+                // Scroll to bottom
+                chatHistory.scrollTop = chatHistory.scrollHeight;
             }, 200);
             
             console.log('Chat initialized. Stored history:', window.currentMetricState.chatHistory.length, 'messages, DOM:', chatHistory.children.length);
@@ -9932,39 +9942,41 @@
             return { domCount, storedCount };
         }
         
-        function restoreChatHistory() {
+        function rebuildChatDisplay() {
             const chatHistory = document.getElementById('metricChatHistory');
             if (!chatHistory || !window.currentMetricState || !window.currentMetricState.chatHistory) {
-                console.log('Cannot restore chat history - missing elements');
+                console.error('Cannot rebuild chat - missing elements');
                 return;
             }
             
-            console.log('🔄 Restoring chat history:', window.currentMetricState.chatHistory.length, 'messages');
+            console.log('🔄 Rebuilding chat display from', window.currentMetricState.chatHistory.length, 'stored messages');
             
-            // Clear existing DOM messages
-            chatHistory.innerHTML = '';
-            
-            // Recreate all messages from stored history
+            // Build HTML string from all messages
+            let html = '';
             window.currentMetricState.chatHistory.forEach(msg => {
-                const messageDiv = document.createElement('div');
-                
                 if (msg.role === 'user') {
-                    messageDiv.style.cssText = 'padding: 10px; margin-bottom: 8px; background: #dbeafe; color: #1e40af; border-left: 4px solid #1d72f3; border-radius: 4px; font-size: 13px; line-height: 1.5;';
-                    messageDiv.innerHTML = `<strong>You:</strong> ${msg.message}`;
+                    html += `<div style="padding: 10px; margin-bottom: 8px; background: #dbeafe; color: #1e40af; border-left: 4px solid #1d72f3; border-radius: 4px; font-size: 13px; line-height: 1.5;">
+                        <strong>You:</strong> ${msg.message}
+                    </div>`;
                 } else {
-                    messageDiv.style.cssText = 'padding: 10px; margin-bottom: 8px; background: #f0fdf4; color: #166534; border-left: 4px solid #10b981; border-radius: 4px; font-size: 13px; line-height: 1.5;';
-                    messageDiv.innerHTML = `<strong>Agent:</strong> ${msg.message}`;
+                    html += `<div style="padding: 10px; margin-bottom: 8px; background: #f0fdf4; color: #166534; border-left: 4px solid #10b981; border-radius: 4px; font-size: 13px; line-height: 1.5;">
+                        <strong>Agent:</strong> ${msg.message}
+                    </div>`;
                 }
-                
-                chatHistory.appendChild(messageDiv);
             });
             
-            console.log('✅ Restored', chatHistory.children.length, 'messages to DOM');
+            // Set all at once
+            chatHistory.innerHTML = html;
+            
+            console.log('✅ Chat display rebuilt. DOM children:', chatHistory.children.length);
             
             // Scroll to bottom
-            setTimeout(() => {
-                chatHistory.scrollTop = chatHistory.scrollHeight;
-            }, 10);
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
+        
+        function restoreChatHistory() {
+            // This function is now deprecated, use rebuildChatDisplay instead
+            rebuildChatDisplay();
         }
         
         function addChatMessage(role, message) {
@@ -10034,9 +10046,13 @@
                 return;
             }
             
-            // Add user message to chat
+            // Add user message to chat history
             console.log('Adding user message to chat...');
-            addChatMessage('user', input);
+            window.currentMetricState.chatHistory.push({
+                role: 'user',
+                message: input,
+                timestamp: Date.now()
+            });
             console.log('After adding user message, history length:', window.currentMetricState.chatHistory.length);
             
             // Clear input
@@ -10166,28 +10182,31 @@
                 // Add agent response with specific changes
                 const changeText = changes.length > 0 ? changes.join(', ') : 'the metric';
                 console.log('Adding agent response...');
-                addChatMessage('agent', `Yes, I'll make those changes. ✓ Updated ${changeText}. Check the formula on the right →`);
+                const agentMsg = `Yes, I'll make those changes. ✓ Updated ${changeText}. Check the formula on the right →`;
+                window.currentMetricState.chatHistory.push({
+                    role: 'agent',
+                    message: agentMsg,
+                    timestamp: Date.now()
+                });
                 console.log('After adding agent response, history length:', window.currentMetricState.chatHistory.length);
             } else {
                 console.log('No changes detected from input:', input);
                 // Agent couldn't understand
                 console.log('Adding "not understood" message...');
-                addChatMessage('agent', `I'm not quite sure what you'd like to change. Could you try:<br>• "1000" or "change to 1000"<br>• "use greater than"<br>• "rename to High Spenders"`);
+                const helpMsg = `I'm not quite sure what you'd like to change. Could you try:<br>• "1000" or "change to 1000"<br>• "use greater than"<br>• "rename to High Spenders"`;
+                window.currentMetricState.chatHistory.push({
+                    role: 'agent',
+                    message: helpMsg,
+                    timestamp: Date.now()
+                });
                 console.log('After adding agent message, history length:', window.currentMetricState.chatHistory.length);
             }
             
             console.log('=== REFINEMENT COMPLETE ===');
-            console.log('Total conversation history:', window.currentMetricState.chatHistory);
+            console.log('Total conversation history:', window.currentMetricState.chatHistory.length, 'messages');
             
-            // Verify messages are in DOM
-            setTimeout(() => {
-                const verification = verifyChatHistory();
-                if (verification.domCount === 0) {
-                    console.error('❌ CRITICAL: No messages in DOM after refinement!');
-                    console.log('Attempting to restore from stored history...');
-                    restoreChatHistory();
-                }
-            }, 100);
+            // Rebuild the chat display from stored history
+            rebuildChatDisplay();
         }
 
         function addQuickMetric(name, attr1, attr2, formula, operator, threshold, timeWindow) {
@@ -10287,31 +10306,33 @@
                     return;
                 }
                 
-                // Clear placeholder
-                chatHistory.innerHTML = '';
+                console.log('✅ Quick metric - Chat history element ready');
                 
-                console.log('✅ Quick metric - Chat history element ready:', chatHistory);
-                console.log('Quick metric - Is visible?', chatHistory.offsetParent !== null);
-                
-                // Add user's selection message
+                // Build messages as HTML string
                 const userMessage = `I want to use: ${name}`;
-                console.log('Quick metric - About to add user message:', userMessage);
-                addChatMessage('user', userMessage);
-                console.log('Quick metric - After user message, DOM children:', chatHistory.children.length);
+                const agentMessage = `✓ Selected <strong>${name}</strong>. You can see the formula on the right →<br><br>Want to make changes? Just type your request below.`;
                 
-                // Add agent's response
-                const formulaText = buildFormulaText(name, attr1, attr2, formulaValue, operator, threshold);
-                console.log('Quick metric - About to add agent response...');
-                addChatMessage('agent', `✓ Selected <strong>${name}</strong>. You can see the formula on the right →<br><br>Want to make changes? Just type your request below.`);
-                console.log('Quick metric - After agent message, DOM children:', chatHistory.children.length);
-            }, 100);
-            
-            console.log('Quick metric chat initialized. Stored history:', window.currentMetricState.chatHistory.length, 'messages, DOM:', chatHistory.children.length);
-            
-            // Verify chat history is visible
-            setTimeout(() => {
-                verifyChatHistory();
-            }, 100);
+                // Store in chat history
+                window.currentMetricState.chatHistory = [
+                    { role: 'user', message: userMessage, timestamp: Date.now() },
+                    { role: 'agent', message: agentMessage, timestamp: Date.now() }
+                ];
+                
+                // Set innerHTML directly
+                chatHistory.innerHTML = `
+                    <div style="padding: 10px; margin-bottom: 8px; background: #dbeafe; color: #1e40af; border-left: 4px solid #1d72f3; border-radius: 4px; font-size: 13px; line-height: 1.5;">
+                        <strong>You:</strong> ${userMessage}
+                    </div>
+                    <div style="padding: 10px; margin-bottom: 8px; background: #f0fdf4; color: #166534; border-left: 4px solid #10b981; border-radius: 4px; font-size: 13px; line-height: 1.5;">
+                        <strong>Agent:</strong> ${agentMessage}
+                    </div>
+                `;
+                
+                console.log('✅ Quick metric messages added. Children:', chatHistory.children.length);
+                
+                // Scroll to bottom
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+            }, 200);
             
             // Focus on the chat input
             setTimeout(() => {
