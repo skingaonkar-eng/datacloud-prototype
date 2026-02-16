@@ -9843,7 +9843,7 @@
                 console.log('About to add agent response...');
                 addChatMessage('agent', `✓ Built <strong>${metricName}</strong>. You can see the formula on the right →<br><br>Feel free to refine by typing commands like "change threshold to 1000" or "use a different operator".`);
                 console.log('After adding agent message, DOM children:', chatHistory.children.length);
-            }, 100);
+            }, 200);
             
             console.log('Chat initialized. Stored history:', window.currentMetricState.chatHistory.length, 'messages, DOM:', chatHistory.children.length);
             
@@ -9949,10 +9949,10 @@
                 const messageDiv = document.createElement('div');
                 
                 if (msg.role === 'user') {
-                    messageDiv.style.cssText = 'padding: 0.375rem 0.625rem; background: #dbeafe; color: #1e40af; border-left: 3px solid #1d72f3; border-radius: 0.25rem; font-size: 0.75rem; line-height: 1.4; word-wrap: break-word;';
+                    messageDiv.style.cssText = 'padding: 10px; margin-bottom: 8px; background: #dbeafe; color: #1e40af; border-left: 4px solid #1d72f3; border-radius: 4px; font-size: 13px; line-height: 1.5;';
                     messageDiv.innerHTML = `<strong>You:</strong> ${msg.message}`;
                 } else {
-                    messageDiv.style.cssText = 'padding: 0.375rem 0.625rem; background: white; color: #374151; border-left: 3px solid #10b981; border-radius: 0.25rem; font-size: 0.75rem; line-height: 1.4; word-wrap: break-word;';
+                    messageDiv.style.cssText = 'padding: 10px; margin-bottom: 8px; background: #f0fdf4; color: #166534; border-left: 4px solid #10b981; border-radius: 4px; font-size: 13px; line-height: 1.5;';
                     messageDiv.innerHTML = `<strong>Agent:</strong> ${msg.message}`;
                 }
                 
@@ -9995,11 +9995,13 @@
             console.log('Created messageDiv element:', messageDiv);
             
             if (role === 'user') {
-                messageDiv.style.cssText = 'padding: 0.375rem 0.625rem; background: #dbeafe; color: #1e40af; border-left: 3px solid #1d72f3; border-radius: 0.25rem; font-size: 0.75rem; line-height: 1.4; word-wrap: break-word;';
+                // More visible styling for user messages
+                messageDiv.style.cssText = 'padding: 10px; margin-bottom: 8px; background: #dbeafe; color: #1e40af; border-left: 4px solid #1d72f3; border-radius: 4px; font-size: 13px; line-height: 1.5;';
                 messageDiv.innerHTML = `<strong>You:</strong> ${message}`;
                 console.log('User message HTML set:', messageDiv.innerHTML);
             } else {
-                messageDiv.style.cssText = 'padding: 0.375rem 0.625rem; background: white; color: #374151; border-left: 3px solid #10b981; border-radius: 0.25rem; font-size: 0.75rem; line-height: 1.4; word-wrap: break-word;';
+                // More visible styling for agent messages
+                messageDiv.style.cssText = 'padding: 10px; margin-bottom: 8px; background: #f0fdf4; color: #166534; border-left: 4px solid #10b981; border-radius: 4px; font-size: 13px; line-height: 1.5;';
                 messageDiv.innerHTML = `<strong>Agent:</strong> ${message}`;
                 console.log('Agent message HTML set:', messageDiv.innerHTML);
             }
@@ -10010,11 +10012,6 @@
             console.log('After appendChild:', chatHistory.children.length, 'children');
             console.log('Message appended to DOM, total messages now:', chatHistory.children.length);
             console.log('chatHistory innerHTML length:', chatHistory.innerHTML.length);
-            
-            // Verify after adding
-            setTimeout(() => {
-                verifyChatHistory();
-            }, 50);
             
             // Scroll to bottom
             setTimeout(() => {
