@@ -8429,6 +8429,46 @@
             const lowerLabel = label.toLowerCase();
             const lowerOperator = operator.toLowerCase();
             
+            // Age range patterns
+            if (lowerLabel.includes('age')) {
+                if (value.includes('-')) {
+                    // Age range like "25-44"
+                    const ages = value.split('-');
+                    if (ages[0] && ages[1]) {
+                        return `People aged between ${ages[0].trim()} and ${ages[1].trim()} years old`;
+                    }
+                } else if (lowerOperator.includes('greater') || lowerOperator.includes('>')) {
+                    return `Customers ${value}+ years old`;
+                } else if (lowerOperator.includes('less') || lowerOperator.includes('<')) {
+                    return `Customers under ${value} years old`;
+                } else if (lowerOperator.includes('equal') || lowerOperator.includes('=')) {
+                    return `Customers who are ${value} years old`;
+                }
+            }
+            
+            // Gender patterns
+            if (lowerLabel.includes('gender')) {
+                const lowerValue = value.toLowerCase();
+                if (lowerValue.includes('female') || lowerValue.includes('woman') || lowerValue.includes('women')) {
+                    return `Women in our customer base`;
+                } else if (lowerValue.includes('male') || lowerValue.includes('man') || lowerValue.includes('men')) {
+                    return `Men in our customer base`;
+                } else {
+                    return `Customers identifying as ${value}`;
+                }
+            }
+            
+            // Income patterns
+            if (lowerLabel.includes('income')) {
+                if (lowerOperator.includes('greater') || lowerOperator.includes('>')) {
+                    return `Higher-income customers earning over ${value} annually`;
+                } else if (lowerOperator.includes('less') || lowerOperator.includes('<')) {
+                    return `Customers with income under ${value}`;
+                } else {
+                    return `Customers with ${value} income level`;
+                }
+            }
+            
             // Lifetime Value / Spend patterns
             if (lowerLabel.includes('lifetime value') || lowerLabel.includes('ltv')) {
                 if (lowerOperator.includes('greater') || lowerOperator.includes('>')) {
@@ -11255,64 +11295,64 @@
                 keywords: ['filter', 'segment', 'attribute', 'definition', 'criteria', 'add', 'include', 'exclude'],
                 actions: {
                     'age': { 
-                        patterns: ['age', 'age group', 'age range', '25-45', 'age 25', 'older', 'younger'],
-                        execute: () => addQuickFilter('Age 25-45', 'age'),
-                        confirm: 'add Age 25-45 filter'
+                        patterns: ['age', 'age group', 'age range', '25-45', 'age 25', 'older', 'younger', 'millennials'],
+                        execute: () => addQuickFilter('Age: 25-44', '🎂', false, 'filter'),
+                        confirm: 'add Age 25-44 filter (Millennials and Gen X)'
                     },
                     'gender_female': { 
                         patterns: ['female', 'women', 'woman', 'she', 'her'],
-                        execute: () => addQuickFilter('Female', 'gender'),
+                        execute: () => addQuickFilter('Gender: Female', '👤', false, 'attribute'),
                         confirm: 'add Female gender filter'
                     },
                     'gender_male': { 
                         patterns: ['male', 'men', 'man', 'he', 'him'],
-                        execute: () => addQuickFilter('Male', 'gender'),
+                        execute: () => addQuickFilter('Gender: Male', '👤', false, 'attribute'),
                         confirm: 'add Male gender filter'
                     },
                     'ltv': { 
                         patterns: ['high ltv', 'lifetime value', 'high value', 'ltv', 'valuable', 'high spending'],
-                        execute: () => addQuickFilter('High LTV', 'value'),
-                        confirm: 'add High LTV filter'
+                        execute: () => addQuickFilter('Lifetime Value: > $100', '💎', false, 'metric'),
+                        confirm: 'add High Lifetime Value filter (>$100)'
                     },
                     'premium': { 
                         patterns: ['premium', 'premium tier', 'premium customer', 'vip', 'top tier'],
-                        execute: () => addQuickFilter('Premium Tier', 'tier'),
-                        confirm: 'add Premium Tier filter'
+                        execute: () => addQuickFilter('Loyalty Tier: Gold or Platinum', '⭐', false, 'filter'),
+                        confirm: 'add Premium Tier filter (Gold or Platinum)'
                     },
                     'active': { 
                         patterns: ['active', 'active status', 'active customer', 'engaged'],
-                        execute: () => addQuickFilter('Active Status', 'status'),
+                        execute: () => addQuickFilter('Email Status: Active', '✉️', false, 'attribute'),
                         confirm: 'add Active Status filter'
                     },
                     'email_opted': { 
                         patterns: ['email', 'email opted', 'opted in', 'email preference', 'subscribed'],
-                        execute: () => addQuickFilter('Email Opted In', 'preference'),
-                        confirm: 'add Email Opted In filter'
+                        execute: () => addQuickFilter('Email Opens: Last 30 days', '✉️', false, 'filter'),
+                        confirm: 'add Email Engaged filter (opened in last 30 days)'
                     },
                     'recent_purchase': { 
                         patterns: ['recent purchase', 'recent buy', 'recently bought', 'recent activity'],
-                        execute: () => addQuickFilter('Recent Purchase', 'behavior'),
-                        confirm: 'add Recent Purchase filter'
+                        execute: () => addQuickFilter('Purchase Date: Last 60 days', '🛍️', false, 'filter'),
+                        confirm: 'add Recent Purchase filter (last 60 days)'
                     },
                     'location': { 
                         patterns: ['location', 'region', 'geography', 'area', 'city', 'state'],
-                        execute: () => addQuickFilter('US Region', 'location'),
-                        confirm: 'add US Region filter'
+                        execute: () => addQuickFilter('Region: Pacific Northwest', '🗺️', false, 'filter'),
+                        confirm: 'add Pacific Northwest Region filter (WA, OR, ID)'
                     },
                     'income': { 
                         patterns: ['income', 'salary', 'earnings', 'high income', 'wealthy'],
-                        execute: () => addQuickFilter('High Income', 'income'),
-                        confirm: 'add High Income filter'
+                        execute: () => addQuickFilter('Income Level: > $100k', '💵', false, 'attribute'),
+                        confirm: 'add High Income filter (>$100k annually)'
                     },
                     'loyalty': { 
                         patterns: ['loyalty', 'loyal', 'repeat', 'frequent buyer', 'returning'],
-                        execute: () => addQuickFilter('Loyalty Member', 'loyalty'),
-                        confirm: 'add Loyalty Member filter'
+                        execute: () => addQuickFilter('Loyalty Tier: Gold or Platinum', '⭐', false, 'filter'),
+                        confirm: 'add Loyalty Members filter (Gold+)'
                     },
                     'outdoor': { 
                         patterns: ['outdoor', 'hiking', 'camping', 'nature', 'adventure'],
-                        execute: () => addQuickFilter('Outdoor Enthusiast', 'interest'),
-                        confirm: 'add Outdoor Enthusiast filter'
+                        execute: () => addQuickFilter('Interest: Winter Sports', '❄️', false, 'filter'),
+                        confirm: 'add Outdoor/Winter Enthusiast filter'
                     },
                     // Exclusion filters
                     'exclude_contacted': { 
