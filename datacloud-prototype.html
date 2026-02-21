@@ -10077,34 +10077,43 @@
             
             addedFilters.push(name);
             
-            // Get filter type badge
-            const typeBadge = getFilterTypeBadge(filterType);
-            
             // Parse name and value
-            let filterName, filterValue;
+            let filterLabel, filterOperator, filterValue;
             if (name.includes(':')) {
                 const parts = name.split(':');
-                filterName = parts[0].trim();
+                filterLabel = parts[0].trim();
                 filterValue = parts[1].trim();
+                
+                // Determine operator from value
+                if (filterValue.includes('>')) {
+                    filterOperator = 'is greater than';
+                    filterValue = filterValue.replace('>', '').trim();
+                } else if (filterValue.includes('<')) {
+                    filterOperator = 'is less than';
+                    filterValue = filterValue.replace('<', '').trim();
+                } else if (filterValue.includes('between')) {
+                    filterOperator = 'is between';
+                } else {
+                    filterOperator = 'is equal to';
+                }
             } else {
-                filterName = name;
-                filterValue = filterType === 'attribute' ? '[Configure]' : 'Included';
+                filterLabel = name;
+                filterOperator = 'is configured';
+                filterValue = '[To be set]';
             }
             
             if (isExclusion) {
-                // Add to exclusion list
+                // Add to exclusion list (keeping simple format for exclusions)
                 const excludesList = document.getElementById('excludesList');
                 const emptyState = document.getElementById('emptyStateExclusions');
                 
-                // Hide empty state
                 if (emptyState) emptyState.style.display = 'none';
                 
                 const newExclude = document.createElement('div');
                 newExclude.className = 'exclude-card';
                 newExclude.innerHTML = `
                     <div class="exclude-content">
-                        ${typeBadge}
-                        <span class="exclude-text"><strong>${filterName}</strong> ${filterType === 'segment' ? 'excluded' : 'is ' + filterValue}</span>
+                        <span class="exclude-text"><strong>${filterLabel}</strong> ${filterType === 'segment' ? 'excluded' : 'is ' + filterValue}</span>
                     </div>
                     <div class="exclude-actions">
                         <button class="icon-btn" onclick="this.closest('.exclude-card').remove(); checkEmptyExclusions();">
@@ -10120,35 +10129,72 @@
                 // Get filters column
                 const filtersColumn = document.getElementById('filtersColumn');
                 const emptyState = document.getElementById('emptyStateFilters');
+                const andColumn = document.getElementById('andColumn');
                 
-                // Hide empty state
+                // Hide empty state and show AND column
                 if (emptyState) emptyState.style.display = 'none';
+                if (andColumn) andColumn.style.display = 'flex';
                 
-                // Create new filter card
+                // Generate conversational text
+                const conversationalText = generateConversationalFilterText(filterLabel, filterOperator, filterValue);
+                
+                // Generate unique ID for this filter
+                const filterId = 'filter-' + Date.now();
+                
+                // Create new filter card with FLIP CARD structure
                 const newFilter = document.createElement('div');
                 newFilter.className = 'filter-card';
+                newFilter.id = filterId;
+                newFilter.onclick = function(event) { toggleFilterView(filterId, event); };
+                
                 newFilter.innerHTML = `
-                    <div class="filter-content">
-                        ${typeBadge}
-                        <span class="filter-text"><strong>${filterName}</strong> ${filterType === 'segment' ? 'included' : 'is ' + filterValue}</span>
+                    <div class="filter-card-inner">
+                        <!-- Front Face: Conversational Language -->
+                        <div class="filter-face filter-face-front">
+                            <div class="filter-content">
+                                <span class="filter-text">${conversationalText}</span>
+                            </div>
+                            <div class="filter-actions">
+                                <button class="icon-btn" onclick="event.stopPropagation(); this.closest('.filter-card').remove(); checkEmptyFilters();">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                                    </svg>
+                                </button>
+                                <div style="display: flex; align-items: center; gap: 0.375rem; margin-left: 0.5rem;">
+                                    <span style="font-size: 0.6875rem; color: #6b7280;">Click for formula</span>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1d72f3" stroke-width="2">
+                                        <path d="M21.21 15.89A10 10 0 118 2.83M22 12A10 10 0 0012 2"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Back Face: Technical Formula -->
+                        <div class="filter-face filter-face-back">
+                            <div class="filter-content">
+                                <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                                    <span class="filter-label" style="padding: 0.25rem 0.625rem; background: #dbeafe; color: #1e40af; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600;">${filterLabel}</span>
+                                    <span class="filter-operator" style="font-size: 0.875rem; color: #6b7280;">${filterOperator}</span>
+                                    <span class="filter-value" style="padding: 0.25rem 0.625rem; background: #fef3c7; color: #92400e; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600;">${filterValue}</span>
+                                </div>
+                            </div>
+                            <div class="filter-actions">
+                                <button class="icon-btn" onclick="event.stopPropagation(); this.closest('.filter-card').remove(); checkEmptyFilters();">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                                    </svg>
+                                </button>
+                                <div style="display: flex; align-items: center; gap: 0.375rem; margin-left: 0.5rem;">
+                                    <span style="font-size: 0.6875rem; color: #6b7280;">Click to flip back</span>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                                        <path d="M21.21 15.89A10 10 0 118 2.83M22 12A10 10 0 0012 2"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="filter-actions">
-                        <button class="icon-btn" onclick="this.closest('.filter-card').remove(); checkEmptyFilters();">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
-                            </svg>
-                        </button>
-                        <button class="icon-btn">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="6 9 12 15 18 9"/>
-                        </svg>
-                    </button>
-                </div>
                 `;
                 filtersColumn.appendChild(newFilter);
             }
-            
-            // The AND slab automatically spans all filters, no need to update it
             
             // Update audience count
             currentAudience -= 1500;
