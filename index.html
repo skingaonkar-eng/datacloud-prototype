@@ -3600,7 +3600,7 @@
                             <!-- Front Face: Natural Language -->
                             <div class="filter-face filter-face-front">
                                 <div class="filter-content">
-                                    <span class="filter-text"><strong>Customers with lifetime value of $7,000 or more</strong></span>
+                                    <span class="filter-text">These are our biggest spenders who've hit the $7k spend milestone</span>
                                 </div>
                                 <div class="filter-actions">
                                     <button class="icon-btn" onclick="removeFilter('filter1'); event.stopPropagation();">
@@ -3647,7 +3647,7 @@
                             <!-- Front Face: Natural Language -->
                             <div class="filter-face filter-face-front">
                                 <div class="filter-content">
-                                    <span class="filter-text"><strong>People interested in trekking boots</strong></span>
+                                    <span class="filter-text">People who have their eye on a new pair of trekking boots</span>
                                 </div>
                                 <div class="filter-actions">
                                     <button class="icon-btn" onclick="removeFilter('filter2'); event.stopPropagation();">
@@ -3694,7 +3694,7 @@
                             <!-- Front Face: Natural Language -->
                             <div class="filter-face filter-face-front">
                                 <div class="filter-content">
-                                    <span class="filter-text"><strong>Customers inactive for more than 6 months</strong></span>
+                                    <span class="filter-text">Customers we haven't seen in over six months</span>
                                 </div>
                                 <div class="filter-actions">
                                     <button class="icon-btn" onclick="removeFilter('filter3'); event.stopPropagation();">
@@ -8189,8 +8189,8 @@
                 if (filter1) {
                     filter1.style.display = 'flex';
                     filter1.classList.remove('flipped'); // Start with natural language view
-                    // Front: Natural language
-                    filter1.querySelector('.filter-face-front .filter-text').innerHTML = '<strong>Customers with lifetime value of $2,500 or more</strong>';
+                    // Front: Conversational language
+                    filter1.querySelector('.filter-face-front .filter-text').textContent = 'Our high-value customers who\'ve reached the $2,500 lifetime spend milestone';
                     // Back: Technical formula
                     filter1.querySelector('.filter-face-back .filter-label').textContent = 'Lifetime Value';
                     filter1.querySelector('.filter-face-back .filter-operator').textContent = 'is greater than';
@@ -8199,8 +8199,8 @@
                 if (filter2) {
                     filter2.style.display = 'flex';
                     filter2.classList.remove('flipped');
-                    // Front: Natural language
-                    filter2.querySelector('.filter-face-front .filter-text').innerHTML = '<strong>Engagement dropped by 40% in the last 30 days</strong>';
+                    // Front: Conversational language
+                    filter2.querySelector('.filter-face-front .filter-text').textContent = 'Customers whose engagement has fallen off a cliff - down 40% in just 30 days';
                     // Back: Technical formula
                     filter2.querySelector('.filter-face-back .filter-label').textContent = 'Engagement Score';
                     filter2.querySelector('.filter-face-back .filter-operator').textContent = 'decreased by';
@@ -8209,8 +8209,8 @@
                 if (filter3) {
                     filter3.style.display = 'flex';
                     filter3.classList.remove('flipped');
-                    // Front: Natural language
-                    filter3.querySelector('.filter-face-front .filter-text').innerHTML = '<strong>Purchased within the last 90 days</strong>';
+                    // Front: Conversational language
+                    filter3.querySelector('.filter-face-front .filter-text').textContent = 'People who\'ve bought from us recently - within the last 3 months';
                     // Back: Technical formula
                     filter3.querySelector('.filter-face-back .filter-label').textContent = 'Last Purchase Date';
                     filter3.querySelector('.filter-face-back .filter-operator').textContent = 'within last';
@@ -8227,8 +8227,8 @@
                 if (filter1) {
                     filter1.style.display = 'flex';
                     filter1.classList.remove('flipped');
-                    // Front: Natural language
-                    filter1.querySelector('.filter-face-front .filter-text').innerHTML = '<strong>Interested in outdoor activities and winter sports</strong>';
+                    // Front: Conversational language
+                    filter1.querySelector('.filter-face-front .filter-text').textContent = 'Outdoor enthusiasts and winter sports lovers who live for the snow';
                     // Back: Technical formula
                     filter1.querySelector('.filter-face-back .filter-label').textContent = 'Product Interest';
                     filter1.querySelector('.filter-face-back .filter-operator').textContent = 'includes any of';
@@ -8237,8 +8237,8 @@
                 if (filter2) {
                     filter2.style.display = 'flex';
                     filter2.classList.remove('flipped');
-                    // Front: Natural language
-                    filter2.querySelector('.filter-face-front .filter-text').innerHTML = '<strong>Lives in regions with cold climate and winter sports activity</strong>';
+                    // Front: Conversational language
+                    filter2.querySelector('.filter-face-front .filter-text').textContent = 'People living where winter isn\'t just a season - it\'s a lifestyle (cold climate states)';
                     // Back: Technical formula
                     filter2.querySelector('.filter-face-back .filter-label').textContent = 'Geography - State';
                     filter2.querySelector('.filter-face-back .filter-operator').textContent = 'is in';
@@ -8247,8 +8247,8 @@
                 if (filter3) {
                     filter3.style.display = 'flex';
                     filter3.classList.remove('flipped');
-                    // Front: Natural language
-                    filter3.querySelector('.filter-face-front .filter-text').innerHTML = '<strong>Browsed winter products in the last 14 days</strong>';
+                    // Front: Conversational language
+                    filter3.querySelector('.filter-face-front .filter-text').textContent = 'Customers who\'ve been checking out our winter gear in the past 2 weeks';
                     // Back: Technical formula
                     filter3.querySelector('.filter-face-back .filter-label').textContent = 'Web Activity';
                     filter3.querySelector('.filter-face-back .filter-operator').textContent = 'viewed category';
@@ -8265,8 +8265,8 @@
                 if (filter1) {
                     filter1.style.display = 'flex';
                     filter1.classList.remove('flipped');
-                    // Front: Natural language
-                    filter1.querySelector('.filter-face-front .filter-text').innerHTML = '<strong>Has made at least 3 purchases</strong>';
+                    // Front: Conversational language
+                    filter1.querySelector('.filter-face-front .filter-text').textContent = 'Repeat customers who\'ve come back at least 3 times - they clearly like us';
                     // Back: Technical formula
                     filter1.querySelector('.filter-face-back .filter-label').textContent = 'Purchase Count';
                     filter1.querySelector('.filter-face-back .filter-operator').textContent = 'is at least';
@@ -8275,8 +8275,8 @@
                 if (filter2) {
                     filter2.style.display = 'flex';
                     filter2.classList.remove('flipped');
-                    // Front: Natural language
-                    filter2.querySelector('.filter-face-front .filter-text').innerHTML = '<strong>Total spending over $500</strong>';
+                    // Front: Conversational language
+                    filter2.querySelector('.filter-face-front .filter-text').textContent = 'People who\'ve spent over $500 with us - showing real commitment';
                     // Back: Technical formula
                     filter2.querySelector('.filter-face-back .filter-label').textContent = 'Total Spend (All Time)';
                     filter2.querySelector('.filter-face-back .filter-operator').textContent = 'is greater than';
@@ -8285,8 +8285,8 @@
                 if (filter3) {
                     filter3.style.display = 'flex';
                     filter3.classList.remove('flipped');
-                    // Front: Natural language
-                    filter3.querySelector('.filter-face-front .filter-text').innerHTML = '<strong>Not currently enrolled in loyalty program</strong>';
+                    // Front: Conversational language
+                    filter3.querySelector('.filter-face-front .filter-text').textContent = 'Customers missing out on our loyalty perks - not enrolled yet';
                     // Back: Technical formula
                     filter3.querySelector('.filter-face-back .filter-label').textContent = 'Loyalty Program Status';
                     filter3.querySelector('.filter-face-back .filter-operator').textContent = 'is equal to';
@@ -8303,8 +8303,8 @@
                 if (filter1) {
                     filter1.style.display = 'flex';
                     filter1.classList.remove('flipped');
-                    // Front: Natural language
-                    filter1.querySelector('.filter-face-front .filter-text').innerHTML = '<strong>No email opens or clicks in the last 90 days</strong>';
+                    // Front: Conversational language
+                    filter1.querySelector('.filter-face-front .filter-text').textContent = 'Radio silence for 3 months - no opens, no clicks, nothing';
                     // Back: Technical formula
                     filter1.querySelector('.filter-face-back .filter-label').textContent = 'Email Engagement';
                     filter1.querySelector('.filter-face-back .filter-operator').textContent = 'no activity in last';
@@ -8313,8 +8313,8 @@
                 if (filter2) {
                     filter2.style.display = 'flex';
                     filter2.classList.remove('flipped');
-                    // Front: Natural language
-                    filter2.querySelector('.filter-face-front .filter-text').innerHTML = '<strong>Previously had high email conversion rate (above 15%)</strong>';
+                    // Front: Conversational language
+                    filter2.querySelector('.filter-face-front .filter-text').textContent = 'Former email superstars who used to convert like crazy (15%+ historically)';
                     // Back: Technical formula
                     filter2.querySelector('.filter-face-back .filter-label').textContent = 'Historical Conversion Rate';
                     filter2.querySelector('.filter-face-back .filter-operator').textContent = 'is greater than';
@@ -8323,8 +8323,8 @@
                 if (filter3) {
                     filter3.style.display = 'flex';
                     filter3.classList.remove('flipped');
-                    // Front: Natural language
-                    filter3.querySelector('.filter-face-front .filter-text').innerHTML = '<strong>Email subscription is still active</strong>';
+                    // Front: Conversational language
+                    filter3.querySelector('.filter-face-front .filter-text').textContent = 'Still on our list - haven\'t hit that unsubscribe button yet';
                     // Back: Technical formula
                     filter3.querySelector('.filter-face-back .filter-label').textContent = 'Email Subscription Status';
                     filter3.querySelector('.filter-face-back .filter-operator').textContent = 'is equal to';
@@ -8392,6 +8392,141 @@
             if (filterCard) {
                 filterCard.classList.toggle('flipped');
             }
+        }
+        
+        // Function to create a new filter with conversational description
+        function createFilterWithDescription(filterId, label, operator, value, customConversationalText = null) {
+            const filterCard = document.getElementById(filterId);
+            if (!filterCard) return;
+            
+            // Generate conversational text automatically or use custom
+            const conversationalText = customConversationalText || generateConversationalFilterText(label, operator, value);
+            
+            // Update front face (conversational)
+            const frontText = filterCard.querySelector('.filter-face-front .filter-text');
+            if (frontText) {
+                frontText.textContent = conversationalText;
+            }
+            
+            // Update back face (technical formula)
+            const backLabel = filterCard.querySelector('.filter-face-back .filter-label');
+            const backOperator = filterCard.querySelector('.filter-face-back .filter-operator');
+            const backValue = filterCard.querySelector('.filter-face-back .filter-value');
+            
+            if (backLabel) backLabel.textContent = label;
+            if (backOperator) backOperator.textContent = operator;
+            if (backValue) backValue.textContent = value;
+            
+            // Show the filter and reset to front view
+            filterCard.style.display = 'flex';
+            filterCard.classList.remove('flipped');
+            
+            console.log(`Created filter: ${conversationalText} [${label} ${operator} ${value}]`);
+        }
+        
+        // Helper function to generate conversational descriptions for filters
+        function generateConversationalFilterText(label, operator, value) {
+            const lowerLabel = label.toLowerCase();
+            const lowerOperator = operator.toLowerCase();
+            
+            // Lifetime Value / Spend patterns
+            if (lowerLabel.includes('lifetime value') || lowerLabel.includes('ltv')) {
+                if (lowerOperator.includes('greater') || lowerOperator.includes('>')) {
+                    return `Our biggest spenders who've hit the ${value} spend milestone`;
+                } else if (lowerOperator.includes('less') || lowerOperator.includes('<')) {
+                    return `Customers still under ${value} in lifetime value`;
+                }
+            }
+            
+            // Spend / Revenue patterns
+            if (lowerLabel.includes('spend') || lowerLabel.includes('revenue')) {
+                if (lowerOperator.includes('greater') || lowerOperator.includes('>')) {
+                    return `People who've spent over ${value} with us - showing real commitment`;
+                } else if (lowerOperator.includes('less') || lowerOperator.includes('<')) {
+                    return `Lower-spending customers under ${value}`;
+                }
+            }
+            
+            // Purchase count patterns
+            if (lowerLabel.includes('purchase count') || lowerLabel.includes('order count')) {
+                if (lowerOperator.includes('at least') || lowerOperator.includes('>=')) {
+                    return `Repeat customers who've come back at least ${value} times - they clearly like us`;
+                } else if (lowerOperator.includes('exactly') || lowerOperator.includes('=')) {
+                    return `Customers who've made exactly ${value} purchases`;
+                }
+            }
+            
+            // Engagement patterns
+            if (lowerLabel.includes('engagement')) {
+                if (lowerOperator.includes('decreased') || lowerOperator.includes('drop')) {
+                    return `Customers whose engagement has fallen off a cliff - down ${value}`;
+                } else if (lowerOperator.includes('no activity')) {
+                    return `Radio silence for ${value} - no activity at all`;
+                }
+            }
+            
+            // Activity / Last seen patterns
+            if (lowerLabel.includes('last activity') || lowerLabel.includes('last seen') || lowerLabel.includes('inactive')) {
+                if (lowerOperator.includes('more than') || lowerOperator.includes('>')) {
+                    return `Customers we haven't seen in over ${value}`;
+                } else if (lowerOperator.includes('within') || lowerOperator.includes('last')) {
+                    return `People who've been active in the last ${value}`;
+                }
+            }
+            
+            // Purchase date patterns
+            if (lowerLabel.includes('purchase date') || lowerLabel.includes('last purchase')) {
+                if (lowerOperator.includes('within') || lowerOperator.includes('last')) {
+                    return `People who've bought from us recently - within the last ${value}`;
+                } else if (lowerOperator.includes('more than') || lowerOperator.includes('>')) {
+                    return `Customers who haven't purchased in over ${value}`;
+                }
+            }
+            
+            // Product interest patterns
+            if (lowerLabel.includes('product interest') || lowerLabel.includes('category interest')) {
+                return `People who have their eye on ${value}`;
+            }
+            
+            // Geography patterns
+            if (lowerLabel.includes('geography') || lowerLabel.includes('state') || lowerLabel.includes('location')) {
+                if (lowerOperator.includes('in') || lowerOperator.includes('includes')) {
+                    return `People living in ${value}`;
+                }
+            }
+            
+            // Email patterns
+            if (lowerLabel.includes('email')) {
+                if (lowerLabel.includes('subscription') && value.toLowerCase().includes('active')) {
+                    return `Still on our list - haven't hit that unsubscribe button yet`;
+                } else if (lowerLabel.includes('engagement') && lowerOperator.includes('no activity')) {
+                    return `Radio silence for ${value} - no opens, no clicks, nothing`;
+                }
+            }
+            
+            // Conversion rate patterns
+            if (lowerLabel.includes('conversion')) {
+                if (lowerOperator.includes('greater') || lowerOperator.includes('>')) {
+                    return `Former superstars who used to convert like crazy (${value}+ historically)`;
+                }
+            }
+            
+            // Loyalty status patterns
+            if (lowerLabel.includes('loyalty')) {
+                if (value.toLowerCase().includes('not enrolled')) {
+                    return `Customers missing out on our loyalty perks - not enrolled yet`;
+                } else if (value.toLowerCase().includes('enrolled') || value.toLowerCase().includes('member')) {
+                    return `Our loyal members in the ${value} program`;
+                }
+            }
+            
+            // Web activity patterns
+            if (lowerLabel.includes('web activity') || lowerLabel.includes('browsing')) {
+                return `Customers who've been checking out ${value}`;
+            }
+            
+            // Default fallback - make it conversational anyway
+            return `${label} ${operator} ${value}`.replace(/([A-Z])/g, ' $1').trim().toLowerCase();
         }
         
         function removeFilter(filterId) {
