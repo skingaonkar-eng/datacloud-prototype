@@ -1656,21 +1656,56 @@
             background: white;
             border: 1px solid #e5e7eb;
             border-radius: 0.5rem;
-            padding: 1rem 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
             border-left: 4px solid #1d72f3;
-            transition: box-shadow 0.2s;
             min-height: 60px;
+            position: relative;
+            perspective: 1000px;
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
         .filter-card:hover {
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-color: #1d72f3;
         }
 
         .filter-card.highlight {
             border-left-color: #fbbf24;
+        }
+        
+        .filter-card.flipped .filter-card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .filter-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        
+        .filter-face {
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        
+        .filter-face-front {
+            position: relative;
+        }
+        
+        .filter-face-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transform: rotateY(180deg);
+            background: #f9fafb;
         }
 
         /* Filter Type Badges */
@@ -3560,57 +3595,144 @@
 
             <div class="filter-list" id="filterList">
                 <div class="filters-column" id="filtersColumn">
-                    <div class="filter-card" id="filter1">
-                        <div class="filter-content">
-                            <span class="filter-text"><strong>Lifetime Value</strong> is equal to or greater than <strong>USD 7,000</strong></span>
-                        </div>
-                        <div class="filter-actions">
-                            <button class="icon-btn" onclick="removeFilter('filter1')">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
-                                </svg>
-                            </button>
-                            <button class="icon-btn">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <polyline points="6 9 12 15 18 9"/>
-                                </svg>
-                            </button>
+                    <div class="filter-card" id="filter1" onclick="toggleFilterView('filter1', event)">
+                        <div class="filter-card-inner">
+                            <!-- Front Face: Natural Language -->
+                            <div class="filter-face filter-face-front">
+                                <div class="filter-content">
+                                    <span class="filter-text"><strong>Customers with lifetime value of $7,000 or more</strong></span>
+                                </div>
+                                <div class="filter-actions">
+                                    <button class="icon-btn" onclick="removeFilter('filter1'); event.stopPropagation();">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                                        </svg>
+                                    </button>
+                                    <div style="display: flex; align-items: center; gap: 0.375rem; margin-left: 0.5rem;">
+                                        <span style="font-size: 0.6875rem; color: #6b7280;">Click for formula</span>
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1d72f3" stroke-width="2">
+                                            <path d="M21.21 15.89A10 10 0 118 2.83M22 12A10 10 0 0012 2"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Back Face: Technical Formula -->
+                            <div class="filter-face filter-face-back">
+                                <div class="filter-content">
+                                    <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                                        <span class="filter-label" style="padding: 0.25rem 0.625rem; background: #dbeafe; color: #1e40af; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600;">Lifetime Value</span>
+                                        <span class="filter-operator" style="font-size: 0.875rem; color: #6b7280;">is equal to or greater than</span>
+                                        <span class="filter-value" style="padding: 0.25rem 0.625rem; background: #fef3c7; color: #92400e; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600;">USD 7,000</span>
+                                    </div>
+                                </div>
+                                <div class="filter-actions">
+                                    <button class="icon-btn" onclick="removeFilter('filter1'); event.stopPropagation();">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                                        </svg>
+                                    </button>
+                                    <div style="display: flex; align-items: center; gap: 0.375rem; margin-left: 0.5rem;">
+                                        <span style="font-size: 0.6875rem; color: #6b7280;">Click to flip back</span>
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                                            <path d="M21.21 15.89A10 10 0 118 2.83M22 12A10 10 0 0012 2"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="filter-card highlight" id="filter2">
-                        <div class="filter-content">
-                            <span class="filter-text"><strong>Product Interest</strong> is equal to <strong>Trekking Boots</strong></span>
-                        </div>
-                        <div class="filter-actions">
-                            <button class="icon-btn" onclick="removeFilter('filter2')">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
-                                </svg>
-                            </button>
-                            <button class="icon-btn">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <polyline points="6 9 12 15 18 9"/>
-                                </svg>
-                            </button>
+                    <div class="filter-card highlight" id="filter2" onclick="toggleFilterView('filter2', event)">
+                        <div class="filter-card-inner">
+                            <!-- Front Face: Natural Language -->
+                            <div class="filter-face filter-face-front">
+                                <div class="filter-content">
+                                    <span class="filter-text"><strong>People interested in trekking boots</strong></span>
+                                </div>
+                                <div class="filter-actions">
+                                    <button class="icon-btn" onclick="removeFilter('filter2'); event.stopPropagation();">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                                        </svg>
+                                    </button>
+                                    <div style="display: flex; align-items: center; gap: 0.375rem; margin-left: 0.5rem;">
+                                        <span style="font-size: 0.6875rem; color: #6b7280;">Click for formula</span>
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1d72f3" stroke-width="2">
+                                            <path d="M21.21 15.89A10 10 0 118 2.83M22 12A10 10 0 0012 2"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Back Face: Technical Formula -->
+                            <div class="filter-face filter-face-back">
+                                <div class="filter-content">
+                                    <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                                        <span class="filter-label" style="padding: 0.25rem 0.625rem; background: #dbeafe; color: #1e40af; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600;">Product Interest</span>
+                                        <span class="filter-operator" style="font-size: 0.875rem; color: #6b7280;">is equal to</span>
+                                        <span class="filter-value" style="padding: 0.25rem 0.625rem; background: #fef3c7; color: #92400e; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600;">Trekking Boots</span>
+                                    </div>
+                                </div>
+                                <div class="filter-actions">
+                                    <button class="icon-btn" onclick="removeFilter('filter2'); event.stopPropagation();">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                                        </svg>
+                                    </button>
+                                    <div style="display: flex; align-items: center; gap: 0.375rem; margin-left: 0.5rem;">
+                                        <span style="font-size: 0.6875rem; color: #6b7280;">Click to flip back</span>
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                                            <path d="M21.21 15.89A10 10 0 118 2.83M22 12A10 10 0 0012 2"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="filter-card" id="filter3">
-                        <div class="filter-content">
-                            <span class="filter-text"><strong>Last Activity</strong> is more than <strong>180 Days ago</strong></span>
-                        </div>
-                        <div class="filter-actions">
-                            <button class="icon-btn" onclick="removeFilter('filter3')">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
-                                </svg>
-                            </button>
-                            <button class="icon-btn">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <polyline points="6 9 12 15 18 9"/>
-                                </svg>
-                            </button>
+                    <div class="filter-card" id="filter3" onclick="toggleFilterView('filter3', event)">
+                        <div class="filter-card-inner">
+                            <!-- Front Face: Natural Language -->
+                            <div class="filter-face filter-face-front">
+                                <div class="filter-content">
+                                    <span class="filter-text"><strong>Customers inactive for more than 6 months</strong></span>
+                                </div>
+                                <div class="filter-actions">
+                                    <button class="icon-btn" onclick="removeFilter('filter3'); event.stopPropagation();">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                                        </svg>
+                                    </button>
+                                    <div style="display: flex; align-items: center; gap: 0.375rem; margin-left: 0.5rem;">
+                                        <span style="font-size: 0.6875rem; color: #6b7280;">Click for formula</span>
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1d72f3" stroke-width="2">
+                                            <path d="M21.21 15.89A10 10 0 118 2.83M22 12A10 10 0 0012 2"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Back Face: Technical Formula -->
+                            <div class="filter-face filter-face-back">
+                                <div class="filter-content">
+                                    <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                                        <span class="filter-label" style="padding: 0.25rem 0.625rem; background: #dbeafe; color: #1e40af; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600;">Last Activity</span>
+                                        <span class="filter-operator" style="font-size: 0.875rem; color: #6b7280;">is more than</span>
+                                        <span class="filter-value" style="padding: 0.25rem 0.625rem; background: #fef3c7; color: #92400e; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600;">180 Days ago</span>
+                                    </div>
+                                </div>
+                                <div class="filter-actions">
+                                    <button class="icon-btn" onclick="removeFilter('filter3'); event.stopPropagation();">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                                        </svg>
+                                    </button>
+                                    <div style="display: flex; align-items: center; gap: 0.375rem; margin-left: 0.5rem;">
+                                        <span style="font-size: 0.6875rem; color: #6b7280;">Click to flip back</span>
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                                            <path d="M21.21 15.89A10 10 0 118 2.83M22 12A10 10 0 0012 2"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -8059,50 +8181,81 @@
             if (segmentName === 'High-Value At-Risk Customers') {
                 document.getElementById('segmentDescription').textContent = 'AI-recommended segment targeting high lifetime value customers showing signs of declining engagement';
                 
-                // Show pre-configured filters
+                // Show pre-configured filters with BOTH natural language (front) and technical (back)
                 const filter1 = document.getElementById('filter1');
                 const filter2 = document.getElementById('filter2');
                 const filter3 = document.getElementById('filter3');
                 
                 if (filter1) {
                     filter1.style.display = 'flex';
-                    filter1.querySelector('.filter-label').textContent = 'Lifetime Value';
-                    filter1.querySelector('.filter-operator').textContent = 'greater than';
-                    filter1.querySelector('.filter-value').textContent = '$2,500';
+                    filter1.classList.remove('flipped'); // Start with natural language view
+                    // Front: Natural language
+                    filter1.querySelector('.filter-face-front .filter-text').innerHTML = '<strong>Customers with lifetime value of $2,500 or more</strong>';
+                    // Back: Technical formula
+                    filter1.querySelector('.filter-face-back .filter-label').textContent = 'Lifetime Value';
+                    filter1.querySelector('.filter-face-back .filter-operator').textContent = 'is greater than';
+                    filter1.querySelector('.filter-face-back .filter-value').textContent = '$2,500';
                 }
                 if (filter2) {
                     filter2.style.display = 'flex';
-                    filter2.querySelector('.filter-label').textContent = 'Engagement Score';
-                    filter2.querySelector('.filter-operator').textContent = 'decreased by';
-                    filter2.querySelector('.filter-value').textContent = '40% (last 30 days)';
+                    filter2.classList.remove('flipped');
+                    // Front: Natural language
+                    filter2.querySelector('.filter-face-front .filter-text').innerHTML = '<strong>Engagement dropped by 40% in the last 30 days</strong>';
+                    // Back: Technical formula
+                    filter2.querySelector('.filter-face-back .filter-label').textContent = 'Engagement Score';
+                    filter2.querySelector('.filter-face-back .filter-operator').textContent = 'decreased by';
+                    filter2.querySelector('.filter-face-back .filter-value').textContent = '40% (last 30 days)';
                 }
                 if (filter3) {
                     filter3.style.display = 'flex';
-                    filter3.querySelector('.filter-label').textContent = 'Last Purchase';
-                    filter3.querySelector('.filter-operator').textContent = 'within';
-                    filter3.querySelector('.filter-value').textContent = 'last 90 days';
+                    filter3.classList.remove('flipped');
+                    // Front: Natural language
+                    filter3.querySelector('.filter-face-front .filter-text').innerHTML = '<strong>Purchased within the last 90 days</strong>';
+                    // Back: Technical formula
+                    filter3.querySelector('.filter-face-back .filter-label').textContent = 'Last Purchase Date';
+                    filter3.querySelector('.filter-face-back .filter-operator').textContent = 'within last';
+                    filter3.querySelector('.filter-face-back .filter-value').textContent = '90 days';
                 }
                 
-            } else if (segmentName === 'Winter Campaign - Cold Climate Enthusiasts') {
+            } else if (segmentName === 'Winter Campaign - Cold Climate') {
                 document.getElementById('segmentDescription').textContent = 'AI-recommended segment for winter campaign targeting outdoor enthusiasts in cold climates';
                 
                 const filter1 = document.getElementById('filter1');
                 const filter2 = document.getElementById('filter2');
+                const filter3 = document.getElementById('filter3');
                 
                 if (filter1) {
                     filter1.style.display = 'flex';
-                    filter1.querySelector('.filter-label').textContent = 'Product Interest';
-                    filter1.querySelector('.filter-operator').textContent = 'includes';
-                    filter1.querySelector('.filter-value').textContent = 'Outdoor, Winter Sports';
+                    filter1.classList.remove('flipped');
+                    // Front: Natural language
+                    filter1.querySelector('.filter-face-front .filter-text').innerHTML = '<strong>Interested in outdoor activities and winter sports</strong>';
+                    // Back: Technical formula
+                    filter1.querySelector('.filter-face-back .filter-label').textContent = 'Product Interest';
+                    filter1.querySelector('.filter-face-back .filter-operator').textContent = 'includes any of';
+                    filter1.querySelector('.filter-face-back .filter-value').textContent = 'Outdoor, Winter Sports, Skiing, Snowboarding';
                 }
                 if (filter2) {
                     filter2.style.display = 'flex';
-                    filter2.querySelector('.filter-label').textContent = 'Geography';
-                    filter2.querySelector('.filter-operator').textContent = 'in regions with';
-                    filter2.querySelector('.filter-value').textContent = 'Cold Climate / Winter Activity';
+                    filter2.classList.remove('flipped');
+                    // Front: Natural language
+                    filter2.querySelector('.filter-face-front .filter-text').innerHTML = '<strong>Lives in regions with cold climate and winter sports activity</strong>';
+                    // Back: Technical formula
+                    filter2.querySelector('.filter-face-back .filter-label').textContent = 'Geography - State';
+                    filter2.querySelector('.filter-face-back .filter-operator').textContent = 'is in';
+                    filter2.querySelector('.filter-face-back .filter-value').textContent = 'Alaska, Colorado, Montana, Vermont, Wyoming, Minnesota';
+                }
+                if (filter3) {
+                    filter3.style.display = 'flex';
+                    filter3.classList.remove('flipped');
+                    // Front: Natural language
+                    filter3.querySelector('.filter-face-front .filter-text').innerHTML = '<strong>Browsed winter products in the last 14 days</strong>';
+                    // Back: Technical formula
+                    filter3.querySelector('.filter-face-back .filter-label').textContent = 'Web Activity';
+                    filter3.querySelector('.filter-face-back .filter-operator').textContent = 'viewed category';
+                    filter3.querySelector('.filter-face-back .filter-value').textContent = 'Winter Gear (last 14 days)';
                 }
                 
-            } else if (segmentName === 'Repeat Buyers - Loyalty Upgrade Opportunity') {
+            } else if (segmentName === 'Loyalty Upgrade Opportunity') {
                 document.getElementById('segmentDescription').textContent = 'AI-recommended segment identifying repeat customers ready for loyalty program enrollment';
                 
                 const filter1 = document.getElementById('filter1');
@@ -8111,24 +8264,36 @@
                 
                 if (filter1) {
                     filter1.style.display = 'flex';
-                    filter1.querySelector('.filter-label').textContent = 'Purchase Count';
-                    filter1.querySelector('.filter-operator').textContent = 'at least';
-                    filter1.querySelector('.filter-value').textContent = '3 purchases';
+                    filter1.classList.remove('flipped');
+                    // Front: Natural language
+                    filter1.querySelector('.filter-face-front .filter-text').innerHTML = '<strong>Has made at least 3 purchases</strong>';
+                    // Back: Technical formula
+                    filter1.querySelector('.filter-face-back .filter-label').textContent = 'Purchase Count';
+                    filter1.querySelector('.filter-face-back .filter-operator').textContent = 'is at least';
+                    filter1.querySelector('.filter-face-back .filter-value').textContent = '3';
                 }
                 if (filter2) {
                     filter2.style.display = 'flex';
-                    filter2.querySelector('.filter-label').textContent = 'Total Spend';
-                    filter2.querySelector('.filter-operator').textContent = 'greater than';
-                    filter2.querySelector('.filter-value').textContent = '$500';
+                    filter2.classList.remove('flipped');
+                    // Front: Natural language
+                    filter2.querySelector('.filter-face-front .filter-text').innerHTML = '<strong>Total spending over $500</strong>';
+                    // Back: Technical formula
+                    filter2.querySelector('.filter-face-back .filter-label').textContent = 'Total Spend (All Time)';
+                    filter2.querySelector('.filter-face-back .filter-operator').textContent = 'is greater than';
+                    filter2.querySelector('.filter-face-back .filter-value').textContent = '$500';
                 }
                 if (filter3) {
                     filter3.style.display = 'flex';
-                    filter3.querySelector('.filter-label').textContent = 'Loyalty Status';
-                    filter3.querySelector('.filter-operator').textContent = 'is';
-                    filter3.querySelector('.filter-value').textContent = 'Not Enrolled';
+                    filter3.classList.remove('flipped');
+                    // Front: Natural language
+                    filter3.querySelector('.filter-face-front .filter-text').innerHTML = '<strong>Not currently enrolled in loyalty program</strong>';
+                    // Back: Technical formula
+                    filter3.querySelector('.filter-face-back .filter-label').textContent = 'Loyalty Program Status';
+                    filter3.querySelector('.filter-face-back .filter-operator').textContent = 'is equal to';
+                    filter3.querySelector('.filter-face-back .filter-value').textContent = 'Not Enrolled';
                 }
                 
-            } else if (segmentName === 'Email Re-Engagement - Inactive 90 Days') {
+            } else if (segmentName === 'Email Re-Engagement') {
                 document.getElementById('segmentDescription').textContent = 'AI-recommended segment for re-engaging previously active email subscribers';
                 
                 const filter1 = document.getElementById('filter1');
@@ -8137,21 +8302,33 @@
                 
                 if (filter1) {
                     filter1.style.display = 'flex';
-                    filter1.querySelector('.filter-label').textContent = 'Email Engagement';
-                    filter1.querySelector('.filter-operator').textContent = 'no activity in';
-                    filter1.querySelector('.filter-value').textContent = 'last 90 days';
+                    filter1.classList.remove('flipped');
+                    // Front: Natural language
+                    filter1.querySelector('.filter-face-front .filter-text').innerHTML = '<strong>No email opens or clicks in the last 90 days</strong>';
+                    // Back: Technical formula
+                    filter1.querySelector('.filter-face-back .filter-label').textContent = 'Email Engagement';
+                    filter1.querySelector('.filter-face-back .filter-operator').textContent = 'no activity in last';
+                    filter1.querySelector('.filter-face-back .filter-value').textContent = '90 days';
                 }
                 if (filter2) {
                     filter2.style.display = 'flex';
-                    filter2.querySelector('.filter-label').textContent = 'Past Conversion Rate';
-                    filter2.querySelector('.filter-operator').textContent = 'greater than';
-                    filter2.querySelector('.filter-value').textContent = '15%';
+                    filter2.classList.remove('flipped');
+                    // Front: Natural language
+                    filter2.querySelector('.filter-face-front .filter-text').innerHTML = '<strong>Previously had high email conversion rate (above 15%)</strong>';
+                    // Back: Technical formula
+                    filter2.querySelector('.filter-face-back .filter-label').textContent = 'Historical Conversion Rate';
+                    filter2.querySelector('.filter-face-back .filter-operator').textContent = 'is greater than';
+                    filter2.querySelector('.filter-face-back .filter-value').textContent = '15%';
                 }
                 if (filter3) {
                     filter3.style.display = 'flex';
-                    filter3.querySelector('.filter-label').textContent = 'Subscription Status';
-                    filter3.querySelector('.filter-operator').textContent = 'is';
-                    filter3.querySelector('.filter-value').textContent = 'Active';
+                    filter3.classList.remove('flipped');
+                    // Front: Natural language
+                    filter3.querySelector('.filter-face-front .filter-text').innerHTML = '<strong>Email subscription is still active</strong>';
+                    // Back: Technical formula
+                    filter3.querySelector('.filter-face-back .filter-label').textContent = 'Email Subscription Status';
+                    filter3.querySelector('.filter-face-back .filter-operator').textContent = 'is equal to';
+                    filter3.querySelector('.filter-face-back .filter-value').textContent = 'Active (Not Unsubscribed)';
                 }
             }
             
@@ -8205,6 +8382,18 @@
             switchTab(0);
         }
 
+        function toggleFilterView(filterId, event) {
+            // Prevent bubbling if triggered from actions
+            if (event && event.target.closest('.filter-actions')) {
+                return;
+            }
+            
+            const filterCard = document.getElementById(filterId);
+            if (filterCard) {
+                filterCard.classList.toggle('flipped');
+            }
+        }
+        
         function removeFilter(filterId) {
             const filter = document.getElementById(filterId);
             if (filter) {
