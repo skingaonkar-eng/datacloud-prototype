@@ -3246,6 +3246,191 @@
                         </div>
                     </div>
 
+                    <!-- AI-Recommended Segments Section -->
+                    <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #e5e7eb;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                            <div>
+                                <h3 style="font-size: 1.125rem; font-weight: 700; color: #111827; margin: 0 0 0.25rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1d72f3" stroke-width="2">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+                                    </svg>
+                                    AI-Recommended Segments
+                                </h3>
+                                <p style="font-size: 0.875rem; color: #6b7280; margin: 0;">Based on your data, insights from past segments, and performance trends</p>
+                            </div>
+                            <span style="padding: 0.375rem 0.75rem; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); color: #1e40af; border-radius: 1rem; font-size: 0.75rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.375rem;">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                                Ready to Use
+                            </span>
+                        </div>
+
+                        <!-- Recommended Segments Grid -->
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+                            <!-- Segment Card 1 -->
+                            <div onclick="useRecommendedSegment('High-Value At-Risk Customers')" style="background: white; border: 2px solid #e5e7eb; border-radius: 0.75rem; padding: 1.25rem; cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden;" onmouseover="this.style.borderColor='#1d72f3'; this.style.boxShadow='0 8px 20px rgba(29, 114, 243, 0.15)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.transform='translateY(0)'">
+                                <div style="position: absolute; top: 0.75rem; right: 0.75rem; padding: 0.25rem 0.5rem; background: #fef3c7; color: #92400e; border-radius: 0.375rem; font-size: 0.6875rem; font-weight: 600; display: flex; align-items: center; gap: 0.25rem;">
+                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                                    </svg>
+                                    High Impact
+                                </div>
+                                <div style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 0.75rem;">
+                                    <div style="padding: 0.75rem; background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); border-radius: 0.5rem; flex-shrink: 0;">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2">
+                                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                                            <line x1="12" y1="9" x2="12" y2="13"/>
+                                            <line x1="12" y1="17" x2="12.01" y2="17"/>
+                                        </svg>
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <h4 style="font-size: 0.9375rem; font-weight: 600; color: #111827; margin: 0 0 0.375rem 0;">High-Value At-Risk Customers</h4>
+                                        <p style="font-size: 0.8125rem; color: #6b7280; margin: 0; line-height: 1.4;">LTV >$2,500 but declining engagement by 40% in last 30 days</p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 0.75rem; border-top: 1px solid #f3f4f6;">
+                                    <div style="display: flex; gap: 1rem;">
+                                        <div style="text-align: left;">
+                                            <div style="font-size: 0.6875rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.125rem;">Estimated Size</div>
+                                            <div style="font-size: 0.9375rem; font-weight: 700; color: #111827;">1,847</div>
+                                        </div>
+                                        <div style="text-align: left;">
+                                            <div style="font-size: 0.6875rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.125rem;">Potential Value</div>
+                                            <div style="font-size: 0.9375rem; font-weight: 700; color: #059669;">$4.6M</div>
+                                        </div>
+                                    </div>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1d72f3" stroke-width="2">
+                                        <polyline points="9 18 15 12 9 6"/>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <!-- Segment Card 2 -->
+                            <div onclick="useRecommendedSegment('Winter Campaign - Cold Climate Enthusiasts')" style="background: white; border: 2px solid #e5e7eb; border-radius: 0.75rem; padding: 1.25rem; cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden;" onmouseover="this.style.borderColor='#1d72f3'; this.style.boxShadow='0 8px 20px rgba(29, 114, 243, 0.15)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.transform='translateY(0)'">
+                                <div style="position: absolute; top: 0.75rem; right: 0.75rem; padding: 0.25rem 0.5rem; background: #e0f2fe; color: #075985; border-radius: 0.375rem; font-size: 0.6875rem; font-weight: 600; display: flex; align-items: center; gap: 0.25rem;">
+                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M12 6v6l4 2"/>
+                                    </svg>
+                                    Trending
+                                </div>
+                                <div style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 0.75rem;">
+                                    <div style="padding: 0.75rem; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-radius: 0.5rem; flex-shrink: 0;">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1d72f3" stroke-width="2">
+                                            <path d="M20 9v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9"/>
+                                            <path d="M9 22V12h6v10M2 10.6L12 2l10 8.6"/>
+                                        </svg>
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <h4 style="font-size: 0.9375rem; font-weight: 600; color: #111827; margin: 0 0 0.375rem 0;">Winter Campaign - Cold Climate</h4>
+                                        <p style="font-size: 0.8125rem; color: #6b7280; margin: 0; line-height: 1.4;">Outdoor enthusiasts in regions with winter sports activity + recent browsing</p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 0.75rem; border-top: 1px solid #f3f4f6;">
+                                    <div style="display: flex; gap: 1rem;">
+                                        <div style="text-align: left;">
+                                            <div style="font-size: 0.6875rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.125rem;">Estimated Size</div>
+                                            <div style="font-size: 0.9375rem; font-weight: 700; color: #111827;">12,453</div>
+                                        </div>
+                                        <div style="text-align: left;">
+                                            <div style="font-size: 0.6875rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.125rem;">Conv. Rate</div>
+                                            <div style="font-size: 0.9375rem; font-weight: 700; color: #059669;">18.4%</div>
+                                        </div>
+                                    </div>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1d72f3" stroke-width="2">
+                                        <polyline points="9 18 15 12 9 6"/>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <!-- Segment Card 3 -->
+                            <div onclick="useRecommendedSegment('Repeat Buyers - Loyalty Upgrade Opportunity')" style="background: white; border: 2px solid #e5e7eb; border-radius: 0.75rem; padding: 1.25rem; cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden;" onmouseover="this.style.borderColor='#1d72f3'; this.style.boxShadow='0 8px 20px rgba(29, 114, 243, 0.15)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.transform='translateY(0)'">
+                                <div style="position: absolute; top: 0.75rem; right: 0.75rem; padding: 0.25rem 0.5rem; background: #f0fdf4; color: #065f46; border-radius: 0.375rem; font-size: 0.6875rem; font-weight: 600; display: flex; align-items: center; gap: 0.25rem;">
+                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="12" y1="5" x2="12" y2="19"/>
+                                        <polyline points="5 12 12 5 19 12"/>
+                                    </svg>
+                                    High ROI
+                                </div>
+                                <div style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 0.75rem;">
+                                    <div style="padding: 0.75rem; background: linear-gradient(135deg, #fae8ff 0%, #f3e8ff 100%); border-radius: 0.5rem; flex-shrink: 0;">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                            <circle cx="12" cy="7" r="4"/>
+                                            <path d="M22 11v6"/>
+                                            <path d="M19 14h6"/>
+                                        </svg>
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <h4 style="font-size: 0.9375rem; font-weight: 600; color: #111827; margin: 0 0 0.375rem 0;">Loyalty Upgrade Opportunity</h4>
+                                        <p style="font-size: 0.8125rem; color: #6b7280; margin: 0; line-height: 1.4;">3+ purchases, $500+ spent, not in loyalty program yet</p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 0.75rem; border-top: 1px solid #f3f4f6;">
+                                    <div style="display: flex; gap: 1rem;">
+                                        <div style="text-align: left;">
+                                            <div style="font-size: 0.6875rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.125rem;">Estimated Size</div>
+                                            <div style="font-size: 0.9375rem; font-weight: 700; color: #111827;">5,329</div>
+                                        </div>
+                                        <div style="text-align: left;">
+                                            <div style="font-size: 0.6875rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.125rem;">Avg LTV Lift</div>
+                                            <div style="font-size: 0.9375rem; font-weight: 700; color: #059669;">+45%</div>
+                                        </div>
+                                    </div>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1d72f3" stroke-width="2">
+                                        <polyline points="9 18 15 12 9 6"/>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <!-- Segment Card 4 -->
+                            <div onclick="useRecommendedSegment('Email Re-Engagement - Inactive 90 Days')" style="background: white; border: 2px solid #e5e7eb; border-radius: 0.75rem; padding: 1.25rem; cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden;" onmouseover="this.style.borderColor='#1d72f3'; this.style.boxShadow='0 8px 20px rgba(29, 114, 243, 0.15)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'; this.style.transform='translateY(0)'">
+                                <div style="position: absolute; top: 0.75rem; right: 0.75rem; padding: 0.25rem 0.5rem; background: #fef3c7; color: #92400e; border-radius: 0.375rem; font-size: 0.6875rem; font-weight: 600;">
+                                    Similar +22% open
+                                </div>
+                                <div style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 0.75rem;">
+                                    <div style="padding: 0.75rem; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 0.5rem; flex-shrink: 0;">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2">
+                                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                            <polyline points="22,6 12,13 2,6"/>
+                                        </svg>
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <h4 style="font-size: 0.9375rem; font-weight: 600; color: #111827; margin: 0 0 0.375rem 0;">Email Re-Engagement</h4>
+                                        <p style="font-size: 0.8125rem; color: #6b7280; margin: 0; line-height: 1.4;">Previously engaged, no opens/clicks in 90 days, high past conversion</p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 0.75rem; border-top: 1px solid #f3f4f6;">
+                                    <div style="display: flex; gap: 1rem;">
+                                        <div style="text-align: left;">
+                                            <div style="font-size: 0.6875rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.125rem;">Estimated Size</div>
+                                            <div style="font-size: 0.9375rem; font-weight: 700; color: #111827;">8,942</div>
+                                        </div>
+                                        <div style="text-align: left;">
+                                            <div style="font-size: 0.6875rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.125rem;">Win-back Rate</div>
+                                            <div style="font-size: 0.9375rem; font-weight: 700; color: #059669;">12.8%</div>
+                                        </div>
+                                    </div>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1d72f3" stroke-width="2">
+                                        <polyline points="9 18 15 12 9 6"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; padding: 0.75rem; background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%); border-radius: 0.5rem; border: 1px solid #e5e7eb;">
+                            <p style="font-size: 0.8125rem; color: #6b7280; margin: 0; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1d72f3" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <line x1="12" y1="16" x2="12" y2="12"/>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"/>
+                                </svg>
+                                These segments are generated based on your data patterns, historical segment performance, and current business trends
+                            </p>
+                        </div>
+                    </div>
+
                     <!-- Manual Segment Builder Option -->
                     <div class="divider-or" style="margin-top: 2rem;">
                         <span>OR BUILD MANUALLY</span>
@@ -7854,6 +8039,137 @@
             goToManualBuilder();
         }
 
+        function useRecommendedSegment(segmentName) {
+            console.log('Using recommended segment:', segmentName);
+            
+            // Hide welcome state
+            document.getElementById('welcomeState').style.display = 'none';
+            
+            // Show toolbar and tab navigation
+            document.getElementById('segmentToolbar').style.display = 'flex';
+            document.getElementById('tabNavigation').style.display = 'flex';
+            
+            // Show global agent bar
+            document.getElementById('globalAgentBar').classList.add('active');
+            
+            // Set segment title and description based on selected segment
+            document.getElementById('segmentTitle').textContent = segmentName;
+            
+            // Set segment descriptions based on which was selected
+            if (segmentName === 'High-Value At-Risk Customers') {
+                document.getElementById('segmentDescription').textContent = 'AI-recommended segment targeting high lifetime value customers showing signs of declining engagement';
+                
+                // Show pre-configured filters
+                const filter1 = document.getElementById('filter1');
+                const filter2 = document.getElementById('filter2');
+                const filter3 = document.getElementById('filter3');
+                
+                if (filter1) {
+                    filter1.style.display = 'flex';
+                    filter1.querySelector('.filter-label').textContent = 'Lifetime Value';
+                    filter1.querySelector('.filter-operator').textContent = 'greater than';
+                    filter1.querySelector('.filter-value').textContent = '$2,500';
+                }
+                if (filter2) {
+                    filter2.style.display = 'flex';
+                    filter2.querySelector('.filter-label').textContent = 'Engagement Score';
+                    filter2.querySelector('.filter-operator').textContent = 'decreased by';
+                    filter2.querySelector('.filter-value').textContent = '40% (last 30 days)';
+                }
+                if (filter3) {
+                    filter3.style.display = 'flex';
+                    filter3.querySelector('.filter-label').textContent = 'Last Purchase';
+                    filter3.querySelector('.filter-operator').textContent = 'within';
+                    filter3.querySelector('.filter-value').textContent = 'last 90 days';
+                }
+                
+            } else if (segmentName === 'Winter Campaign - Cold Climate Enthusiasts') {
+                document.getElementById('segmentDescription').textContent = 'AI-recommended segment for winter campaign targeting outdoor enthusiasts in cold climates';
+                
+                const filter1 = document.getElementById('filter1');
+                const filter2 = document.getElementById('filter2');
+                
+                if (filter1) {
+                    filter1.style.display = 'flex';
+                    filter1.querySelector('.filter-label').textContent = 'Product Interest';
+                    filter1.querySelector('.filter-operator').textContent = 'includes';
+                    filter1.querySelector('.filter-value').textContent = 'Outdoor, Winter Sports';
+                }
+                if (filter2) {
+                    filter2.style.display = 'flex';
+                    filter2.querySelector('.filter-label').textContent = 'Geography';
+                    filter2.querySelector('.filter-operator').textContent = 'in regions with';
+                    filter2.querySelector('.filter-value').textContent = 'Cold Climate / Winter Activity';
+                }
+                
+            } else if (segmentName === 'Repeat Buyers - Loyalty Upgrade Opportunity') {
+                document.getElementById('segmentDescription').textContent = 'AI-recommended segment identifying repeat customers ready for loyalty program enrollment';
+                
+                const filter1 = document.getElementById('filter1');
+                const filter2 = document.getElementById('filter2');
+                const filter3 = document.getElementById('filter3');
+                
+                if (filter1) {
+                    filter1.style.display = 'flex';
+                    filter1.querySelector('.filter-label').textContent = 'Purchase Count';
+                    filter1.querySelector('.filter-operator').textContent = 'at least';
+                    filter1.querySelector('.filter-value').textContent = '3 purchases';
+                }
+                if (filter2) {
+                    filter2.style.display = 'flex';
+                    filter2.querySelector('.filter-label').textContent = 'Total Spend';
+                    filter2.querySelector('.filter-operator').textContent = 'greater than';
+                    filter2.querySelector('.filter-value').textContent = '$500';
+                }
+                if (filter3) {
+                    filter3.style.display = 'flex';
+                    filter3.querySelector('.filter-label').textContent = 'Loyalty Status';
+                    filter3.querySelector('.filter-operator').textContent = 'is';
+                    filter3.querySelector('.filter-value').textContent = 'Not Enrolled';
+                }
+                
+            } else if (segmentName === 'Email Re-Engagement - Inactive 90 Days') {
+                document.getElementById('segmentDescription').textContent = 'AI-recommended segment for re-engaging previously active email subscribers';
+                
+                const filter1 = document.getElementById('filter1');
+                const filter2 = document.getElementById('filter2');
+                const filter3 = document.getElementById('filter3');
+                
+                if (filter1) {
+                    filter1.style.display = 'flex';
+                    filter1.querySelector('.filter-label').textContent = 'Email Engagement';
+                    filter1.querySelector('.filter-operator').textContent = 'no activity in';
+                    filter1.querySelector('.filter-value').textContent = 'last 90 days';
+                }
+                if (filter2) {
+                    filter2.style.display = 'flex';
+                    filter2.querySelector('.filter-label').textContent = 'Past Conversion Rate';
+                    filter2.querySelector('.filter-operator').textContent = 'greater than';
+                    filter2.querySelector('.filter-value').textContent = '15%';
+                }
+                if (filter3) {
+                    filter3.style.display = 'flex';
+                    filter3.querySelector('.filter-label').textContent = 'Subscription Status';
+                    filter3.querySelector('.filter-operator').textContent = 'is';
+                    filter3.querySelector('.filter-value').textContent = 'Active';
+                }
+            }
+            
+            // Hide empty state
+            const emptyState = document.getElementById('emptyStateFilters');
+            if (emptyState) emptyState.style.display = 'none';
+            
+            // Show AND column if we have multiple filters
+            const andColumn = document.getElementById('andColumn');
+            if (andColumn) andColumn.style.display = 'flex';
+            
+            // Switch to Definition tab
+            switchTab('definition');
+            
+            // Update segment size display with estimated count
+            updateSegmentSizeDisplay();
+        }
+        
         function goToManualBuilder() {
             // Hide welcome state and go directly to Segment Definition
             document.getElementById('welcomeState').style.display = 'none';
