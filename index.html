@@ -6880,6 +6880,7 @@
                             
                             <!-- Journey 1: Multi-Channel Re-Engagement -->
                             <div onclick="applyJourneyTemplate('reengagement')" style="background: white; border: 2px solid #10b981; border-radius: 0.625rem; padding: 1.25rem; cursor: pointer; transition: all 0.2s; position: relative;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(16,185,129,0.15)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                <!-- Header -->
                                 <div style="display: flex; align-items: flex-start; gap: 0.625rem; margin-bottom: 1rem;">
                                     <div style="font-size: 1.5rem;">📧</div>
                                     <div style="flex: 1;">
@@ -6889,55 +6890,72 @@
                                     <span style="background: #bbf7d0; color: #065f46; font-size: 0.625rem; padding: 0.1875rem 0.5rem; border-radius: 0.25rem; font-weight: 700; position: absolute; top: 1rem; right: 1rem;">RECOMMENDED</span>
                                 </div>
                                 
-                                <!-- Visual Flow -->
-                                <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
-                                    <!-- Step 1 -->
-                                    <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.25rem; padding: 0.5rem; margin-bottom: 0.375rem;">
-                                        <div style="display: flex; align-items: center; gap: 0.375rem;">
-                                            <div style="width: 18px; height: 18px; background: #6b7280; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.625rem; font-weight: 600; flex-shrink: 0;">1</div>
-                                            <div>
-                                                <div style="font-weight: 600; font-size: 0.75rem; color: #1f2937;">Send Personalized Email</div>
-                                                <div style="font-size: 0.625rem; color: #6b7280;">Discount offer based on past purchases</div>
+                                <!-- Split Layout: Key Aspects + Flow -->
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                    <!-- Left: Key Aspects -->
+                                    <div>
+                                        <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
+                                            <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Channels</div>
+                                            <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; margin-bottom: 0.75rem;">
+                                                <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-size: 0.75rem; font-weight: 500;">✉️ Email</span>
+                                                <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-size: 0.75rem; font-weight: 500;">📱 SMS</span>
+                                                <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-size: 0.75rem; font-weight: 500;">📘 Meta Ads</span>
                                             </div>
+                                            
+                                            <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Journey Summary</div>
+                                            <ul style="margin: 0; padding-left: 1.25rem; font-size: 0.75rem; color: #4b5563; line-height: 1.6;">
+                                                <li>Initial email with personalized discount</li>
+                                                <li>Wait 48 hours for engagement</li>
+                                                <li>Engaged → SMS follow-up</li>
+                                                <li>Not engaged → Meta Ads retargeting</li>
+                                            </ul>
                                         </div>
                                     </div>
                                     
-                                    <!-- Arrow + Wait -->
-                                    <div style="display: flex; flex-direction: column; align-items: center; margin: 0.25rem 0;">
-                                        <div style="width: 1px; height: 10px; background: #d1d5db;"></div>
-                                        <div style="background: white; border: 1px solid #e5e7eb; padding: 0.125rem 0.5rem; border-radius: 0.1875rem; font-size: 0.625rem; color: #6b7280; font-weight: 500;">⏰ Wait 48h</div>
-                                        <div style="width: 1px; height: 10px; background: #d1d5db;"></div>
-                                    </div>
-                                    
-                                    <!-- Step 2: Decision Point -->
-                                    <div style="background: white; border: 1px solid #d1d5db; border-radius: 0.25rem; padding: 0.5rem; margin-bottom: 0.375rem;">
-                                        <div style="display: flex; align-items: center; gap: 0.375rem;">
-                                            <div style="width: 18px; height: 18px; background: #6b7280; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.625rem; flex-shrink: 0;">?</div>
-                                            <div style="font-weight: 600; font-size: 0.75rem; color: #1f2937;">Did customer engage?</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Branch Display -->
-                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.375rem;">
-                                        <!-- YES Branch -->
-                                        <div>
-                                            <div style="text-align: center; margin-bottom: 0.25rem;">
-                                                <span style="background: #f3f4f6; color: #1f2937; padding: 0.125rem 0.375rem; border-radius: 0.1875rem; font-size: 0.625rem; font-weight: 600;">YES</span>
+                                    <!-- Right: Flow Chart -->
+                                    <div>
+                                        <div style="background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border: 1px solid #d1fae5; border-radius: 0.375rem; padding: 0.75rem;">
+                                            <!-- Step 1 -->
+                                            <div style="background: white; border: 1px solid #86efac; border-radius: 0.25rem; padding: 0.5rem; margin-bottom: 0.375rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                                                <div style="display: flex; align-items: center; gap: 0.375rem;">
+                                                    <div style="width: 18px; height: 18px; background: #10b981; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.625rem; font-weight: 700; flex-shrink: 0;">1</div>
+                                                    <div style="font-weight: 600; font-size: 0.75rem; color: #1f2937;">Send Email</div>
+                                                </div>
                                             </div>
-                                            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.25rem; padding: 0.5rem;">
-                                                <div style="font-weight: 600; font-size: 0.6875rem; color: #1f2937; margin-bottom: 0.125rem;">📱 Send SMS</div>
-                                                <div style="font-size: 0.625rem; color: #6b7280;">Follow-up offer</div>
+                                            
+                                            <!-- Arrow -->
+                                            <div style="display: flex; flex-direction: column; align-items: center; margin: 0.25rem 0;">
+                                                <div style="width: 2px; height: 12px; background: #86efac;"></div>
+                                                <div style="background: white; border: 1px solid #86efac; padding: 0.125rem 0.375rem; border-radius: 0.1875rem; font-size: 0.625rem; color: #065f46; font-weight: 600;">48h</div>
+                                                <div style="width: 2px; height: 12px; background: #86efac;"></div>
                                             </div>
-                                        </div>
-                                        
-                                        <!-- NO Branch -->
-                                        <div>
-                                            <div style="text-align: center; margin-bottom: 0.25rem;">
-                                                <span style="background: #f3f4f6; color: #1f2937; padding: 0.125rem 0.375rem; border-radius: 0.1875rem; font-size: 0.625rem; font-weight: 600;">NO</span>
+                                            
+                                            <!-- Decision -->
+                                            <div style="background: #fef3c7; border: 1px solid #fbbf24; border-radius: 0.25rem; padding: 0.5rem; margin-bottom: 0.375rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                                                <div style="display: flex; align-items: center; gap: 0.375rem; justify-content: center;">
+                                                    <div style="width: 18px; height: 18px; background: #f59e0b; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.625rem; font-weight: 700;">?</div>
+                                                    <div style="font-weight: 600; font-size: 0.75rem; color: #92400e;">Engaged?</div>
+                                                </div>
                                             </div>
-                                            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.25rem; padding: 0.5rem;">
-                                                <div style="font-weight: 600; font-size: 0.6875rem; color: #1f2937; margin-bottom: 0.125rem;">📘 Meta Ads</div>
-                                                <div style="font-size: 0.625rem; color: #6b7280;">Retargeting campaign</div>
+                                            
+                                            <!-- Branches -->
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.375rem;">
+                                                <div>
+                                                    <div style="text-align: center; margin-bottom: 0.25rem;">
+                                                        <span style="background: #d1fae5; color: #065f46; padding: 0.125rem 0.375rem; border-radius: 0.1875rem; font-size: 0.625rem; font-weight: 600;">YES</span>
+                                                    </div>
+                                                    <div style="background: white; border: 1px solid #86efac; border-radius: 0.25rem; padding: 0.375rem; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                                                        <div style="font-weight: 600; font-size: 0.6875rem; color: #1f2937;">📱 SMS</div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div style="text-align: center; margin-bottom: 0.25rem;">
+                                                        <span style="background: #fee2e2; color: #991b1b; padding: 0.125rem 0.375rem; border-radius: 0.1875rem; font-size: 0.625rem; font-weight: 600;">NO</span>
+                                                    </div>
+                                                    <div style="background: white; border: 1px solid #fca5a5; border-radius: 0.25rem; padding: 0.375rem; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                                                        <div style="font-weight: 600; font-size: 0.6875rem; color: #1f2937;">📘 Ads</div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -6946,6 +6964,7 @@
 
                             <!-- Journey 2: VIP Customer Nurture (Multi-value branching) -->
                             <div onclick="applyJourneyTemplate('vip')" style="background: white; border: 2px solid #e5e7eb; border-radius: 0.625rem; padding: 1.25rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#6b7280'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.borderColor='#e5e7eb'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                <!-- Header -->
                                 <div style="display: flex; align-items: flex-start; gap: 0.625rem; margin-bottom: 1rem;">
                                     <div style="font-size: 1.5rem;">👑</div>
                                     <div style="flex: 1;">
@@ -6954,74 +6973,94 @@
                                     </div>
                                 </div>
                                 
-                                <!-- Visual Flow -->
-                                <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
-                                    <!-- Step 1 -->
-                                    <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.25rem; padding: 0.5rem; margin-bottom: 0.375rem;">
-                                        <div style="display: flex; align-items: center; gap: 0.375rem;">
-                                            <div style="width: 18px; height: 18px; background: #6b7280; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.625rem; font-weight: 600; flex-shrink: 0;">1</div>
-                                            <div>
-                                                <div style="font-weight: 600; font-size: 0.75rem; color: #1f2937;">Send Welcome Email</div>
-                                                <div style="font-size: 0.625rem; color: #6b7280;">VIP tier announcement</div>
+                                <!-- Split Layout: Key Aspects + Flow -->
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                    <!-- Left: Key Aspects -->
+                                    <div>
+                                        <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
+                                            <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Channels</div>
+                                            <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; margin-bottom: 0.75rem;">
+                                                <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-size: 0.75rem; font-weight: 500;">✉️ Email</span>
+                                                <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-size: 0.75rem; font-weight: 500;">📱 SMS</span>
+                                                <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-size: 0.75rem; font-weight: 500;">📞 Phone</span>
                                             </div>
+                                            
+                                            <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Journey Summary</div>
+                                            <ul style="margin: 0; padding-left: 1.25rem; font-size: 0.75rem; color: #4b5563; line-height: 1.6;">
+                                                <li>Welcome email to all VIP tiers</li>
+                                                <li>Wait 24 hours</li>
+                                                <li>Gold → 10% email offer</li>
+                                                <li>Platinum → 20% SMS + gift</li>
+                                                <li>Diamond → Personal rep call</li>
+                                            </ul>
                                         </div>
                                     </div>
                                     
-                                    <!-- Arrow + Wait -->
-                                    <div style="display: flex; flex-direction: column; align-items: center; margin: 0.25rem 0;">
-                                        <div style="width: 1px; height: 10px; background: #d1d5db;"></div>
-                                        <div style="background: white; border: 1px solid #e5e7eb; padding: 0.125rem 0.5rem; border-radius: 0.1875rem; font-size: 0.625rem; color: #6b7280; font-weight: 500;">⏰ Wait 24h</div>
-                                        <div style="width: 1px; height: 10px; background: #d1d5db;"></div>
-                                    </div>
-                                    
-                                    <!-- Step 2: Multi-value Decision -->
-                                    <div style="background: white; border: 1px solid #d1d5db; border-radius: 0.25rem; padding: 0.5rem; margin-bottom: 0.375rem;">
-                                        <div style="display: flex; align-items: center; gap: 0.375rem;">
-                                            <div style="width: 18px; height: 18px; background: #6b7280; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.625rem; flex-shrink: 0;">?</div>
-                                            <div style="font-weight: 600; font-size: 0.75rem; color: #1f2937;">Check VIP Tier Level</div>
+                                    <!-- Right: Flow Chart -->
+                                    <div>
+                                        <div style="background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%); border: 1px solid #e9d5ff; border-radius: 0.375rem; padding: 0.75rem;">
+                                            <!-- Step 1 -->
+                                            <div style="background: white; border: 1px solid #c084fc; border-radius: 0.25rem; padding: 0.5rem; margin-bottom: 0.375rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                                                <div style="display: flex; align-items: center; gap: 0.375rem;">
+                                                    <div style="width: 18px; height: 18px; background: #a855f7; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.625rem; font-weight: 700; flex-shrink: 0;">1</div>
+                                                    <div style="font-weight: 600; font-size: 0.75rem; color: #1f2937;">Welcome Email</div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Arrow -->
+                                            <div style="display: flex; flex-direction: column; align-items: center; margin: 0.25rem 0;">
+                                                <div style="width: 2px; height: 12px; background: #c084fc;"></div>
+                                                <div style="background: white; border: 1px solid #c084fc; padding: 0.125rem 0.375rem; border-radius: 0.1875rem; font-size: 0.625rem; color: #7c3aed; font-weight: 600;">24h</div>
+                                                <div style="width: 2px; height: 12px; background: #c084fc;"></div>
+                                            </div>
+                                            
+                                            <!-- Decision -->
+                                            <div style="background: #fef3c7; border: 1px solid #fbbf24; border-radius: 0.25rem; padding: 0.5rem; margin-bottom: 0.375rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                                                <div style="display: flex; align-items: center; gap: 0.375rem; justify-content: center;">
+                                                    <div style="width: 18px; height: 18px; background: #f59e0b; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.625rem; font-weight: 700;">?</div>
+                                                    <div style="font-weight: 600; font-size: 0.75rem; color: #92400e;">Tier?</div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- 3-Way Branches -->
+                                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.25rem;">
+                                                <div>
+                                                    <div style="text-align: center; margin-bottom: 0.1875rem;">
+                                                        <span style="background: #fef3c7; color: #92400e; padding: 0.125rem 0.25rem; border-radius: 0.1875rem; font-size: 0.5625rem; font-weight: 600;">GOLD</span>
+                                                    </div>
+                                                    <div style="background: white; border: 1px solid #fbbf24; border-radius: 0.25rem; padding: 0.3125rem; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                                                        <div style="font-weight: 600; font-size: 0.625rem; color: #1f2937;">✉️</div>
+                                                        <div style="font-size: 0.5625rem; color: #6b7280;">10%</div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div style="text-align: center; margin-bottom: 0.1875rem;">
+                                                        <span style="background: #e0e7ff; color: #3730a3; padding: 0.125rem 0.25rem; border-radius: 0.1875rem; font-size: 0.5625rem; font-weight: 600;">PLAT</span>
+                                                    </div>
+                                                    <div style="background: white; border: 1px solid #818cf8; border-radius: 0.25rem; padding: 0.3125rem; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                                                        <div style="font-weight: 600; font-size: 0.625rem; color: #1f2937;">📱</div>
+                                                        <div style="font-size: 0.5625rem; color: #6b7280;">20%</div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div style="text-align: center; margin-bottom: 0.1875rem;">
+                                                        <span style="background: #dbeafe; color: #1e40af; padding: 0.125rem 0.25rem; border-radius: 0.1875rem; font-size: 0.5625rem; font-weight: 600;">DIA</span>
+                                                    </div>
+                                                    <div style="background: white; border: 1px solid #60a5fa; border-radius: 0.25rem; padding: 0.3125rem; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                                                        <div style="font-weight: 600; font-size: 0.625rem; color: #1f2937;">📞</div>
+                                                        <div style="font-size: 0.5625rem; color: #6b7280;">Call</div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    
-                                    <!-- 3-Way Branch Display -->
-                                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.25rem;">
-                                        <!-- Gold Branch -->
-                                        <div>
-                                            <div style="text-align: center; margin-bottom: 0.1875rem;">
-                                                <span style="background: #f3f4f6; color: #1f2937; padding: 0.125rem 0.3125rem; border-radius: 0.1875rem; font-size: 0.5625rem; font-weight: 600;">GOLD</span>
-                                            </div>
-                                            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.25rem; padding: 0.375rem;">
-                                                <div style="font-weight: 600; font-size: 0.625rem; color: #1f2937; margin-bottom: 0.125rem;">✉️ Email</div>
-                                                <div style="font-size: 0.5625rem; color: #6b7280;">10% off</div>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Platinum Branch -->
-                                        <div>
-                                            <div style="text-align: center; margin-bottom: 0.1875rem;">
-                                                <span style="background: #f3f4f6; color: #1f2937; padding: 0.125rem 0.3125rem; border-radius: 0.1875rem; font-size: 0.5625rem; font-weight: 600;">PLAT</span>
-                                            </div>
-                                            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.25rem; padding: 0.375rem;">
-                                                <div style="font-weight: 600; font-size: 0.625rem; color: #1f2937; margin-bottom: 0.125rem;">📱 SMS</div>
-                                                <div style="font-size: 0.5625rem; color: #6b7280;">20% + gift</div>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Diamond Branch -->
-                                        <div>
-                                            <div style="text-align: center; margin-bottom: 0.1875rem;">
-                                                <span style="background: #f3f4f6; color: #1f2937; padding: 0.125rem 0.3125rem; border-radius: 0.1875rem; font-size: 0.5625rem; font-weight: 600;">DIA</span>
-                                            </div>
-                                            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.25rem; padding: 0.375rem;">
-                                                <div style="font-weight: 600; font-size: 0.625rem; color: #1f2937; margin-bottom: 0.125rem;">📞 Call</div>
-                                                <div style="font-size: 0.5625rem; color: #6b7280;">Pers. rep</div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                </div>
                                 </div>
                             </div>
 
                             <!-- Journey 3: Cart Abandonment Recovery -->
                             <div onclick="applyJourneyTemplate('cart')" style="background: white; border: 2px solid #e5e7eb; border-radius: 0.625rem; padding: 1.25rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#6b7280'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.borderColor='#e5e7eb'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                <!-- Header -->
                                 <div style="display: flex; align-items: flex-start; gap: 0.625rem; margin-bottom: 1rem;">
                                     <div style="font-size: 1.5rem;">🛒</div>
                                     <div style="flex: 1;">
@@ -7030,63 +7069,83 @@
                                     </div>
                                 </div>
                                 
-                                <!-- Visual Flow -->
-                                <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
-                                    <!-- Step 1 -->
-                                    <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.25rem; padding: 0.5rem; margin-bottom: 0.375rem;">
-                                        <div style="display: flex; align-items: center; gap: 0.375rem;">
-                                            <div style="width: 18px; height: 18px; background: #6b7280; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.625rem; font-weight: 600; flex-shrink: 0;">1</div>
-                                            <div>
-                                                <div style="font-weight: 600; font-size: 0.75rem; color: #1f2937;">Send Reminder Email</div>
-                                                <div style="font-size: 0.625rem; color: #6b7280;">Items still in cart</div>
+                                <!-- Split Layout: Key Aspects + Flow -->
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                    <!-- Left: Key Aspects -->
+                                    <div>
+                                        <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
+                                            <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Channels</div>
+                                            <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; margin-bottom: 0.75rem;">
+                                                <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-size: 0.75rem; font-weight: 500;">✉️ Email</span>
+                                                <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-size: 0.75rem; font-weight: 500;">📱 SMS</span>
                                             </div>
+                                            
+                                            <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Journey Summary</div>
+                                            <ul style="margin: 0; padding-left: 1.25rem; font-size: 0.75rem; color: #4b5563; line-height: 1.6;">
+                                                <li>Send cart reminder email</li>
+                                                <li>Wait 2 hours</li>
+                                                <li>High value (&gt;$100) → SMS with 15% off</li>
+                                                <li>Low value (&lt;$100) → Email with free shipping</li>
+                                            </ul>
                                         </div>
                                     </div>
                                     
-                                    <!-- Arrow + Wait -->
-                                    <div style="display: flex; flex-direction: column; align-items: center; margin: 0.25rem 0;">
-                                        <div style="width: 1px; height: 10px; background: #d1d5db;"></div>
-                                        <div style="background: white; border: 1px solid #e5e7eb; padding: 0.125rem 0.5rem; border-radius: 0.1875rem; font-size: 0.625rem; color: #6b7280; font-weight: 500;">⏰ Wait 2h</div>
-                                        <div style="width: 1px; height: 10px; background: #d1d5db;"></div>
-                                    </div>
-                                    
-                                    <!-- Step 2: Cart Value Check -->
-                                    <div style="background: white; border: 1px solid #d1d5db; border-radius: 0.25rem; padding: 0.5rem; margin-bottom: 0.375rem;">
-                                        <div style="display: flex; align-items: center; gap: 0.375rem;">
-                                            <div style="width: 18px; height: 18px; background: #6b7280; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.625rem; flex-shrink: 0;">?</div>
-                                            <div style="font-weight: 600; font-size: 0.75rem; color: #1f2937;">Check Cart Value</div>
+                                    <!-- Right: Flow Chart -->
+                                    <div>
+                                        <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border: 1px solid #fecaca; border-radius: 0.375rem; padding: 0.75rem;">
+                                            <!-- Step 1 -->
+                                            <div style="background: white; border: 1px solid #fca5a5; border-radius: 0.25rem; padding: 0.5rem; margin-bottom: 0.375rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                                                <div style="display: flex; align-items: center; gap: 0.375rem;">
+                                                    <div style="width: 18px; height: 18px; background: #ef4444; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.625rem; font-weight: 700; flex-shrink: 0;">1</div>
+                                                    <div style="font-weight: 600; font-size: 0.75rem; color: #1f2937;">Reminder Email</div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Arrow -->
+                                            <div style="display: flex; flex-direction: column; align-items: center; margin: 0.25rem 0;">
+                                                <div style="width: 2px; height: 12px; background: #fca5a5;"></div>
+                                                <div style="background: white; border: 1px solid #fca5a5; padding: 0.125rem 0.375rem; border-radius: 0.1875rem; font-size: 0.625rem; color: #dc2626; font-weight: 600;">2h</div>
+                                                <div style="width: 2px; height: 12px; background: #fca5a5;"></div>
+                                            </div>
+                                            
+                                            <!-- Decision -->
+                                            <div style="background: #fef3c7; border: 1px solid #fbbf24; border-radius: 0.25rem; padding: 0.5rem; margin-bottom: 0.375rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                                                <div style="display: flex; align-items: center; gap: 0.375rem; justify-content: center;">
+                                                    <div style="width: 18px; height: 18px; background: #f59e0b; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.625rem; font-weight: 700;">?</div>
+                                                    <div style="font-weight: 600; font-size: 0.75rem; color: #92400e;">Cart Value?</div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Branches -->
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.375rem;">
+                                                <div>
+                                                    <div style="text-align: center; margin-bottom: 0.25rem;">
+                                                        <span style="background: #d1fae5; color: #065f46; padding: 0.125rem 0.375rem; border-radius: 0.1875rem; font-size: 0.625rem; font-weight: 600;">&gt;$100</span>
+                                                    </div>
+                                                    <div style="background: white; border: 1px solid #86efac; border-radius: 0.25rem; padding: 0.5rem; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                                                        <div style="font-weight: 600; font-size: 0.6875rem; color: #1f2937;">📱 SMS</div>
+                                                        <div style="font-size: 0.625rem; color: #6b7280;">15% off</div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div style="text-align: center; margin-bottom: 0.25rem;">
+                                                        <span style="background: #e0e7ff; color: #3730a3; padding: 0.125rem 0.375rem; border-radius: 0.1875rem; font-size: 0.625rem; font-weight: 600;">&lt;$100</span>
+                                                    </div>
+                                                    <div style="background: white; border: 1px solid #818cf8; border-radius: 0.25rem; padding: 0.5rem; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                                                        <div style="font-weight: 600; font-size: 0.6875rem; color: #1f2937;">✉️ Email</div>
+                                                        <div style="font-size: 0.625rem; color: #6b7280;">Free ship</div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    
-                                    <!-- Branch by Cart Value -->
-                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.375rem;">
-                                        <!-- High Value Branch -->
-                                        <div>
-                                            <div style="text-align: center; margin-bottom: 0.25rem;">
-                                                <span style="background: #f3f4f6; color: #1f2937; padding: 0.125rem 0.375rem; border-radius: 0.1875rem; font-size: 0.625rem; font-weight: 600;">&gt;$100</span>
-                                            </div>
-                                            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.25rem; padding: 0.5rem;">
-                                                <div style="font-weight: 600; font-size: 0.6875rem; color: #1f2937; margin-bottom: 0.125rem;">📱 SMS</div>
-                                                <div style="font-size: 0.625rem; color: #6b7280;">15% off code</div>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Low Value Branch -->
-                                        <div>
-                                            <div style="text-align: center; margin-bottom: 0.25rem;">
-                                                <span style="background: #f3f4f6; color: #1f2937; padding: 0.125rem 0.375rem; border-radius: 0.1875rem; font-size: 0.625rem; font-weight: 600;">&lt;$100</span>
-                                            </div>
-                                            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.25rem; padding: 0.5rem;">
-                                                <div style="font-weight: 600; font-size: 0.6875rem; color: #1f2937; margin-bottom: 0.125rem;">✉️ Email</div>
-                                                <div style="font-size: 0.625rem; color: #6b7280;">Free shipping</div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                </div>
                                 </div>
                             </div>
 
                             <!-- Journey 4: Product Launch Sequence -->
                             <div onclick="applyJourneyTemplate('launch')" style="background: white; border: 2px solid #e5e7eb; border-radius: 0.625rem; padding: 1.25rem; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#6b7280'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.borderColor='#e5e7eb'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                <!-- Header -->
                                 <div style="display: flex; align-items: flex-start; gap: 0.625rem; margin-bottom: 1rem;">
                                     <div style="font-size: 1.5rem;">🚀</div>
                                     <div style="flex: 1;">
@@ -7095,49 +7154,68 @@
                                     </div>
                                 </div>
                                 
-                                <!-- Visual Flow -->
-                                <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
-                                    <!-- Step 1: Early Access -->
-                                    <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.25rem; padding: 0.5rem; margin-bottom: 0.375rem;">
-                                        <div style="display: flex; align-items: center; gap: 0.375rem;">
-                                            <div style="width: 18px; height: 18px; background: #6b7280; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.625rem; font-weight: 600; flex-shrink: 0;">1</div>
-                                            <div>
-                                                <div style="font-weight: 600; font-size: 0.75rem; color: #1f2937;">VIP Early Access</div>
-                                                <div style="font-size: 0.625rem; color: #6b7280;">Email + SMS to top customers</div>
+                                <!-- Split Layout: Key Aspects + Flow -->
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                    <!-- Left: Key Aspects -->
+                                    <div>
+                                        <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
+                                            <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Channels</div>
+                                            <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; margin-bottom: 0.75rem;">
+                                                <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-size: 0.75rem; font-weight: 500;">✉️ Email</span>
+                                                <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-size: 0.75rem; font-weight: 500;">📱 SMS</span>
+                                                <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-size: 0.75rem; font-weight: 500;">📘 Social</span>
+                                                <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-size: 0.75rem; font-weight: 500;">📊 Paid Ads</span>
                                             </div>
+                                            
+                                            <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Journey Summary</div>
+                                            <ul style="margin: 0; padding-left: 1.25rem; font-size: 0.75rem; color: #4b5563; line-height: 1.6;">
+                                                <li>Day 1: VIP early access (Email+SMS)</li>
+                                                <li>Day 2: Waitlist opens (Email)</li>
+                                                <li>Day 7: Public launch (All channels)</li>
+                                                <li>Phased rollout for exclusivity</li>
+                                            </ul>
                                         </div>
                                     </div>
                                     
-                                    <div style="display: flex; flex-direction: column; align-items: center; margin: 0.25rem 0;">
-                                        <div style="width: 1px; height: 8px; background: #d1d5db;"></div>
-                                        <div style="background: white; border: 1px solid #e5e7eb; padding: 0.125rem 0.375rem; border-radius: 0.1875rem; font-size: 0.5625rem; color: #6b7280; font-weight: 500;">Day 2</div>
-                                        <div style="width: 1px; height: 8px; background: #d1d5db;"></div>
-                                    </div>
-                                    
-                                    <!-- Step 2: Waitlist -->
-                                    <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.25rem; padding: 0.5rem; margin-bottom: 0.375rem;">
-                                        <div style="display: flex; align-items: center; gap: 0.375rem;">
-                                            <div style="width: 18px; height: 18px; background: #6b7280; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.625rem; font-weight: 600; flex-shrink: 0;">2</div>
-                                            <div>
-                                                <div style="font-weight: 600; font-size: 0.75rem; color: #1f2937;">Waitlist Opening</div>
-                                                <div style="font-size: 0.625rem; color: #6b7280;">Email to engaged subscribers</div>
+                                    <!-- Right: Flow Chart -->
+                                    <div>
+                                        <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1px solid #bfdbfe; border-radius: 0.375rem; padding: 0.75rem;">
+                                            <!-- Step 1 -->
+                                            <div style="background: white; border: 1px solid #93c5fd; border-radius: 0.25rem; padding: 0.5rem; margin-bottom: 0.25rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                                                <div style="display: flex; align-items: center; gap: 0.375rem;">
+                                                    <div style="width: 18px; height: 18px; background: #3b82f6; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.625rem; font-weight: 700; flex-shrink: 0;">1</div>
+                                                    <div style="font-weight: 600; font-size: 0.75rem; color: #1f2937;">VIP Early Access</div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div style="display: flex; flex-direction: column; align-items: center; margin: 0.25rem 0;">
-                                        <div style="width: 1px; height: 8px; background: #d1d5db;"></div>
-                                        <div style="background: white; border: 1px solid #e5e7eb; padding: 0.125rem 0.375rem; border-radius: 0.1875rem; font-size: 0.5625rem; color: #6b7280; font-weight: 500;">Day 7</div>
-                                        <div style="width: 1px; height: 8px; background: #d1d5db;"></div>
-                                    </div>
-                                    
-                                    <!-- Step 3: Public Launch -->
-                                    <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.25rem; padding: 0.5rem;">
-                                        <div style="display: flex; align-items: center; gap: 0.375rem;">
-                                            <div style="width: 18px; height: 18px; background: #6b7280; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.625rem; font-weight: 600; flex-shrink: 0;">3</div>
-                                            <div>
-                                                <div style="font-weight: 600; font-size: 0.75rem; color: #1f2937;">Public Launch</div>
-                                                <div style="font-size: 0.625rem; color: #6b7280;">Email + Social + Paid ads to all</div>
+                                            
+                                            <!-- Arrow -->
+                                            <div style="display: flex; flex-direction: column; align-items: center; margin: 0.1875rem 0;">
+                                                <div style="width: 2px; height: 10px; background: #93c5fd;"></div>
+                                                <div style="background: white; border: 1px solid #93c5fd; padding: 0.0625rem 0.3125rem; border-radius: 0.1875rem; font-size: 0.5625rem; color: #1e40af; font-weight: 600;">Day 2</div>
+                                                <div style="width: 2px; height: 10px; background: #93c5fd;"></div>
+                                            </div>
+                                            
+                                            <!-- Step 2 -->
+                                            <div style="background: white; border: 1px solid #93c5fd; border-radius: 0.25rem; padding: 0.5rem; margin-bottom: 0.25rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                                                <div style="display: flex; align-items: center; gap: 0.375rem;">
+                                                    <div style="width: 18px; height: 18px; background: #3b82f6; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.625rem; font-weight: 700; flex-shrink: 0;">2</div>
+                                                    <div style="font-weight: 600; font-size: 0.75rem; color: #1f2937;">Waitlist Opens</div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Arrow -->
+                                            <div style="display: flex; flex-direction: column; align-items: center; margin: 0.1875rem 0;">
+                                                <div style="width: 2px; height: 10px; background: #93c5fd;"></div>
+                                                <div style="background: white; border: 1px solid #93c5fd; padding: 0.0625rem 0.3125rem; border-radius: 0.1875rem; font-size: 0.5625rem; color: #1e40af; font-weight: 600;">Day 7</div>
+                                                <div style="width: 2px; height: 10px; background: #93c5fd;"></div>
+                                            </div>
+                                            
+                                            <!-- Step 3 -->
+                                            <div style="background: white; border: 1px solid #86efac; border-radius: 0.25rem; padding: 0.5rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                                                <div style="display: flex; align-items: center; gap: 0.375rem;">
+                                                    <div style="width: 18px; height: 18px; background: #10b981; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.625rem; font-weight: 700; flex-shrink: 0;">3</div>
+                                                    <div style="font-weight: 600; font-size: 0.75rem; color: #1f2937;">Public Launch</div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
