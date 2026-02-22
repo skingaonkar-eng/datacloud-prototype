@@ -1658,10 +1658,17 @@
             border-radius: 0.5rem;
             border-left: 4px solid #1d72f3;
             min-height: 60px;
+            height: auto;
             position: relative;
             perspective: 1000px;
             cursor: pointer;
             transition: all 0.3s;
+        }
+        
+        /* Grouped filters stay same height as normal cards when NOT flipped */
+        .filter-card.grouped:not(.flipped) {
+            height: 60px;
+            overflow: hidden;
         }
 
         .filter-card:hover {
@@ -1712,15 +1719,18 @@
         .filter-card.grouped.flipped {
             height: auto !important;
             min-height: 300px;
+            overflow: visible !important;
         }
         
         .filter-card.grouped.flipped .filter-card-inner {
             height: auto;
+            min-height: 300px;
         }
         
         .filter-card.grouped.flipped .filter-face-back {
             position: relative !important;
             height: auto !important;
+            padding: 1rem 1.5rem;
         }
         
         .filter-card.grouped.flipped .filter-face-front {
