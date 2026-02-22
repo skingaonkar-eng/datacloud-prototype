@@ -1707,6 +1707,42 @@
             transform: rotateY(180deg);
             background: #f9fafb;
         }
+        
+        /* Special handling for grouped filters - they expand on flip */
+        .filter-card.grouped.flipped {
+            height: auto !important;
+            min-height: 300px;
+        }
+        
+        .filter-card.grouped.flipped .filter-card-inner {
+            height: auto;
+        }
+        
+        .filter-card.grouped.flipped .filter-face-back {
+            position: relative !important;
+            height: auto !important;
+        }
+        
+        .filter-card.grouped.flipped .filter-face-front {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        /* Grouped filters need to expand, not overlap */
+        .filter-card.grouped .filter-card-inner {
+            min-height: auto;
+        }
+        
+        .filter-card.grouped.flipped {
+            min-height: 300px;
+            transition: min-height 0.6s ease;
+        }
+        
+        .filter-card.grouped .filter-face-back {
+            position: relative;
+            min-height: 280px;
+        }
 
         /* Filter Type Badges */
         .filter-type-badge {
@@ -3642,7 +3678,7 @@
                         </div>
                     </div>
 
-                    <div class="filter-card highlight" id="filter2" onclick="toggleFilterView('filter2', event)" style="border-left: 4px solid #f59e0b;">
+                    <div class="filter-card highlight grouped" id="filter2" onclick="toggleFilterView('filter2', event)" style="border-left: 4px solid #f59e0b; transition: all 0.3s ease;">
                         <div class="filter-card-inner">
                             <!-- Front Face: Natural Language -->
                             <div class="filter-face filter-face-front">
@@ -3657,7 +3693,7 @@
                                             </svg>
                                             Group
                                         </span>
-                                        <span style="font-size: 0.6875rem; color: #9ca3af;">4 conditions</span>
+                                        <span style="font-size: 0.6875rem; color: #9ca3af;">3 conditions</span>
                                     </div>
                                     <span class="filter-text">Outdoor trekking enthusiasts with active interest in adventure gear</span>
                                 </div>
@@ -3675,11 +3711,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Back Face: Technical Formula with Multiple Conditions -->
+                            <!-- Back Face: Technical Formula with Multiple Conditions - EXPANDS -->
                             <div class="filter-face filter-face-back">
-                                <div class="filter-content" style="flex-direction: column; align-items: flex-start; gap: 0.5rem; width: 100%;">
+                                <div class="filter-content" style="flex-direction: column; align-items: flex-start; gap: 0.625rem; width: 100%;">
                                     <!-- Group Header -->
-                                    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; padding-bottom: 0.5rem; border-bottom: 2px solid #fbbf24;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; padding-bottom: 0.625rem; border-bottom: 2px solid #fbbf24;">
                                         <div style="display: flex; align-items: center; gap: 0.5rem;">
                                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.5">
                                                 <rect x="3" y="3" width="7" height="7" rx="1"/>
@@ -3689,27 +3725,12 @@
                                             </svg>
                                             <span style="font-size: 0.75rem; font-weight: 700; color: #92400e; text-transform: uppercase; letter-spacing: 0.05em;">Grouped Filter</span>
                                         </div>
-                                        <span style="padding: 0.25rem 0.5rem; background: #fef3c7; color: #92400e; border-radius: 0.25rem; font-size: 0.625rem; font-weight: 700;">Match ANY condition</span>
+                                        <span style="padding: 0.25rem 0.5rem; background: #10b981; color: white; border-radius: 0.25rem; font-size: 0.625rem; font-weight: 700;">Match ALL conditions</span>
                                     </div>
                                     
                                     <!-- Condition 1 -->
-                                    <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem; background: #fffbeb; border-left: 3px solid #fbbf24; border-radius: 0.375rem; width: 100%;">
+                                    <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem; background: #fffbeb; border-left: 3px solid #fbbf24; border-radius: 0.375rem; width: 100%;">
                                         <span style="font-size: 0.6875rem; font-weight: 600; color: #78350f; min-width: 18px;">1.</span>
-                                        <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                                            <span class="filter-label" style="padding: 0.25rem 0.5rem; background: #dbeafe; color: #1e40af; border-radius: 0.25rem; font-size: 0.6875rem; font-weight: 600;">Product Interest</span>
-                                            <span style="font-size: 0.75rem; color: #6b7280;">includes</span>
-                                            <span class="filter-value" style="padding: 0.25rem 0.5rem; background: #fef3c7; color: #92400e; border-radius: 0.25rem; font-size: 0.75rem; font-weight: 600;">Trekking Boots</span>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- OR Connector -->
-                                    <div style="text-align: center; width: 100%; margin: -0.125rem 0;">
-                                        <span style="padding: 0.125rem 0.75rem; background: #f59e0b; color: white; border-radius: 1rem; font-size: 0.625rem; font-weight: 700; letter-spacing: 0.05em;">OR</span>
-                                    </div>
-                                    
-                                    <!-- Condition 2 -->
-                                    <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem; background: #fffbeb; border-left: 3px solid #fbbf24; border-radius: 0.375rem; width: 100%;">
-                                        <span style="font-size: 0.6875rem; font-weight: 600; color: #78350f; min-width: 18px;">2.</span>
                                         <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
                                             <span class="filter-label" style="padding: 0.25rem 0.5rem; background: #dbeafe; color: #1e40af; border-radius: 0.25rem; font-size: 0.6875rem; font-weight: 600;">Past Purchases</span>
                                             <span style="font-size: 0.75rem; color: #6b7280;">includes any</span>
@@ -3717,14 +3738,14 @@
                                         </div>
                                     </div>
                                     
-                                    <!-- OR Connector -->
-                                    <div style="text-align: center; width: 100%; margin: -0.125rem 0;">
-                                        <span style="padding: 0.125rem 0.75rem; background: #f59e0b; color: white; border-radius: 1rem; font-size: 0.625rem; font-weight: 700; letter-spacing: 0.05em;">OR</span>
+                                    <!-- AND Connector -->
+                                    <div style="text-align: center; width: 100%; margin: -0.25rem 0;">
+                                        <span style="padding: 0.125rem 0.75rem; background: #10b981; color: white; border-radius: 1rem; font-size: 0.625rem; font-weight: 700; letter-spacing: 0.05em;">AND</span>
                                     </div>
                                     
-                                    <!-- Condition 3 -->
-                                    <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem; background: #fffbeb; border-left: 3px solid #fbbf24; border-radius: 0.375rem; width: 100%;">
-                                        <span style="font-size: 0.6875rem; font-weight: 600; color: #78350f; min-width: 18px;">3.</span>
+                                    <!-- Condition 2 -->
+                                    <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem; background: #fffbeb; border-left: 3px solid #fbbf24; border-radius: 0.375rem; width: 100%;">
+                                        <span style="font-size: 0.6875rem; font-weight: 600; color: #78350f; min-width: 18px;">2.</span>
                                         <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
                                             <span class="filter-label" style="padding: 0.25rem 0.5rem; background: #dbeafe; color: #1e40af; border-radius: 0.25rem; font-size: 0.6875rem; font-weight: 600;">Magazine Subscription</span>
                                             <span style="font-size: 0.75rem; color: #6b7280;">is equal to</span>
@@ -3732,14 +3753,14 @@
                                         </div>
                                     </div>
                                     
-                                    <!-- OR Connector -->
-                                    <div style="text-align: center; width: 100%; margin: -0.125rem 0;">
-                                        <span style="padding: 0.125rem 0.75rem; background: #f59e0b; color: white; border-radius: 1rem; font-size: 0.625rem; font-weight: 700; letter-spacing: 0.05em;">OR</span>
+                                    <!-- AND Connector -->
+                                    <div style="text-align: center; width: 100%; margin: -0.25rem 0;">
+                                        <span style="padding: 0.125rem 0.75rem; background: #10b981; color: white; border-radius: 1rem; font-size: 0.625rem; font-weight: 700; letter-spacing: 0.05em;">AND</span>
                                     </div>
                                     
-                                    <!-- Condition 4 -->
-                                    <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem; background: #fffbeb; border-left: 3px solid #fbbf24; border-radius: 0.375rem; width: 100%;">
-                                        <span style="font-size: 0.6875rem; font-weight: 600; color: #78350f; min-width: 18px;">4.</span>
+                                    <!-- Condition 3 -->
+                                    <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem; background: #fffbeb; border-left: 3px solid #fbbf24; border-radius: 0.375rem; width: 100%;">
+                                        <span style="font-size: 0.6875rem; font-weight: 600; color: #78350f; min-width: 18px;">3.</span>
                                         <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
                                             <span class="filter-label" style="padding: 0.25rem 0.5rem; background: #dbeafe; color: #1e40af; border-radius: 0.25rem; font-size: 0.6875rem; font-weight: 600;">Web Activity</span>
                                             <span style="font-size: 0.75rem; color: #6b7280;">viewed categories</span>
