@@ -3012,18 +3012,22 @@
         <button class="tab-item" onclick="switchTab(0)" id="tab0">Segment Definition</button>
         <button class="tab-item" onclick="switchTab(1)" id="tab1">
             Rank and Limit
-            <span style="margin-left: 0.375rem; padding: 0.125rem 0.5rem; background: #fef3c7; color: #92400e; font-size: 0.6875rem; border-radius: 0.25rem; font-weight: 600;">OPTIONAL</span>
+            <span style="margin-left: 0.25rem; font-size: 0.625rem; color: #9ca3af; font-weight: 500;">(optional)</span>
         </button>
         <button class="tab-item" onclick="switchTab(2)" id="tab2">
             Channel Affinity
-            <span style="margin-left: 0.375rem; padding: 0.125rem 0.5rem; background: #fef3c7; color: #92400e; font-size: 0.6875rem; border-radius: 0.25rem; font-weight: 600;">OPTIONAL</span>
+            <span style="margin-left: 0.25rem; font-size: 0.625rem; color: #9ca3af; font-weight: 500;">(optional)</span>
         </button>
         <button class="tab-item" onclick="switchTab(3)" id="tab3">
             Smart Splits
-            <span style="margin-left: 0.375rem; padding: 0.125rem 0.5rem; background: #fef3c7; color: #92400e; font-size: 0.6875rem; border-radius: 0.25rem; font-weight: 600;">OPTIONAL</span>
+            <span style="margin-left: 0.25rem; font-size: 0.625rem; color: #9ca3af; font-weight: 500;">(optional)</span>
         </button>
         <button class="tab-item" onclick="switchTab(4)" id="tab4">Activate</button>
-        <button class="tab-item" onclick="switchTab(5)" id="tab5">Segment Performance</button>
+        <button class="tab-item" onclick="switchTab(5)" id="tab5">
+            Journey Builder
+            <span style="margin-left: 0.25rem; font-size: 0.625rem; color: #9ca3af; font-weight: 500;">(optional)</span>
+        </button>
+        <button class="tab-item" onclick="switchTab(6)" id="tab6">Segment Performance</button>
     </div>
 
     <!-- Main Content -->
@@ -7054,28 +7058,61 @@
                 </div>
             </div>
 
-            <!-- Journey Configuration (Optional Separate Section) -->
-            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1.5rem;">
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
-                    <div>
-                        <h3 style="font-size: 1.125rem; font-weight: 600; color: #1f2937; display: inline-flex; align-items: center; gap: 0.5rem;">
-                            Configure Journey
-                            <span style="background: #fef3c7; color: #92400e; font-size: 0.6875rem; padding: 0.25rem 0.625rem; border-radius: 0.25rem; font-weight: 600;">OPTIONAL</span>
-                        </h3>
-                        <p style="font-size: 0.875rem; color: #6b7280; margin-top: 0.5rem;">Choose a pre-built customer journey with automated multi-step flows</p>
+            <div style="text-align: center; padding: 2rem 0;">
+                <button onclick="activateSegment()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; font-size: 1.125rem; font-weight: 600; padding: 1rem 3rem; border: none; border-radius: 0.5rem; cursor: pointer; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3); transition: all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 12px rgba(16, 185, 129, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(16, 185, 129, 0.3)'">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="8 12 12 16 16 12"/>
+                            <line x1="12" y1="8" x2="12" y2="16"/>
+                        </svg>
+                        <span>Activate Segment</span>
                     </div>
-                    <button onclick="toggleJourneyConfig()" id="journeyToggleBtn" style="background: #1d72f3; color: white; border: none; padding: 0.625rem 1.25rem; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600; cursor: pointer;">
-                        Configure Journey
-                    </button>
-                </div>
+                </button>
+                <div style="font-size: 0.875rem; color: #6b7280; margin-top: 1rem;">Activation will begin immediately and respect the selected channel send times</div>
+            </div>
 
-                <!-- Journey Configuration Panel (Hidden by default) -->
-                <div id="journeyConfigPanel" style="display: none;">
-                    <!-- Pre-configured Journey Templates -->
-                    <div style="margin-bottom: 1.5rem;">
-                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; margin-bottom: 1.5rem;">
-                            
-                            <!-- Journey 1: Multi-Channel Re-Engagement -->
+            <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 0.5rem; padding: 1.25rem; margin-bottom: 1.5rem;">
+                <div style="display: flex; align-items: start; gap: 0.75rem;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1d72f3" stroke-width="2" style="flex-shrink: 0; margin-top: 0.125rem;">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="16" x2="12" y2="12"/>
+                        <line x1="12" y1="8" x2="12.01" y2="8"/>
+                    </svg>
+                    <div style="font-size: 0.875rem; color: #1e40af; line-height: 1.6;">
+                        <strong>Pro Tip:</strong> Multi-Channel Activation template is recommended based on your segment's channel affinity data. This approach leverages the best send times for each channel to maximize engagement.
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-nav btn-nav-secondary" onclick="switchTab(3)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Previous
+                </button>
+                <button class="btn-nav btn-nav-primary" onclick="switchTab(5)">
+                    Journey Builder (Optional)
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Tab 5: Journey Builder -->
+        <div id="tabContent5" class="tab-content">
+            <div class="section-header">
+                <h2 class="section-title">Journey Builder</h2>
+                <p class="section-description">Configure automated multi-step customer journeys</p>
+            </div>
+
+            <!-- Pre-configured Journey Templates -->
+            <div style="margin-bottom: 1.5rem;">
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; margin-bottom: 1.5rem;">
+                    
+                    <!-- Journey 1: Multi-Channel Re-Engagement -->
                             <div onclick="applyJourneyTemplate('reengagement')" style="background: white; border: 2px solid #10b981; border-radius: 0.625rem; padding: 1.25rem; cursor: pointer; transition: all 0.2s; position: relative;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(16,185,129,0.15)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
                                 <!-- Header -->
                                 <div style="display: flex; align-items: flex-start; gap: 0.625rem; margin-bottom: 1rem;">
@@ -7480,45 +7517,35 @@
                 </div>
             </div>
 
-            <div style="text-align: center; padding: 2rem 0;">
-                <button onclick="activateSegment()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; font-size: 1.125rem; font-weight: 600; padding: 1rem 3rem; border: none; border-radius: 0.5rem; cursor: pointer; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3); transition: all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 12px rgba(16, 185, 129, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(16, 185, 129, 0.3)'">
-                    <div style="display: flex; align-items: center; gap: 0.75rem;">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"/>
-                            <polyline points="8 12 12 16 16 12"/>
-                            <line x1="12" y1="8" x2="12" y2="16"/>
-                        </svg>
-                        <span>Activate Segment</span>
-                    </div>
-                </button>
-                <div style="font-size: 0.875rem; color: #6b7280; margin-top: 1rem;">Activation will begin immediately and respect the selected channel send times</div>
-            </div>
-
-            <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 0.5rem; padding: 1.25rem;">
-                <div style="display: flex; align-items: start; gap: 0.75rem;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1d72f3" stroke-width="2" style="flex-shrink: 0; margin-top: 0.125rem;">
-                        <circle cx="12" cy="12" r="10"/>
-                        <line x1="12" y1="16" x2="12" y2="12"/>
-                        <line x1="12" y1="8" x2="12.01" y2="8"/>
-                    </svg>
-                    <div style="font-size: 0.875rem; color: #1e40af; line-height: 1.6;">
-                        <strong>Pro Tip:</strong> Multi-Channel Activation template is recommended based on your segment's channel affinity data. This approach leverages the best send times for each channel to maximize engagement.
-                    </div>
-                </div>
-            </div>
-
             <div class="nav-buttons">
-                <button class="btn-nav btn-nav-secondary" onclick="switchTab(3)">
+                <button class="btn-nav btn-nav-secondary" onclick="switchTab(4)">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M19 12H5M12 19l-7-7 7-7"/>
                     </svg>
                     Previous
                 </button>
+                <button class="btn-nav btn-nav-primary" onclick="switchTab(6)">
+                    Next: Performance
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
             </div>
         </div>
 
-        <!-- Tab 5: Segment Performance -->
+        <!-- Tab 5: Journey Builder -->
         <div id="tabContent5" class="tab-content">
+            <div class="section-header">
+                <h2 class="section-title">Journey Builder</h2>
+                <p class="section-description">Configure automated multi-step customer journeys</p>
+            </div>
+
+            <!-- Journey Content will be moved here -->
+            
+        </div>
+
+        <!-- Tab 6: Segment Performance -->
+        <div id="tabContent6" class="tab-content">
             <div class="section-header">
                 <h2 class="section-title">Segment Performance</h2>
                 <p class="section-description">Comprehensive analysis of activation effectiveness and ROI</p>
