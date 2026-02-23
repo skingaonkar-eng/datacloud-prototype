@@ -5822,6 +5822,177 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Suggested Segment Refinements -->
+            <div style="background: linear-gradient(135deg, #f0fdf4 0%, #fff7ed 100%); border: 2px solid #10b981; border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 1rem;">
+                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem;">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                        <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                    </svg>
+                    <div>
+                        <h3 style="font-size: 1.125rem; font-weight: 700; color: #065f46; margin: 0;">AI-Suggested Segment Refinements</h3>
+                        <p style="font-size: 0.875rem; color: #166534; margin: 0.25rem 0 0 0;">Based on your insights, consider these high-impact adjustments to your segment</p>
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1rem;">
+                    <!-- Suggestion 1: Focus on Gold Tier -->
+                    <div style="background: white; border: 1px solid #d1fae5; border-radius: 0.625rem; padding: 1.25rem; transition: all 0.2s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(16, 185, 129, 0.15)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.boxShadow='none'; this.style.transform='translateY(0)'">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                            <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; font-size: 1.125rem;">🏆</div>
+                            <span style="font-size: 0.6875rem; font-weight: 700; color: #059669; background: #d1fae5; padding: 0.25rem 0.5rem; border-radius: 0.25rem; text-transform: uppercase; letter-spacing: 0.025em;">High Impact</span>
+                        </div>
+                        <h4 style="font-size: 0.9375rem; font-weight: 700; color: #1f2937; margin: 0 0 0.5rem 0;">Focus on Gold Tier Only</h4>
+                        <p style="font-size: 0.8125rem; color: #6b7280; line-height: 1.5; margin-bottom: 0.75rem;">47% of your segment is already Gold loyalty members. Refine to create a premium VIP segment for exclusive treatment.</p>
+                        <div style="background: #f0fdf4; border-radius: 0.375rem; padding: 0.625rem; margin-bottom: 0.875rem;">
+                            <div style="font-size: 0.75rem; font-weight: 600; color: #065f46; margin-bottom: 0.25rem;">Estimated Impact</div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #059669;">
+                                <span>Size: -53%</span>
+                                <span>Quality: +High</span>
+                            </div>
+                        </div>
+                        <button onclick="applySegmentRefinement('addGoldFilter')" style="width: 100%; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; padding: 0.625rem 1rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                            Add Gold Tier Filter
+                        </button>
+                    </div>
+
+                    <!-- Suggestion 2: Exclude At-Risk & Dormant -->
+                    <div style="background: white; border: 1px solid #d1fae5; border-radius: 0.625rem; padding: 1.25rem; transition: all 0.2s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(16, 185, 129, 0.15)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.boxShadow='none'; this.style.transform='translateY(0)'">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                            <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; font-size: 1.125rem;">⚡</div>
+                            <span style="font-size: 0.6875rem; font-weight: 700; color: #059669; background: #d1fae5; padding: 0.25rem 0.5rem; border-radius: 0.25rem; text-transform: uppercase; letter-spacing: 0.025em;">Recommended</span>
+                        </div>
+                        <h4 style="font-size: 0.9375rem; font-weight: 700; color: #1f2937; margin: 0 0 0.5rem 0;">Exclude At-Risk & Dormant</h4>
+                        <p style="font-size: 0.8125rem; color: #6b7280; line-height: 1.5; margin-bottom: 0.75rem;">30% of segment has low engagement (22% At-Risk + 8% Dormant). Exclude to improve campaign response rates.</p>
+                        <div style="background: #f0fdf4; border-radius: 0.375rem; padding: 0.625rem; margin-bottom: 0.875rem;">
+                            <div style="font-size: 0.75rem; font-weight: 600; color: #065f46; margin-bottom: 0.25rem;">Estimated Impact</div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #059669;">
+                                <span>Size: -30%</span>
+                                <span>Engagement: +45%</span>
+                            </div>
+                        </div>
+                        <button onclick="applySegmentRefinement('excludeLowEngagement')" style="width: 100%; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; padding: 0.625rem 1rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                            Add Exclusion Filter
+                        </button>
+                    </div>
+
+                    <!-- Suggestion 3: Add Recency Filter -->
+                    <div style="background: white; border: 1px solid #d1fae5; border-radius: 0.625rem; padding: 1.25rem; transition: all 0.2s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(16, 185, 129, 0.15)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.boxShadow='none'; this.style.transform='translateY(0)'">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                            <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; font-size: 1.125rem;">📅</div>
+                            <span style="font-size: 0.6875rem; font-weight: 700; color: #2563eb; background: #dbeafe; padding: 0.25rem 0.5rem; border-radius: 0.25rem; text-transform: uppercase; letter-spacing: 0.025em;">Optimize</span>
+                        </div>
+                        <h4 style="font-size: 0.9375rem; font-weight: 700; color: #1f2937; margin: 0 0 0.5rem 0;">Add Recency Filter</h4>
+                        <p style="font-size: 0.8125rem; color: #6b7280; line-height: 1.5; margin-bottom: 0.75rem;">3.2x/year purchase frequency suggests quarterly buying patterns. Target customers due for next purchase within 90 days.</p>
+                        <div style="background: #f0fdf4; border-radius: 0.375rem; padding: 0.625rem; margin-bottom: 0.875rem;">
+                            <div style="font-size: 0.75rem; font-weight: 600; color: #065f46; margin-bottom: 0.25rem;">Estimated Impact</div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #059669;">
+                                <span>Size: -25%</span>
+                                <span>Conversion: +High</span>
+                            </div>
+                        </div>
+                        <button onclick="applySegmentRefinement('addRecencyFilter')" style="width: 100%; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; padding: 0.625rem 1rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                            Add Recency Filter
+                        </button>
+                    </div>
+                </div>
+
+                <!-- View All Suggestions Button -->
+                <div style="text-align: center; padding-top: 0.75rem; border-top: 1px solid #d1fae5;">
+                    <button id="viewAllSuggestionsBtn" onclick="toggleAllSuggestions()" style="background: white; border: 1px solid #10b981; color: #059669; padding: 0.625rem 1.5rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.5rem;" onmouseover="this.style.background='#f0fdf4'" onmouseout="this.style.background='white'">
+                        <span>View All Suggestions (8 more)</span>
+                        <svg id="expandIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Expanded Suggestions (Hidden by default) -->
+                <div id="allSuggestionsPanel" style="display: none; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #d1fae5;">
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.875rem;">
+                        <!-- Additional Suggestion 1 -->
+                        <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem; display: flex; gap: 0.875rem;">
+                            <div style="width: 28px; height: 28px; background: #f3f4f6; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1rem;">📈</div>
+                            <div style="flex: 1;">
+                                <h5 style="font-size: 0.875rem; font-weight: 600; color: #1f2937; margin: 0 0 0.375rem 0;">Increase LTV Threshold to $10K</h5>
+                                <p style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.625rem; line-height: 1.4;">Remove Low LTV tier (20%) to focus on truly high-value customers.</p>
+                                <button onclick="applySegmentRefinement('increaseLTV')" style="background: #f9fafb; border: 1px solid #d1d5db; color: #374151; padding: 0.375rem 0.875rem; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='#f9fafb'">Apply</button>
+                            </div>
+                        </div>
+
+                        <!-- Additional Suggestion 2 -->
+                        <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem; display: flex; gap: 0.875rem;">
+                            <div style="width: 28px; height: 28px; background: #f3f4f6; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1rem;">✉️</div>
+                            <div style="flex: 1;">
+                                <h5 style="font-size: 0.875rem; font-weight: 600; color: #1f2937; margin: 0 0 0.375rem 0;">Add Email Engagement Filter</h5>
+                                <p style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.625rem; line-height: 1.4;">Target customers who opened email in last 60 days (42% open rate).</p>
+                                <button onclick="applySegmentRefinement('addEmailEngagement')" style="background: #f9fafb; border: 1px solid #d1d5db; color: #374151; padding: 0.375rem 0.875rem; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='#f9fafb'">Apply</button>
+                            </div>
+                        </div>
+
+                        <!-- Additional Suggestion 3 -->
+                        <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem; display: flex; gap: 0.875rem;">
+                            <div style="width: 28px; height: 28px; background: #f3f4f6; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1rem;">📱</div>
+                            <div style="flex: 1;">
+                                <h5 style="font-size: 0.875rem; font-weight: 600; color: #1f2937; margin: 0 0 0.375rem 0;">Add App Activity Filter</h5>
+                                <p style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.625rem; line-height: 1.4;">Leverage 73% app engagement - highest performing channel.</p>
+                                <button onclick="applySegmentRefinement('addAppActivity')" style="background: #f9fafb; border: 1px solid #d1d5db; color: #374151; padding: 0.375rem 0.875rem; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='#f9fafb'">Apply</button>
+                            </div>
+                        </div>
+
+                        <!-- Additional Suggestion 4 -->
+                        <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem; display: flex; gap: 0.875rem;">
+                            <div style="width: 28px; height: 28px; background: #f3f4f6; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1rem;">🌸</div>
+                            <div style="flex: 1;">
+                                <h5 style="font-size: 0.875rem; font-weight: 600; color: #1f2937; margin: 0 0 0.375rem 0;">Add Spring Buyer Filter</h5>
+                                <p style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.625rem; line-height: 1.4;">Target seasonal peak pattern detected in behavioral data.</p>
+                                <button onclick="applySegmentRefinement('addSeasonalFilter')" style="background: #f9fafb; border: 1px solid #d1d5db; color: #374151; padding: 0.375rem 0.875rem; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='#f9fafb'">Apply</button>
+                            </div>
+                        </div>
+
+                        <!-- Additional Suggestion 5 -->
+                        <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem; display: flex; gap: 0.875rem;">
+                            <div style="width: 28px; height: 28px; background: #f3f4f6; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1rem;">💰</div>
+                            <div style="flex: 1;">
+                                <h5 style="font-size: 0.875rem; font-weight: 600; color: #1f2937; margin: 0 0 0.375rem 0;">Add AOV Threshold >$500</h5>
+                                <p style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.625rem; line-height: 1.4;">Current $425 AOV - filter for bigger spenders.</p>
+                                <button onclick="applySegmentRefinement('addAOVFilter')" style="background: #f9fafb; border: 1px solid #d1d5db; color: #374151; padding: 0.375rem 0.875rem; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='#f9fafb'">Apply</button>
+                            </div>
+                        </div>
+
+                        <!-- Additional Suggestion 6 -->
+                        <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem; display: flex; gap: 0.875rem;">
+                            <div style="width: 28px; height: 28px; background: #f3f4f6; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1rem;">🎯</div>
+                            <div style="flex: 1;">
+                                <h5 style="font-size: 0.875rem; font-weight: 600; color: #1f2937; margin: 0 0 0.375rem 0;">Add Upsell Propensity Filter</h5>
+                                <p style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.625rem; line-height: 1.4;">78% upsell potential - target upgrade-ready customers.</p>
+                                <button onclick="applySegmentRefinement('addUpsellFilter')" style="background: #f9fafb; border: 1px solid #d1d5db; color: #374151; padding: 0.375rem 0.875rem; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='#f9fafb'">Apply</button>
+                            </div>
+                        </div>
+
+                        <!-- Additional Suggestion 7 -->
+                        <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem; display: flex; gap: 0.875rem;">
+                            <div style="width: 28px; height: 28px; background: #f3f4f6; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1rem;">🔄</div>
+                            <div style="flex: 1;">
+                                <h5 style="font-size: 0.875rem; font-weight: 600; color: #1f2937; margin: 0 0 0.375rem 0;">Add Cross-Buy Opportunity Filter</h5>
+                                <p style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.625rem; line-height: 1.4;">68% cross-buy propensity - target single-category buyers.</p>
+                                <button onclick="applySegmentRefinement('addCrossBuyFilter')" style="background: #f9fafb; border: 1px solid #d1d5db; color: #374151; padding: 0.375rem 0.875rem; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='#f9fafb'">Apply</button>
+                            </div>
+                        </div>
+
+                        <!-- Additional Suggestion 8 -->
+                        <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem; display: flex; gap: 0.875rem;">
+                            <div style="width: 28px; height: 28px; background: #f3f4f6; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1rem;">📊</div>
+                            <div style="flex: 1;">
+                                <h5 style="font-size: 0.875rem; font-weight: 600; color: #1f2937; margin: 0 0 0.375rem 0;">Add Basket Size Filter >2 items</h5>
+                                <p style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.625rem; line-height: 1.4;">2.8 items average - target multi-item purchasers.</p>
+                                <button onclick="applySegmentRefinement('addBasketFilter')" style="background: #f9fafb; border: 1px solid #d1d5db; color: #374151; padding: 0.375rem 0.875rem; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='#f9fafb'">Apply</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="nav-buttons">
                 <button class="btn-nav btn-nav-secondary" onclick="closeValidationOverlay()">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -9307,6 +9478,103 @@
             
             // Remove ESC key listener
             document.removeEventListener('keydown', handleEscapeKey);
+        }
+
+        // Toggle all suggestions panel in Insights tab
+        function toggleAllSuggestions() {
+            const panel = document.getElementById('allSuggestionsPanel');
+            const btn = document.getElementById('viewAllSuggestionsBtn');
+            const icon = document.getElementById('expandIcon');
+            
+            if (panel.style.display === 'none') {
+                panel.style.display = 'block';
+                btn.innerHTML = '<span>Show Less</span><svg id="expandIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 15l7-7 7 7"/></svg>';
+            } else {
+                panel.style.display = 'none';
+                btn.innerHTML = '<span>View All Suggestions (8 more)</span><svg id="expandIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>';
+            }
+        }
+
+        // Apply segment refinement suggestions from Insights tab
+        function applySegmentRefinement(refinementType) {
+            // Close validation overlay first
+            closeValidationOverlay();
+            
+            // Wait for overlay to close, then add filter
+            setTimeout(() => {
+                let filterAdded = false;
+                
+                switch(refinementType) {
+                    case 'addGoldFilter':
+                        addQuickFilter('Loyalty Status = Gold', '🏆', false, 'filter');
+                        filterAdded = true;
+                        break;
+                    
+                    case 'excludeLowEngagement':
+                        addQuickFilter('Engagement Level ≠ At-Risk, Dormant', '⚡', true, 'filter');
+                        filterAdded = true;
+                        break;
+                    
+                    case 'addRecencyFilter':
+                        addQuickFilter('Last Purchase < 90 Days', '📅', false, 'filter');
+                        filterAdded = true;
+                        break;
+                    
+                    case 'increaseLTV':
+                        addQuickFilter('Lifetime Value > $10,000', '📈', false, 'filter');
+                        filterAdded = true;
+                        break;
+                    
+                    case 'addEmailEngagement':
+                        addQuickFilter('Email Opened in Last 60 Days', '✉️', false, 'filter');
+                        filterAdded = true;
+                        break;
+                    
+                    case 'addAppActivity':
+                        addQuickFilter('App Active in Last 30 Days', '📱', false, 'filter');
+                        filterAdded = true;
+                        break;
+                    
+                    case 'addSeasonalFilter':
+                        addQuickFilter('Past Purchase in Spring Season', '🌸', false, 'filter');
+                        filterAdded = true;
+                        break;
+                    
+                    case 'addAOVFilter':
+                        addQuickFilter('Average Order Value > $500', '💰', false, 'filter');
+                        filterAdded = true;
+                        break;
+                    
+                    case 'addUpsellFilter':
+                        addQuickFilter('Upsell Propensity Score > 70', '🎯', false, 'predictive');
+                        filterAdded = true;
+                        break;
+                    
+                    case 'addCrossBuyFilter':
+                        addQuickFilter('Purchased from 1 Category Only', '🔄', false, 'filter');
+                        filterAdded = true;
+                        break;
+                    
+                    case 'addBasketFilter':
+                        addQuickFilter('Basket Size > 2 Items', '📊', false, 'filter');
+                        filterAdded = true;
+                        break;
+                }
+                
+                if (filterAdded) {
+                    // Show success message
+                    const message = document.createElement('div');
+                    message.style.cssText = 'position: fixed; top: 120px; right: 20px; background: #10b981; color: white; padding: 1rem 1.5rem; border-radius: 0.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 10000; font-weight: 600; animation: slideInRight 0.3s ease-out;';
+                    message.textContent = '✓ Refinement applied to segment definition';
+                    document.body.appendChild(message);
+                    
+                    // Remove message after 2.5 seconds
+                    setTimeout(() => {
+                        message.style.animation = 'slideOutRight 0.3s ease-out';
+                        setTimeout(() => message.remove(), 300);
+                    }, 2500);
+                }
+            }, 300);
         }
 
         // Add suggested filter from overlap analysis
