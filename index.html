@@ -3012,20 +3012,20 @@
         <button class="tab-item" onclick="switchTab(0)" id="tab0">Segment Definition</button>
         <button class="tab-item" onclick="switchTab(1)" id="tab1">
             Rank and Limit
-            <span style="margin-left: 0.25rem; font-size: 0.5625rem; color: #d1d5db; font-weight: 400; opacity: 0.8;">optional</span>
+            <span style="margin-left: 0.25rem; font-size: 0.6875rem; color: #9ca3af; font-weight: 500;">optional</span>
         </button>
         <button class="tab-item" onclick="switchTab(2)" id="tab2">
             Channel Affinity
-            <span style="margin-left: 0.25rem; font-size: 0.5625rem; color: #d1d5db; font-weight: 400; opacity: 0.8;">optional</span>
+            <span style="margin-left: 0.25rem; font-size: 0.6875rem; color: #9ca3af; font-weight: 500;">optional</span>
         </button>
         <button class="tab-item" onclick="switchTab(3)" id="tab3">
             Smart Splits
-            <span style="margin-left: 0.25rem; font-size: 0.5625rem; color: #d1d5db; font-weight: 400; opacity: 0.8;">optional</span>
+            <span style="margin-left: 0.25rem; font-size: 0.6875rem; color: #9ca3af; font-weight: 500;">optional</span>
         </button>
         <button class="tab-item" onclick="switchTab(4)" id="tab4">Activate</button>
         <button class="tab-item" onclick="switchTab(5)" id="tab5">
             Journey Builder
-            <span style="margin-left: 0.25rem; font-size: 0.5625rem; color: #d1d5db; font-weight: 400; opacity: 0.8;">optional</span>
+            <span style="margin-left: 0.25rem; font-size: 0.6875rem; color: #9ca3af; font-weight: 500;">optional</span>
         </button>
         <button class="tab-item" onclick="switchTab(6)" id="tab6">Performance</button>
     </div>
@@ -7515,6 +7515,18 @@
                         </button>
                     </div>
                 </div>
+            </div>
+
+            <div style="text-align: center; padding: 2rem 0;">
+                <button onclick="addJourneyToActivation()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; font-size: 1.125rem; font-weight: 600; padding: 1rem 3rem; border: none; border-radius: 0.5rem; cursor: pointer; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3); transition: all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 12px rgba(16, 185, 129, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(16, 185, 129, 0.3)'">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 4v16m8-8H4"/>
+                        </svg>
+                        <span>Add Journey to Activation</span>
+                    </div>
+                </button>
+                <div style="font-size: 0.875rem; color: #6b7280; margin-top: 1rem;">Selected journey will be added to your activation workflow</div>
             </div>
 
             <div class="nav-buttons">
