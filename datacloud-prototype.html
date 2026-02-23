@@ -9084,6 +9084,7 @@
         function generateConversationalFilterText(label, operator, value) {
             const lowerLabel = label.toLowerCase();
             const lowerOperator = operator.toLowerCase();
+            const lowerValue = value.toLowerCase();
             
             // Age range patterns
             if (lowerLabel.includes('age')) {
@@ -9211,9 +9212,54 @@
             if (lowerLabel.includes('loyalty')) {
                 if (value.toLowerCase().includes('not enrolled')) {
                     return `Customers missing out on our loyalty perks - not enrolled yet`;
+                } else if (value.toLowerCase().includes('gold')) {
+                    return `All your customers who have achieved Gold loyalty status`;
+                } else if (value.toLowerCase().includes('silver')) {
+                    return `Customers who've reached Silver tier in our loyalty program`;
+                } else if (value.toLowerCase().includes('bronze')) {
+                    return `Bronze tier members building their loyalty with us`;
                 } else if (value.toLowerCase().includes('enrolled') || value.toLowerCase().includes('member')) {
                     return `Our loyal members in the ${value} program`;
                 }
+            }
+            
+            // Engagement level patterns
+            if (lowerLabel.includes('engagement level')) {
+                if (value.toLowerCase().includes('highly engaged')) {
+                    return `Our most engaged customers who interact with us regularly`;
+                } else if (value.toLowerCase().includes('moderate')) {
+                    return `Moderately engaged customers with steady interaction`;
+                } else if (value.toLowerCase().includes('at-risk') || value.toLowerCase().includes('at risk')) {
+                    return `Customers showing signs of disengagement - need attention`;
+                } else if (value.toLowerCase().includes('dormant')) {
+                    return `Inactive customers who've gone quiet`;
+                }
+            }
+            
+            // App activity patterns
+            if (lowerLabel.includes('app active') || lowerLabel.includes('app activity')) {
+                if (lowerOperator.includes('last') || lowerOperator.includes('within')) {
+                    return `Active app users who've checked in within ${value}`;
+                }
+            }
+            
+            // Seasonal purchase patterns
+            if (lowerLabel.includes('spring') || lowerLabel.includes('season')) {
+                return `Customers who love shopping during Spring season`;
+            }
+            
+            // Propensity score patterns
+            if (lowerLabel.includes('propensity') || lowerLabel.includes('score')) {
+                if (lowerLabel.includes('upsell')) {
+                    return `High-potential customers ready for premium upgrades`;
+                } else if (lowerLabel.includes('churn')) {
+                    return `Customers at risk of leaving - intervention needed`;
+                }
+            }
+            
+            // Cross-buy / category patterns
+            if (lowerLabel.includes('purchased from') && (lowerValue.includes('1 category') || lowerValue.includes('one category'))) {
+                return `Single-category buyers perfect for cross-sell opportunities`;
             }
             
             // Web activity patterns
@@ -9404,37 +9450,37 @@
                 
                 switch(refinementType) {
                     case 'addGoldFilter':
-                        addQuickFilter('Loyalty Status = Gold', '🏆', false, 'filter');
+                        addQuickFilter('Loyalty Status: Gold', '🏆', false, 'filter');
                         filterAdded = true;
                         break;
                     
                     case 'addHighlyEngaged':
-                        addQuickFilter('Engagement Level = Highly Engaged', '⚡', false, 'filter');
+                        addQuickFilter('Engagement Level: Highly Engaged', '⚡', false, 'filter');
                         filterAdded = true;
                         break;
                     
                     case 'addRecencyFilter':
-                        addQuickFilter('Last Purchase < 90 Days', '📅', false, 'filter');
+                        addQuickFilter('Last Purchase: < 90 Days', '📅', false, 'filter');
                         filterAdded = true;
                         break;
                     
                     case 'addAppActivity':
-                        addQuickFilter('App Active in Last 30 Days', '📱', false, 'filter');
+                        addQuickFilter('App Active: Last 30 Days', '📱', false, 'filter');
                         filterAdded = true;
                         break;
                     
                     case 'addSeasonalFilter':
-                        addQuickFilter('Past Purchase in Spring Season', '🌸', false, 'filter');
+                        addQuickFilter('Past Purchase: Spring Season', '🌸', false, 'filter');
                         filterAdded = true;
                         break;
                     
                     case 'addUpsellFilter':
-                        addQuickFilter('Upsell Propensity Score > 70', '🎯', false, 'predictive');
+                        addQuickFilter('Upsell Propensity Score: > 70', '🎯', false, 'predictive');
                         filterAdded = true;
                         break;
                     
                     case 'addCrossBuyFilter':
-                        addQuickFilter('Purchased from 1 Category Only', '🔄', false, 'filter');
+                        addQuickFilter('Purchased from: 1 Category Only', '🔄', false, 'filter');
                         filterAdded = true;
                         break;
                 }
