@@ -1,9 +1,12 @@
 <!DOCTYPE html>
-<!-- Last Updated: 2026-02-16 17:00 IST - Conversational Filters + AI Recommendations - DEPLOYED -->
+<!-- Last Updated: 2026-02-23 - Tab visibility fix: Add Journey only on Journey tab -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Data Cloud - Segment Builder</title>
     <style>
         * {
@@ -2803,6 +2806,18 @@
     </style>
 </head>
 <body>
+    <script>
+    (function(){
+      if (sessionStorage.getItem('_nc') === '1') { sessionStorage.removeItem('_nc'); return; }
+      var url = location.href.split('?')[0].split('#')[0];
+      fetch(url, { cache: 'no-store' }).then(function(r){ return r.text(); }).then(function(html){
+        sessionStorage.setItem('_nc', '1');
+        document.open();
+        document.write(html);
+        document.close();
+      }).catch(function(){});
+    })();
+    </script>
     <!-- App Header -->
     <!-- Data Cloud Full Navigation (Only for Landing Page) -->
     <div id="dataCloudNav" class="datacloud-nav-wrapper">
@@ -6611,7 +6626,7 @@
                             <div style="font-size: 1.75rem;">✉️</div>
                             <div style="flex: 1;">
                                 <div style="font-weight: 700; color: #065f46; font-size: 1rem; margin-bottom: 0.25rem;">Email Re-Engagement Campaign</div>
-                                <div style="font-size: 0.8125rem; color: #166534; line-height: 1.4;">Multi-touchpoint email campaign with GDPR compliance. Activates through email, mobile app, and SMS with personalized offers and messaging.</div>
+                                <div style="font-size: 0.8125rem; color: #166534; line-height: 1.4;">Multi-touchpoint email campaign for consented customers. Activates through email, mobile app, and SMS with personalized offers and messaging.</div>
                             </div>
                             <span style="background: #bbf7d0; color: #065f46; font-size: 0.625rem; padding: 0.1875rem 0.5rem; border-radius: 0.25rem; font-weight: 700;">RECOMMENDED</span>
                         </div>
@@ -6633,9 +6648,9 @@
                             
                             <!-- Membership & Personalization -->
                             <div style="background: white; border-radius: 0.375rem; padding: 0.75rem;">
-                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Membership Filters</div>
+                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Consent &amp; Filters</div>
                                 <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem; margin-bottom: 0.75rem;">
-                                    <span style="background: #f3f4f6; padding: 0.25rem 0.5rem; border-radius: 0.25rem; color: #1f2937; font-weight: 500;">🛡️ GDPR</span>
+                                    <span style="background: #f3f4f6; padding: 0.25rem 0.5rem; border-radius: 0.25rem; color: #1f2937; font-weight: 500;">✅ Consented (Email)</span>
                                     <span style="background: #f3f4f6; padding: 0.25rem 0.5rem; border-radius: 0.25rem; color: #1f2937; font-weight: 500;">✅ Opted In</span>
                                     <span style="background: #f3f4f6; padding: 0.25rem 0.5rem; border-radius: 0.25rem; color: #1f2937; font-weight: 500;">📧 Valid Email</span>
                                     <span style="background: #f3f4f6; padding: 0.25rem 0.5rem; border-radius: 0.25rem; color: #1f2937; font-weight: 500;">🚫 No Contact 7d</span>
@@ -6659,7 +6674,7 @@
                             <div style="font-size: 1.75rem;">📘</div>
                             <div style="flex: 1;">
                                 <div style="font-weight: 700; color: #1f2937; font-size: 1rem; margin-bottom: 0.25rem;">Meta Ads Campaign</div>
-                                <div style="font-size: 0.8125rem; color: #6b7280; line-height: 1.4;">Activate your segment on Meta platforms with custom audience targeting across Facebook, Instagram, and Messenger.</div>
+                                <div style="font-size: 0.8125rem; color: #6b7280; line-height: 1.4;">Reach your segment on Facebook, Instagram, and Messenger. Contact points (email, phone, mobile app) power custom audience sync.</div>
                             </div>
                         </div>
                         
@@ -6667,22 +6682,28 @@
                             <!-- Platform & Contact Points -->
                             <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
                                 <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Platform</div>
-                                <div style="display: flex; align-items: center; gap: 0.375rem; font-size: 0.8125rem; color: #1f2937; font-weight: 600; margin-bottom: 0.75rem;">
+                                <div style="display: flex; align-items: center; gap: 0.375rem; font-size: 0.8125rem; color: #1f2937; font-weight: 600; margin-bottom: 0.5rem;">
                                     <span style="font-size: 1rem;">📘</span> Meta Ads Manager
                                 </div>
-                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Contact Points</div>
-                                <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem;">
+                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Communication Channels</div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem; margin-bottom: 0.5rem;">
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📱 Facebook</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📸 Instagram</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">💬 Messenger</span>
                                 </div>
+                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Contact Points</div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem;">
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">✉️ Email</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📞 Phone</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📱 Mobile App</span>
+                                </div>
                             </div>
                             
-                            <!-- Membership & Personalization -->
+                            <!-- Consent & Personalization -->
                             <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
-                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Membership Filters</div>
+                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Consent &amp; Filters</div>
                                 <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem; margin-bottom: 0.75rem;">
-                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">✅ Active</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">✅ Consented (Marketing)</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📧 Valid Email</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📱 Valid Phone</span>
                                 </div>
@@ -6690,6 +6711,7 @@
                                 <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem;">
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Email</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Phone</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Mobile App ID</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Purchase Value</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Product Interest</span>
                                 </div>
@@ -6704,7 +6726,7 @@
                             <div style="font-size: 1.75rem;">🔍</div>
                             <div style="flex: 1;">
                                 <div style="font-weight: 700; color: #1f2937; font-size: 1rem; margin-bottom: 0.25rem;">Google Ads - Performance Max</div>
-                                <div style="font-size: 0.8125rem; color: #6b7280; line-height: 1.4;">Activate your segment on Google Ads with automated optimization across Search, Display, YouTube, and Discovery channels.</div>
+                                <div style="font-size: 0.8125rem; color: #6b7280; line-height: 1.4;">Reach your segment across Search, Display, YouTube, and Discovery. Contact points (email, phone, mobile app) power Customer Match.</div>
                             </div>
                         </div>
                         
@@ -6712,32 +6734,39 @@
                             <!-- Platform & Contact Points -->
                             <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
                                 <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Platform</div>
-                                <div style="display: flex; align-items: center; gap: 0.375rem; font-size: 0.8125rem; color: #1f2937; font-weight: 600; margin-bottom: 0.75rem;">
+                                <div style="display: flex; align-items: center; gap: 0.375rem; font-size: 0.8125rem; color: #1f2937; font-weight: 600; margin-bottom: 0.5rem;">
                                     <span style="font-size: 1rem;">🔍</span> Google Ads
                                 </div>
-                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Contact Points</div>
-                                <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem;">
+                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Communication Channels</div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem; margin-bottom: 0.5rem;">
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">🔍 Search</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📺 Display</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📹 YouTube</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📰 Discovery</span>
                                 </div>
+                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Contact Points</div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem;">
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">✉️ Email</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📞 Phone</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📱 Mobile App</span>
+                                </div>
                             </div>
                             
-                            <!-- Membership & Personalization -->
+                            <!-- Consent & Personalization -->
                             <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
-                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Membership Filters</div>
+                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Consent &amp; Filters</div>
                                 <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem; margin-bottom: 0.75rem;">
-                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">✅ Active</span>
-                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">🛡️ GDPR</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">✅ Consented (Marketing)</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">🔐 Customer Match</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📧 Valid Email</span>
                                 </div>
                                 <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Personalization Attributes</div>
                                 <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem;">
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Email</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Phone</span>
-                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Conv. Value</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Conversion Value</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Geography</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Device ID</span>
                                 </div>
                             </div>
                         </div>
@@ -6750,7 +6779,7 @@
                             <div style="font-size: 1.75rem;">📲</div>
                             <div style="flex: 1;">
                                 <div style="font-weight: 700; color: #1f2937; font-size: 1rem; margin-bottom: 0.25rem;">SMS Flash Sale Campaign</div>
-                                <div style="font-size: 0.8125rem; color: #6b7280; line-height: 1.4;">Time-sensitive SMS messaging for promotions and flash sales. Activates through SMS and mobile app with personalized promo codes and time-bound offers.</div>
+                                <div style="font-size: 0.8125rem; color: #6b7280; line-height: 1.4;">Time-sensitive SMS for promotions and flash sales via Marketo. For consented SMS customers; personalized promo codes and time-bound offers.</div>
                             </div>
                         </div>
                         
@@ -6759,7 +6788,7 @@
                             <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
                                 <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Platform</div>
                                 <div style="display: flex; align-items: center; gap: 0.375rem; font-size: 0.8125rem; color: #1f2937; font-weight: 600; margin-bottom: 0.75rem;">
-                                    <span style="font-size: 1rem;">💎</span> Data Cloud
+                                    <span style="font-size: 1rem;">📧</span> Marketo
                                 </div>
                                 <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Contact Points</div>
                                 <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem;">
@@ -6768,13 +6797,12 @@
                                 </div>
                             </div>
                             
-                            <!-- Membership & Personalization -->
+                            <!-- Consent & Personalization -->
                             <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
-                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Membership Filters</div>
+                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Consent &amp; Filters</div>
                                 <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem; margin-bottom: 0.75rem;">
-                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📲 SMS Opt-In</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">✅ Consented (SMS)</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📞 Valid Phone</span>
-                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">✅ Active</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">🚫 No SMS 24h</span>
                                 </div>
                                 <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Personalization Attributes</div>
@@ -6795,7 +6823,7 @@
                             <div style="font-size: 1.75rem;">💼</div>
                             <div style="flex: 1;">
                                 <div style="font-weight: 700; color: #1f2937; font-size: 1rem; margin-bottom: 0.25rem;">LinkedIn Sponsored Content (B2B)</div>
-                                <div style="font-size: 0.8125rem; color: #6b7280; line-height: 1.4;">Activate your segment on LinkedIn with sponsored posts, InMail, and video ads. Uses company and job title attributes for professional targeting.</div>
+                                <div style="font-size: 0.8125rem; color: #6b7280; line-height: 1.4;">Reach your segment via Sponsored Post, InMail, and Video Ads. Contact points (email, phone, mobile app) power Matched Audiences; company and job title for targeting.</div>
                             </div>
                         </div>
                         
@@ -6803,21 +6831,28 @@
                             <!-- Platform & Contact Points -->
                             <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
                                 <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Platform</div>
-                                <div style="display: flex; align-items: center; gap: 0.375rem; font-size: 0.8125rem; color: #1f2937; font-weight: 600; margin-bottom: 0.75rem;">
+                                <div style="display: flex; align-items: center; gap: 0.375rem; font-size: 0.8125rem; color: #1f2937; font-weight: 600; margin-bottom: 0.5rem;">
                                     <span style="font-size: 1rem;">💼</span> LinkedIn Campaign Manager
                                 </div>
-                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Contact Points</div>
-                                <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem;">
+                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Communication Channels</div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem; margin-bottom: 0.5rem;">
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">💼 Sponsored Post</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">💬 InMail</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📺 Video Ads</span>
                                 </div>
+                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Contact Points</div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem;">
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">✉️ Email</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📞 Phone</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📱 Mobile App</span>
+                                </div>
                             </div>
                             
-                            <!-- Membership & Personalization -->
+                            <!-- Consent & Personalization -->
                             <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
-                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Membership Filters</div>
+                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Consent &amp; Filters</div>
                                 <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem; margin-bottom: 0.75rem;">
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">✅ Consented (B2B)</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">💼 Work Email</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">🏢 Company Match</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">👔 Senior+ Title</span>
@@ -6828,6 +6863,7 @@
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Job Title</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Industry</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Account Score</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Lead Score</span>
                                 </div>
                             </div>
                         </div>
@@ -6860,9 +6896,9 @@
                             
                             <!-- Membership & Personalization -->
                             <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
-                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Membership Filters</div>
+                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Consent &amp; Filters</div>
                                 <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem; margin-bottom: 0.75rem;">
-                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">💬 WhatsApp Opt-In</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">✅ Consented (WhatsApp)</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📞 Valid Phone</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">🌍 Intl Format</span>
                                 </div>
@@ -6923,9 +6959,9 @@
                                 <div style="font-size: 0.8125rem; font-weight: 600; color: #1f2937;">Marketing Cloud</div>
                             </label>
                             <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem 0.875rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s; flex: 1;" onmouseover="this.style.borderColor='#93c5fd'" onmouseout="this.style.borderColor='#e5e7eb'">
-                                <input type="radio" name="platform" value="dc">
-                                <div style="font-size: 1rem;">💎</div>
-                                <div style="font-size: 0.8125rem; font-weight: 600; color: #1f2937;">Data Cloud</div>
+                                <input type="radio" name="platform" value="marketo">
+                                <div style="font-size: 1rem;">📧</div>
+                                <div style="font-size: 0.8125rem; font-weight: 600; color: #1f2937;">Marketo</div>
                             </label>
                         </div>
                     </div>
@@ -6976,21 +7012,21 @@
                     </div>
                     <p style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.75rem;">Apply compliance and membership filters</p>
                     
-                    <!-- Quick Safety Filters -->
+                    <!-- Consent & Customer Type Filters -->
                     <div style="margin-bottom: 0.75rem;">
-                        <div style="font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.375rem;">Quick Safety Filters</div>
+                        <div style="font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.375rem;">Consent &amp; Customer Type Filters</div>
                         <div style="display: flex; flex-wrap: wrap; gap: 0.375rem;">
                             <label style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.4375rem 0.75rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.25rem; cursor: pointer; transition: all 0.2s; font-size: 0.75rem;" onmouseover="this.style.borderColor='#a7f3d0'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'}">
-                                <input type="checkbox" name="safety" value="gdpr">
-                                <span style="font-weight: 600;">🛡️ GDPR</span>
+                                <input type="checkbox" name="safety" value="consented_email">
+                                <span style="font-weight: 600;">✅ Consented (Email)</span>
+                            </label>
+                            <label style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.4375rem 0.75rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.25rem; cursor: pointer; transition: all 0.2s; font-size: 0.75rem;" onmouseover="this.style.borderColor='#a7f3d0'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'}">
+                                <input type="checkbox" name="safety" value="consented_marketing">
+                                <span style="font-weight: 600;">✅ Consented (Marketing)</span>
                             </label>
                             <label style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.4375rem 0.75rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.25rem; cursor: pointer; transition: all 0.2s; font-size: 0.75rem;" onmouseover="this.style.borderColor='#a7f3d0'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'}">
                                 <input type="checkbox" name="safety" value="active_subs">
                                 <span style="font-weight: 600;">✅ Active Subscribers</span>
-                            </label>
-                            <label style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.4375rem 0.75rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.25rem; cursor: pointer; transition: all 0.2s; font-size: 0.75rem;" onmouseover="this.style.borderColor='#a7f3d0'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'}">
-                                <input type="checkbox" name="safety" value="ccpa">
-                                <span style="font-weight: 600;">🛡️ CCPA</span>
                             </label>
                             <label style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.4375rem 0.75rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.25rem; cursor: pointer; transition: all 0.2s; font-size: 0.75rem;" onmouseover="this.style.borderColor='#a7f3d0'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'}">
                                 <input type="checkbox" name="safety" value="email_consent">
@@ -7075,7 +7111,6 @@
                         <span>Activate Segment</span>
                     </div>
                 </button>
-                <div style="font-size: 0.875rem; color: #6b7280; margin-top: 1rem;">Activation will begin immediately and respect the selected channel send times</div>
             </div>
         </div>
 
@@ -7508,7 +7543,7 @@
                 </div>
             </div>
 
-            <div style="text-align: center; padding: 2rem 0;">
+            <div id="addJourneyToActivationBlock" style="text-align: center; padding: 2rem 0; display: none;">
                 <button onclick="addJourneyToActivation()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; font-size: 1.125rem; font-weight: 600; padding: 1rem 3rem; border: none; border-radius: 0.5rem; cursor: pointer; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3); transition: all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 12px rgba(16, 185, 129, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(16, 185, 129, 0.3)'">
                     <div style="display: flex; align-items: center; gap: 0.75rem;">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -9491,17 +9526,29 @@
         }
 
         function switchTab(index) {
-            // Hide all tabs (0 through 5 = 6 tabs total, after removing preview/insights/overlap)
-            for (let i = 0; i <= 5; i++) {
+            // Hide all tabs (0 through 6 = 7 tabs total) - force display so only one tab is ever visible
+            for (let i = 0; i <= 6; i++) {
                 const tabContent = document.getElementById('tabContent' + i);
                 const tab = document.getElementById('tab' + i);
-                if (tabContent) tabContent.classList.remove('active');
+                if (tabContent) {
+                    tabContent.classList.remove('active');
+                    tabContent.style.display = 'none';
+                }
                 if (tab) tab.classList.remove('active');
             }
             
-            // Show selected tab
-            document.getElementById('tabContent' + index).classList.add('active');
-            document.getElementById('tab' + index).classList.add('active');
+            // Show only the selected tab
+            var activeContent = document.getElementById('tabContent' + index);
+            var activeTab = document.getElementById('tab' + index);
+            if (activeContent) {
+                activeContent.classList.add('active');
+                activeContent.style.display = 'block';
+            }
+            if (activeTab) activeTab.classList.add('active');
+            
+            // Add Journey to Activation block: ONLY visible on Journey Builder tab (index 5)
+            var journeyBlock = document.getElementById('addJourneyToActivationBlock');
+            if (journeyBlock) journeyBlock.style.display = (index === 5) ? 'block' : 'none';
             
             currentTab = index;
             agentState.currentTab = index;
@@ -12839,6 +12886,16 @@
 
 
 
+
+        // Ensure Add Journey block and tab visibility on load (so it never shows on wrong tab)
+        document.addEventListener('DOMContentLoaded', function() {
+            var journeyBlock = document.getElementById('addJourneyToActivationBlock');
+            if (journeyBlock) journeyBlock.style.display = 'none';
+            for (var i = 0; i <= 6; i++) {
+                var el = document.getElementById('tabContent' + i);
+                if (el) el.style.display = (el.classList.contains('active')) ? 'block' : 'none';
+            }
+        });
 
         // Handle Enter key in agent input
         document.addEventListener('DOMContentLoaded', () => {

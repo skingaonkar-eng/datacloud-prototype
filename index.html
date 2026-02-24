@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<!-- Last Updated: 2026-02-16 17:00 IST - Conversational Filters + AI Recommendations - DEPLOYED -->
+<!-- Last Updated: 2026-02-23 - Tab visibility fix: Add Journey only on Journey tab -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Cloud - Segment Builder</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Segment Builder</title>
     <style>
         * {
             margin: 0;
@@ -17,6 +20,13 @@
             background: #f3f4f6;
             color: #1f2937;
             overflow-x: hidden;
+        }
+
+        /* Sticky header: top bars stay fixed when scrolling; layout unchanged */
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         /* Data Cloud Navigation */
@@ -370,11 +380,11 @@
             border-bottom-color: #1d72f3;
         }
 
-        /* Main Content */
+        /* Main Content - minimal left/right for tab content; Performance tab adds its own padding */
         .main-content {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 2rem 1.5rem;
+            padding: 2rem 0.25rem;
         }
 
         /* Segments List Landing Page */
@@ -803,6 +813,21 @@
             color: #6b7280;
             line-height: 1.4;
         }
+
+        .publish-run-mode-btn {
+            transition: background 0.2s, color 0.2s;
+        }
+        .publish-run-mode-btn:hover {
+            background: #eff6ff !important;
+            color: #1d72f3 !important;
+        }
+        .publish-run-mode-active:hover {
+            background: #1557b0 !important;
+            color: white !important;
+        }
+        .publish-freq-btn { transition: background 0.2s, color 0.2s; }
+        .publish-freq-btn:hover { background: #eff6ff !important; color: #1d72f3 !important; }
+        .publish-freq-active:hover { background: #1557b0 !important; color: white !important; }
 
         .divider-or {
             text-align: center;
@@ -1494,9 +1519,11 @@
             background: #1557c7;
         }
 
-        /* Tab Content */
+        /* Tab Content - other tabs have minimal side space; Performance tab has its own padding; bottom padding on all tabs so agent bar doesn't overlap */
         .tab-content {
             display: none;
+            padding-bottom: 4.5rem;
+            box-sizing: border-box;
         }
 
         .tab-content.active {
@@ -1512,6 +1539,22 @@
         /* Section Header */
         .section-header {
             margin-bottom: 1.5rem;
+        }
+
+        /* Performance tab: same format as other tabs; keep this side padding (do not change) */
+        #tabContent6 {
+            margin-top: -1rem;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+        #tabContent6 .section-header {
+            margin-top: 0;
+        }
+        /* Ensure Journey Builder section (incl. "or Build Custom Journey" button) never shows on Performance tab */
+        #segmentBuilderTabPanels.on-performance-tab #journeyBuilderOnlySection,
+        #segmentBuilderTabPanels.on-performance-tab #journeyBuilderWhiteBox,
+        #segmentBuilderTabPanels.on-performance-tab #addJourneyToActivationBlock {
+            display: none !important;
         }
 
         .section-title {
@@ -2803,7 +2846,20 @@
     </style>
 </head>
 <body>
+    <script>
+    (function(){
+      if (sessionStorage.getItem('_nc') === '1') { sessionStorage.removeItem('_nc'); return; }
+      var url = location.href.split('?')[0].split('#')[0];
+      fetch(url, { cache: 'no-store' }).then(function(r){ return r.text(); }).then(function(html){
+        sessionStorage.setItem('_nc', '1');
+        document.open();
+        document.write(html);
+        document.close();
+      }).catch(function(){});
+    })();
+    </script>
     <!-- App Header -->
+    <div class="sticky-header">
     <!-- Data Cloud Full Navigation (Only for Landing Page) -->
     <div id="dataCloudNav" class="datacloud-nav-wrapper">
         <!-- Logo Section (Spans Both Bars) -->
@@ -2898,7 +2954,7 @@
                     <path d="M2 17l10 5 10-5"/>
                     <path d="M2 12l10 5 10-5"/>
                 </svg>
-                <span class="segment-name" id="segmentName">Data Cloud Segment Builder</span>
+                <span class="segment-name" id="segmentName">Segment Builder</span>
             </div>
         </div>
         <div class="header-right">
@@ -2993,8 +3049,8 @@
             </div>
         </div>
 
-        <!-- Right Side: Action Buttons -->
-        <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <!-- Right Side: Action Buttons (hidden on Performance tab) -->
+        <div id="toolbarActionButtons" style="display: flex; align-items: center; gap: 0.75rem;">
             <button style="padding: 0.5rem 1.25rem; border: 1px solid #d1d5db; border-radius: 0.375rem; background: white; color: #374151; font-size: 0.9375rem; font-weight: 500; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'">
                 Edit Properties
             </button>
@@ -3022,12 +3078,13 @@
             Smart Splits
             <span style="margin-left: 0.25rem; font-size: 0.6875rem; color: #9ca3af; font-weight: 500;">optional</span>
         </button>
-        <button class="tab-item" onclick="switchTab(4)" id="tab4">Activate</button>
+        <button class="tab-item" onclick="switchTab(4)" id="tab4">Activation</button>
         <button class="tab-item" onclick="switchTab(5)" id="tab5">
             Journey Builder
             <span style="margin-left: 0.25rem; font-size: 0.6875rem; color: #9ca3af; font-weight: 500;">optional</span>
         </button>
         <button class="tab-item" onclick="switchTab(6)" id="tab6">Performance</button>
+    </div>
     </div>
 
     <!-- Main Content -->
@@ -3082,7 +3139,7 @@
 
             <!-- Create Button Container -->
             <div class="create-button-container">
-                <button class="btn-create-segment" onclick="showCreationModal()">
+                <button class="btn-create-segment" onclick="goToGoalScreen()">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem;">
                         <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
                         <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
@@ -3587,6 +3644,7 @@
             </div>
         </div>
 
+        <div id="segmentBuilderTabPanels" style="display: none;">
         <!-- Tab 0: Segment Definition -->
         <div id="tabContent0" class="tab-content">
             <div class="section-header">
@@ -4616,6 +4674,55 @@
                 </div>
             </div>
 
+            <!-- Publish Schedule: row 1 = Publish, frequency, at time, Start & End date/time; row 2 = Lookback Window -->
+            <div class="publish-schedule-section" style="margin-top: 1.5rem; background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(249,250,251,0.98) 100%); border: 2px solid #e5e7eb; border-radius: 0.875rem; padding: 1.25rem 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                <div style="font-size: 0.9375rem; font-weight: 700; color: #1f2937; margin-bottom: 0.75rem;">Publish Schedule</div>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                        <div class="publish-bar" style="display: inline-flex; border: 2px solid #e5e7eb; border-radius: 0.5rem; overflow: hidden; background: white;">
+                            <button type="button" id="runModeSchedule" onclick="setPublishRunMode('schedule')" class="publish-run-mode-btn publish-run-mode-active" style="font-size: 0.875rem; padding: 0.5rem 1rem; border: none; background: #1d72f3; color: white; cursor: pointer; font-weight: 600;">Publish</button>
+                            <button type="button" id="runModeNoSchedule" onclick="setPublishRunMode('none')" class="publish-run-mode-btn" style="font-size: 0.875rem; padding: 0.5rem 1rem; border: none; background: transparent; color: #6b7280; cursor: pointer; font-weight: 500;">Do Not Schedule</button>
+                        </div>
+                        <div id="publishScheduleOptions" style="display: flex; align-items: center; gap: 1rem; flex: 1; flex-wrap: wrap; min-width: 0;">
+                            <div class="publish-bar" style="display: inline-flex; border: 2px solid #e5e7eb; border-radius: 0.5rem; overflow: hidden; background: white;">
+                                <button type="button" onclick="setPublishFrequency('hourly')" class="publish-freq-btn" data-freq="hourly" style="font-size: 0.8125rem; padding: 0.5rem 0.75rem; border: none; background: transparent; color: #6b7280; cursor: pointer; font-weight: 500;">Hourly</button>
+                                <button type="button" onclick="setPublishFrequency('daily')" class="publish-freq-btn publish-freq-active" data-freq="daily" style="font-size: 0.8125rem; padding: 0.5rem 0.75rem; border: none; background: #1d72f3; color: white; cursor: pointer; font-weight: 600;">Daily</button>
+                                <button type="button" onclick="setPublishFrequency('monthly')" class="publish-freq-btn" data-freq="monthly" style="font-size: 0.8125rem; padding: 0.5rem 0.75rem; border: none; background: transparent; color: #6b7280; cursor: pointer; font-weight: 500;">Monthly</button>
+                                <button type="button" onclick="setPublishFrequency('yearly')" class="publish-freq-btn" data-freq="yearly" style="font-size: 0.8125rem; padding: 0.5rem 0.75rem; border: none; background: transparent; color: #6b7280; cursor: pointer; font-weight: 500;">Yearly</button>
+                            </div>
+                            <div id="publishTimeBar" class="publish-bar" style="display: inline-flex; align-items: center; border: 2px solid #e5e7eb; border-radius: 0.5rem; overflow: hidden; background: white; padding: 0 0.5rem;">
+                                <span style="font-size: 0.8125rem; color: #6b7280; font-weight: 500; margin-right: 0.375rem;">at</span>
+                                <input type="time" id="segmentPublishTime" value="09:00" style="font-size: 0.8125rem; padding: 0.375rem 0.25rem; border: none; background: transparent; color: #1f2937; font-weight: 500; width: 5.5rem;">
+                            </div>
+                            <div class="publish-bar" style="display: inline-flex; align-items: center; border: 2px solid #e5e7eb; border-radius: 0.5rem; overflow: hidden; background: white; padding: 0 0.5rem;">
+                                <span style="font-size: 0.8125rem; color: #6b7280; font-weight: 600; margin-right: 0.5rem;">Start</span>
+                                <input type="date" id="segmentPublishStartDate" style="font-size: 0.8125rem; padding: 0.375rem 0.25rem; border: none; background: transparent; color: #1f2937; font-weight: 500; width: 8rem;">
+                                <input type="time" id="segmentPublishStartTime" value="00:00" style="font-size: 0.8125rem; padding: 0.375rem 0.25rem; border: none; border-left: 1px solid #e5e7eb; background: transparent; color: #1f2937; font-weight: 500; width: 5rem;">
+                            </div>
+                            <div class="publish-bar" style="display: inline-flex; align-items: center; border: 2px solid #e5e7eb; border-radius: 0.5rem; overflow: hidden; background: white; padding: 0 0.5rem;">
+                                <span style="font-size: 0.8125rem; color: #6b7280; font-weight: 600; margin-right: 0.5rem;">End</span>
+                                <input type="date" id="segmentPublishEndDate" style="font-size: 0.8125rem; padding: 0.375rem 0.25rem; border: none; background: transparent; color: #1f2937; font-weight: 500; width: 8rem;">
+                                <input type="time" id="segmentPublishEndTime" value="23:59" style="font-size: 0.8125rem; padding: 0.375rem 0.25rem; border: none; border-left: 1px solid #e5e7eb; background: transparent; color: #1f2937; font-weight: 500; width: 5rem;">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="publishLookbackRow" style="display: flex; align-items: center; gap: 0.75rem;">
+                        <span style="font-size: 0.8125rem; font-weight: 600; color: #374151;">Lookback Window</span>
+                        <div class="publish-bar" style="display: inline-flex; align-items: center; border: 2px solid #e5e7eb; border-radius: 0.5rem; overflow: hidden; background: white;">
+                            <button type="button" onclick="changeLookback(-1)" style="width: 2rem; height: 2rem; border: none; background: transparent; color: #374151; font-size: 1rem; font-weight: 600; cursor: pointer; line-height: 1; transition: color 0.2s;" onmouseover="this.style.color='#1d72f3'" onmouseout="this.style.color='#374151'">−</button>
+                            <input type="number" id="segmentLookbackValue" value="90" min="1" max="999" style="width: 3.25rem; font-size: 0.8125rem; font-weight: 600; color: #1f2937; text-align: center; padding: 0.375rem 0; border: none; background: transparent;">
+                            <button type="button" onclick="changeLookback(1)" style="width: 2rem; height: 2rem; border: none; background: transparent; color: #374151; font-size: 1rem; font-weight: 600; cursor: pointer; line-height: 1; transition: color 0.2s;" onmouseover="this.style.color='#1d72f3'" onmouseout="this.style.color='#374151'">+</button>
+                            <select id="segmentLookbackUnit" style="font-size: 0.8125rem; padding: 0.5rem 0.5rem; border: none; border-left: 1px solid #e5e7eb; background: transparent; color: #1f2937; font-weight: 500; cursor: pointer;">
+                                <option value="hours">Hours</option>
+                                <option value="days" selected>Days</option>
+                                <option value="months">Months</option>
+                                <option value="years">Years</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="nav-buttons" style="display: flex; justify-content: flex-end; align-items: center; gap: 0.75rem; margin-top: 2rem;">
                 <button class="btn-nav btn-nav-primary" onclick="switchTab(1)" style="font-size: 0.875rem; padding: 0.625rem 1.25rem;">
                     Next: Rank & Limit
@@ -4624,7 +4731,7 @@
                     </svg>
                 </button>
                 <button class="btn-nav btn-nav-secondary" onclick="switchTab(4)" style="font-size: 0.875rem; padding: 0.625rem 1.25rem;">
-                    Skip to Activate
+                    Skip to Activation
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 0.375rem;">
                         <path d="M5 12h14M12 5l7 7-7 7"/>
                     </svg>
@@ -4843,7 +4950,7 @@
                     </svg>
                 </button>
                 <button class="btn-nav btn-nav-secondary" onclick="switchTab(4)" style="border: 2px solid #1d72f3; color: #1d72f3; font-weight: 600;">
-                    Skip to Activate
+                    Skip to Activation
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M5 12h14M12 5l7 7-7 7"/>
                     </svg>
@@ -5438,7 +5545,7 @@
                         </svg>
                     </button>
                     <button class="btn-nav btn-nav-secondary" onclick="switchTab(4)" style="border: 2px solid #1d72f3; color: #1d72f3; font-weight: 600;">
-                        Skip to Activate
+                        Skip to Activation
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12h14M12 5l7 7-7 7"/>
                         </svg>
@@ -5567,7 +5674,7 @@
                 </button>
                 <div style="display: flex; gap: 1rem;">
                     <button class="btn-nav btn-nav-primary" onclick="switchTab(4)">
-                        Activate
+                        Activation
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12h14M12 5l7 7-7 7"/>
                         </svg>
@@ -6556,10 +6663,10 @@
             </div>
         </div>
 
-        <!-- Tab 4: Activate Segment -->
+        <!-- Tab 4: Activation -->
         <div id="tabContent4" class="tab-content">
             <div class="section-header">
-                <h2 class="section-title">Activate Your Segment</h2>
+                <h2 class="section-title">Activation</h2>
                 <p class="section-description">Choose an activation template and launch your segment</p>
             </div>
 
@@ -6611,7 +6718,7 @@
                             <div style="font-size: 1.75rem;">✉️</div>
                             <div style="flex: 1;">
                                 <div style="font-weight: 700; color: #065f46; font-size: 1rem; margin-bottom: 0.25rem;">Email Re-Engagement Campaign</div>
-                                <div style="font-size: 0.8125rem; color: #166534; line-height: 1.4;">Multi-touchpoint email campaign with GDPR compliance. Activates through email, mobile app, and SMS with personalized offers and messaging.</div>
+                                <div style="font-size: 0.8125rem; color: #166534; line-height: 1.4;">Multi-touchpoint email campaign for consented customers. Activates through email, mobile app, and SMS with personalized offers and messaging.</div>
                             </div>
                             <span style="background: #bbf7d0; color: #065f46; font-size: 0.625rem; padding: 0.1875rem 0.5rem; border-radius: 0.25rem; font-weight: 700;">RECOMMENDED</span>
                         </div>
@@ -6635,8 +6742,9 @@
                             <div style="background: white; border-radius: 0.375rem; padding: 0.75rem;">
                                 <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Membership Filters</div>
                                 <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem; margin-bottom: 0.75rem;">
-                                    <span style="background: #f3f4f6; padding: 0.25rem 0.5rem; border-radius: 0.25rem; color: #1f2937; font-weight: 500;">🛡️ GDPR</span>
-                                    <span style="background: #f3f4f6; padding: 0.25rem 0.5rem; border-radius: 0.25rem; color: #1f2937; font-weight: 500;">✅ Opted In</span>
+                                    <span style="background: #f3f4f6; padding: 0.25rem 0.5rem; border-radius: 0.25rem; color: #1f2937; font-weight: 500;">✅ Consented (Email)</span>
+                                    <span style="background: #f3f4f6; padding: 0.25rem 0.5rem; border-radius: 0.25rem; color: #1f2937; font-weight: 500;">✅ Active subscribers</span>
+                                    <span style="background: #f3f4f6; padding: 0.25rem 0.5rem; border-radius: 0.25rem; color: #1f2937; font-weight: 500;">🎫 Annual pass</span>
                                     <span style="background: #f3f4f6; padding: 0.25rem 0.5rem; border-radius: 0.25rem; color: #1f2937; font-weight: 500;">📧 Valid Email</span>
                                     <span style="background: #f3f4f6; padding: 0.25rem 0.5rem; border-radius: 0.25rem; color: #1f2937; font-weight: 500;">🚫 No Contact 7d</span>
                                 </div>
@@ -6659,37 +6767,45 @@
                             <div style="font-size: 1.75rem;">📘</div>
                             <div style="flex: 1;">
                                 <div style="font-weight: 700; color: #1f2937; font-size: 1rem; margin-bottom: 0.25rem;">Meta Ads Campaign</div>
-                                <div style="font-size: 0.8125rem; color: #6b7280; line-height: 1.4;">Activate your segment on Meta platforms with custom audience targeting across Facebook, Instagram, and Messenger.</div>
+                                <div style="font-size: 0.8125rem; color: #6b7280; line-height: 1.4;">Reach your segment on Facebook, Instagram, and Messenger. Contact points (email, phone, mobile app) power custom audience sync.</div>
                             </div>
                         </div>
                         
                         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.625rem;">
-                            <!-- Platform & Contact Points -->
+                            <!-- Platform, Channels & Contact Points -->
                             <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
                                 <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Platform</div>
-                                <div style="display: flex; align-items: center; gap: 0.375rem; font-size: 0.8125rem; color: #1f2937; font-weight: 600; margin-bottom: 0.75rem;">
+                                <div style="display: flex; align-items: center; gap: 0.375rem; font-size: 0.8125rem; color: #1f2937; font-weight: 600; margin-bottom: 0.5rem;">
                                     <span style="font-size: 1rem;">📘</span> Meta Ads Manager
                                 </div>
-                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Contact Points</div>
-                                <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem;">
+                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Communication Channels</div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem; margin-bottom: 0.5rem;">
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📱 Facebook</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📸 Instagram</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">💬 Messenger</span>
                                 </div>
+                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Contact Points</div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem;">
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">✉️ Email</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📞 Phone</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📱 Mobile App</span>
+                                </div>
                             </div>
                             
-                            <!-- Membership & Personalization -->
+                            <!-- Consent & Personalization -->
                             <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
                                 <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Membership Filters</div>
                                 <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem; margin-bottom: 0.75rem;">
-                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">✅ Active</span>
-                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📧 Valid Email</span>
-                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📱 Valid Phone</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">✅ Consented (Marketing)</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">✅ Active subscribers</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">🎫 Annual pass</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📧 Reachable (Email)</span>
                                 </div>
                                 <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Personalization Attributes</div>
                                 <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem;">
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Email</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Phone</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Mobile App ID</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Purchase Value</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Product Interest</span>
                                 </div>
@@ -6704,40 +6820,48 @@
                             <div style="font-size: 1.75rem;">🔍</div>
                             <div style="flex: 1;">
                                 <div style="font-weight: 700; color: #1f2937; font-size: 1rem; margin-bottom: 0.25rem;">Google Ads - Performance Max</div>
-                                <div style="font-size: 0.8125rem; color: #6b7280; line-height: 1.4;">Activate your segment on Google Ads with automated optimization across Search, Display, YouTube, and Discovery channels.</div>
+                                <div style="font-size: 0.8125rem; color: #6b7280; line-height: 1.4;">Reach your segment across Search, Display, YouTube, and Discovery. Contact points (email, phone, mobile app) power Customer Match.</div>
                             </div>
                         </div>
                         
                         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.625rem;">
-                            <!-- Platform & Contact Points -->
+                            <!-- Platform, Channels & Contact Points -->
                             <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
                                 <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Platform</div>
-                                <div style="display: flex; align-items: center; gap: 0.375rem; font-size: 0.8125rem; color: #1f2937; font-weight: 600; margin-bottom: 0.75rem;">
+                                <div style="display: flex; align-items: center; gap: 0.375rem; font-size: 0.8125rem; color: #1f2937; font-weight: 600; margin-bottom: 0.5rem;">
                                     <span style="font-size: 1rem;">🔍</span> Google Ads
                                 </div>
-                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Contact Points</div>
-                                <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem;">
+                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Communication Channels</div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem; margin-bottom: 0.5rem;">
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">🔍 Search</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📺 Display</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📹 YouTube</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📰 Discovery</span>
                                 </div>
+                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Contact Points</div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem;">
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">✉️ Email</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📞 Phone</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📱 Mobile App</span>
+                                </div>
                             </div>
                             
-                            <!-- Membership & Personalization -->
+                            <!-- Consent & Personalization -->
                             <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
                                 <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Membership Filters</div>
                                 <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem; margin-bottom: 0.75rem;">
-                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">✅ Active</span>
-                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">🛡️ GDPR</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">✅ Consented (Marketing)</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">✅ Active subscribers</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">🔐 Customer Match</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">🎫 No annual pass</span>
                                 </div>
                                 <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Personalization Attributes</div>
                                 <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem;">
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Email</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Phone</span>
-                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Conv. Value</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Conversion Value</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Geography</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Device ID</span>
                                 </div>
                             </div>
                         </div>
@@ -6750,7 +6874,7 @@
                             <div style="font-size: 1.75rem;">📲</div>
                             <div style="flex: 1;">
                                 <div style="font-weight: 700; color: #1f2937; font-size: 1rem; margin-bottom: 0.25rem;">SMS Flash Sale Campaign</div>
-                                <div style="font-size: 0.8125rem; color: #6b7280; line-height: 1.4;">Time-sensitive SMS messaging for promotions and flash sales. Activates through SMS and mobile app with personalized promo codes and time-bound offers.</div>
+                                <div style="font-size: 0.8125rem; color: #6b7280; line-height: 1.4;">Time-sensitive SMS for promotions and flash sales via Marketo. For consented SMS customers; personalized promo codes and time-bound offers.</div>
                             </div>
                         </div>
                         
@@ -6759,7 +6883,7 @@
                             <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
                                 <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Platform</div>
                                 <div style="display: flex; align-items: center; gap: 0.375rem; font-size: 0.8125rem; color: #1f2937; font-weight: 600; margin-bottom: 0.75rem;">
-                                    <span style="font-size: 1rem;">💎</span> Data Cloud
+                                    <span style="font-size: 1rem;">📧</span> Marketo
                                 </div>
                                 <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Contact Points</div>
                                 <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem;">
@@ -6768,13 +6892,13 @@
                                 </div>
                             </div>
                             
-                            <!-- Membership & Personalization -->
+                            <!-- Consent & Personalization -->
                             <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
                                 <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Membership Filters</div>
                                 <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem; margin-bottom: 0.75rem;">
-                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📲 SMS Opt-In</span>
-                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📞 Valid Phone</span>
-                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">✅ Active</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">✅ Consented (SMS)</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">✅ Active subscribers</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📲 Reachable (SMS)</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">🚫 No SMS 24h</span>
                                 </div>
                                 <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Personalization Attributes</div>
@@ -6795,32 +6919,39 @@
                             <div style="font-size: 1.75rem;">💼</div>
                             <div style="flex: 1;">
                                 <div style="font-weight: 700; color: #1f2937; font-size: 1rem; margin-bottom: 0.25rem;">LinkedIn Sponsored Content (B2B)</div>
-                                <div style="font-size: 0.8125rem; color: #6b7280; line-height: 1.4;">Activate your segment on LinkedIn with sponsored posts, InMail, and video ads. Uses company and job title attributes for professional targeting.</div>
+                                <div style="font-size: 0.8125rem; color: #6b7280; line-height: 1.4;">Reach your segment via Sponsored Post, InMail, and Video Ads. Contact points (email, phone, mobile app) power Matched Audiences; company and job title for targeting.</div>
                             </div>
                         </div>
                         
                         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.625rem;">
-                            <!-- Platform & Contact Points -->
+                            <!-- Platform, Channels & Contact Points -->
                             <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
                                 <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Platform</div>
-                                <div style="display: flex; align-items: center; gap: 0.375rem; font-size: 0.8125rem; color: #1f2937; font-weight: 600; margin-bottom: 0.75rem;">
+                                <div style="display: flex; align-items: center; gap: 0.375rem; font-size: 0.8125rem; color: #1f2937; font-weight: 600; margin-bottom: 0.5rem;">
                                     <span style="font-size: 1rem;">💼</span> LinkedIn Campaign Manager
                                 </div>
-                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Contact Points</div>
-                                <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem;">
+                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Communication Channels</div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem; margin-bottom: 0.5rem;">
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">💼 Sponsored Post</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">💬 InMail</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📺 Video Ads</span>
                                 </div>
+                                <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Contact Points</div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem;">
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">✉️ Email</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📞 Phone</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📱 Mobile App</span>
+                                </div>
                             </div>
                             
-                            <!-- Membership & Personalization -->
+                            <!-- Consent & Personalization -->
                             <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
                                 <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Membership Filters</div>
                                 <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem; margin-bottom: 0.75rem;">
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">✅ Consented (B2B)</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">🎫 Members with annual pass</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">💼 Work Email</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">🏢 Company Match</span>
-                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">👔 Senior+ Title</span>
                                 </div>
                                 <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Personalization Attributes</div>
                                 <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem;">
@@ -6828,6 +6959,7 @@
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Job Title</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Industry</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Account Score</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">Lead Score</span>
                                 </div>
                             </div>
                         </div>
@@ -6858,12 +6990,13 @@
                                 </div>
                             </div>
                             
-                            <!-- Membership & Personalization -->
+                            <!-- Consent & Personalization -->
                             <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.75rem;">
                                 <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Membership Filters</div>
                                 <div style="display: flex; flex-wrap: wrap; gap: 0.3125rem; font-size: 0.75rem; margin-bottom: 0.75rem;">
-                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">💬 WhatsApp Opt-In</span>
-                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">📞 Valid Phone</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">✅ Consented (WhatsApp)</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">✅ Active subscribers</span>
+                                    <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">🎫 No annual pass</span>
                                     <span style="background: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid #e5e7eb; color: #1f2937; font-weight: 500;">🌍 Intl Format</span>
                                 </div>
                                 <div style="font-size: 0.6875rem; font-weight: 700; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.025em;">Personalization Attributes</div>
@@ -6923,9 +7056,9 @@
                                 <div style="font-size: 0.8125rem; font-weight: 600; color: #1f2937;">Marketing Cloud</div>
                             </label>
                             <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem 0.875rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s; flex: 1;" onmouseover="this.style.borderColor='#93c5fd'" onmouseout="this.style.borderColor='#e5e7eb'">
-                                <input type="radio" name="platform" value="dc">
-                                <div style="font-size: 1rem;">💎</div>
-                                <div style="font-size: 0.8125rem; font-weight: 600; color: #1f2937;">Data Cloud</div>
+                                <input type="radio" name="platform" value="marketo">
+                                <div style="font-size: 1rem;">📧</div>
+                                <div style="font-size: 0.8125rem; font-weight: 600; color: #1f2937;">Marketo</div>
                             </label>
                         </div>
                     </div>
@@ -6976,21 +7109,21 @@
                     </div>
                     <p style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.75rem;">Apply compliance and membership filters</p>
                     
-                    <!-- Quick Safety Filters -->
+                    <!-- Quick Safety Filters (Consented customer types) -->
                     <div style="margin-bottom: 0.75rem;">
-                        <div style="font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.375rem;">Quick Safety Filters</div>
+                        <div style="font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.375rem;">Membership Filters</div>
                         <div style="display: flex; flex-wrap: wrap; gap: 0.375rem;">
                             <label style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.4375rem 0.75rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.25rem; cursor: pointer; transition: all 0.2s; font-size: 0.75rem;" onmouseover="this.style.borderColor='#a7f3d0'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'}">
-                                <input type="checkbox" name="safety" value="gdpr">
-                                <span style="font-weight: 600;">🛡️ GDPR</span>
+                                <input type="checkbox" name="safety" value="consented_email">
+                                <span style="font-weight: 600;">✅ Consented (Email)</span>
+                            </label>
+                            <label style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.4375rem 0.75rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.25rem; cursor: pointer; transition: all 0.2s; font-size: 0.75rem;" onmouseover="this.style.borderColor='#a7f3d0'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'}">
+                                <input type="checkbox" name="safety" value="consented_marketing">
+                                <span style="font-weight: 600;">✅ Consented (Marketing)</span>
                             </label>
                             <label style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.4375rem 0.75rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.25rem; cursor: pointer; transition: all 0.2s; font-size: 0.75rem;" onmouseover="this.style.borderColor='#a7f3d0'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'}">
                                 <input type="checkbox" name="safety" value="active_subs">
                                 <span style="font-weight: 600;">✅ Active Subscribers</span>
-                            </label>
-                            <label style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.4375rem 0.75rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.25rem; cursor: pointer; transition: all 0.2s; font-size: 0.75rem;" onmouseover="this.style.borderColor='#a7f3d0'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'}">
-                                <input type="checkbox" name="safety" value="ccpa">
-                                <span style="font-weight: 600;">🛡️ CCPA</span>
                             </label>
                             <label style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.4375rem 0.75rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.25rem; cursor: pointer; transition: all 0.2s; font-size: 0.75rem;" onmouseover="this.style.borderColor='#a7f3d0'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'}">
                                 <input type="checkbox" name="safety" value="email_consent">
@@ -7011,6 +7144,14 @@
                             <label style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.4375rem 0.75rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.25rem; cursor: pointer; transition: all 0.2s; font-size: 0.75rem;" onmouseover="this.style.borderColor='#a7f3d0'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'}">
                                 <input type="checkbox" name="safety" value="valid_email">
                                 <span style="font-weight: 600;">✔️ Valid Email</span>
+                            </label>
+                            <label style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.4375rem 0.75rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.25rem; cursor: pointer; transition: all 0.2s; font-size: 0.75rem;" onmouseover="this.style.borderColor='#a7f3d0'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'}">
+                                <input type="checkbox" name="safety" value="annual_pass">
+                                <span style="font-weight: 600;">🎫 Annual pass</span>
+                            </label>
+                            <label style="display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.4375rem 0.75rem; background: white; border: 1px solid #e5e7eb; border-radius: 0.25rem; cursor: pointer; transition: all 0.2s; font-size: 0.75rem;" onmouseover="this.style.borderColor='#a7f3d0'" onmouseout="if(!this.querySelector('input').checked) {this.style.borderColor='#e5e7eb'}">
+                                <input type="checkbox" name="safety" value="no_annual_pass">
+                                <span style="font-weight: 600;">🎫 No annual pass</span>
                             </label>
                         </div>
                     </div>
@@ -7075,7 +7216,6 @@
                         <span>Activate Segment</span>
                     </div>
                 </button>
-                <div style="font-size: 0.875rem; color: #6b7280; margin-top: 1rem;">Activation will begin immediately and respect the selected channel send times</div>
             </div>
         </div>
 
@@ -7099,9 +7239,11 @@
                 </div>
             </div>
 
-            <!-- Pre-configured Journey Templates -->
-            <div style="margin-bottom: 1.5rem;">
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; margin-bottom: 1.5rem;">
+            <!-- Wrapper: entire Journey Builder UI (templates + or Build Custom Journey + green button). Hidden on Performance tab. -->
+            <div id="journeyBuilderOnlySection" style="display: none;">
+            <!-- White box: pre-configured journey templates + Build Custom Journey - ONLY on Journey Builder tab -->
+            <div id="journeyBuilderWhiteBox" style="background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 0;">
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; margin-bottom: 0.5rem;">
                     
                     <!-- Journey 1: Multi-Channel Re-Engagement -->
                             <div onclick="applyJourneyTemplate('reengagement')" style="background: white; border: 2px solid #10b981; border-radius: 0.625rem; padding: 1.25rem; cursor: pointer; transition: all 0.2s; position: relative;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(16,185,129,0.15)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
@@ -7446,20 +7588,20 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <!-- Full-width: or Build Custom Journey, then green button right below -->
+                <div style="text-align: center; padding: 0.5rem 0 0.25rem 0; border-top: 1px solid #e5e7eb; margin-top: 0.5rem; line-height: 1;">
+                    <button onclick="showCustomJourneyBuilder()" style="display: inline-flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.25rem; border: 1px dashed #d1d5db; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s; background: #fafafa;" onmouseover="this.style.borderColor='#6b7280'; this.style.background='#f9fafb'" onmouseout="this.style.borderColor='#d1d5db'; this.style.background='#fafafa'">
+                        <div style="font-size: 1.125rem;">⚙️</div>
+                        <div>
+                            <div style="font-weight: 600; color: #1f2937; font-size: 0.875rem;">or Build Custom Journey</div>
+                            <div style="font-size: 0.75rem; color: #6b7280;">Create your own step-by-step workflow</div>
+                        </div>
+                    </button>
+                </div>
 
-                    <!-- Create Custom Journey - Only visible when panel is open -->
-                    <div style="text-align: center; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
-                        <button onclick="showCustomJourneyBuilder()" style="display: inline-flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.25rem; border: 1px dashed #d1d5db; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s; background: white;" onmouseover="this.style.borderColor='#6b7280'; this.style.background='#f9fafb'" onmouseout="this.style.borderColor='#d1d5db'; this.style.background='white'">
-                            <div style="font-size: 1.125rem;">⚙️</div>
-                            <div>
-                                <div style="font-weight: 600; color: #1f2937; font-size: 0.875rem;">or Build Custom Journey</div>
-                                <div style="font-size: 0.75rem; color: #6b7280;">Create your own step-by-step workflow</div>
-                            </div>
-                        </button>
-                    </div>
-
-                    <!-- Custom Journey Builder (Hidden by default) -->
-                    <div id="customJourneyBuilder" style="display: none; background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.25rem; margin-bottom: 1.25rem;">
+                <!-- Custom Journey Builder (Hidden by default) -->
+                <div id="customJourneyBuilder" style="display: none; background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.25rem; margin-bottom: 0;">
                         <div style="font-size: 0.9375rem; font-weight: 600; color: #1f2937; margin-bottom: 1rem;">Build Custom Journey</div>
                         
                         <!-- Suggested Steps -->
@@ -7505,10 +7647,9 @@
                             + Add Custom Step
                         </button>
                     </div>
-                </div>
-            </div>
 
-            <div style="text-align: center; padding: 2rem 0;">
+                <!-- Add Journey to Activation - right below "or Build Custom Journey"; extra space below for agent bar -->
+                <div id="addJourneyToActivationBlock" style="text-align: center; padding: 0; margin: 1rem 0 4.5rem 0; display: none;">
                 <button onclick="addJourneyToActivation()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; font-size: 1.125rem; font-weight: 600; padding: 1rem 3rem; border: none; border-radius: 0.5rem; cursor: pointer; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3); transition: all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 12px rgba(16, 185, 129, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(16, 185, 129, 0.3)'">
                     <div style="display: flex; align-items: center; gap: 0.75rem;">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -7517,16 +7658,9 @@
                         <span>Add Journey to Activation</span>
                     </div>
                 </button>
-                <div style="font-size: 0.875rem; color: #6b7280; margin-top: 1rem;">Selected journey will be added to your activation workflow</div>
             </div>
 
-            <div class="nav-buttons" style="display: flex; justify-content: flex-end;">
-                <button class="btn-nav btn-nav-primary" onclick="switchTab(6)">
-                    Next: Performance
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </button>
+            </div>
             </div>
         </div>
 
@@ -7538,40 +7672,38 @@
             </div>
 
             <!-- A. Activation Summary Dashboard -->
-            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 1rem;">
-                <h3 style="font-size: 1.125rem; font-weight: 700; color: #1f2937; margin-bottom: 1rem;">Activation Summary Dashboard</h3>
-                
+            <div style="background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(249,250,251,0.98) 100%); border: 2px solid #e5e7eb; border-radius: 0.875rem; padding: 1.25rem 1.5rem; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                <h3 style="font-size: 1.0625rem; font-weight: 700; color: #1f2937; margin-bottom: 0.875rem;">Activation Summary Dashboard</h3>
                 <!-- Top-level KPIs -->
-                <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; margin-bottom: 1.25rem;">
-                    <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 0.625rem; padding: 1rem; text-align: center;">
-                        <div style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.5rem;">Total Reached</div>
-                        <div style="font-size: 1.75rem; font-weight: 700; color: #1f2937;">12,487</div>
-                        <div style="font-size: 0.75rem; color: #10b981; margin-top: 0.25rem;">↑ 100% of segment</div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.875rem; margin-bottom: 1rem;">
+                    <div style="background: white; border: 2px solid #e5e7eb; border-radius: 0.5rem; padding: 0.75rem; text-align: center;">
+                        <div style="font-size: 0.75rem; color: #6b7280; margin-bottom: 0.25rem;">Total Reached</div>
+                        <div style="font-size: 1.375rem; font-weight: 700; color: #1f2937;">12,487</div>
+                        <div style="font-size: 0.6875rem; color: #10b981;">↑ 100% of segment</div>
                     </div>
-                    <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 0.625rem; padding: 1rem; text-align: center;">
-                        <div style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.5rem;">Engagement Rate</div>
-                        <div style="font-size: 1.75rem; font-weight: 700; color: #10b981;">42.8%</div>
-                        <div style="font-size: 0.75rem; color: #10b981; margin-top: 0.25rem;">↑ +8.6% vs avg</div>
+                    <div style="background: white; border: 2px solid #e5e7eb; border-radius: 0.5rem; padding: 0.75rem; text-align: center;">
+                        <div style="font-size: 0.75rem; color: #6b7280; margin-bottom: 0.25rem;">Engagement Rate</div>
+                        <div style="font-size: 1.375rem; font-weight: 700; color: #10b981;">42.8%</div>
+                        <div style="font-size: 0.6875rem; color: #10b981;">↑ +8.6% vs avg</div>
                     </div>
-                    <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 0.625rem; padding: 1rem; text-align: center;">
-                        <div style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.5rem;">Conversion Rate</div>
-                        <div style="font-size: 1.75rem; font-weight: 700; color: #10b981;">16.4%</div>
-                        <div style="font-size: 0.75rem; color: #10b981; margin-top: 0.25rem;">↑ +4.5% vs goal</div>
+                    <div style="background: white; border: 2px solid #e5e7eb; border-radius: 0.5rem; padding: 0.75rem; text-align: center;">
+                        <div style="font-size: 0.75rem; color: #6b7280; margin-bottom: 0.25rem;">Conversion Rate</div>
+                        <div style="font-size: 1.375rem; font-weight: 700; color: #10b981;">16.4%</div>
+                        <div style="font-size: 0.6875rem; color: #10b981;">↑ +4.5% vs goal</div>
                     </div>
-                    <div style="background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 0.625rem; padding: 1rem; text-align: center;">
-                        <div style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.5rem;">Revenue Generated</div>
-                        <div style="font-size: 1.75rem; font-weight: 700; color: #1f2937;">$156K</div>
-                        <div style="font-size: 0.75rem; color: #10b981; margin-top: 0.25rem;">↑ +$18K vs plan</div>
+                    <div style="background: white; border: 2px solid #e5e7eb; border-radius: 0.5rem; padding: 0.75rem; text-align: center;">
+                        <div style="font-size: 0.75rem; color: #6b7280; margin-bottom: 0.25rem;">Revenue Generated</div>
+                        <div style="font-size: 1.375rem; font-weight: 700; color: #1f2937;">$156K</div>
+                        <div style="font-size: 0.6875rem; color: #10b981;">↑ +$18K vs plan</div>
                     </div>
-                    <div style="background: #f0fdf4; border: 2px solid #bbf7d0; border-radius: 0.625rem; padding: 1rem; text-align: center;">
-                        <div style="font-size: 0.8125rem; color: #166534; margin-bottom: 0.5rem;">ROI</div>
-                        <div style="font-size: 1.75rem; font-weight: 700; color: #15803d;">4.2x</div>
-                        <div style="font-size: 0.75rem; color: #166534; margin-top: 0.25rem;">$37K activation cost</div>
+                    <div style="background: #f0fdf4; border: 2px solid #bbf7d0; border-radius: 0.5rem; padding: 0.75rem; text-align: center;">
+                        <div style="font-size: 0.75rem; color: #166534; margin-bottom: 0.25rem;">ROI</div>
+                        <div style="font-size: 1.375rem; font-weight: 700; color: #15803d;">4.2x</div>
+                        <div style="font-size: 0.6875rem; color: #166534;">$37K activation cost</div>
                     </div>
                 </div>
-
                 <!-- Success Indicators -->
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.875rem;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem;">
                     <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 0.5rem; padding: 0.875rem; display: flex; align-items: center; gap: 0.75rem;">
                         <div style="width: 40px; height: 40px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
@@ -7608,137 +7740,87 @@
             </div>
 
             <!-- B. Engagement Analysis -->
-            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 1rem;">
-                <h3 style="font-size: 1.125rem; font-weight: 700; color: #1f2937; margin-bottom: 1rem;">Engagement Analysis</h3>
+            <div style="background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(249,250,251,0.98) 100%); border: 2px solid #e5e7eb; border-radius: 0.875rem; padding: 1.25rem 1.5rem; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                <h3 style="font-size: 1.0625rem; font-weight: 700; color: #1f2937; margin-bottom: 0.875rem;">Engagement Analysis</h3>
                 
                 <!-- Engagement by Channel -->
-                <div style="background: #f9fafb; border-radius: 0.625rem; padding: 1.25rem; margin-bottom: 1.25rem;">
-                    <div style="font-size: 0.9375rem; font-weight: 600; color: #374151; margin-bottom: 1rem;">Channel Performance</div>
-                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
-                        <div>
-                            <div style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.5rem;">Email</div>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.375rem;">
-                                <span style="font-size: 0.8125rem; color: #6b7280;">Open Rate</span>
-                                <span style="font-size: 0.875rem; font-weight: 600; color: #1f2937;">48.2%</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.375rem;">
-                                <span style="font-size: 0.8125rem; color: #6b7280;">Click Rate</span>
-                                <span style="font-size: 0.875rem; font-weight: 600; color: #1f2937;">12.4%</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between;">
-                                <span style="font-size: 0.8125rem; color: #6b7280;">CTOR</span>
-                                <span style="font-size: 0.875rem; font-weight: 600; color: #10b981;">25.7%</span>
-                            </div>
-                        </div>
-                        <div>
-                            <div style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.5rem;">Mobile Push</div>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.375rem;">
-                                <span style="font-size: 0.8125rem; color: #6b7280;">Delivered</span>
-                                <span style="font-size: 0.875rem; font-weight: 600; color: #1f2937;">94.8%</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.375rem;">
-                                <span style="font-size: 0.8125rem; color: #6b7280;">Click Rate</span>
-                                <span style="font-size: 0.875rem; font-weight: 600; color: #10b981;">18.2%</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between;">
-                                <span style="font-size: 0.8125rem; color: #6b7280;">Conversion</span>
-                                <span style="font-size: 0.875rem; font-weight: 600; color: #10b981;">22.1%</span>
-                            </div>
-                        </div>
-                        <div>
-                            <div style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.5rem;">SMS</div>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.375rem;">
-                                <span style="font-size: 0.8125rem; color: #6b7280;">Delivered</span>
-                                <span style="font-size: 0.875rem; font-weight: 600; color: #1f2937;">98.1%</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.375rem;">
-                                <span style="font-size: 0.8125rem; color: #6b7280;">Click Rate</span>
-                                <span style="font-size: 0.875rem; font-weight: 600; color: #1f2937;">8.7%</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between;">
-                                <span style="font-size: 0.8125rem; color: #6b7280;">Opt-out</span>
-                                <span style="font-size: 0.875rem; font-weight: 600; color: #ef4444;">0.8%</span>
-                            </div>
-                        </div>
-                        <div>
-                            <div style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.5rem;">WhatsApp</div>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.375rem;">
-                                <span style="font-size: 0.8125rem; color: #6b7280;">Delivered</span>
-                                <span style="font-size: 0.875rem; font-weight: 600; color: #1f2937;">96.3%</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.375rem;">
-                                <span style="font-size: 0.8125rem; color: #6b7280;">Read Rate</span>
-                                <span style="font-size: 0.875rem; font-weight: 600; color: #10b981;">82.4%</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between;">
-                                <span style="font-size: 0.8125rem; color: #6b7280;">Response Rate</span>
-                                <span style="font-size: 0.875rem; font-weight: 600; color: #10b981;">14.5%</span>
-                            </div>
-                        </div>
+                <div style="font-size: 0.9375rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Channel Performance</div>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1rem;">
+                    <div style="background: white; border: 2px solid #e5e7eb; border-radius: 0.5rem; padding: 0.75rem;">
+                        <div style="font-size: 0.875rem; font-weight: 600; color: #1f2937; margin-bottom: 0.5rem; padding-bottom: 0.375rem; border-bottom: 1px solid #e5e7eb;">Email</div>
+                        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.25rem;"><span style="font-size: 0.8125rem; color: #6b7280;">Open Rate</span><span style="font-size: 0.875rem; font-weight: 600; color: #1f2937;">48.2%</span></div>
+                        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.25rem;"><span style="font-size: 0.8125rem; color: #6b7280;">Click Rate</span><span style="font-size: 0.875rem; font-weight: 600; color: #1f2937;">12.4%</span></div>
+                        <div style="display: flex; justify-content: space-between; align-items: baseline;"><span style="font-size: 0.8125rem; color: #6b7280;">CTOR</span><span style="font-size: 0.875rem; font-weight: 600; color: #10b981;">25.7%</span></div>
+                    </div>
+                    <div style="background: white; border: 2px solid #e5e7eb; border-radius: 0.5rem; padding: 0.75rem;">
+                        <div style="font-size: 0.875rem; font-weight: 600; color: #1f2937; margin-bottom: 0.5rem; padding-bottom: 0.375rem; border-bottom: 1px solid #e5e7eb;">Mobile Push</div>
+                        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.25rem;"><span style="font-size: 0.8125rem; color: #6b7280;">Delivered</span><span style="font-size: 0.875rem; font-weight: 600; color: #1f2937;">94.8%</span></div>
+                        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.25rem;"><span style="font-size: 0.8125rem; color: #6b7280;">Click Rate</span><span style="font-size: 0.875rem; font-weight: 600; color: #10b981;">18.2%</span></div>
+                        <div style="display: flex; justify-content: space-between; align-items: baseline;"><span style="font-size: 0.8125rem; color: #6b7280;">Conversion</span><span style="font-size: 0.875rem; font-weight: 600; color: #10b981;">22.1%</span></div>
+                    </div>
+                    <div style="background: white; border: 2px solid #e5e7eb; border-radius: 0.5rem; padding: 0.75rem;">
+                        <div style="font-size: 0.875rem; font-weight: 600; color: #1f2937; margin-bottom: 0.5rem; padding-bottom: 0.375rem; border-bottom: 1px solid #e5e7eb;">SMS</div>
+                        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.25rem;"><span style="font-size: 0.8125rem; color: #6b7280;">Delivered</span><span style="font-size: 0.875rem; font-weight: 600; color: #1f2937;">98.1%</span></div>
+                        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.25rem;"><span style="font-size: 0.8125rem; color: #6b7280;">Click Rate</span><span style="font-size: 0.875rem; font-weight: 600; color: #1f2937;">8.7%</span></div>
+                        <div style="display: flex; justify-content: space-between; align-items: baseline;"><span style="font-size: 0.8125rem; color: #6b7280;">Opt-out</span><span style="font-size: 0.875rem; font-weight: 600; color: #ef4444;">0.8%</span></div>
+                    </div>
+                    <div style="background: white; border: 2px solid #e5e7eb; border-radius: 0.5rem; padding: 0.75rem;">
+                        <div style="font-size: 0.875rem; font-weight: 600; color: #1f2937; margin-bottom: 0.5rem; padding-bottom: 0.375rem; border-bottom: 1px solid #e5e7eb;">WhatsApp</div>
+                        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.25rem;"><span style="font-size: 0.8125rem; color: #6b7280;">Delivered</span><span style="font-size: 0.875rem; font-weight: 600; color: #1f2937;">96.3%</span></div>
+                        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.25rem;"><span style="font-size: 0.8125rem; color: #6b7280;">Read Rate</span><span style="font-size: 0.875rem; font-weight: 600; color: #10b981;">82.4%</span></div>
+                        <div style="display: flex; justify-content: space-between; align-items: baseline;"><span style="font-size: 0.8125rem; color: #6b7280;">Response Rate</span><span style="font-size: 0.875rem; font-weight: 600; color: #10b981;">14.5%</span></div>
                     </div>
                 </div>
 
                 <!-- Engagement by Segment Characteristics -->
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
-                    <div style="background: #f9fafb; border-radius: 0.625rem; padding: 1rem;">
-                        <div style="font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.875rem;">Performance by LTV Tier</div>
-                        <div style="display: flex; flex-direction: column; gap: 0.625rem;">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
+                    <div style="background: white; border: 2px solid #e5e7eb; border-radius: 0.5rem; padding: 0.75rem;">
+                        <div style="font-size: 0.9375rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem; padding-bottom: 0.375rem; border-bottom: 1px solid #e5e7eb;">Performance by LTV Tier</div>
+                        <div style="display: flex; flex-direction: column; gap: 0.375rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;">
                                 <span style="font-size: 0.8125rem; color: #6b7280;">High LTV</span>
-                                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                    <div style="width: 100px; height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden;">
-                                        <div style="width: 68%; height: 100%; background: #10b981;"></div>
-                                    </div>
+                                <div style="display: flex; align-items: center; gap: 0.375rem; min-width: 0;">
+                                    <div style="width: 72px; height: 5px; background: #e5e7eb; border-radius: 3px; overflow: hidden; flex-shrink: 0;"><div style="width: 68%; height: 100%; background: #10b981;"></div></div>
                                     <span style="font-size: 0.875rem; font-weight: 600; color: #1f2937;">68%</span>
                                 </div>
                             </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;">
                                 <span style="font-size: 0.8125rem; color: #6b7280;">Medium LTV</span>
-                                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                    <div style="width: 100px; height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden;">
-                                        <div style="width: 42%; height: 100%; background: #3b82f6;"></div>
-                                    </div>
+                                <div style="display: flex; align-items: center; gap: 0.375rem; min-width: 0;">
+                                    <div style="width: 72px; height: 5px; background: #e5e7eb; border-radius: 3px; overflow: hidden; flex-shrink: 0;"><div style="width: 42%; height: 100%; background: #3b82f6;"></div></div>
                                     <span style="font-size: 0.875rem; font-weight: 600; color: #1f2937;">42%</span>
                                 </div>
                             </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;">
                                 <span style="font-size: 0.8125rem; color: #6b7280;">Low LTV</span>
-                                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                    <div style="width: 100px; height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden;">
-                                        <div style="width: 28%; height: 100%; background: #6b7280;"></div>
-                                    </div>
+                                <div style="display: flex; align-items: center; gap: 0.375rem; min-width: 0;">
+                                    <div style="width: 72px; height: 5px; background: #e5e7eb; border-radius: 3px; overflow: hidden; flex-shrink: 0;"><div style="width: 28%; height: 100%; background: #6b7280;"></div></div>
                                     <span style="font-size: 0.875rem; font-weight: 600; color: #1f2937;">28%</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div style="background: #f9fafb; border-radius: 0.625rem; padding: 1rem;">
-                        <div style="font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.875rem;">Performance by Region</div>
-                        <div style="display: flex; flex-direction: column; gap: 0.625rem;">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="background: white; border: 2px solid #e5e7eb; border-radius: 0.5rem; padding: 0.75rem;">
+                        <div style="font-size: 0.9375rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem; padding-bottom: 0.375rem; border-bottom: 1px solid #e5e7eb;">Performance by Region</div>
+                        <div style="display: flex; flex-direction: column; gap: 0.375rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;">
                                 <span style="font-size: 0.8125rem; color: #6b7280;">West Coast</span>
-                                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                    <div style="width: 100px; height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden;">
-                                        <div style="width: 58%; height: 100%; background: #10b981;"></div>
-                                    </div>
+                                <div style="display: flex; align-items: center; gap: 0.375rem; min-width: 0;">
+                                    <div style="width: 72px; height: 5px; background: #e5e7eb; border-radius: 3px; overflow: hidden; flex-shrink: 0;"><div style="width: 58%; height: 100%; background: #10b981;"></div></div>
                                     <span style="font-size: 0.875rem; font-weight: 600; color: #1f2937;">58%</span>
                                 </div>
                             </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;">
                                 <span style="font-size: 0.8125rem; color: #6b7280;">East Coast</span>
-                                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                    <div style="width: 100px; height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden;">
-                                        <div style="width: 45%; height: 100%; background: #3b82f6;"></div>
-                                    </div>
+                                <div style="display: flex; align-items: center; gap: 0.375rem; min-width: 0;">
+                                    <div style="width: 72px; height: 5px; background: #e5e7eb; border-radius: 3px; overflow: hidden; flex-shrink: 0;"><div style="width: 45%; height: 100%; background: #3b82f6;"></div></div>
                                     <span style="font-size: 0.875rem; font-weight: 600; color: #1f2937;">45%</span>
                                 </div>
                             </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;">
                                 <span style="font-size: 0.8125rem; color: #6b7280;">Other</span>
-                                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                    <div style="width: 100px; height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden;">
-                                        <div style="width: 32%; height: 100%; background: #6b7280;"></div>
-                                    </div>
+                                <div style="display: flex; align-items: center; gap: 0.375rem; min-width: 0;">
+                                    <div style="width: 72px; height: 5px; background: #e5e7eb; border-radius: 3px; overflow: hidden; flex-shrink: 0;"><div style="width: 32%; height: 100%; background: #6b7280;"></div></div>
                                     <span style="font-size: 0.875rem; font-weight: 600; color: #1f2937;">32%</span>
                                 </div>
                             </div>
@@ -7748,176 +7830,102 @@
             </div>
 
             <!-- C. Conversion Analytics -->
-            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 1rem;">
-                <h3 style="font-size: 1.125rem; font-weight: 700; color: #1f2937; margin-bottom: 1rem;">Conversion Analytics</h3>
+            <div style="background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(249,250,251,0.98) 100%); border: 2px solid #e5e7eb; border-radius: 0.875rem; padding: 1.25rem 1.5rem; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                <h3 style="font-size: 1.0625rem; font-weight: 700; color: #1f2937; margin-bottom: 0.875rem;">Conversion Analytics</h3>
                 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.25rem;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
                     <!-- Conversion Funnel -->
-                    <div style="background: #f9fafb; border-radius: 0.625rem; padding: 1.25rem;">
-                        <div style="font-size: 0.9375rem; font-weight: 600; color: #374151; margin-bottom: 1rem;">Conversion Funnel</div>
-                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                            <div>
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.375rem;">
-                                    <span style="font-size: 0.8125rem; color: #6b7280;">Reached</span>
-                                    <span style="font-size: 0.875rem; font-weight: 600; color: #1f2937;">12,487 (100%)</span>
-                                </div>
-                                <div style="height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden;">
-                                    <div style="width: 100%; height: 100%; background: #3b82f6;"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.375rem;">
-                                    <span style="font-size: 0.8125rem; color: #6b7280;">Engaged</span>
-                                    <span style="font-size: 0.875rem; font-weight: 600; color: #1f2937;">5,344 (42.8%)</span>
-                                </div>
-                                <div style="height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden;">
-                                    <div style="width: 42.8%; height: 100%; background: #6366f1;"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.375rem;">
-                                    <span style="font-size: 0.8125rem; color: #6b7280;">Visited Site</span>
-                                    <span style="font-size: 0.875rem; font-weight: 600; color: #1f2937;">3,124 (25.0%)</span>
-                                </div>
-                                <div style="height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden;">
-                                    <div style="width: 25%; height: 100%; background: #8b5cf6;"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.375rem;">
-                                    <span style="font-size: 0.8125rem; color: #6b7280;">Added to Cart</span>
-                                    <span style="font-size: 0.875rem; font-weight: 600; color: #1f2937;">2,456 (19.7%)</span>
-                                </div>
-                                <div style="height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden;">
-                                    <div style="width: 19.7%; height: 100%; background: #a855f7;"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.375rem;">
-                                    <span style="font-size: 0.8125rem; color: #6b7280;">Purchased</span>
-                                    <span style="font-size: 0.875rem; font-weight: 600; color: #10b981;">2,048 (16.4%)</span>
-                                </div>
-                                <div style="height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden;">
-                                    <div style="width: 16.4%; height: 100%; background: #10b981;"></div>
-                                </div>
-                            </div>
+                    <div style="background: white; border: 2px solid #e5e7eb; border-radius: 0.5rem; padding: 0.75rem;">
+                        <div style="font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem; padding-bottom: 0.375rem; border-bottom: 1px solid #e5e7eb;">Conversion Funnel</div>
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                            <div><div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.125rem;"><span style="font-size: 0.75rem; color: #6b7280;">Reached</span><span style="font-size: 0.8125rem; font-weight: 600; color: #1f2937;">12,487 (100%)</span></div><div style="height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden;"><div style="width: 100%; height: 100%; background: #3b82f6;"></div></div></div>
+                            <div><div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.125rem;"><span style="font-size: 0.75rem; color: #6b7280;">Engaged</span><span style="font-size: 0.8125rem; font-weight: 600; color: #1f2937;">5,344 (42.8%)</span></div><div style="height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden;"><div style="width: 42.8%; height: 100%; background: #6366f1;"></div></div></div>
+                            <div><div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.125rem;"><span style="font-size: 0.75rem; color: #6b7280;">Visited Site</span><span style="font-size: 0.8125rem; font-weight: 600; color: #1f2937;">3,124 (25.0%)</span></div><div style="height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden;"><div style="width: 25%; height: 100%; background: #8b5cf6;"></div></div></div>
+                            <div><div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.125rem;"><span style="font-size: 0.75rem; color: #6b7280;">Added to Cart</span><span style="font-size: 0.8125rem; font-weight: 600; color: #1f2937;">2,456 (19.7%)</span></div><div style="height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden;"><div style="width: 19.7%; height: 100%; background: #a855f7;"></div></div></div>
+                            <div><div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.125rem;"><span style="font-size: 0.75rem; color: #6b7280;">Purchased</span><span style="font-size: 0.8125rem; font-weight: 600; color: #10b981;">2,048 (16.4%)</span></div><div style="height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden;"><div style="width: 16.4%; height: 100%; background: #10b981;"></div></div></div>
                         </div>
                     </div>
-
                     <!-- Revenue Impact -->
-                    <div style="background: #f9fafb; border-radius: 0.625rem; padding: 1.25rem;">
-                        <div style="font-size: 0.9375rem; font-weight: 600; color: #374151; margin-bottom: 1rem;">Revenue Impact</div>
-                        <div style="display: grid; gap: 0.875rem;">
-                            <div style="background: white; border-radius: 0.5rem; padding: 0.875rem;">
-                                <div style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.375rem;">Total Revenue</div>
-                                <div style="font-size: 1.5rem; font-weight: 700; color: #1f2937;">$156,360</div>
-                            </div>
-                            <div style="background: white; border-radius: 0.5rem; padding: 0.875rem;">
-                                <div style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.375rem;">Revenue per Recipient</div>
-                                <div style="font-size: 1.5rem; font-weight: 700; color: #1f2937;">$12.52</div>
-                            </div>
-                            <div style="background: white; border-radius: 0.5rem; padding: 0.875rem;">
-                                <div style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.375rem;">Average Order Value</div>
-                                <div style="font-size: 1.5rem; font-weight: 700; color: #1f2937;">$76.35</div>
-                            </div>
-                            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 0.5rem; padding: 0.875rem;">
-                                <div style="font-size: 0.8125rem; color: #166534; margin-bottom: 0.375rem;">Incremental Revenue</div>
-                                <div style="font-size: 1.5rem; font-weight: 700; color: #15803d;">+$24.8K</div>
-                                <div style="font-size: 0.75rem; color: #16a34a;">vs control group</div>
-                            </div>
+                    <div style="background: white; border: 2px solid #e5e7eb; border-radius: 0.5rem; padding: 0.75rem;">
+                        <div style="font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem; padding-bottom: 0.375rem; border-bottom: 1px solid #e5e7eb;">Revenue Impact</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                            <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.5rem;"><div style="font-size: 0.6875rem; color: #6b7280;">Total Revenue</div><div style="font-size: 1.125rem; font-weight: 700; color: #1f2937;">$156,360</div></div>
+                            <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.5rem;"><div style="font-size: 0.6875rem; color: #6b7280;">Rev per Recipient</div><div style="font-size: 1.125rem; font-weight: 700; color: #1f2937;">$12.52</div></div>
+                            <div style="background: #f9fafb; border-radius: 0.375rem; padding: 0.5rem;"><div style="font-size: 0.6875rem; color: #6b7280;">Avg Order Value</div><div style="font-size: 1.125rem; font-weight: 700; color: #1f2937;">$76.35</div></div>
+                            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 0.375rem; padding: 0.5rem;"><div style="font-size: 0.6875rem; color: #166534;">Incremental Revenue</div><div style="font-size: 1.125rem; font-weight: 700; color: #15803d;">+$24.8K</div><div style="font-size: 0.6875rem; color: #16a34a;">vs control</div></div>
                         </div>
                     </div>
                 </div>
-
                 <!-- Cost Efficiency -->
-                <div style="background: #f9fafb; border-radius: 0.625rem; padding: 1.25rem;">
-                    <div style="font-size: 0.9375rem; font-weight: 600; color: #374151; margin-bottom: 1rem;">Cost Efficiency</div>
-                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
-                        <div style="text-align: center;">
-                            <div style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.5rem;">Cost per Acquisition</div>
-                            <div style="font-size: 1.5rem; font-weight: 700; color: #1f2937;">$18.17</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.5rem;">Cost per Conversion</div>
-                            <div style="font-size: 1.5rem; font-weight: 700; color: #1f2937;">$2.98</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.5rem;">Incremental CPA</div>
-                            <div style="font-size: 1.5rem; font-weight: 700; color: #10b981;">$14.23</div>
-                        </div>
-                        <div style="text-align: center; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 0.5rem; padding: 0.75rem;">
-                            <div style="font-size: 0.8125rem; color: #166534; margin-bottom: 0.5rem;">ROI</div>
-                            <div style="font-size: 1.5rem; font-weight: 700; color: #15803d;">4.2x</div>
-                        </div>
-                    </div>
+                <div style="font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Cost Efficiency</div>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem;">
+                    <div style="background: white; border: 2px solid #e5e7eb; border-radius: 0.5rem; padding: 0.5rem; text-align: center;"><div style="font-size: 0.6875rem; color: #6b7280; margin-bottom: 0.25rem;">Cost per Acquisition</div><div style="font-size: 1.125rem; font-weight: 700; color: #1f2937;">$18.17</div></div>
+                    <div style="background: white; border: 2px solid #e5e7eb; border-radius: 0.5rem; padding: 0.5rem; text-align: center;"><div style="font-size: 0.6875rem; color: #6b7280; margin-bottom: 0.25rem;">Cost per Conversion</div><div style="font-size: 1.125rem; font-weight: 700; color: #1f2937;">$2.98</div></div>
+                    <div style="background: white; border: 2px solid #e5e7eb; border-radius: 0.5rem; padding: 0.5rem; text-align: center;"><div style="font-size: 0.6875rem; color: #6b7280; margin-bottom: 0.25rem;">Incremental CPA</div><div style="font-size: 1.125rem; font-weight: 700; color: #10b981;">$14.23</div></div>
+                    <div style="background: #f0fdf4; border: 2px solid #bbf7d0; border-radius: 0.5rem; padding: 0.5rem; text-align: center;"><div style="font-size: 0.6875rem; color: #166534; margin-bottom: 0.25rem;">ROI</div><div style="font-size: 1.125rem; font-weight: 700; color: #15803d;">4.2x</div></div>
                 </div>
             </div>
 
-            <!-- D. Cohort & Drift Analysis -->
-            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 1rem;">
-                <h3 style="font-size: 1.125rem; font-weight: 700; color: #1f2937; margin-bottom: 1rem;">Cohort & Drift Analysis</h3>
-                
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
-                    <!-- Composition Drift -->
-                    <div style="background: #f9fafb; border-radius: 0.625rem; padding: 1.25rem;">
-                        <div style="font-size: 0.9375rem; font-weight: 600; color: #374151; margin-bottom: 1rem;">Composition Drift Over Time</div>
-                        <div style="display: grid; gap: 0.875rem;">
+            <!-- D. Drift Analysis (time-specific: last week, with options for month/year) -->
+            <div style="background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(249,250,251,0.98) 100%); border: 2px solid #e5e7eb; border-radius: 0.875rem; padding: 1.25rem 1.5rem; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                <h3 style="font-size: 1.0625rem; font-weight: 700; color: #1f2937; margin-bottom: 0.875rem;">Drift Analysis</h3>
+                <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                    <span style="font-size: 0.8125rem; color: #6b7280;">Time range:</span>
+                    <button type="button" style="padding: 0.375rem 0.75rem; border-radius: 0.375rem; font-size: 0.8125rem; font-weight: 600; background: #1d72f3; color: white; border: none; cursor: pointer;">Last 7 days</button>
+                    <button type="button" style="padding: 0.375rem 0.75rem; border-radius: 0.375rem; font-size: 0.8125rem; background: white; color: #374151; border: 1px solid #d1d5db; cursor: pointer;">Last 30 days</button>
+                    <button type="button" style="padding: 0.375rem 0.75rem; border-radius: 0.375rem; font-size: 0.8125rem; background: white; color: #374151; border: 1px solid #d1d5db; cursor: pointer;">Last 12 months</button>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                    <!-- Composition Drift - Last week -->
+                    <div style="background: #f9fafb; border-radius: 0.625rem; padding: 1rem;">
+                        <div style="font-size: 0.9375rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem;">Composition drift — last 7 days</div>
+                        <div style="display: grid; gap: 0.625rem;">
                             <div>
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                                    <span style="font-size: 0.8125rem; color: #6b7280;">LTV Distribution Shift</span>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+                                    <span style="font-size: 0.8125rem; color: #6b7280;">LTV distribution</span>
                                     <span style="font-size: 0.875rem; font-weight: 600; color: #10b981;">↑ +3.2% High LTV</span>
                                 </div>
-                                <div style="font-size: 0.75rem; color: #6b7280; line-height: 1.5;">High-value customers increased from 42% to 45% during activation</div>
+                                <div style="font-size: 0.75rem; color: #6b7280; line-height: 1.4;">High-value share 42% → 45% over the week</div>
                             </div>
                             <div>
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                                    <span style="font-size: 0.8125rem; color: #6b7280;">Engagement Level Change</span>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+                                    <span style="font-size: 0.8125rem; color: #6b7280;">Engagement level</span>
                                     <span style="font-size: 0.875rem; font-weight: 600; color: #ef4444;">↓ -5.1% Dormant</span>
                                 </div>
-                                <div style="font-size: 0.75rem; color: #6b7280; line-height: 1.5;">Dormant customers decreased, moved to active engagement tiers</div>
+                                <div style="font-size: 0.75rem; color: #6b7280; line-height: 1.4;">Dormant share decreased; moved to active tiers</div>
                             </div>
                             <div>
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                                    <span style="font-size: 0.8125rem; color: #6b7280;">Churn Risk Progression</span>
-                                    <span style="font-size: 0.875rem; font-weight: 600; color: #10b981;">↓ -8.3% High Risk</span>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+                                    <span style="font-size: 0.8125rem; color: #6b7280;">Churn risk</span>
+                                    <span style="font-size: 0.875rem; font-weight: 600; color: #10b981;">↓ -8.3% High risk</span>
                                 </div>
-                                <div style="font-size: 0.75rem; color: #6b7280; line-height: 1.5;">High churn risk segment reduced from 23% to 15%</div>
+                                <div style="font-size: 0.75rem; color: #6b7280; line-height: 1.4;">High churn risk 23% → 15% over the week</div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Segment Health Score -->
-                    <div style="background: #f0fdf4; border: 2px solid #bbf7d0; border-radius: 0.625rem; padding: 1.25rem;">
-                        <div style="font-size: 0.9375rem; font-weight: 600; color: #166534; margin-bottom: 1rem;">Segment Health Score</div>
-                        <div style="text-align: center; margin-bottom: 1.25rem;">
-                            <div style="font-size: 3.5rem; font-weight: 700; color: #15803d;">8.4</div>
-                            <div style="font-size: 0.9375rem; color: #16a34a; font-weight: 600;">Excellent Health</div>
-                        </div>
-                        <div style="display: grid; gap: 0.625rem; font-size: 0.8125rem;">
-                            <div style="display: flex; justify-content: space-between;">
-                                <span style="color: #166534;">Engagement Vitality</span>
-                                <span style="font-weight: 600; color: #15803d;">9.2 / 10</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between;">
-                                <span style="color: #166534;">Value Stability</span>
-                                <span style="font-weight: 600; color: #15803d;">8.8 / 10</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between;">
-                                <span style="color: #166534;">Growth Potential</span>
-                                <span style="font-weight: 600; color: #15803d;">7.2 / 10</span>
+                    <!-- Segment Health Score - header, compact, with calculation explanation -->
+                    <div style="background: #f0fdf4; border: 2px solid #bbf7d0; border-radius: 0.625rem; padding: 0.75rem 1rem;">
+                        <div style="font-size: 0.9375rem; font-weight: 600; color: #166534; margin-bottom: 0.5rem;">Segment Health Score</div>
+                        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+                            <div style="flex: 0 0 auto;"><span style="font-size: 1.75rem; font-weight: 700; color: #15803d;">8.4</span> <span style="font-size: 0.75rem; color: #16a34a; font-weight: 600;">Excellent</span></div>
+                            <div style="flex: 1; min-width: 0; display: grid; gap: 0.25rem; font-size: 0.8125rem;">
+                                <div style="display: flex; justify-content: space-between;"><span style="color: #166534;">Engagement Vitality</span><span style="font-weight: 600; color: #15803d;">9.2</span></div>
+                                <div style="display: flex; justify-content: space-between;"><span style="color: #166534;">Value Stability</span><span style="font-weight: 600; color: #15803d;">8.8</span></div>
+                                <div style="display: flex; justify-content: space-between;"><span style="color: #166534;">Growth Potential</span><span style="font-weight: 600; color: #15803d;">7.2</span></div>
                             </div>
                         </div>
+                        <div style="font-size: 0.6875rem; color: #166534; line-height: 1.4; padding-top: 0.375rem; border-top: 1px solid #bbf7d0;">Score is calculated from activation engagement rates, conversion performance, LTV stability, and churn-risk movement over the selected time range.</div>
                     </div>
                 </div>
             </div>
 
-            <!-- E. Comparative Performance -->
-            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 1rem;">
-                <h3 style="font-size: 1.125rem; font-weight: 700; color: #1f2937; margin-bottom: 1rem;">Comparative Performance</h3>
-                
-                <div style="display: grid; gap: 1rem;">
+            <!-- E. Comparative Performance (3 boxes in a row) -->
+            <div style="background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(249,250,251,0.98) 100%); border: 2px solid #e5e7eb; border-radius: 0.875rem; padding: 1.25rem 1.5rem; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                <h3 style="font-size: 1.0625rem; font-weight: 700; color: #1f2937; margin-bottom: 0.875rem;">Comparative Performance</h3>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
                     <!-- vs Other Segments -->
-                    <div style="background: #f0fdf4; border: 1px solid #86efac; border-radius: 0.625rem; padding: 1.25rem;">
+                    <div style="background: #f0fdf4; border: 2px solid #86efac; border-radius: 0.625rem; padding: 1.25rem;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.875rem;">
                             <div>
                                 <div style="font-weight: 600; color: #166534; font-size: 0.9375rem; margin-bottom: 0.25rem;">vs. Outdoor Adventure Segment (Last Month)</div>
@@ -7934,7 +7942,7 @@
                     </div>
 
                     <!-- vs Historical Activations -->
-                    <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 0.625rem; padding: 1.25rem;">
+                    <div style="background: #eff6ff; border: 2px solid #bfdbfe; border-radius: 0.625rem; padding: 1.25rem;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.875rem;">
                             <div>
                                 <div style="font-weight: 600; color: #1e40af; font-size: 0.9375rem; margin-bottom: 0.25rem;">vs. 6-Month Activation Average</div>
@@ -7951,7 +7959,7 @@
                     </div>
 
                     <!-- vs Control Group -->
-                    <div style="background: #fef3c7; border: 1px solid #fde68a; border-radius: 0.625rem; padding: 1.25rem;">
+                    <div style="background: #fef3c7; border: 2px solid #fde68a; border-radius: 0.625rem; padding: 1.25rem;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.875rem;">
                             <div>
                                 <div style="font-weight: 600; color: #92400e; font-size: 0.9375rem; margin-bottom: 0.25rem;">vs. Control Group (Holdout)</div>
@@ -7969,96 +7977,79 @@
                 </div>
             </div>
 
-            <!-- F. Optimization Recommendations -->
-            <div style="background: white; border: 2px solid #e5e7eb; border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 1rem;">
-                <h3 style="font-size: 1.125rem; font-weight: 700; color: #1f2937; margin-bottom: 1rem;">Optimization Recommendations</h3>
-                
-                <div style="display: grid; gap: 1.25rem;">
-                    <!-- Audience Optimization -->
-                    <div>
-                        <div style="font-size: 0.9375rem; font-weight: 600; color: #1f2937; margin-bottom: 0.875rem; display: flex; align-items: center; gap: 0.5rem;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2">
-                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                                <circle cx="9" cy="7" r="4"/>
-                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                            </svg>
-                            Audience Optimization
+            <!-- Box 1: Segment refinement -->
+            <div style="background: white; border: 2px solid #e5e7eb; border-radius: 0.875rem; padding: 1.25rem 1.5rem; margin-bottom: 1rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2"><path d="M12 3v18M3 12h18"/><path d="M12 8l4 4-4 4M8 12H4"/></svg>
+                    <h3 style="font-size: 1.0625rem; font-weight: 700; color: #1f2937; margin: 0;">Segment refinement</h3>
+                </div>
+                <p style="font-size: 0.875rem; color: #6b7280; margin: 0 0 1rem 0;">Based on performance, try these high-impact changes to your segment or activation.</p>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                    <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.625rem; padding: 1.25rem; transition: all 0.2s;" onmouseover="this.style.borderColor='#10b981'" onmouseout="this.style.borderColor='#e5e7eb'">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                            <div style="width: 32px; height: 32px; background: #dbeafe; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">📊</div>
+                            <span style="font-size: 0.6875rem; font-weight: 600; color: #059669; background: #d1fae5; padding: 0.1875rem 0.5rem; border-radius: 0.25rem;">Split</span>
                         </div>
-                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.875rem;">
-                            <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem;">
-                                <div style="font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Include More</div>
-                                <div style="font-size: 0.75rem; color: #6b7280; line-height: 1.5;">West Coast customers show +22% higher conversion</div>
-                            </div>
-                            <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem;">
-                                <div style="font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Exclude Next Time</div>
-                                <div style="font-size: 0.75rem; color: #6b7280; line-height: 1.5;">Customers with 5+ messages/month show fatigue</div>
-                            </div>
-                            <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem;">
-                                <div style="font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Lookalike Opportunity</div>
-                                <div style="font-size: 0.75rem; color: #6b7280; line-height: 1.5;">Expand by 8-10K similar customers</div>
-                            </div>
+                        <h4 style="font-size: 0.9375rem; font-weight: 600; color: #1f2937; margin: 0 0 0.5rem 0;">Add Meta Ads + shift 20% to Mobile Push</h4>
+                        <p style="font-size: 0.8125rem; color: #6b7280; line-height: 1.5; margin-bottom: 0.75rem;">Mobile Push converts at 22.1%. Rebalance channel mix for higher engagement.</p>
+                        <div style="background: #f0fdf4; border-radius: 0.375rem; padding: 0.5rem 0.625rem; margin-bottom: 0.75rem;">
+                            <div style="font-size: 0.6875rem; font-weight: 600; color: #065f46;">Expected: +8–12% conversion</div>
                         </div>
+                        <button type="button" onclick="switchTab(4)" style="width: 100%; background: #10b981; color: white; border: none; padding: 0.625rem 1rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#059669'" onmouseout="this.style.background='#10b981'">Try this split</button>
                     </div>
-
-                    <!-- Tactical Improvements -->
-                    <div>
-                        <div style="font-size: 0.9375rem; font-weight: 600; color: #1f2937; margin-bottom: 0.875rem; display: flex; align-items: center; gap: 0.5rem;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2">
-                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-                            </svg>
-                            Tactical Improvements
+                    <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.625rem; padding: 1.25rem; transition: all 0.2s;" onmouseover="this.style.borderColor='#10b981'" onmouseout="this.style.borderColor='#e5e7eb'">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                            <div style="width: 32px; height: 32px; background: #f3f4f6; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">📅</div>
+                            <span style="font-size: 0.6875rem; font-weight: 600; color: #059669; background: #d1fae5; padding: 0.1875rem 0.5rem; border-radius: 0.25rem;">Schedule</span>
                         </div>
-                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.875rem;">
-                            <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem;">
-                                <div style="font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Best Channel</div>
-                                <div style="font-size: 0.75rem; color: #6b7280; line-height: 1.5;">Mobile Push: 22.1% conversion (highest)</div>
-                            </div>
-                            <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem;">
-                                <div style="font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Optimal Timing</div>
-                                <div style="font-size: 0.75rem; color: #6b7280; line-height: 1.5;">6:30-7:00 PM shows +8% lift in open rate</div>
-                            </div>
-                            <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem;">
-                                <div style="font-size: 0.8125rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Creative Insight</div>
-                                <div style="font-size: 0.75rem; color: #6b7280; line-height: 1.5;">Discount messaging outperformed by 4.2%</div>
-                            </div>
+                        <h4 style="font-size: 0.9375rem; font-weight: 600; color: #1f2937; margin: 0 0 0.5rem 0;">Publish Daily at 18:00</h4>
+                        <p style="font-size: 0.8125rem; color: #6b7280; line-height: 1.5; margin-bottom: 0.75rem;">6:30–7:00 PM shows +8% lift in open rate. Align publish time with peak engagement.</p>
+                        <div style="background: #f0fdf4; border-radius: 0.375rem; padding: 0.5rem 0.625rem; margin-bottom: 0.75rem;">
+                            <div style="font-size: 0.6875rem; font-weight: 600; color: #065f46;">Expected: +5–8% open rate</div>
                         </div>
+                        <button type="button" onclick="switchTab(0)" style="width: 100%; background: #10b981; color: white; border: none; padding: 0.625rem 1rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#059669'" onmouseout="this.style.background='#10b981'">Change schedule</button>
                     </div>
-
-                    <!-- Next Segment Suggestions -->
-                    <div>
-                        <div style="font-size: 0.9375rem; font-weight: 600; color: #1f2937; margin-bottom: 0.875rem; display: flex; align-items: center; gap: 0.5rem;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2">
-                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-                            </svg>
-                            Next Segment Suggestions
+                    <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.625rem; padding: 1.25rem; transition: all 0.2s;" onmouseover="this.style.borderColor='#10b981'" onmouseout="this.style.borderColor='#e5e7eb'">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                            <div style="width: 32px; height: 32px; background: #dcfce7; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; font-size: 1rem;">🎯</div>
+                            <span style="font-size: 0.6875rem; font-weight: 600; color: #059669; background: #d1fae5; padding: 0.1875rem 0.5rem; border-radius: 0.25rem;">Segment</span>
                         </div>
-                        <div style="display: grid; gap: 0.75rem;">
-                            <div style="background: #f0fdf4; border-left: 4px solid #10b981; padding: 1rem; border-radius: 0.375rem;">
-                                <div style="font-weight: 600; color: #166534; margin-bottom: 0.375rem;">Re-engage Non-Responders</div>
-                                <div style="font-size: 0.8125rem; color: #16a34a; line-height: 1.5;">Create follow-up for 4,244 customers who didn't engage. Try different messaging or channel.</div>
-                            </div>
-                            <div style="background: #eff6ff; border-left: 4px solid #3b82f6; padding: 1rem; border-radius: 0.375rem;">
-                                <div style="font-weight: 600; color: #1e40af; margin-bottom: 0.375rem;">Win-Back Opportunity</div>
-                                <div style="font-size: 0.8125rem; color: #2563eb; line-height: 1.5;">408 customers added to cart but didn't purchase. Target with urgency messaging + 10% discount.</div>
-                            </div>
-                            <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1rem; border-radius: 0.375rem;">
-                                <div style="font-weight: 600; color: #92400e; margin-bottom: 0.375rem;">Exclusion for Rest Period</div>
-                                <div style="font-size: 0.8125rem; color: #b45309; line-height: 1.5;">Suppress 2,048 converters for 30 days to allow product experience before next outreach.</div>
-                            </div>
+                        <h4 style="font-size: 0.9375rem; font-weight: 600; color: #1f2937; margin: 0 0 0.5rem 0;">Add filter: Region = West Coast</h4>
+                        <p style="font-size: 0.8125rem; color: #6b7280; line-height: 1.5; margin-bottom: 0.75rem;">West Coast shows +22% higher conversion. Narrow segment for better ROI.</p>
+                        <div style="background: #f0fdf4; border-radius: 0.375rem; padding: 0.5rem 0.625rem; margin-bottom: 0.75rem;">
+                            <div style="font-size: 0.6875rem; font-weight: 600; color: #065f46;">Size: ~-15% · Quality: +High</div>
                         </div>
+                        <button type="button" onclick="switchTab(0)" style="width: 100%; background: #10b981; color: white; border: none; padding: 0.625rem 1rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#059669'" onmouseout="this.style.background='#10b981'">Add filter</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Box 2: New segment creation -->
+            <div style="background: white; border: 2px solid #e5e7eb; border-radius: 0.875rem; padding: 1.25rem 1.5rem; margin-bottom: 1rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2"><path d="M12 5v14M5 12h14"/><circle cx="12" cy="12" r="9"/></svg>
+                    <h3 style="font-size: 1.0625rem; font-weight: 700; color: #1f2937; margin: 0;">New segment creation</h3>
+                </div>
+                <p style="font-size: 0.875rem; color: #6b7280; margin: 0 0 1rem 0;">Suggested new segments and goals based on performance so far.</p>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                    <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 0.625rem; padding: 1rem; transition: all 0.2s;" onmouseover="this.style.borderColor='#10b981'" onmouseout="this.style.borderColor='#bbf7d0'">
+                        <h4 style="font-size: 0.875rem; font-weight: 600; color: #166534; margin: 0 0 0.375rem 0;">Re-engage non-responders (4.2K)</h4>
+                        <p style="font-size: 0.8125rem; color: #16a34a; line-height: 1.4; margin-bottom: 0.75rem;">New segment: try different channel or messaging.</p>
+                        <button type="button" style="width: 100%; background: #059669; color: white; border: none; padding: 0.5rem 0.75rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer;">Create segment</button>
+                    </div>
+                    <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 0.625rem; padding: 1rem; transition: all 0.2s;" onmouseover="this.style.borderColor='#3b82f6'" onmouseout="this.style.borderColor='#bfdbfe'">
+                        <h4 style="font-size: 0.875rem; font-weight: 600; color: #1e40af; margin: 0 0 0.375rem 0;">Cart abandoners win-back (408)</h4>
+                        <p style="font-size: 0.8125rem; color: #2563eb; line-height: 1.4; margin-bottom: 0.75rem;">Target with urgency + 10% discount.</p>
+                        <button type="button" style="width: 100%; background: #2563eb; color: white; border: none; padding: 0.5rem 0.75rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer;">Create segment</button>
+                    </div>
+                    <div style="background: #fef3c7; border: 1px solid #fde68a; border-radius: 0.625rem; padding: 1rem; transition: all 0.2s;" onmouseover="this.style.borderColor='#f59e0b'" onmouseout="this.style.borderColor='#fde68a'">
+                        <h4 style="font-size: 0.875rem; font-weight: 600; color: #92400e; margin: 0 0 0.375rem 0;">Goal: suppress converters 30d</h4>
+                        <p style="font-size: 0.8125rem; color: #b45309; line-height: 1.4; margin-bottom: 0.75rem;">Then re-activate for next campaign.</p>
+                        <button type="button" style="width: 100%; background: #d97706; color: white; border: none; padding: 0.5rem 0.75rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer;">Apply goal</button>
                     </div>
                 </div>
             </div>
         </div>
-            <div class="nav-buttons">
-                <button class="btn-nav btn-nav-secondary" onclick="switchTab(4)">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M19 12H5M12 19l-7-7 7-7"/>
-                    </svg>
-                    Previous
-                </button>
-            </div>
+        </div>
         </div>
     </div>
 
@@ -8833,6 +8824,7 @@
                     ${strategies.map((strategy, index) => `
                         <div class="strategy-card" onclick="selectStrategy(${index})">
                             <div class="strategy-icon">${strategy.icon}</div>
+                            <div style="font-size: 0.9375rem; font-weight: 600; margin-bottom: 0.375rem; ${index === 0 ? 'color: #1d72f3;' : 'color: #059669;'}">${index === 0 ? 'Precision focused' : 'Reach focused'}</div>
                             <div class="strategy-name">${strategy.name}</div>
                             <div class="strategy-description">${strategy.description}</div>
                             <div class="strategy-details">${strategy.details}</div>
@@ -8901,6 +8893,8 @@
             document.getElementById('segmentsListPage').style.display = 'none';
             document.getElementById('welcomeState').style.display = 'none';
             document.getElementById('dataCloudNav').style.display = 'none';
+            var tabPanels = document.getElementById('segmentBuilderTabPanels');
+            if (tabPanels) tabPanels.style.display = 'block';
             
             // Show app header
             document.querySelector('.app-header').style.display = 'flex';
@@ -8930,17 +8924,17 @@
             document.body.style.overflow = '';
         }
 
-        function startWithAgent() {
-            // Close modal
-            closeCreationModal();
-            
-            // Hide segments list page and Data Cloud nav
+        /** Skip Agent/Manual popup: go directly to goal-based screen when creating a new segment */
+        function goToGoalScreen() {
             document.getElementById('segmentsListPage').style.display = 'none';
             document.getElementById('dataCloudNav').style.display = 'none';
-            
-            // Show app header and welcome state
             document.querySelector('.app-header').style.display = 'flex';
             document.getElementById('welcomeState').style.display = 'flex';
+        }
+
+        function startWithAgent() {
+            closeCreationModal();
+            goToGoalScreen();
         }
 
         function startManualBuilder() {
@@ -8964,6 +8958,8 @@
             // Hide welcome state
             document.getElementById('welcomeState').style.display = 'none';
             
+            var tabPanels = document.getElementById('segmentBuilderTabPanels');
+            if (tabPanels) tabPanels.style.display = 'block';
             // Show toolbar and tab navigation
             document.getElementById('segmentToolbar').style.display = 'flex';
             document.getElementById('tabNavigation').style.display = 'flex';
@@ -9148,6 +9144,8 @@
             // Hide welcome state and go directly to Segment Definition
             document.getElementById('welcomeState').style.display = 'none';
             
+            var tabPanels = document.getElementById('segmentBuilderTabPanels');
+            if (tabPanels) tabPanels.style.display = 'block';
             // Show toolbar and tab navigation
             document.getElementById('segmentToolbar').style.display = 'flex';
             document.getElementById('tabNavigation').style.display = 'flex';
@@ -9476,6 +9474,8 @@
             // Hide welcome
             document.getElementById('welcomeState').style.display = 'none';
             
+            var tabPanels = document.getElementById('segmentBuilderTabPanels');
+            if (tabPanels) tabPanels.style.display = 'block';
             // Show toolbar and tab navigation
             document.getElementById('segmentToolbar').style.display = 'flex';
             document.getElementById('tabNavigation').style.display = 'flex';
@@ -9491,23 +9491,89 @@
         }
 
         function switchTab(index) {
-            // Hide all tabs (0 through 5 = 6 tabs total, after removing preview/insights/overlap)
-            for (let i = 0; i <= 5; i++) {
+            // Hide all tabs (0 through 6 = 7 tabs total) - force display so only one tab is ever visible
+            for (let i = 0; i <= 6; i++) {
                 const tabContent = document.getElementById('tabContent' + i);
                 const tab = document.getElementById('tab' + i);
-                if (tabContent) tabContent.classList.remove('active');
+                if (tabContent) {
+                    tabContent.classList.remove('active');
+                    tabContent.style.display = 'none';
+                }
                 if (tab) tab.classList.remove('active');
             }
             
-            // Show selected tab
-            document.getElementById('tabContent' + index).classList.add('active');
-            document.getElementById('tab' + index).classList.add('active');
+            // Show only the selected tab
+            var activeContent = document.getElementById('tabContent' + index);
+            var activeTab = document.getElementById('tab' + index);
+            if (activeContent) {
+                activeContent.classList.add('active');
+                activeContent.style.display = 'block';
+            }
+            if (activeTab) activeTab.classList.add('active');
+            
+            // Journey Builder section: only show on Journey Builder tab (index 5). Hide entire section on Performance (index 6).
+            var journeySection = document.getElementById('journeyBuilderOnlySection');
+            var journeyWhiteBox = document.getElementById('journeyBuilderWhiteBox');
+            var journeyBlock = document.getElementById('addJourneyToActivationBlock');
+            if (journeySection) journeySection.style.display = (index === 5) ? 'block' : 'none';
+            if (journeyWhiteBox) journeyWhiteBox.style.display = (index === 5) ? 'block' : 'none';
+            if (journeyBlock) journeyBlock.style.display = (index === 5) ? 'block' : 'none';
+            // Performance tab: ensure Build Custom Journey never visible (class used by CSS !important)
+            var tabPanels = document.getElementById('segmentBuilderTabPanels');
+            if (tabPanels) tabPanels.classList.toggle('on-performance-tab', index === 6);
+            
+            // Edit Properties / Close / Save: hidden on Performance tab (index 6)
+            var toolbarActions = document.getElementById('toolbarActionButtons');
+            if (toolbarActions) toolbarActions.style.display = (index === 6) ? 'none' : 'flex';
             
             currentTab = index;
             agentState.currentTab = index;
             
             // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function setPublishRunMode(mode) {
+            var noBtn = document.getElementById('runModeNoSchedule');
+            var schedBtn = document.getElementById('runModeSchedule');
+            var options = document.getElementById('publishScheduleOptions');
+            var lookbackRow = document.getElementById('publishLookbackRow');
+            if (!noBtn || !schedBtn || !options) return;
+            var isSchedule = mode === 'schedule';
+            noBtn.style.background = isSchedule ? 'transparent' : '#1d72f3';
+            noBtn.style.color = isSchedule ? '#6b7280' : 'white';
+            noBtn.className = 'publish-run-mode-btn' + (isSchedule ? '' : ' publish-run-mode-active');
+            schedBtn.style.background = isSchedule ? '#1d72f3' : 'transparent';
+            schedBtn.style.color = isSchedule ? 'white' : '#6b7280';
+            schedBtn.className = 'publish-run-mode-btn' + (isSchedule ? ' publish-run-mode-active' : '');
+            options.style.display = isSchedule ? 'flex' : 'none';
+            if (lookbackRow) lookbackRow.style.display = isSchedule ? 'flex' : 'none';
+            if (isSchedule) togglePublishTimeVisibility();
+        }
+
+        function changeLookback(delta) {
+            var input = document.getElementById('segmentLookbackValue');
+            if (!input) return;
+            var val = parseInt(input.value, 10) || 1;
+            val = Math.max(1, Math.min(999, val + delta));
+            input.value = val;
+        }
+
+        var publishFrequencyValue = 'daily';
+        function setPublishFrequency(freq) {
+            publishFrequencyValue = freq;
+            document.querySelectorAll('.publish-freq-btn').forEach(function(btn) {
+                var isActive = btn.getAttribute('data-freq') === freq;
+                btn.style.background = isActive ? '#1d72f3' : 'transparent';
+                btn.style.color = isActive ? 'white' : '#6b7280';
+                btn.classList.toggle('publish-freq-active', isActive);
+            });
+            var timeBar = document.getElementById('publishTimeBar');
+            if (timeBar) timeBar.style.display = freq === 'hourly' ? 'none' : 'inline-flex';
+        }
+        function togglePublishTimeVisibility() {
+            var timeBar = document.getElementById('publishTimeBar');
+            if (timeBar) timeBar.style.display = publishFrequencyValue === 'hourly' ? 'none' : 'inline-flex';
         }
 
         function openValidationOverlay(type) {
@@ -9734,8 +9800,21 @@
             // Restore body scroll
             document.body.style.overflow = '';
             
-            // Navigate to Performance tab (Tab 5)
-            switchTab(5);
+            // Navigate to Performance tab (Tab 6)
+            switchTab(6);
+        }
+
+        function addJourneyToActivation() {
+            const popup = document.getElementById('journeyAddedPopup');
+            if (popup) popup.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeJourneyAddedPopup() {
+            const popup = document.getElementById('journeyAddedPopup');
+            if (popup) popup.style.display = 'none';
+            document.body.style.overflow = '';
+            switchTab(6);
         }
 
         function showCustomTemplateConfig() {
@@ -12450,7 +12529,7 @@
             // ACTIVATE TAB (7)
             activate: {
                 tab: 7,
-                name: 'Activate',
+                name: 'Activation',
                 keywords: ['activate', 'launch', 'deploy', 'send', 'start', 'go live', 'create template', 'template', 'journey', 'workflow'],
                 actions: {
                     'activate_segment': {
@@ -12516,7 +12595,7 @@
             // ACTIVATE TAB (5)
             activate: {
                 tab: 5,
-                name: 'Activate',
+                name: 'Activation',
                 keywords: ['activate', 'launch', 'deploy', 'template', 'start', 'begin', 'go live'],
                 actions: {
                     'template': {
@@ -12840,6 +12919,21 @@
 
 
 
+        // On load: hide tab panels (so landing/welcome show; no Build Custom Journey on every page) and hide journey section until tab 5
+        document.addEventListener('DOMContentLoaded', function() {
+            var tabPanels = document.getElementById('segmentBuilderTabPanels');
+            if (tabPanels) tabPanels.style.display = 'none';
+            var journeyWhiteBox = document.getElementById('journeyBuilderWhiteBox');
+            var journeyBlock = document.getElementById('addJourneyToActivationBlock');
+            if (journeyWhiteBox) journeyWhiteBox.style.display = 'none';
+            if (journeyBlock) journeyBlock.style.display = 'none';
+            for (var i = 0; i <= 6; i++) {
+                var el = document.getElementById('tabContent' + i);
+                if (el) el.style.display = (el.classList.contains('active')) ? 'block' : 'none';
+            }
+            if (typeof setPublishRunMode === 'function') setPublishRunMode('schedule');
+        });
+
         // Handle Enter key in agent input
         document.addEventListener('DOMContentLoaded', () => {
             const agentInput = document.getElementById('agentCommandInput');
@@ -12928,6 +13022,26 @@
                 </p>
                 <button onclick="closeActivationPopup()" style="width: 100%; padding: 1rem 2rem; background: linear-gradient(135deg, #1d72f3 0%, #1557b0 100%); border: none; border-radius: 0.75rem; color: white; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(29, 114, 243, 0.2);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(29, 114, 243, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(29, 114, 243, 0.2)'">
                     View Performance Dashboard
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Journey Added to Activation Popup (from Journey Builder) -->
+    <div id="journeyAddedPopup" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 10001; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); align-items: center; justify-content: center;">
+        <div style="background: white; border-radius: 1rem; padding: 2.5rem; max-width: 500px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: popupSlideIn 0.3s ease-out;">
+            <div style="text-align: center;">
+                <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                </div>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: #1f2937; margin-bottom: 0.75rem;">Journey added &amp; segment activated</h2>
+                <p style="font-size: 1rem; color: #6b7280; line-height: 1.6; margin-bottom: 2rem;">
+                    Your journey has been added to activation and your segment is now activated. You can track performance and next steps on the Performance tab.
+                </p>
+                <button onclick="closeJourneyAddedPopup()" style="width: 100%; padding: 1rem 2rem; background: linear-gradient(135deg, #1d72f3 0%, #1557b0 100%); border: none; border-radius: 0.75rem; color: white; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(29, 114, 243, 0.2);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(29, 114, 243, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(29, 114, 243, 0.2)'">
+                    Go to Performance
                 </button>
             </div>
         </div>
