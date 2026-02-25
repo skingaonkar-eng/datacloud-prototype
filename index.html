@@ -3967,6 +3967,12 @@
                             </svg>
                             Other Segments
                         </button>
+                        <button class="filter-tab" onclick="switchFilterTab('datamodel')" id="tab-datamodel">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                            </svg>
+                            Data Model
+                        </button>
                     </div>
 
                     <!-- Tab Panels -->
@@ -4035,6 +4041,13 @@
                                     <div class="filter-name">Language Preference</div>
                                     <div class="filter-detail">Select • Preference attribute</div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 1rem; border-top: 1px solid #e5e7eb; padding-top: 1rem;">
+                            <div onclick="switchFilterTab('datamodel')" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0; cursor: pointer; color: #1d72f3; font-size: 0.9375rem; font-weight: 600; user-select: none;" onmouseover="this.style.color='#1557b0'; this.style.textDecoration='underline'" onmouseout="this.style.color='#1d72f3'; this.style.textDecoration='none'">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                                <span>Add from Data Model or Data Graph</span>
                             </div>
                         </div>
                     </div>
@@ -4527,6 +4540,85 @@
                                     <div class="filter-name">Recently Contacted (30 days)</div>
                                     <div class="filter-detail">24.3K members • Active • Common exclusion</div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Data Model Tab -->
+                    <div class="filter-tab-content" id="content-datamodel">
+                        <div class="filter-panel-header">
+                            <h3>Data Model</h3>
+                        </div>
+                        <div style="margin-bottom: 1rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem;">
+                            <span style="font-size: 0.8125rem; font-weight: 600; color: #374151;">Show:</span>
+                            <label style="display: flex; align-items: center; gap: 0.375rem; cursor: pointer; font-size: 0.8125rem;">
+                                <input type="radio" name="datamodelView" value="full" checked onchange="setDataModelView('full')">
+                                Data Model
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.375rem; cursor: pointer; font-size: 0.8125rem;">
+                                <input type="radio" name="datamodelView" value="graph" onchange="setDataModelView('graph')">
+                                Data Graph
+                            </label>
+                            <select id="dataGraphSelect" onchange="applyDataGraphSubset()" style="display: none; padding: 0.375rem 0.75rem; border: 1px solid #e5e7eb; border-radius: 0.375rem; font-size: 0.8125rem; min-width: 180px;">
+                                <option value="">Select a Data Graph</option>
+                                <option value="identity">Identity Resolution Graph</option>
+                                <option value="engagement">Engagement Graph</option>
+                                <option value="commerce">Commerce Graph</option>
+                                <option value="service">Service Graph</option>
+                            </select>
+                        </div>
+                        <div style="margin-bottom: 0.75rem;">
+                            <input type="text" placeholder="Search data model or data graph..." class="filter-search-input" id="datamodelSearch" oninput="filterDataModelSearch(this.value)">
+                        </div>
+                        <!-- Data Model (superset) - default -->
+                        <div id="dataModelSuperset" style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 0.75rem 1rem;">
+                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; max-height: 320px; overflow-y: auto;">
+                                <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem; padding: 0.5rem 0.75rem; min-width: 0;">
+                                    <div style="font-size: 0.8125rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem; padding-bottom: 0.25rem; border-bottom: 1px solid #e5e7eb;">Demographics</div>
+                                    <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                                        <div class="filter-item" style="margin: 0; padding: 0.375rem 0.5rem; border-radius: 0.25rem; cursor: pointer; font-size: 0.8125rem;" onclick="addQuickFilter('Age', '🎂', exclusionMode, 'attribute')"><span class="filter-icon">🎂</span><span class="filter-name">Age</span></div>
+                                        <div class="filter-item" style="margin: 0; padding: 0.375rem 0.5rem; border-radius: 0.25rem; cursor: pointer; font-size: 0.8125rem;" onclick="addQuickFilter('Gender', '👤', exclusionMode, 'attribute')"><span class="filter-icon">👤</span><span class="filter-name">Gender</span></div>
+                                        <div class="filter-item" style="margin: 0; padding: 0.375rem 0.5rem; border-radius: 0.25rem; cursor: pointer; font-size: 0.8125rem;" onclick="addQuickFilter('Location', '📍', exclusionMode, 'attribute')"><span class="filter-icon">📍</span><span class="filter-name">Location</span></div>
+                                        <div style="padding: 0.25rem 0.5rem; font-size: 0.75rem; color: #1d72f3; cursor: pointer; font-weight: 500;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'" onclick="alert('Load 10 more attributes in Demographics')">Show more</div>
+                                    </div>
+                                </div>
+                                <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem; padding: 0.5rem 0.75rem; min-width: 0;">
+                                    <div style="font-size: 0.8125rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem; padding-bottom: 0.25rem; border-bottom: 1px solid #e5e7eb;">Web engagement</div>
+                                    <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                                        <div class="filter-item" style="margin: 0; padding: 0.375rem 0.5rem; border-radius: 0.25rem; cursor: pointer; font-size: 0.8125rem;" onclick="addQuickFilter('Page Views (90d)', '📄', exclusionMode, 'attribute')"><span class="filter-icon">📄</span><span class="filter-name">Page Views (90d)</span></div>
+                                        <div class="filter-item" style="margin: 0; padding: 0.375rem 0.5rem; border-radius: 0.25rem; cursor: pointer; font-size: 0.8125rem;" onclick="addQuickFilter('Sessions (30d)', '🖥️', exclusionMode, 'attribute')"><span class="filter-icon">🖥️</span><span class="filter-name">Sessions (30d)</span></div>
+                                        <div class="filter-item" style="margin: 0; padding: 0.375rem 0.5rem; border-radius: 0.25rem; cursor: pointer; font-size: 0.8125rem;" onclick="addQuickFilter('Last Visit Date', '📅', exclusionMode, 'attribute')"><span class="filter-icon">📅</span><span class="filter-name">Last Visit Date</span></div>
+                                        <div style="padding: 0.25rem 0.5rem; font-size: 0.75rem; color: #1d72f3; cursor: pointer; font-weight: 500;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'" onclick="alert('Load 10 more attributes in Web engagement')">Show more</div>
+                                    </div>
+                                </div>
+                                <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem; padding: 0.5rem 0.75rem; min-width: 0;">
+                                    <div style="font-size: 0.8125rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem; padding-bottom: 0.25rem; border-bottom: 1px solid #e5e7eb;">Sales orders</div>
+                                    <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                                        <div class="filter-item" style="margin: 0; padding: 0.375rem 0.5rem; border-radius: 0.25rem; cursor: pointer; font-size: 0.8125rem;" onclick="addQuickFilter('Order Count', '🛒', exclusionMode, 'attribute')"><span class="filter-icon">🛒</span><span class="filter-name">Order Count</span></div>
+                                        <div class="filter-item" style="margin: 0; padding: 0.375rem 0.5rem; border-radius: 0.25rem; cursor: pointer; font-size: 0.8125rem;" onclick="addQuickFilter('Last Purchase Date', '📅', exclusionMode, 'attribute')"><span class="filter-icon">📅</span><span class="filter-name">Last Purchase Date</span></div>
+                                        <div class="filter-item" style="margin: 0; padding: 0.375rem 0.5rem; border-radius: 0.25rem; cursor: pointer; font-size: 0.8125rem;" onclick="addQuickFilter('Total Revenue', '💰', exclusionMode, 'attribute')"><span class="filter-icon">💰</span><span class="filter-name">Total Revenue</span></div>
+                                        <div style="padding: 0.25rem 0.5rem; font-size: 0.75rem; color: #1d72f3; cursor: pointer; font-weight: 500;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'" onclick="alert('Load 10 more attributes in Sales orders')">Show more</div>
+                                    </div>
+                                </div>
+                                <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.375rem; padding: 0.5rem 0.75rem; min-width: 0;">
+                                    <div style="font-size: 0.8125rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem; padding-bottom: 0.25rem; border-bottom: 1px solid #e5e7eb;">Service history</div>
+                                    <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                                        <div class="filter-item" style="margin: 0; padding: 0.375rem 0.5rem; border-radius: 0.25rem; cursor: pointer; font-size: 0.8125rem;" onclick="addQuickFilter('Cases Opened', '📋', exclusionMode, 'attribute')"><span class="filter-icon">📋</span><span class="filter-name">Cases Opened</span></div>
+                                        <div class="filter-item" style="margin: 0; padding: 0.375rem 0.5rem; border-radius: 0.25rem; cursor: pointer; font-size: 0.8125rem;" onclick="addQuickFilter('Support Tier', '🎧', exclusionMode, 'attribute')"><span class="filter-icon">🎧</span><span class="filter-name">Support Tier</span></div>
+                                        <div class="filter-item" style="margin: 0; padding: 0.375rem 0.5rem; border-radius: 0.25rem; cursor: pointer; font-size: 0.8125rem;" onclick="addQuickFilter('Last Case Date', '📅', exclusionMode, 'attribute')"><span class="filter-icon">📅</span><span class="filter-name">Last Case Date</span></div>
+                                        <div style="padding: 0.25rem 0.5rem; font-size: 0.75rem; color: #1d72f3; cursor: pointer; font-weight: 500;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'" onclick="alert('Load 10 more attributes in Service history')">Show more</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="margin-top: 0.75rem; padding-top: 0.5rem; border-top: 1px solid #e5e7eb; display: flex; justify-content: flex-end;">
+                                <span style="font-size: 0.8125rem; color: #1d72f3; cursor: pointer; font-weight: 500;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'" onclick="alert('Load more object types')">View more Data Model Objects</span>
+                            </div>
+                        </div>
+                        <!-- Data Graph subset (shown when a graph is selected) -->
+                        <div id="dataModelSubset" style="display: none; background: #f0f9ff; border: 1px solid #7dd3fc; border-radius: 0.5rem; padding: 0.75rem 1rem;">
+                            <div style="font-size: 0.8125rem; color: #0c4a6e; margin-bottom: 0.5rem; font-weight: 600;" id="dataGraphSubsetTitle">Attributes in selected Data Graph</div>
+                            <div id="dataGraphSubsetContent" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; max-height: 280px; overflow-y: auto;">
+                                <!-- Populated by applyDataGraphSubset() -->
                             </div>
                         </div>
                     </div>
@@ -11015,6 +11107,101 @@
             // Show selected tab
             document.getElementById('tab-' + tabName).classList.add('active');
             document.getElementById('content-' + tabName).classList.add('active');
+        }
+
+        function toggleDataModelPanel() {
+            switchFilterTab('datamodel');
+        }
+
+        function setDataModelView(mode) {
+            var subsetEl = document.getElementById('dataModelSubset');
+            var supersetEl = document.getElementById('dataModelSuperset');
+            var selectEl = document.getElementById('dataGraphSelect');
+            if (mode === 'graph') {
+                selectEl.style.display = 'inline-block';
+                if (selectEl.value) applyDataGraphSubset();
+                else {
+                    supersetEl.style.display = 'block';
+                    if (subsetEl) subsetEl.style.display = 'none';
+                }
+            } else {
+                selectEl.style.display = 'none';
+                selectEl.value = '';
+                if (supersetEl) supersetEl.style.display = 'block';
+                if (subsetEl) subsetEl.style.display = 'none';
+            }
+            var searchEl = document.getElementById('datamodelSearch');
+            if (searchEl) filterDataModelSearch(searchEl.value);
+        }
+
+        const dataGraphAttributes = {
+            identity: [
+                { name: 'Age', icon: '🎂' }, { name: 'Gender', icon: '👤' }, { name: 'Location', icon: '📍' },
+                { name: 'Email', icon: '✉️' }, { name: 'Phone', icon: '📱' }, { name: 'Customer ID', icon: '🆔' }
+            ],
+            engagement: [
+                { name: 'Page Views (90d)', icon: '📄' }, { name: 'Sessions (30d)', icon: '🖥️' }, { name: 'Last Visit Date', icon: '📅' },
+                { name: 'Email Opens', icon: '✉️' }, { name: 'Clicks', icon: '🖱️' }, { name: 'Device Type', icon: '📱' }
+            ],
+            commerce: [
+                { name: 'Order Count', icon: '🛒' }, { name: 'Last Purchase Date', icon: '📅' }, { name: 'Total Revenue', icon: '💰' },
+                { name: 'AOV', icon: '🎯' }, { name: 'Products Purchased', icon: '📦' }
+            ],
+            service: [
+                { name: 'Cases Opened', icon: '📋' }, { name: 'Support Tier', icon: '🎧' }, { name: 'Last Case Date', icon: '📅' },
+                { name: 'CSAT Score', icon: '⭐' }
+            ]
+        };
+
+        function applyDataGraphSubset() {
+            const selectEl = document.getElementById('dataGraphSelect');
+            const supersetEl = document.getElementById('dataModelSuperset');
+            const subsetEl = document.getElementById('dataModelSubset');
+            const titleEl = document.getElementById('dataGraphSubsetTitle');
+            const contentEl = document.getElementById('dataGraphSubsetContent');
+            const val = selectEl && selectEl.value;
+            if (!val || !contentEl) return;
+            const labels = { identity: 'Identity Resolution Graph', engagement: 'Engagement Graph', commerce: 'Commerce Graph', service: 'Service Graph' };
+            const attrs = dataGraphAttributes[val];
+            if (!attrs) return;
+            titleEl.textContent = 'Attributes in ' + (labels[val] || val);
+            contentEl.innerHTML = attrs.map(function(a) {
+                return '<div class="filter-item" style="margin:0;padding:0.375rem 0.5rem;border-radius:0.25rem;cursor:pointer;font-size:0.8125rem;background:white;border:1px solid #e5e7eb;" onclick="addQuickFilter(\'' + a.name.replace(/'/g, "\\'") + '\', \'' + a.icon + '\', exclusionMode, \'attribute\')"><span class="filter-icon">' + a.icon + '</span><span class="filter-name">' + a.name + '</span></div>';
+            }).join('');
+            supersetEl.style.display = 'none';
+            subsetEl.style.display = 'block';
+            var searchEl = document.getElementById('datamodelSearch');
+            if (searchEl) filterDataModelSearch(searchEl.value);
+        }
+
+        function filterDataModelSearch(q) {
+            q = (q || '').trim().toLowerCase();
+            var superset = document.getElementById('dataModelSuperset');
+            var subsetContent = document.getElementById('dataGraphSubsetContent');
+            var match = function(el) { return !q || (el.textContent || '').toLowerCase().indexOf(q) !== -1; };
+            if (superset && superset.style.display !== 'none') {
+                superset.querySelectorAll('.filter-item').forEach(function(item) {
+                    var nameEl = item.querySelector('.filter-name');
+                    item.style.display = nameEl && match(nameEl) ? '' : 'none';
+                });
+            }
+            if (subsetContent) {
+                subsetContent.querySelectorAll('.filter-item').forEach(function(item) {
+                    var nameEl = item.querySelector('.filter-name');
+                    item.style.display = nameEl && match(nameEl) ? '' : 'none';
+                });
+            }
+        }
+
+        function toggleDataModelGroup(headerEl) {
+            const group = headerEl.closest('.data-model-group');
+            if (!group) return;
+            const children = group.querySelector('.data-model-children');
+            const arrow = group.querySelector('.data-model-arrow');
+            if (!children) return;
+            const isOpen = children.style.display === 'block';
+            children.style.display = isOpen ? 'none' : 'block';
+            if (arrow) arrow.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(90deg)';
         }
 
         function showAttributeConfig(attributeName, attributeType) {
