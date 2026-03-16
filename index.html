@@ -347,13 +347,16 @@
             background: #1557c7;
         }
 
-        /* Tab Navigation */
+        /* Tab Navigation: full width, tabs spread evenly (symmetric, no blank sides) */
         .tab-navigation {
             background: white;
             border-bottom: 1px solid #e5e7eb;
             padding: 0 1.5rem;
             display: flex;
+            justify-content: space-evenly;
+            align-items: center;
             gap: 0.5rem;
+            width: 100%;
         }
 
         .tab-item {
@@ -368,6 +371,9 @@
             border-top: none;
             border-left: none;
             border-right: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
         }
 
         .tab-item:hover {
@@ -378,6 +384,64 @@
         .tab-item.active {
             color: #1d72f3;
             border-bottom-color: #1d72f3;
+        }
+
+        /* Optional tabs: hidden by default, shown when revealed via More or Activation actions */
+        .tab-item.optional-tab {
+            display: none;
+        }
+        .tab-item.optional-tab.revealed {
+            display: block;
+        }
+
+        /* More tabs button and dropdown */
+        .more-tabs-wrap {
+            position: relative;
+            display: inline-block;
+        }
+        .tab-item.more-tabs-btn {
+            display: inline-flex;
+            align-items: center;
+            color: #6b7280;
+            padding: 1rem 1rem;
+        }
+        .tab-item.more-tabs-btn:hover {
+            color: #1f2937;
+        }
+        #moreTabsArrow {
+            transition: transform 0.2s;
+        }
+        .more-tabs-wrap.open #moreTabsArrow {
+            transform: rotate(180deg);
+        }
+        .more-tabs-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 0.25rem;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            min-width: 160px;
+            z-index: 100;
+            padding: 0.375rem 0;
+        }
+        .more-tabs-dropdown button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            color: #374151;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .more-tabs-dropdown button:hover {
+            background: #f3f4f6;
+            color: #1d72f3;
         }
 
         /* Main Content - minimal left/right for tab content; Performance tab adds its own padding */
@@ -3008,44 +3072,49 @@
     </div>
 
     <!-- Segment Toolbar -->
-    <div id="segmentToolbar" style="background: white; border-bottom: 1px solid #e5e7eb; padding: 1rem 1.5rem; display: none; align-items: center; justify-content: space-between;">
-        <!-- Left Side: Population Metrics -->
-        <div style="display: flex; align-items: center; gap: 1.5rem;">
-            <!-- Action Buttons -->
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <button style="width: 36px; height: 36px; border: 1px solid #d1d5db; border-radius: 0.375rem; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #6b7280; transition: all 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'" title="Undo">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M3 7v6h6"/>
-                        <path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13"/>
-                    </svg>
+    <div id="segmentToolbar" style="background: white; border-bottom: 1px solid #e5e7eb; padding: 1rem 1.5rem; display: none; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+        <!-- Left: Actions + metrics in a single aligned row -->
+        <div style="display: flex; align-items: center; gap: 0; flex-wrap: wrap;">
+            <!-- Icon actions -->
+            <div style="display: flex; align-items: center; gap: 0.25rem; margin-right: 1.25rem;">
+                <button style="width: 32px; height: 32px; border: 1px solid #e5e7eb; border-radius: 0.375rem; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #6b7280;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'" title="Undo">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13"/></svg>
                 </button>
-                <button style="width: 36px; height: 36px; border: 1px solid #d1d5db; border-radius: 0.375rem; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #6b7280; transition: all 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'" title="Redo">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 7v6h-6"/>
-                        <path d="M3 17a9 9 0 019-9 9 9 0 016 2.3l3 2.7"/>
-                    </svg>
+                <button style="width: 32px; height: 32px; border: 1px solid #e5e7eb; border-radius: 0.375rem; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #6b7280;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'" title="Redo">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 019-9 9 9 0 016 2.3l3 2.7"/></svg>
+                </button>
+                <button style="width: 32px; height: 32px; border: 1px solid #e5e7eb; border-radius: 0.375rem; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #6b7280;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'" title="Refresh">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0118.8-4.3M22 12.5a10 10 0 01-18.8 4.2"/></svg>
                 </button>
             </div>
 
-            <!-- Population Count -->
-            <div style="display: flex; align-items: center; gap: 0.75rem;">
-                <button style="width: 36px; height: 36px; border: 1px solid #d1d5db; border-radius: 0.375rem; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #6b7280; transition: all 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'" title="Refresh">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0118.8-4.3M22 12.5a10 10 0 01-18.8 4.2"/>
-                    </svg>
-                </button>
-                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <div style="font-size: 1.75rem; font-weight: 700; color: #1f2937;" id="toolbarAudienceCount">12,487</div>
-                    <div style="font-size: 0.9375rem; color: #6b7280;">Unified Individuals</div>
+            <!-- Segment / unified individuals (two rows) then count -->
+            <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0 1.25rem; border-right: 1px solid #e5e7eb;">
+                <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; line-height: 1.25;">
+                    <span style="font-size: 0.75rem; color: #6b7280;">Segment</span>
+                    <span style="font-size: 0.9375rem; font-weight: 600; color: #374151;">unified individuals</span>
                 </div>
+                <span style="font-size: 1.5rem; font-weight: 700; color: #1f2937;" id="toolbarAudienceCount">12,487</span>
+                <span style="font-size: 1rem; font-weight: 500; color: #6b7280;">out of 300,000 total population</span>
             </div>
 
-            <!-- Percentage Badge -->
-            <div style="display: flex; align-items: center; gap: 0.5rem; background: #eff6ff; padding: 0.5rem 1rem; border-radius: 0.375rem;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="#3b82f6">
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                </svg>
-                <span style="font-size: 0.9375rem; color: #1e40af; font-weight: 500;">0.4% of 3,286,468 total population</span>
+            <!-- Reachable by channel: of this segment (secondary, smaller/lighter) -->
+            <div style="display: flex; align-items: center; gap: 1rem; padding-left: 1.25rem;">
+                <div style="font-size: 0.6875rem; color: #9ca3af; font-weight: 600; text-transform: uppercase; letter-spacing: 0.02em; margin-right: 0.25rem;">Of this segment:</div>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; min-width: 56px;">
+                        <div style="font-size: 0.875rem; font-weight: 600; color: #6b7280; line-height: 1.2;" id="toolbarReachableEmail">11,240</div>
+                        <div style="font-size: 0.6875rem; color: #9ca3af; margin-top: 0.0625rem;">✉️ Email</div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; min-width: 56px;">
+                        <div style="font-size: 0.875rem; font-weight: 600; color: #6b7280; line-height: 1.2;" id="toolbarReachableSMS">8,920</div>
+                        <div style="font-size: 0.6875rem; color: #9ca3af; margin-top: 0.0625rem;">📲 SMS</div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; min-width: 56px;">
+                        <div style="font-size: 0.875rem; font-weight: 600; color: #6b7280; line-height: 1.2;" id="toolbarReachablePush">10,100</div>
+                        <div style="font-size: 0.6875rem; color: #9ca3af; margin-top: 0.0625rem;">📱 Push</div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -3066,24 +3135,23 @@
     <!-- Tab Navigation -->
     <div id="tabNavigation" class="tab-navigation" style="display: none;">
         <button class="tab-item" onclick="switchTab(0)" id="tab0">Segment Definition</button>
-        <button class="tab-item" onclick="switchTab(1)" id="tab1">
-            Rank and Limit
-            <span style="margin-left: 0.25rem; font-size: 0.6875rem; color: #9ca3af; font-weight: 500;">optional</span>
-        </button>
-        <button class="tab-item" onclick="switchTab(2)" id="tab2">
-            Channel Affinity
-            <span style="margin-left: 0.25rem; font-size: 0.6875rem; color: #9ca3af; font-weight: 500;">optional</span>
-        </button>
-        <button class="tab-item" onclick="switchTab(3)" id="tab3">
-            Smart Splits
-            <span style="margin-left: 0.25rem; font-size: 0.6875rem; color: #9ca3af; font-weight: 500;">optional</span>
-        </button>
+        <button class="tab-item" onclick="switchTab(1)" id="tab1">Rank and Limit</button>
+        <button class="tab-item optional-tab" onclick="switchTab(2)" id="tab2">Channel Affinity</button>
+        <button class="tab-item optional-tab" onclick="switchTab(3)" id="tab3">Smart Splits</button>
         <button class="tab-item" onclick="switchTab(4)" id="tab4">Activation</button>
-        <button class="tab-item" onclick="switchTab(5)" id="tab5">
-            Journeys
-            <span style="margin-left: 0.25rem; font-size: 0.6875rem; color: #9ca3af; font-weight: 500;">optional</span>
-        </button>
+        <button class="tab-item optional-tab" onclick="switchTab(5)" id="tab5">Journeys</button>
         <button class="tab-item" onclick="switchTab(6)" id="tab6">Performance</button>
+        <div class="more-tabs-wrap">
+            <button type="button" class="tab-item more-tabs-btn" id="moreTabsBtn" onclick="toggleMoreTabsDropdown(event)" aria-haspopup="true" aria-expanded="false" title="Channel affinity, Splits, Journeys">
+                <span style="font-size: 0.875rem; font-weight: 500;">⋯</span>
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink: 0; margin-left: 0.125rem; transition: transform 0.2s;" id="moreTabsArrow"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div id="moreTabsDropdown" class="more-tabs-dropdown" role="menu" style="display: none;">
+                <button type="button" role="menuitem" onclick="revealAndSwitchTab(2); closeMoreTabsDropdown();">Channel Affinity</button>
+                <button type="button" role="menuitem" onclick="revealAndSwitchTab(3); closeMoreTabsDropdown();">Smart Splits</button>
+                <button type="button" role="menuitem" onclick="revealAndSwitchTab(5); closeMoreTabsDropdown();">Journeys</button>
+            </div>
+        </div>
     </div>
     </div>
 
@@ -3971,7 +4039,7 @@
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
                             </svg>
-                            Data Model
+                            All Attributes
                         </button>
                     </div>
 
@@ -4041,13 +4109,6 @@
                                     <div class="filter-name">Language Preference</div>
                                     <div class="filter-detail">Select • Preference attribute</div>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div style="margin-top: 1rem; border-top: 1px solid #e5e7eb; padding-top: 1rem;">
-                            <div onclick="switchFilterTab('datamodel')" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0; cursor: pointer; color: #1d72f3; font-size: 0.9375rem; font-weight: 600; user-select: none;" onmouseover="this.style.color='#1557b0'; this.style.textDecoration='underline'" onmouseout="this.style.color='#1d72f3'; this.style.textDecoration='none'">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                                <span>Add from Data Model or Data Graph</span>
                             </div>
                         </div>
                     </div>
@@ -4544,20 +4605,20 @@
                         </div>
                     </div>
 
-                    <!-- Data Model Tab -->
+                    <!-- All Attributes / Focused View Tab -->
                     <div class="filter-tab-content" id="content-datamodel">
                         <div class="filter-panel-header">
-                            <h3>Data Model</h3>
+                            <h3>All Attributes</h3>
                         </div>
                         <div style="margin-bottom: 1rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem;">
                             <span style="font-size: 0.8125rem; font-weight: 600; color: #374151;">Show:</span>
                             <label style="display: flex; align-items: center; gap: 0.375rem; cursor: pointer; font-size: 0.8125rem;">
                                 <input type="radio" name="datamodelView" value="full" checked onchange="setDataModelView('full')">
-                                Data Model
+                                All Attributes
                             </label>
                             <label style="display: flex; align-items: center; gap: 0.375rem; cursor: pointer; font-size: 0.8125rem;">
                                 <input type="radio" name="datamodelView" value="graph" onchange="setDataModelView('graph')">
-                                Data Graph
+                                Focused View
                             </label>
                             <select id="dataGraphSelect" onchange="applyDataGraphSubset()" style="display: none; padding: 0.375rem 0.75rem; border: 1px solid #e5e7eb; border-radius: 0.375rem; font-size: 0.8125rem; min-width: 180px;">
                                 <option value="">Select a Data Graph</option>
@@ -6692,6 +6753,21 @@
                 </div>
             </div>
 
+            <!-- Channel affinity & splits: prominent pills with prompt -->
+            <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 0.75rem; padding: 1.25rem 1.5rem; margin-bottom: 1.5rem;">
+                <p style="font-size: 0.9375rem; color: #0c4a6e; margin: 0 0 1rem 0; line-height: 1.5;">See how your audience engages by channel, or split the segment for testing. View channel affinity to optimize by channel; set up smart splits to run variants (e.g. A/B).</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+                    <button type="button" onclick="revealAndSwitchTab(2)" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1.25rem; font-size: 0.9375rem; font-weight: 600; color: #0369a1; background: white; border: 2px solid #0ea5e9; border-radius: 2rem; cursor: pointer; transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.05);" onmouseover="this.style.background='#e0f2fe'; this.style.borderColor='#0284c7'; this.style.transform='translateY(-1px)'" onmouseout="this.style.background='white'; this.style.borderColor='#0ea5e9'; this.style.transform='translateY(0)'">
+                        <span style="font-size: 1.125rem;">📊</span>
+                        View channel affinity
+                    </button>
+                    <button type="button" onclick="revealAndSwitchTab(3)" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1.25rem; font-size: 0.9375rem; font-weight: 600; color: #0369a1; background: white; border: 2px solid #0ea5e9; border-radius: 2rem; cursor: pointer; transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.05);" onmouseover="this.style.background='#e0f2fe'; this.style.borderColor='#0284c7'; this.style.transform='translateY(-1px)'" onmouseout="this.style.background='white'; this.style.borderColor='#0ea5e9'; this.style.transform='translateY(0)'">
+                        <span style="font-size: 1.125rem;">✂️</span>
+                        Set up smart splits
+                    </button>
+                </div>
+            </div>
+
             <div style="background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1.5rem;">
                 <h3 style="font-size: 1.125rem; font-weight: 600; color: #1f2937; margin-bottom: 0.75rem;">Select Activation Template</h3>
                 
@@ -7201,6 +7277,18 @@
                     </button>
                     <button onclick="saveCustomTemplate()" style="background: linear-gradient(135deg, #1d72f3 0%, #1e40af 100%); color: white; border: none; padding: 0.5625rem 1.125rem; border-radius: 0.25rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer;">
                         Save & Use Template
+                    </button>
+                </div>
+            </div>
+
+            <!-- Before activating: add journey (after template selected) -->
+            <!-- Add journey: same style as channel affinity / splits block (before Activate), centered -->
+            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 0.75rem; padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; text-align: center;">
+                <p style="font-size: 0.9375rem; color: #14532d; margin: 0 0 1rem 0; line-height: 1.5;">Run a multi-step journey (e.g. email then SMS, or trigger-based flows) before sending to this activation. Add a journey to orchestrate steps and timing.</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center;">
+                    <button type="button" onclick="revealAndSwitchTab(5)" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1.25rem; font-size: 0.9375rem; font-weight: 600; color: #047857; background: white; border: 2px solid #10b981; border-radius: 2rem; cursor: pointer; transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.05);" onmouseover="this.style.background='#dcfce7'; this.style.borderColor='#059669'; this.style.transform='translateY(-1px)'" onmouseout="this.style.background='white'; this.style.borderColor='#10b981'; this.style.transform='translateY(0)'">
+                        <span style="font-size: 1.125rem;">🛤️</span>
+                        Add journey
                     </button>
                 </div>
             </div>
@@ -9531,6 +9619,48 @@
             
             // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function revealAndSwitchTab(index) {
+            var tab = document.getElementById('tab' + index);
+            if (tab && tab.classList.contains('optional-tab')) {
+                tab.classList.add('revealed');
+            }
+            switchTab(index);
+        }
+
+        function toggleMoreTabsDropdown(event) {
+            event.stopPropagation();
+            var dd = document.getElementById('moreTabsDropdown');
+            var btn = document.getElementById('moreTabsBtn');
+            var arrow = document.getElementById('moreTabsArrow');
+            if (!dd || !btn) return;
+            var isOpen = dd.style.display === 'block';
+            dd.style.display = isOpen ? 'none' : 'block';
+            if (btn) btn.setAttribute('aria-expanded', !isOpen);
+            var wrap = btn && btn.closest('.more-tabs-wrap');
+            if (wrap) wrap.classList.toggle('open', !isOpen);
+            if (!isOpen) {
+                setTimeout(function() {
+                    document.addEventListener('click', closeMoreTabsDropdownOnce);
+                }, 0);
+            }
+        }
+
+        function closeMoreTabsDropdown() {
+            var dd = document.getElementById('moreTabsDropdown');
+            var btn = document.getElementById('moreTabsBtn');
+            var arrow = document.getElementById('moreTabsArrow');
+            if (dd) dd.style.display = 'none';
+            if (btn) btn.setAttribute('aria-expanded', 'false');
+            var wrap = btn && btn.closest('.more-tabs-wrap');
+            if (wrap) wrap.classList.remove('open');
+            document.removeEventListener('click', closeMoreTabsDropdownOnce);
+        }
+
+        function closeMoreTabsDropdownOnce() {
+            closeMoreTabsDropdown();
+            document.removeEventListener('click', closeMoreTabsDropdownOnce);
         }
 
         function setPublishRunMode(mode) {
@@ -12362,9 +12492,7 @@
             
             // Update toolbar audience count
             const toolbarAudienceElement = document.getElementById('toolbarAudienceCount');
-            if (toolbarAudienceElement) {
-                toolbarAudienceElement.textContent = currentAudience.toLocaleString();
-            }
+            if (toolbarAudienceElement) toolbarAudienceElement.textContent = currentAudience.toLocaleString();
         }
 
         function updateDistributionChart(attribute) {
