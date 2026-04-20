@@ -1,5 +1,14 @@
 # Project Untethered 🚀
 
+## 🔗 Live Prototypes
+
+| Prototype | Link |
+|-----------|------|
+| **Data Cloud Segment Builder** | [Launch →](https://skingaonkar-eng.github.io/datacloud-prototype/) |
+| **Slack + Data Cloud Agent** | [Launch →](https://skingaonkar-eng.github.io/datacloud-prototype/prototype-shareable.html) |
+
+---
+
 An **Agentic Segmentation Workspace** that revolutionizes how marketers create and analyze audience segments. Move away from complex SQL queries and technical tables—just describe your goal, and let the AI Agent do the rest.
 
 ## The Vision
