@@ -95,24 +95,51 @@ Instead, we use:
 
 ## Getting Started
 
-### Prerequisites
+### For Developers
+
+#### Prerequisites
 - Node.js 18+ installed
 - npm or yarn package manager
 
-### Installation
+#### Installation
 
-1. **Install dependencies**:
+1. **Clone the repository**:
+```bash
+git clone https://github.com/skingaonkar-eng/datacloud-prototype.git
+cd datacloud-prototype
+git checkout gh-pages
+```
+
+2. **Install dependencies** (if using the Next.js version):
 ```bash
 npm install
 ```
 
-2. **Run the development server**:
+3. **Run the development server**:
 ```bash
 npm run dev
 ```
 
-3. **Open your browser**:
+4. **Open your browser**:
 Navigate to [http://localhost:3000](http://localhost:3000)
+
+### For Designers/PMs (Quick Start)
+
+Want to use these prototypes in your own projects? No installation needed!
+
+#### Option 1: Download HTML Files Directly
+- [Download prototype-shareable.html](https://raw.githubusercontent.com/skingaonkar-eng/datacloud-prototype/gh-pages/prototype-shareable.html) (Right-click → Save As)
+- [Download datacloud-prototype.html](https://raw.githubusercontent.com/skingaonkar-eng/datacloud-prototype/gh-pages/datacloud-prototype.html)
+- Open in any browser - works offline!
+
+#### Option 2: Clone & Use
+```bash
+git clone -b gh-pages https://github.com/skingaonkar-eng/datacloud-prototype.git
+```
+All HTML files are ready to use in the `gh-pages` branch.
+
+#### Option 3: View Live
+Just visit the [live prototypes](#-live-prototypes) above - no download needed!
 
 ### Try the Demo Flow
 
@@ -197,6 +224,28 @@ Text: Zinc (100-400)
 - **Headings**: Bold, gradient text effects
 - **Body**: Clean, high contrast
 - **Labels**: Small, muted zinc-400
+
+## Contributing
+
+Want to contribute or collaborate? We welcome:
+- 🐛 Bug reports and fixes
+- ✨ Feature suggestions
+- 🎨 Design improvements
+- 📝 Documentation updates
+
+### How to Contribute
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Using These Prototypes
+These HTML prototypes are designed to be:
+- ✅ **Shareable** - Send direct links to stakeholders
+- ✅ **Embeddable** - Use in presentations or documentation
+- ✅ **Customizable** - Fork and modify for your needs
+- ✅ **Standalone** - No backend or dependencies required
 
 ## Future Enhancements
 
