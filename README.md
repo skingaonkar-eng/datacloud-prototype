@@ -6,6 +6,7 @@
 |-----------|------|
 | **Data Cloud Segment Builder** | [Launch →](https://skingaonkar-eng.github.io/datacloud-prototype/) |
 | **Slack + Data Cloud Agent** | [Launch →](https://skingaonkar-eng.github.io/datacloud-prototype/prototype-shareable.html) |
+| **Reimagined Marketer Experience** | [Launch →](https://skingaonkar-eng.github.io/datacloud-prototype/reimagined-marketer-experience/) |
 
 ---
 

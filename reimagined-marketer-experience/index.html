@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reimagined Marketer Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0176d3 0%, #032d60 50%, #16325c 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 16px;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 20px;
+            opacity: 0.95;
+            font-weight: 400;
+        }
+
+        .tiles {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .tile {
+            background: white;
+            border-radius: 20px;
+            padding: 48px 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tile:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+        }
+
+        .tile::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #0176d3, #1a8fe8);
+        }
+
+        .tile.secondary::before {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .tile-icon {
+            font-size: 56px;
+            margin-bottom: 24px;
+            display: block;
+        }
+
+        .tile-title {
+            font-size: 28px;
+            font-weight: 900;
+            color: #1a1d21;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .tile-description {
+            font-size: 16px;
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .tile-features {
+            list-style: none;
+            margin-bottom: 28px;
+        }
+
+        .tile-features li {
+            font-size: 14px;
+            color: #475569;
+            padding: 8px 0;
+            padding-left: 28px;
+            position: relative;
+        }
+
+        .tile-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: 900;
+            font-size: 18px;
+        }
+
+        .tile-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #0176d3, #1a8fe8);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .tile.secondary .tile-cta {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .tile-cta:hover {
+            transform: translateX(4px);
+        }
+
+        .tile-cta svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        @media (max-width: 1024px) {
+            .tiles {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .header h1 {
+                font-size: 36px;
+            }
+
+            .header p {
+                font-size: 18px;
+            }
+
+            .tile {
+                padding: 36px 28px;
+            }
+
+            .tile-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>☁️ Reimagined Marketer Experience</h1>
+            <p>Choose your demo experience</p>
+        </div>
+
+        <div class="tiles">
+            <!-- Tile 1: Slack + Data 360 -->
+            <a href="final-working-version.html" class="tile" onclick="sessionStorage.setItem('fromLanding', 'true')">
+                <span class="tile-icon">💬</span>
+                <h2 class="tile-title">Slack + Data 360</h2>
+                <p class="tile-description">
+                    Create segments end-to-end, from creation to activation—right in Slack.
+                </p>
+                <ul class="tile-features">
+                    <li>Build segments through natural conversation</li>
+                    <li>Get AI-powered recommendations</li>
+                    <li>Seamless transition to Data 360 UI</li>
+                    <li>Approval workflows and activation</li>
+                </ul>
+                <div class="tile-cta">
+                    Start Slack Experience
+                    <svg fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                    </svg>
+                </div>
+            </a>
+
+            <!-- Tile 2: Pure Data 360 -->
+            <a href="luke-datacloud-app/index.html" class="tile secondary" onclick="sessionStorage.setItem('fromLanding', 'true')">
+                <span class="tile-icon">⚡</span>
+                <h2 class="tile-title">Data 360 Agent Experience</h2>
+                <p class="tile-description">
+                    Jump directly into the reimagined Data 360 segmentation interface with AI assistance.
+                </p>
+                <ul class="tile-features">
+                    <li>Modern, simplified segment builder</li>
+                    <li>Visual workflow designer</li>
+                    <li>Real-time audience insights</li>
+                    <li>Streamlined activation flows</li>
+                </ul>
+                <div class="tile-cta">
+                    Launch Data 360
+                    <svg fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                    </svg>
+                </div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
