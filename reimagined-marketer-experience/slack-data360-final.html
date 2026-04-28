@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data 360 Agent + Slack — Interactive Prototype</title>
+    <title>Data 360 Agent + Slack — v2024.04.27.18</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
@@ -422,6 +422,16 @@
     </style>
 </head>
 <body>
+    <script>
+        // Redirect to landing page if accessed directly (not from iframe)
+        if (window.self === window.top) {
+            var fromLanding = sessionStorage.getItem('fromLanding');
+            sessionStorage.removeItem('fromLanding'); // Clear flag immediately
+            if (!fromLanding) {
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
     <div class="slack-shell">
         <!-- ====== ICON RAIL ====== -->
         <div class="icon-rail">
@@ -602,7 +612,7 @@
         setTimeout(function() {
             agentMsg(
                 '\u{1F44B} Hey Sarah! I\'m your Data 360 Agent.<br><br>I can help you build audience segments right here. What would you like to do?'
-                + '<div class="btns" style="margin-top:14px;flex-direction:column;align-items:flex-start;">'
+                + '<div class="btns" style="margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;max-width:680px;">'
                 + '<button class="abtn abtn-prev" onclick="pick(\'Build a segment for Apex running shoes launch\')">\u{1F3AF} Build a segment for Apex running shoes launch</button>'
                 + '<button class="abtn abtn-prev" onclick="pick(\'Target high-intent customers for spring campaign\')">\u{1F4CA} Target high-intent customers for spring campaign</button>'
                 + '<button class="abtn abtn-prev" onclick="pick(\'Re-engage lapsed running shoe buyers\')">\u{1F504} Re-engage lapsed running shoe buyers</button>'
@@ -638,10 +648,27 @@
     function suggest(items) {
         var el = document.getElementById('sugg');
         el.textContent = '';
-        items.forEach(function(t) {
+        items.forEach(function(t, i) {
             var chip = document.createElement('div');
             chip.className = 'sugg-chip';
+            chip.style.display = 'flex';
+            chip.style.alignItems = 'center';
+            chip.style.gap = '6px';
             chip.textContent = t;
+            if (i === 0) {
+                var badge = document.createElement('span');
+                badge.style.background = 'var(--sf-blue)';
+                badge.style.color = 'white';
+                badge.style.fontSize = '9px';
+                badge.style.fontWeight = '900';
+                badge.style.padding = '1px 6px';
+                badge.style.borderRadius = '3px';
+                badge.style.flexShrink = '0';
+                badge.textContent = 'RECOMMENDED';
+                chip.textContent = '';
+                chip.appendChild(document.createTextNode(t));
+                chip.appendChild(badge);
+            }
             chip.onclick = function() { pick(t); };
             el.appendChild(chip);
         });
@@ -669,7 +696,7 @@
                 + '</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px;">'+c.objective+' \u{00B7} '+c.rev+' \u{00B7} '+c.kpi+'</div></div></div>';
         }).join('');
         agentMsg('I found these active campaigns from Marketing Cloud. Which one should this segment belong to?<div style="display:grid;gap:6px;margin-top:10px;">'+cards+'</div><div style="margin-top:8px;"><button class="abtn abtn-prev" onclick="pick(\'Start without a campaign\')" style="font-size:12px;padding:6px 12px;">Start without a campaign</button></div>',
-            function() { suggest([campaignCatalog[0].name, 'Start without a campaign']); });
+            function() {});
     }
 
     function pickCampaign(idx) {
@@ -689,8 +716,8 @@
             selectedCampaign = null;
             state = 'refinement';
             agentMsg('No problem! Who would you like to target with this segment?'
-                + '<div class="btns" style="margin-top:12px;flex-direction:column;align-items:flex-start;">'
-                + '<button class="abtn abtn-prev" onclick="pick(\'Target inactive members\')">\u{1F6AB} Target inactive members</button>'
+                + '<div class="btns" style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;max-width:680px;">'
+                + '<button class="abtn abtn-prev" onclick="pick(\'Target inactive members\')">\u{1F6AB} Target inactive members <span style="background:var(--sf-blue);color:white;font-size:9px;font-weight:900;padding:1px 6px;border-radius:3px;margin-left:6px;">RECOMMENDED</span></button>'
                 + '<button class="abtn abtn-prev" onclick="pick(\'Target high-value members\')">\u{1F48E} Target high-value members</button>'
                 + '<button class="abtn abtn-prev" onclick="pick(\'Target new prospects\')">\u{2728} Target new prospects</button>'
                 + '<button class="abtn abtn-prev" onclick="pick(\'Target repeat purchasers\')">\u{1F504} Target repeat purchasers</button>'
@@ -713,8 +740,8 @@
                 + '<div><span style="color:var(--text-muted);">Type:</span> <strong style="color:white;">'+selectedCampaign.type+'</strong></div>'
                 + '</div></div>'
                 + 'The campaign goal is <strong>"'+selectedCampaign.goal+'"</strong>. I\'ll use this to tailor the segment.<br><br>Who would you like to target?'
-                + '<div class="btns" style="margin-top:12px;flex-direction:column;align-items:flex-start;">'
-                + '<button class="abtn abtn-prev" onclick="pick(\'Target inactive members\')">\u{1F6AB} Target inactive members</button>'
+                + '<div class="btns" style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;max-width:680px;">'
+                + '<button class="abtn abtn-prev" onclick="pick(\'Target inactive members\')">\u{1F6AB} Target inactive members <span style="background:var(--sf-blue);color:white;font-size:9px;font-weight:900;padding:1px 6px;border-radius:3px;margin-left:6px;">RECOMMENDED</span></button>'
                 + '<button class="abtn abtn-prev" onclick="pick(\'Target high-value members\')">\u{1F48E} Target high-value members</button>'
                 + '<button class="abtn abtn-prev" onclick="pick(\'Target new prospects\')">\u{2728} Target new prospects</button>'
                 + '<button class="abtn abtn-prev" onclick="pick(\'Target repeat purchasers\')">\u{1F504} Target repeat purchasers</button>'
@@ -728,8 +755,8 @@
             selectedTargeting = 'inactive';
             state = 'timeframe';
             agentMsg('Targeting <strong>inactive members</strong> \u{2014} how should we define inactivity?'
-                + '<div class="btns" style="margin-top:12px;flex-direction:column;align-items:flex-start;">'
-                + '<button class="abtn abtn-prev" onclick="pick(\'No engagement in last 30 days\')">No engagement in last 30 days <span style="color:var(--text-muted);font-weight:400;">\u{2014} recently disengaged</span></button>'
+                + '<div class="btns" style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;max-width:680px;">'
+                + '<button class="abtn abtn-prev" onclick="pick(\'No engagement in last 30 days\')">No engagement in last 30 days <span style="color:var(--text-muted);font-weight:400;">\u{2014} recently disengaged</span> <span style="background:var(--sf-blue);color:white;font-size:9px;font-weight:900;padding:1px 6px;border-radius:3px;margin-left:6px;">RECOMMENDED</span></button>'
                 + '<button class="abtn abtn-prev" onclick="pick(\'No engagement in last 90 days\')">No engagement in last 90 days <span style="color:var(--text-muted);font-weight:400;">\u{2014} moderately lapsed</span></button>'
                 + '<button class="abtn abtn-prev" onclick="pick(\'No engagement in last 180 days\')">No engagement in last 180 days <span style="color:var(--text-muted);font-weight:400;">\u{2014} deeply dormant</span></button>'
                 + '</div>', function() {});
@@ -737,8 +764,8 @@
             selectedTargeting = 'high_value';
             state = 'timeframe';
             agentMsg('Targeting <strong>high-value members</strong> \u{2014} how should we define high-value?'
-                + '<div class="btns" style="margin-top:12px;flex-direction:column;align-items:flex-start;">'
-                + '<button class="abtn abtn-prev" onclick="pick(\'Top 10% by lifetime spend\')">Top 10% by lifetime spend <span style="color:var(--text-muted);font-weight:400;">\u{2014} premium tier</span></button>'
+                + '<div class="btns" style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;max-width:680px;">'
+                + '<button class="abtn abtn-prev" onclick="pick(\'Top 10% by lifetime spend\')">Top 10% by lifetime spend <span style="color:var(--text-muted);font-weight:400;">\u{2014} premium tier</span> <span style="background:var(--sf-blue);color:white;font-size:9px;font-weight:900;padding:1px 6px;border-radius:3px;margin-left:6px;">RECOMMENDED</span></button>'
                 + '<button class="abtn abtn-prev" onclick="pick(\'AOV above $150 in last 90 days\')">AOV above $150 in last 90 days <span style="color:var(--text-muted);font-weight:400;">\u{2014} recent high spenders</span></button>'
                 + '<button class="abtn abtn-prev" onclick="pick(\'Loyalty Gold/Platinum members\')">Loyalty Gold/Platinum members <span style="color:var(--text-muted);font-weight:400;">\u{2014} loyalty tier</span></button>'
                 + '</div>', function() {});
@@ -746,8 +773,8 @@
             selectedTargeting = 'new_prospects';
             state = 'timeframe';
             agentMsg('Targeting <strong>new prospects</strong> \u{2014} how should we identify them?'
-                + '<div class="btns" style="margin-top:12px;flex-direction:column;align-items:flex-start;">'
-                + '<button class="abtn abtn-prev" onclick="pick(\'First visit in last 14 days\')">First visit in last 14 days <span style="color:var(--text-muted);font-weight:400;">\u{2014} brand new visitors</span></button>'
+                + '<div class="btns" style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;max-width:680px;">'
+                + '<button class="abtn abtn-prev" onclick="pick(\'First visit in last 14 days\')">First visit in last 14 days <span style="color:var(--text-muted);font-weight:400;">\u{2014} brand new visitors</span> <span style="background:var(--sf-blue);color:white;font-size:9px;font-weight:900;padding:1px 6px;border-radius:3px;margin-left:6px;">RECOMMENDED</span></button>'
                 + '<button class="abtn abtn-prev" onclick="pick(\'Browsed but never purchased\')">Browsed but never purchased <span style="color:var(--text-muted);font-weight:400;">\u{2014} consideration stage</span></button>'
                 + '<button class="abtn abtn-prev" onclick="pick(\'Email subscriber, no purchase yet\')">Email subscriber, no purchase yet <span style="color:var(--text-muted);font-weight:400;">\u{2014} warm leads</span></button>'
                 + '</div>', function() {});
@@ -755,8 +782,8 @@
             selectedTargeting = 'repeat';
             state = 'timeframe';
             agentMsg('Targeting <strong>repeat purchasers</strong> \u{2014} how should we scope them?'
-                + '<div class="btns" style="margin-top:12px;flex-direction:column;align-items:flex-start;">'
-                + '<button class="abtn abtn-prev" onclick="pick(\'2+ purchases in last 6 months\')">2+ purchases in last 6 months <span style="color:var(--text-muted);font-weight:400;">\u{2014} active buyers</span></button>'
+                + '<div class="btns" style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;max-width:680px;">'
+                + '<button class="abtn abtn-prev" onclick="pick(\'2+ purchases in last 6 months\')">2+ purchases in last 6 months <span style="color:var(--text-muted);font-weight:400;">\u{2014} active buyers</span> <span style="background:var(--sf-blue);color:white;font-size:9px;font-weight:900;padding:1px 6px;border-radius:3px;margin-left:6px;">RECOMMENDED</span></button>'
                 + '<button class="abtn abtn-prev" onclick="pick(\'3+ purchases, any time\')">3+ purchases, any time <span style="color:var(--text-muted);font-weight:400;">\u{2014} loyal base</span></button>'
                 + '<button class="abtn abtn-prev" onclick="pick(\'Purchased in last 30 days\')">Purchased in last 30 days <span style="color:var(--text-muted);font-weight:400;">\u{2014} recently converted</span></button>'
                 + '</div>', function() {});
@@ -764,7 +791,7 @@
             selectedTargeting = 'custom';
             state = 'timeframe';
             agentMsg('Got it! Any specific time frame or criteria to narrow this down?'
-                + '<div class="btns" style="margin-top:12px;flex-direction:column;align-items:flex-start;">'
+                + '<div class="btns" style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;max-width:680px;">'
                 + '<button class="abtn abtn-prev" onclick="pick(\'Active in last 30 days\')">Active in last 30 days</button>'
                 + '<button class="abtn abtn-prev" onclick="pick(\'Active in last 90 days\')">Active in last 90 days</button>'
                 + '<button class="abtn abtn-prev" onclick="pick(\'No time restriction\')">No time restriction</button>'
@@ -784,7 +811,7 @@
             + '<div class="strat-icon">\u{1F4E2}</div><div class="strat-title">Reach</div>'
             + '<div class="strat-desc">Broader audience, moderate signals. Larger volume.</div>'
             + '<div class="strat-stats"><strong>~180K</strong> users \u{00B7} <strong>1.8%</strong> CVR \u{00B7} <strong>$780K</strong> rev</div></div></div>',
-            function() { suggest(['Go with Precision','Go with Reach']); });
+            function() {});
     }
 
     function doStrategy(text) {
@@ -800,20 +827,20 @@
         var popBar = '<div style="margin:14px 0 6px;"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:var(--text-muted);">Segment Population</span><span style="color:var(--sf-blue-light);font-weight:700;">'+segData.size+' users</span></div><div style="background:rgba(255,255,255,0.08);border-radius:6px;height:8px;overflow:hidden;"><div style="background:linear-gradient(90deg,var(--sf-blue),var(--sf-blue-light));width:'+segData.popPct+'%;height:100%;border-radius:6px;transition:width 1s ease;"></div></div><div style="display:flex;justify-content:space-between;font-size:11px;margin-top:3px;"><span style="color:var(--text-muted);">'+segData.popLabel+'</span><span style="color:var(--text-muted);">of total addressable: '+(isP?'73,500':'222,800')+'</span></div></div>';
         var confidenceScore = '<div class="seg-row" style="margin-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:16px;"><div class="seg-lbl">Confidence Score:</div><div class="seg-val"><span style="font-size:24px;font-weight:900;color:var(--sf-blue-light);">92%</span><br><span style="font-size:13px;color:#6ee7b7;">High confidence to meet campaign goals</span></div></div>';
         agentMsg('\u{2705} Segment created!<br><br><div class="seg-card"><div class="seg-badge">'+segData.badge+'</div><div class="seg-title">'+segData.title+'</div><div class="seg-size">Audience: '+segData.size+' users</div>'+popBar+'<div class="seg-details">'+confidenceScore+campaignLine+'<div class="seg-row"><div class="seg-lbl">Expected CVR:</div><div class="seg-val">'+segData.cvr+'</div></div><div class="seg-row"><div class="seg-lbl">Projected Rev:</div><div class="seg-val">'+segData.rev+'</div></div><div class="seg-row"><div class="seg-lbl">Criteria:</div><div class="seg-val"><ul class="crit-list">'+segData.criteria.map(function(c){return '<li>'+c+'</li>';}).join('')+'</ul></div></div></div><div class="btns"><button class="abtn abtn-prev" onclick="pick(\'Preview this segment\')">\u{1F441}\u{FE0F} Preview</button><button class="abtn abtn-prev" onclick="pick(\'Show insights\')">\u{1F4CA} Insights</button><button class="abtn abtn-prev" onclick="pick(\'Show overlap\')">\u{1F517} Overlap</button><button class="abtn abtn-dc" onclick="openDC(\'openSegmentDefinition\')">\u{2601}\u{FE0F} Open in Data 360</button><button class="abtn abtn-ok" onclick="pick(\'Send for approval\')">\u{2713} Send for Approval</button></div></div>',
-            function() { suggest(['Preview this segment','Show insights','Show overlap','Send for approval']); });
+            function() {});
     }
 
     function doPostCreate(text) {
         var l = text.toLowerCase();
         if (l.includes('preview') && !l.includes('in data')) {
             agentMsg('<div class="prev-panel"><div class="prev-title">Preview Summary</div><div style="margin-bottom:14px;"><strong style="color:white;">Audience size: <span style="color:var(--success);">'+segData.size+'</span></strong></div><div style="margin-bottom:14px;"><strong style="color:white;">Top cohorts:</strong><br><span style="margin-left:14px;">\u{2022} High-intent browsers (42%)<br>\u{2022} Recent running gear purchasers (31%)<br>\u{2022} Premium loyalty members (18%)</span></div><div class="btns" style="margin-top:14px;"><button class="abtn abtn-dc" onclick="openDC(\'openPreviewPanel\')">\u{2601}\u{FE0F} See Preview in Data 360</button><button class="abtn abtn-ok" onclick="pick(\'Send for approval\')">\u{2713} Send for Approval</button></div></div>',
-                function() { suggest(['See preview in Data 360','Show insights','Show overlap','Send for approval']); });
-        } else if (l.includes('insight')) {
+                function() {});
+        } else if (l.includes('insight') && !l.includes('in data')) {
             agentMsg('<div style="background:rgba(1,118,211,0.08);border-left:3px solid var(--sf-blue);padding:18px;border-radius:8px;margin-top:10px;"><div style="font-weight:900;font-size:17px;color:var(--sf-blue-light);margin-bottom:14px;">\u{1F4CA} Segment Insights</div><div style="margin-bottom:14px;"><strong style="color:white;">Confidence Score: <span style="font-size:20px;color:var(--sf-blue-light);">92%</span></strong><br><span style="font-size:13px;color:#6ee7b7;">High confidence to meet campaign goals</span></div><div style="margin-bottom:14px;"><strong style="color:white;">Key Metrics:</strong><br><span style="margin-left:14px;font-size:14px;color:var(--text-secondary);">\u{2022} <strong style="color:white;">Expected Conversion Rate:</strong> '+segData.cvr+'<br>\u{2022} <strong style="color:white;">Projected Revenue:</strong> '+segData.rev+'<br>\u{2022} <strong style="color:white;">Avg Lifetime Value:</strong> $340</span></div><div style="margin-bottom:14px;"><strong style="color:white;">Audience Composition:</strong><br><span style="margin-left:14px;font-size:14px;color:var(--text-secondary);">\u{2022} Premium loyalty members: 34%<br>\u{2022} Recent product viewers: 42%<br>\u{2022} Past purchasers: 24%</span></div><div class="btns"><button class="abtn abtn-dc" onclick="openDC(\'openInsightsPanel\')">\u{2601}\u{FE0F} See Insights in Data 360</button><button class="abtn abtn-ok" onclick="pick(\'Send for approval\')">\u{2713} Send for Approval</button></div></div>',
-                function() { suggest(['See insights in Data 360','Show preview','Show overlap','Send for approval']); });
+                function() {});
         } else if (l.includes('overlap') && !l.includes('in data')) {
             agentMsg('<div style="background:rgba(139,92,246,0.08);border-left:3px solid #8b5cf6;padding:18px;border-radius:8px;margin-top:10px;"><div style="font-weight:900;font-size:17px;color:#c4b5fd;margin-bottom:14px;">\u{1F517} Overlap Analysis</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;"><div style="background:rgba(0,0,0,0.2);border-radius:8px;padding:14px;"><div style="font-size:13px;color:var(--text-muted);margin-bottom:4px;">Spring Running Campaign 2024</div><div style="font-size:20px;font-weight:900;color:#c4b5fd;">38% overlap</div><div style="font-size:12px;color:var(--text-muted);">4,788 shared users</div></div><div style="background:rgba(0,0,0,0.2);border-radius:8px;padding:14px;"><div style="font-size:13px;color:var(--text-muted);margin-bottom:4px;">Winter Gear Promotion</div><div style="font-size:20px;font-weight:900;color:#c4b5fd;">15% overlap</div><div style="font-size:12px;color:var(--text-muted);">1,893 shared users</div></div></div><div style="background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.3);border-radius:8px;padding:12px;margin-bottom:14px;"><div style="font-size:13px;font-weight:900;color:#fbbf24;margin-bottom:6px;">\u{26A0}\u{FE0F} Message Fatigue Risk</div><div style="font-size:13px;color:var(--text-secondary);">38% of your audience received a message <strong style="color:white;">6 days ago</strong>. Consider a 7-10 day gap to avoid fatigue.</div></div><div class="btns"><button class="abtn abtn-dc" onclick="openDC(\'openOverlapPanel\')">\u{2601}\u{FE0F} See Overlap in Data 360</button><button class="abtn abtn-ok" onclick="pick(\'Send for approval\')">\u{2713} Send for Approval</button></div></div>',
-                function() { suggest(['See overlap in Data 360','Show preview','Show insights','Send for approval']); });
+                function() {});
         } else if (l.includes('preview') && l.includes('in data')) { openDC('openPreviewPanel');
         } else if (l.includes('insight') && l.includes('in data')) { openDC('openInsightsPanel');
         } else if (l.includes('overlap') && l.includes('in data')) { openDC('openOverlapPanel');
@@ -821,7 +848,7 @@
         } else if (l.includes('full detail')) { openDC('openPreviewPanel');
         } else if (l.includes('approval') || l.includes('approve')) { startApprovalFlow();
         } else if (l.includes('reject') || l.includes('start over')) {
-            state = 'goal'; agentMsg('Discarded. What would you like to build next?', function() { suggest(['Build a segment for Apex running shoes launch','Target high-intent customers','Re-engage lapsed buyers']); });
+            state = 'goal'; agentMsg('Discarded. What would you like to build next?', function() {});
         } else { doFreeform(text); }
     }
 
@@ -872,21 +899,22 @@
         document.getElementById('chatInput').placeholder = 'Message Data 360 Agent...';
         var campaignRow = selectedCampaign ? '<div class="appr-row"><span class="appr-lbl">Campaign:</span><span class="appr-val">'+selectedCampaign.name+'</span></div>' : '';
         var confidenceSection = '<div style="background:rgba(1,118,211,0.08);border:1px solid rgba(1,118,211,0.3);border-radius:8px;padding:14px;margin-bottom:14px;"><div style="display:flex;align-items:center;gap:12px;"><div style="flex:1;"><div style="font-size:12px;font-weight:700;color:var(--text-secondary);margin-bottom:4px;">CONFIDENCE SCORE</div><div style="display:flex;align-items:baseline;gap:8px;"><span style="font-size:32px;font-weight:900;color:var(--sf-blue-light);line-height:1;">92%</span><span style="font-size:14px;font-weight:700;color:#6ee7b7;">High confidence</span></div></div></div><div style="font-size:13px;color:var(--text-secondary);margin-top:8px;">High confidence to meet campaign goals</div></div>';
-        agentMsg('\u{1F514} <strong>Michael</strong>, you have a new segment approval request from <strong>Sarah Martinez</strong>.<br><br><div class="appr-card"><div class="appr-title">Segment ready <span class="hl">for your approval</span></div>'+confidenceSection+'<div style="margin-bottom:14px;">'+campaignRow+'<div class="appr-row"><span class="appr-lbl">Segment:</span><span class="appr-val">'+segData.title+'</span></div><div class="appr-row"><span class="appr-lbl">Owner:</span><span class="appr-val">Sarah Martinez</span></div><div class="appr-row"><span class="appr-lbl">Size:</span><span class="appr-val">'+segData.size+' users</span></div><div class="appr-row"><span class="appr-lbl">Revenue:</span><span class="appr-val">'+segData.rev+' projected</span></div></div><div class="risk-box"><div class="risk-title">\u{26A0}\u{FE0F} Risk flags:</div><div class="risk-item">Overlap with <strong style="color:var(--error);">2</strong> active campaigns</div><div class="risk-item">Potential frequency cap violation</div></div><div class="btns"><button class="abtn abtn-prev" onclick="pick(\'Preview segment\')">\u{1F441}\u{FE0F} Preview</button><button class="abtn abtn-prev" onclick="pick(\'Show insights\')">\u{1F4CA} Insights</button><button class="abtn abtn-prev" onclick="pick(\'Show overlap\')">\u{1F517} Overlap</button><button class="abtn abtn-dc" onclick="openDC(\'openSegmentDefinition\')">\u{2601}\u{FE0F} Review in Data 360</button><button class="abtn abtn-ok" onclick="pick(\'Approve this segment\')">\u{2713} Approve</button><button class="abtn abtn-rej" onclick="pick(\'Reject this segment\')">\u{2717} Reject</button></div></div>',
-            function() { suggest(['Preview segment','Show insights','Show overlap','Approve this segment']); });
+        // OLD: var confidenceRow = '<div class="appr-row" style="border-top:1px solid var(--border-slack);margin-top:8px;padding-top:12px;"><span class="appr-lbl">Confidence:</span><span class="appr-val"><span style="font-size:20px;font-weight:900;color:var(--sf-blue-light);">92%</span> <span style="color:#6ee7b7;font-size:13px;">High</span></span></div>';
+        agentMsg('\u{1F514} <strong>Michael</strong>, you have a new segment approval request from <strong>Sarah Martinez</strong>.<br><br><div class="appr-card"><div class="appr-title">Segment ready <span class="hl">for your approval</span></div>'+confidenceSection+'<div style="margin-bottom:14px;">'+campaignRow+'<div class="appr-row"><span class="appr-lbl">Segment:</span><span class="appr-val">'+segData.title+'</span></div><div class="appr-row"><span class="appr-lbl">Owner:</span><span class="appr-val">Sarah Martinez</span></div><div class="appr-row"><span class="appr-lbl">Size:</span><span class="appr-val">'+segData.size+' users</span></div><div class="appr-row"><span class="appr-lbl">Revenue:</span><span class="appr-val">'+segData.rev+' projected</span></div></div><div class="btns"><button class="abtn abtn-prev" onclick="pick(\'Preview segment\')">\u{1F441}\u{FE0F} Preview</button><button class="abtn abtn-prev" onclick="pick(\'Show insights\')">\u{1F4CA} Insights</button><button class="abtn abtn-prev" onclick="pick(\'Show overlap\')">\u{1F517} Overlap</button><button class="abtn abtn-dc" onclick="openDC(\'openSegmentDefinition\')">\u{2601}\u{FE0F} Review in Data 360</button><button class="abtn abtn-ok" onclick="pick(\'Approve this segment\')">\u{2713} Approve</button><button class="abtn abtn-rej" onclick="pick(\'Reject this segment\')">\u{2717} Reject</button></div></div>',
+            function() {});
     }
 
     function doMichaelAction(text) {
         var l = text.toLowerCase();
         if (l.includes('preview segment') || (l.includes('preview') && !l.includes('detail') && !l.includes('in data'))) {
             agentMsg('<div class="prev-panel"><div class="prev-title">Preview \u{2014} '+segData.title+'</div><div style="margin-bottom:14px;"><strong style="color:white;">Audience: <span style="color:var(--success);">'+segData.size+'</span></strong></div><div style="margin-bottom:14px;"><strong style="color:white;">Top cohorts:</strong><br><span style="margin-left:14px;">\u{2022} High-intent browsers (42%)<br>\u{2022} Recent running gear purchasers (31%)<br>\u{2022} Premium loyalty members (18%)</span></div><div style="margin-bottom:14px;"><strong style="color:white;">Criteria:</strong><br><span style="margin-left:14px;">'+segData.criteria.map(function(c){return '\u{2022} '+c;}).join('<br>')+'</span></div><div class="btns" style="margin-top:14px;"><button class="abtn abtn-dc" onclick="openDC(\'openPreviewPanel\')">\u{2601}\u{FE0F} See Preview in Data 360</button><button class="abtn abtn-ok" onclick="pick(\'Approve this segment\')">\u{2713} Approve</button></div></div>',
-                function() { suggest(['See preview in Data 360','Show insights','Show overlap','Approve this segment']); });
+                function() {});
         } else if (l.includes('insight') && !l.includes('in data')) {
             agentMsg('<div style="background:rgba(1,118,211,0.08);border-left:3px solid var(--sf-blue);padding:18px;border-radius:8px;margin-top:10px;"><div style="font-weight:900;font-size:17px;color:var(--sf-blue-light);margin-bottom:14px;">\u{1F4CA} Segment Insights</div><div style="margin-bottom:14px;"><strong style="color:white;">Confidence Score: <span style="font-size:20px;color:var(--sf-blue-light);">92%</span></strong><br><span style="font-size:13px;color:#6ee7b7;">High confidence to meet campaign goals</span></div><div style="margin-bottom:14px;"><strong style="color:white;">Key Metrics:</strong><br><span style="margin-left:14px;font-size:14px;color:var(--text-secondary);">\u{2022} <strong style="color:white;">Expected Conversion Rate:</strong> '+segData.cvr+'<br>\u{2022} <strong style="color:white;">Projected Revenue:</strong> '+segData.rev+'<br>\u{2022} <strong style="color:white;">Avg Lifetime Value:</strong> $340</span></div><div style="margin-bottom:14px;"><strong style="color:white;">Audience Composition:</strong><br><span style="margin-left:14px;font-size:14px;color:var(--text-secondary);">\u{2022} Premium loyalty members: 34%<br>\u{2022} Recent product viewers: 42%<br>\u{2022} Past purchasers: 24%</span></div><div class="btns"><button class="abtn abtn-dc" onclick="openDC(\'openInsightsPanel\')">\u{2601}\u{FE0F} See Insights in Data 360</button><button class="abtn abtn-ok" onclick="pick(\'Approve this segment\')">\u{2713} Approve</button></div></div>',
-                function() { suggest(['See insights in Data 360','Show preview','Show overlap','Approve this segment']); });
+                function() {});
         } else if (l.includes('overlap') && !l.includes('in data')) {
             agentMsg('<div style="background:rgba(139,92,246,0.08);border-left:3px solid #8b5cf6;padding:18px;border-radius:8px;margin-top:10px;"><div style="font-weight:900;font-size:17px;color:#c4b5fd;margin-bottom:14px;">\u{1F517} Overlap Analysis</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;"><div style="background:rgba(0,0,0,0.2);border-radius:8px;padding:14px;"><div style="font-size:13px;color:var(--text-muted);margin-bottom:4px;">Spring Running Campaign 2024</div><div style="font-size:20px;font-weight:900;color:#c4b5fd;">38% overlap</div><div style="font-size:12px;color:var(--text-muted);">4,788 shared users</div></div><div style="background:rgba(0,0,0,0.2);border-radius:8px;padding:14px;"><div style="font-size:13px;color:var(--text-muted);margin-bottom:4px;">Winter Gear Promotion</div><div style="font-size:20px;font-weight:900;color:#c4b5fd;">15% overlap</div><div style="font-size:12px;color:var(--text-muted);">1,893 shared users</div></div></div><div style="background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.3);border-radius:8px;padding:12px;margin-bottom:14px;"><div style="font-size:13px;font-weight:900;color:#fbbf24;margin-bottom:6px;">\u{26A0}\u{FE0F} Message Fatigue Risk</div><div style="font-size:13px;color:var(--text-secondary);">38% of your audience received a message <strong style="color:white;">6 days ago</strong>. Consider a 7-10 day gap to avoid fatigue.</div></div><div class="btns"><button class="abtn abtn-dc" onclick="openDC(\'openOverlapPanel\')">\u{2601}\u{FE0F} See Overlap in Data 360</button><button class="abtn abtn-ok" onclick="pick(\'Approve this segment\')">\u{2713} Approve</button></div></div>',
-                function() { suggest(['See overlap in Data 360','Show preview','Show insights','Approve this segment']); });
+                function() {});
         } else if (l.includes('preview') && l.includes('in data')) { openDC('openPreviewPanel');
         } else if (l.includes('insight') && l.includes('in data')) { openDC('openInsightsPanel');
         } else if (l.includes('overlap') && l.includes('in data')) { openDC('openOverlapPanel');
@@ -895,7 +923,7 @@
             else if (l.includes('detail') || l.includes('full')) openDC('openPreviewPanel');
             else openDC('openSegmentDefinition');
         } else if (l.includes('approve')) {
-            agentMsg('<div class="notice" style="flex-direction:column;align-items:flex-start;gap:12px;"><div>\u{2705} <strong>Approved!</strong> Segment "'+segData.title+'" has been approved.</div><div style="font-size:13px;color:var(--text-secondary);">Sarah will be notified. The segment is ready for activation.</div></div><br>Switching back to Sarah\'s view...',
+            agentMsg('<div class="notice" style="display:flex;flex-wrap:wrap;gap:8px;max-width:680px;gap:12px;"><div>\u{2705} <strong>Approved!</strong> Segment "'+segData.title+'" has been approved.</div><div style="font-size:13px;color:var(--text-secondary);">Sarah will be notified. The segment is ready for activation.</div></div><br>Switching back to Sarah\'s view...',
                 function() { setTimeout(function() { switchUser('sarah'); }, 2000); });
         } else if (l.includes('reject')) {
             agentMsg('<div style="background:rgba(239,68,68,0.05);border-left:3px solid var(--error);padding:14px;border-radius:6px;margin-top:8px;"><strong style="color:#fca5a5;">\u{2717} Rejected</strong><br><br>The segment has been rejected. Sarah will be notified.<br><br>Switching back to Sarah\'s view...</div>',
@@ -910,7 +938,7 @@
         state = 'post_approval';
         document.getElementById('chatInput').placeholder = 'Message Data 360 Agent...';
         agentMsg('\u{1F389} Great news Sarah! <strong>Michael Chen</strong> has approved your segment <strong>"'+segData.title+'"</strong>.<br><br>The segment is ready to activate!<div class="btns" style="margin-top:14px;"><button class="abtn abtn-ok" onclick="pick(\'Activate in Slack\')">\u{26A1} Activate</button><button class="abtn abtn-dc" onclick="openDC(\'openActivationTab\')">\u{2601}\u{FE0F} Activate in Data 360</button></div>',
-            function() { suggest(['Activate in Slack','Activate in Data 360','Build another segment']); });
+            function() {});
     }
 
     function doPostApproval(text) {
@@ -923,7 +951,7 @@
     function showActivationTemplates() {
         state = 'activating';
         agentMsg('Choose an activation template for <strong>'+segData.title+'</strong>:<div style="display:grid;gap:4px;margin-top:10px;"><div class="act-tpl" onclick="selectTpl(this)" id="tpl-multi" style="background:rgba(1,118,211,0.1);border:1px solid var(--sf-blue-light);border-radius:8px;padding:10px 12px;cursor:pointer;display:flex;align-items:center;gap:10px;"><span style="font-size:16px;">\u{2B50}</span><div style="flex:1;"><div style="display:flex;align-items:center;gap:8px;"><strong style="color:white;font-size:13px;">Multi-Channel Campaign</strong><span style="background:var(--sf-blue);color:white;font-size:9px;font-weight:900;padding:1px 6px;border-radius:3px;">RECOMMENDED</span></div><div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Email + SMS + Push \u{00B7} Optimized send times</div></div></div><div class="act-tpl" onclick="selectTpl(this)" id="tpl-email" style="background:rgba(255,255,255,0.03);border:1px solid var(--border-slack);border-radius:8px;padding:10px 12px;cursor:pointer;display:flex;align-items:center;gap:10px;"><span style="font-size:16px;">\u{1F4E7}</span><div><strong style="color:white;font-size:13px;">Email Only</strong><div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Single-channel \u{00B7} Personalized content</div></div></div><div class="act-tpl" onclick="selectTpl(this)" id="tpl-ads" style="background:rgba(255,255,255,0.03);border:1px solid var(--border-slack);border-radius:8px;padding:10px 12px;cursor:pointer;display:flex;align-items:center;gap:10px;"><span style="font-size:16px;">\u{1F4E2}</span><div><strong style="color:white;font-size:13px;">Paid Media / Ads</strong><div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Google Ads + Meta \u{00B7} Retargeting</div></div></div><div class="act-tpl" onclick="selectTpl(this)" id="tpl-custom" style="background:rgba(255,255,255,0.03);border:1px solid var(--border-slack);border-radius:8px;padding:10px 12px;cursor:pointer;display:flex;align-items:center;gap:10px;"><span style="font-size:16px;">\u{2699}\u{FE0F}</span><div><strong style="color:white;font-size:13px;">Custom Activation</strong><div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Choose channels manually</div></div></div></div><div class="btns" style="margin-top:10px;"><button class="abtn abtn-ok" onclick="pick(\'Confirm activation\')">\u{26A1} Confirm & Activate</button><button class="abtn abtn-dc" onclick="openDC(\'openActivationTab\')">\u{2601}\u{FE0F} Configure in Data 360</button></div>',
-            function() { suggest(['Confirm activation','Configure in Data 360']); });
+            function() {});
     }
 
     function selectTpl(el) {
@@ -935,8 +963,8 @@
         var l = text.toLowerCase();
         if (l.includes('confirm')) {
             state = 'done';
-            agentMsg('<div class="notice" style="flex-direction:column;align-items:flex-start;gap:8px;"><div>\u{1F680} <strong>Activation launched!</strong></div><div style="font-size:13px;color:var(--text-secondary);">Segment "'+segData.title+'" is now being published to your selected channels.</div></div><div class="btns" style="margin-top:14px;"><button class="abtn abtn-dc" onclick="openDC(\'openActivationTab\')">\u{2601}\u{FE0F} Monitor in Data 360</button></div>',
-                function() { suggest(['Build another segment']); });
+            agentMsg('<div class="notice" style="display:flex;flex-wrap:wrap;gap:8px;max-width:680px;gap:8px;"><div>\u{1F680} <strong>Activation launched!</strong></div><div style="font-size:13px;color:var(--text-secondary);">Segment "'+segData.title+'" is now being published to your selected channels.</div></div><div class="btns" style="margin-top:14px;"><button class="abtn abtn-dc" onclick="openDC(\'openMonitorTab\')">\u{2601}\u{FE0F} Monitor in Data 360</button></div>',
+                function() {});
         } else if (l.includes('configure') || l.includes('data 360')) { openDC('openActivationTab');
         } else { doFreeform(text); }
     }
@@ -948,7 +976,7 @@
         else if (l.includes('overlap')) { openDC('openOverlapPanel'); agentMsg('Opening overlap analysis...', null); }
         else if (l.includes('detail') || l.includes('preview') || l.includes('full')) { openDC('openPreviewPanel'); agentMsg('Opening preview...', null); }
         else if (l.includes('another') || l.includes('new') || l.includes('build')) {
-            state = 'goal'; agentMsg('Ready for a new segment! What\'s your goal?', function() { suggest(['Build a segment for Apex running shoes launch','Target high-intent customers','Re-engage lapsed buyers']); });
+            state = 'goal'; agentMsg('Ready for a new segment! What\'s your goal?', function() {});
         } else {
             agentMsg('I can help with that! Would you like to:<br>\u{2022} Continue the conversation here<br>\u{2022} Open the full builder in Data 360<br>\u{2022} Build a different segment', function() {
                 var s = ['Open in Data 360'];
@@ -971,31 +999,33 @@
             iframe.onload = function() {
                 iframeLoaded = true;
                 setTimeout(function() {
-                    // Send action to Luke's app via postMessage
-                    var slackAction = null;
-                    if (action === 'openPreviewPanel') slackAction = 'preview';
-                    else if (action === 'openInsightsPanel') slackAction = 'insights';
-                    else if (action === 'openOverlapPanel') slackAction = 'overlap';
-                    else if (action === 'openActivationTab') slackAction = 'activate';
-                    else if (action === 'openMonitorTab') slackAction = 'monitor';
+                    var msg = null;
+                    if (action === 'openPreviewPanel') msg = 'preview';
+                    else if (action === 'openInsightsPanel') msg = 'insights';
+                    else if (action === 'openOverlapPanel') msg = 'overlap';
+                    else if (action === 'openActivationTab') msg = 'activate';
+                    else if (action === 'openMonitorTab') msg = 'monitor';
+                    else if (action === 'openSegmentDefinition') msg = 'define';
 
-                    if (slackAction) {
-                        iframe.contentWindow.postMessage({ slackAction: slackAction }, '*');
+                    console.log('Slack sending postMessage:', msg);
+                    if (msg) {
+                        iframe.contentWindow.postMessage({ slackAction: msg }, '*');
                     }
                     iframe.style.opacity = '1';
-                }, 500);
+                }, 1000);
             };
         } else {
-            // Already loaded, just send message
-            var slackAction = null;
-            if (action === 'openPreviewPanel') slackAction = 'preview';
-            else if (action === 'openInsightsPanel') slackAction = 'insights';
-            else if (action === 'openOverlapPanel') slackAction = 'overlap';
-            else if (action === 'openActivationTab') slackAction = 'activate';
-            else if (action === 'openMonitorTab') slackAction = 'monitor';
+            var msg = null;
+            if (action === 'openPreviewPanel') msg = 'preview';
+            else if (action === 'openInsightsPanel') msg = 'insights';
+            else if (action === 'openOverlapPanel') msg = 'overlap';
+            else if (action === 'openActivationTab') msg = 'activate';
+            else if (action === 'openMonitorTab') msg = 'monitor';
+            else if (action === 'openSegmentDefinition') msg = 'define';
 
-            if (slackAction) {
-                iframe.contentWindow.postMessage({ slackAction: slackAction }, '*');
+            console.log('Slack sending postMessage to already-loaded iframe:', msg);
+            if (msg) {
+                iframe.contentWindow.postMessage({ slackAction: msg }, '*');
             }
             overlay.classList.add('active');
         }
@@ -1009,3 +1039,4 @@
     </script>
 </body>
 </html>
+<!-- Version: 20260427-170224 -->
