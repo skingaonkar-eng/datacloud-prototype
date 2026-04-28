@@ -9,12 +9,18 @@
       <meta http-equiv="Expires" content="0" />
       <title>Segmentation Simplification Proto - V2 (ALL-3-FIXES-APPLIED)</title>
       <style>html, body { height: 100%; margin: 0; } #root { height: 100%; }</style>
-      <script type="module" crossorigin src="./assets/index-BXosfUb6.js"></script>
-      <link rel="stylesheet" crossorigin href="./assets/index-ADwRiqG4.css">
+      <script type="module" crossorigin src="./assets/index-CipPAZHi.js"></script>
+      <link rel="stylesheet" crossorigin href="./assets/index-DUWLMlHx.css">
     </head>
 
     <body>
       <div id="root"></div>
+      <script>
+        // Redirect to landing page if coming directly without flag
+        if (!sessionStorage.getItem('fromLanding') && window.location.hash === '') {
+          window.location.href = '../demo-launcher.html';
+        }
+      </script>
     </body>
   </html>
   
