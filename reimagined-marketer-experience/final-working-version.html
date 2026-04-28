@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data 360 Agent + Slack — v2024.04.27.18</title>
+    <title>Data 360 Agent + Slack — v2024.04.27.20-BUTTONS-FIXED</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
@@ -831,25 +831,48 @@
     }
 
     function doPostCreate(text) {
+        console.log('doPostCreate called with:', text, 'Current state:', state);
         var l = text.toLowerCase();
-        if (l.includes('preview') && !l.includes('in data')) {
+
+        // Preview
+        if (l.includes('preview')) {
+            console.log('Matched PREVIEW');
             agentMsg('<div class="prev-panel"><div class="prev-title">Preview Summary</div><div style="margin-bottom:14px;"><strong style="color:white;">Audience size: <span style="color:var(--success);">'+segData.size+'</span></strong></div><div style="margin-bottom:14px;"><strong style="color:white;">Top cohorts:</strong><br><span style="margin-left:14px;">\u{2022} High-intent browsers (42%)<br>\u{2022} Recent running gear purchasers (31%)<br>\u{2022} Premium loyalty members (18%)</span></div><div class="btns" style="margin-top:14px;"><button class="abtn abtn-dc" onclick="openDC(\'openPreviewPanel\')">\u{2601}\u{FE0F} See Preview in Data 360</button><button class="abtn abtn-ok" onclick="pick(\'Send for approval\')">\u{2713} Send for Approval</button></div></div>',
                 function() {});
-        } else if (l.includes('insight') && !l.includes('in data')) {
+            return;
+        }
+
+        // Insights
+        if (l.includes('insight')) {
+            console.log('Matched INSIGHTS');
             agentMsg('<div style="background:rgba(1,118,211,0.08);border-left:3px solid var(--sf-blue);padding:18px;border-radius:8px;margin-top:10px;"><div style="font-weight:900;font-size:17px;color:var(--sf-blue-light);margin-bottom:14px;">\u{1F4CA} Segment Insights</div><div style="margin-bottom:14px;"><strong style="color:white;">Confidence Score: <span style="font-size:20px;color:var(--sf-blue-light);">92%</span></strong><br><span style="font-size:13px;color:#6ee7b7;">High confidence to meet campaign goals</span></div><div style="margin-bottom:14px;"><strong style="color:white;">Key Metrics:</strong><br><span style="margin-left:14px;font-size:14px;color:var(--text-secondary);">\u{2022} <strong style="color:white;">Expected Conversion Rate:</strong> '+segData.cvr+'<br>\u{2022} <strong style="color:white;">Projected Revenue:</strong> '+segData.rev+'<br>\u{2022} <strong style="color:white;">Avg Lifetime Value:</strong> $340</span></div><div style="margin-bottom:14px;"><strong style="color:white;">Audience Composition:</strong><br><span style="margin-left:14px;font-size:14px;color:var(--text-secondary);">\u{2022} Premium loyalty members: 34%<br>\u{2022} Recent product viewers: 42%<br>\u{2022} Past purchasers: 24%</span></div><div class="btns"><button class="abtn abtn-dc" onclick="openDC(\'openInsightsPanel\')">\u{2601}\u{FE0F} See Insights in Data 360</button><button class="abtn abtn-ok" onclick="pick(\'Send for approval\')">\u{2713} Send for Approval</button></div></div>',
                 function() {});
-        } else if (l.includes('overlap') && !l.includes('in data')) {
+            return;
+        }
+
+        // Overlap
+        if (l.includes('overlap')) {
+            console.log('Matched OVERLAP');
             agentMsg('<div style="background:rgba(139,92,246,0.08);border-left:3px solid #8b5cf6;padding:18px;border-radius:8px;margin-top:10px;"><div style="font-weight:900;font-size:17px;color:#c4b5fd;margin-bottom:14px;">\u{1F517} Overlap Analysis</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;"><div style="background:rgba(0,0,0,0.2);border-radius:8px;padding:14px;"><div style="font-size:13px;color:var(--text-muted);margin-bottom:4px;">Spring Running Campaign 2024</div><div style="font-size:20px;font-weight:900;color:#c4b5fd;">38% overlap</div><div style="font-size:12px;color:var(--text-muted);">4,788 shared users</div></div><div style="background:rgba(0,0,0,0.2);border-radius:8px;padding:14px;"><div style="font-size:13px;color:var(--text-muted);margin-bottom:4px;">Winter Gear Promotion</div><div style="font-size:20px;font-weight:900;color:#c4b5fd;">15% overlap</div><div style="font-size:12px;color:var(--text-muted);">1,893 shared users</div></div></div><div style="background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.3);border-radius:8px;padding:12px;margin-bottom:14px;"><div style="font-size:13px;font-weight:900;color:#fbbf24;margin-bottom:6px;">\u{26A0}\u{FE0F} Message Fatigue Risk</div><div style="font-size:13px;color:var(--text-secondary);">38% of your audience received a message <strong style="color:white;">6 days ago</strong>. Consider a 7-10 day gap to avoid fatigue.</div></div><div class="btns"><button class="abtn abtn-dc" onclick="openDC(\'openOverlapPanel\')">\u{2601}\u{FE0F} See Overlap in Data 360</button><button class="abtn abtn-ok" onclick="pick(\'Send for approval\')">\u{2713} Send for Approval</button></div></div>',
                 function() {});
-        } else if (l.includes('preview') && l.includes('in data')) { openDC('openPreviewPanel');
-        } else if (l.includes('insight') && l.includes('in data')) { openDC('openInsightsPanel');
-        } else if (l.includes('overlap') && l.includes('in data')) { openDC('openOverlapPanel');
-        } else if (l.includes('data 360') || l.includes('open in')) { openDC('openSegmentDefinition');
-        } else if (l.includes('full detail')) { openDC('openPreviewPanel');
-        } else if (l.includes('approval') || l.includes('approve')) { startApprovalFlow();
-        } else if (l.includes('reject') || l.includes('start over')) {
-            state = 'goal'; agentMsg('Discarded. What would you like to build next?', function() {});
-        } else { doFreeform(text); }
+            return;
+        }
+
+        // Other actions
+        if (l.includes('approval') || l.includes('approve')) {
+            startApprovalFlow();
+            return;
+        }
+
+        if (l.includes('reject') || l.includes('start over')) {
+            state = 'goal';
+            agentMsg('Discarded. What would you like to build next?', function() {});
+            return;
+        }
+
+        // Fallback
+        console.log('No match, calling doFreeform');
+        doFreeform(text);
     }
 
     function startApprovalFlow() {
