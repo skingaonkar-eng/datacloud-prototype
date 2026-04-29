@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data 360 Agent + Slack — v2024.04.27.20-BUTTONS-FIXED</title>
+    <title>Data 360 Agent + Slack — v2024.04.29-PRECISION-RECOMMENDED</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
@@ -255,7 +255,8 @@
         .strat-card.selected { background: rgba(1,118,211,0.15); border-color: var(--sf-blue-light); }
         .strat-card.dimmed { opacity: 0.3; pointer-events: none; }
         .strat-icon { font-size: 22px; margin-bottom: 6px; }
-        .strat-title { font-weight: 900; font-size: 16px; color: white; margin-bottom: 4px; }
+        .strat-title { font-weight: 900; font-size: 16px; color: white; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+        .strat-badge { display: inline-block; background: var(--sf-blue); color: white; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 900; }
         .strat-desc { font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; line-height: 1.4; }
         .strat-stats { display: flex; gap: 10px; font-size: 12px; color: var(--text-muted); flex-wrap: wrap; }
         .strat-stats strong { color: var(--sf-blue-light); }
@@ -804,7 +805,7 @@
         var revTarget = selectedCampaign ? selectedCampaign.rev : '$750K';
         agentMsg('Perfect. Based on <strong>"'+text+'"</strong> and a <strong>'+revTarget+' revenue target</strong>, I see two approaches:<br><br>'
             + '<div class="strat-grid"><div class="strat-card" id="strat-p" onclick="pick(\'Go with Precision\')">'
-            + '<div class="strat-icon">\u{1F3AF}</div><div class="strat-title">Precision</div>'
+            + '<div class="strat-icon">\u{1F3AF}</div><div class="strat-title">Precision<span class="strat-badge">RECOMMENDED</span></div>'
             + '<div class="strat-desc">Strongest signals. Higher conversion, smaller audience.</div>'
             + '<div class="strat-stats"><strong>~50K</strong> users \u{00B7} <strong>4.5%</strong> CVR \u{00B7} <strong>$820K</strong> rev</div></div>'
             + '<div class="strat-card" id="strat-r" onclick="pick(\'Go with Reach\')">'
