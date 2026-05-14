@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Progress Tracker</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0A4D68 0%, #088395 100%);
+            min-height: 100vh;
+            padding: 32px 20px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 40px 48px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left h1 {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #0A4D68 0%, #088395 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 6px;
+        }
+
+        .header-left p {
+            font-size: 15px;
+            color: #6b7280;
+        }
+
+        .add-week-btn {
+            background: linear-gradient(135deg, #0A4D68 0%, #088395 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 4px 12px rgba(8, 131, 149, 0.3);
+        }
+
+        .add-week-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(8, 131, 149, 0.5);
+        }
+
+        .summary-section {
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .summary-header {
+            padding: 20px 32px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #05BFDB 0%, #088395 100%);
+            transition: all 0.2s;
+        }
+
+        .summary-header:hover {
+            opacity: 0.95;
+        }
+
+        .summary-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .collapse-icon {
+            font-size: 14px;
+            transition: transform 0.2s;
+        }
+
+        .summary-section.collapsed .collapse-icon {
+            transform: rotate(-90deg);
+        }
+
+        .summary-content {
+            padding: 28px 32px;
+        }
+
+        .summary-section.collapsed .summary-content {
+            display: none;
+        }
+
+        .summary-category {
+            margin-bottom: 28px;
+        }
+
+        .summary-category:last-child {
+            margin-bottom: 0;
+        }
+
+        .summary-category-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 14px;
+            padding-left: 14px;
+            border-left: 4px solid #088395;
+        }
+
+        .summary-item {
+            padding: 14px 16px;
+            background: #f9fafb;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 3px solid #e5e7eb;
+        }
+
+        .summary-task {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 6px;
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge.todo {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-badge.progress {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-badge.done {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-badge.blocked {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .summary-task-text {
+            font-size: 14px;
+            color: #1f2937;
+        }
+
+        .summary-latest-update {
+            color: #6b7280;
+            font-size: 13px;
+            padding-left: 2px;
+        }
+
+        .week-card {
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .week-card:hover {
+            border-color: #088395;
+        }
+
+        .week-header {
+            padding: 20px 32px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #0A4D68 0%, #05BFDB 100%);
+            transition: all 0.2s;
+        }
+
+        .week-header:hover {
+            opacity: 0.95;
+        }
+
+        .week-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .week-card.collapsed .collapse-icon {
+            transform: rotate(-90deg);
+        }
+
+        .week-content {
+            display: block;
+        }
+
+        .week-card.collapsed .week-content {
+            display: none;
+        }
+
+        .category-section {
+            border-bottom: 2px solid #f3f4f6;
+        }
+
+        .category-section:last-child {
+            border-bottom: none;
+        }
+
+        .category-header {
+            padding: 20px 32px;
+            background: linear-gradient(to right, #fafafa, #f9fafb);
+            font-weight: 700;
+            color: #1f2937;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .category-icon {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0A4D68 0%, #088395 100%);
+        }
+
+        .tasks-table {
+            width: 100%;
+        }
+
+        .table-header {
+            display: grid;
+            grid-template-columns: 2.5fr 180px 60px 3fr;
+            gap: 20px;
+            padding: 16px 32px;
+            background: #f9fafb;
+            font-size: 12px;
+            font-weight: 700;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .task-row {
+            display: grid;
+            grid-template-columns: 2.5fr 180px 60px 3fr;
+            gap: 20px;
+            padding: 20px 32px;
+            border-bottom: 1px solid #f3f4f6;
+            align-items: start;
+            transition: all 0.15s;
+        }
+
+        .task-row:hover {
+            background: linear-gradient(to right, #fafafa, #ffffff);
+        }
+
+        .task-row:last-child {
+            border-bottom: none;
+        }
+
+        .task-name {
+            font-size: 14px;
+            color: #1f2937;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        .task-name.completed {
+            text-decoration: line-through;
+            color: #9ca3af;
+        }
+
+        .task-status-cell {
+            display: flex;
+            align-items: center;
+        }
+
+        .status-select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            background: white;
+            transition: all 0.15s;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+        }
+
+        .status-select:hover {
+            border-color: #088395;
+        }
+
+        .status-select:focus {
+            border-color: #088395;
+            box-shadow: 0 0 0 3px rgba(8, 131, 149, 0.1);
+        }
+
+        .status-select.todo {
+            background: #fef3c7;
+            color: #92400e;
+            border-color: #fbbf24;
+        }
+
+        .status-select.progress {
+            background: #dbeafe;
+            color: #1e40af;
+            border-color: #3b82f6;
+        }
+
+        .status-select.done {
+            background: #dcfce7;
+            color: #166534;
+            border-color: #22c55e;
+        }
+
+        .status-select.blocked {
+            background: #fee2e2;
+            color: #991b1b;
+            border-color: #ef4444;
+        }
+
+        .task-checkbox-cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #088395;
+        }
+
+        .task-updates {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .update-item {
+            background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            border-left: 3px solid #088395;
+            transition: all 0.2s;
+        }
+
+        .update-item:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transform: translateX(2px);
+        }
+
+        .update-date {
+            font-weight: 700;
+            color: #088395;
+            font-size: 11px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .update-text {
+            color: #374151;
+            line-height: 1.6;
+        }
+
+        .no-updates {
+            color: #9ca3af;
+            font-size: 13px;
+            font-style: italic;
+        }
+
+        .add-update-btn {
+            background: white;
+            border: 2px dashed #d1d5db;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            color: #6b7280;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .add-update-btn:hover {
+            background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+            border-color: #088395;
+            color: #088395;
+        }
+
+        .add-category-btn {
+            background: white;
+            border: 2px dashed #d1d5db;
+            padding: 12px 20px;
+            margin: 20px 32px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #6b7280;
+            width: calc(100% - 64px);
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .add-category-btn:hover {
+            background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+            border-color: #088395;
+            color: #088395;
+        }
+
+        .date-input {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .date-input:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .date-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.95);
+            color: #0A4D68;
+            border-color: white;
+        }
+
+        .date-input::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            cursor: pointer;
+        }
+
+        .date-input:focus::-webkit-calendar-picker-indicator {
+            filter: invert(0);
+        }
+
+        .delete-week-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            opacity: 0.7;
+        }
+
+        .delete-week-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        .delete-week-btn:active {
+            transform: scale(0.95);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: white;
+            font-size: 16px;
+        }
+
+        .sync-status {
+            display: inline-block;
+            padding: 6px 12px;
+            background: rgba(34, 197, 94, 0.3);
+            border-radius: 8px;
+            color: white;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <h1>📊 Weekly Progress Tracker</h1>
+                <p>Track action items and updates across weeks <span class="sync-status" id="syncStatus">✓ Synced</span></p>
+            </div>
+            <button class="add-week-btn" onclick="addWeek()">+ Add Week</button>
+        </div>
+
+        <div class="summary-section collapsed" id="summarySection">
+            <div class="summary-header" onclick="toggleSummary()">
+                <span class="collapse-icon">▶</span>
+                <span class="summary-title">Summary</span>
+            </div>
+            <div class="summary-content" id="summaryContent"></div>
+        </div>
+
+        <div id="weeksList">
+            <div class="loading">Loading your tracker...</div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getDatabase, ref, onValue, set } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBO4ZSNWY3XJjVz5TkK2dOXIDRUZZCph44",
+            authDomain: "weekly-tracker-e184a.firebaseapp.com",
+            databaseURL: "https://weekly-tracker-e184a-default-rtdb.firebaseio.com",
+            projectId: "weekly-tracker-e184a",
+            storageBucket: "weekly-tracker-e184a.firebasestorage.app",
+            messagingSenderId: "446246408009",
+            appId: "1:446246408009:web:7dba73e9fa68400bc6d498",
+            measurementId: "G-QES5R2BMLD"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        let weekData = [];
+
+        // Listen for data changes in real-time (shared data - no auth needed!)
+        const dataRef = ref(database, 'sharedWeekData');
+        onValue(dataRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                weekData = data;
+            } else {
+                // Initialize with default data
+                weekData = [
+                    {
+                        weekStart: '2026-05-13',
+                        weekEnd: '2026-05-19',
+                        categories: {
+                            'Reimagined Experience': [
+                                { text: 'Walk-through the latest Data 360 experience to Engineering', status: 'todo', updates: [] },
+                                { text: 'Review the current and reimagined parallel experience strategy with Engineering', status: 'todo', updates: [] },
+                                { text: 'Demo of agentic + slack experience to share with Rahul/MK/Marc', status: 'todo', updates: [] }
+                            ],
+                            'Segment Approval Workflow': [
+                                { text: 'Based on Elevance call, connect with Engineering to discuss proposal for cumulative counts ask', status: 'todo', updates: [] },
+                                { text: 'Connect with Elevance team on Friday to understand and validate the cumulative count ask', status: 'todo', updates: [] },
+                                { text: 'Write/Update PRD for cumulative count requirements', status: 'todo', updates: [] }
+                            ],
+                            'Streaming Segmentation': [
+                                { text: 'Check with Deepak on any thread with MC team if they are going ahead with real-time sku for this use-case', status: 'todo', updates: [] }
+                            ]
+                        }
+                    },
+                    {
+                        weekStart: '2026-04-29',
+                        weekEnd: '2026-05-05',
+                        categories: {
+                            'Reimagined Experience': [
+                                { text: 'Discuss with Luke to pick-up the pace of prototype updates', status: 'todo', updates: [] },
+                                { text: 'Take more control of vibe coding prototype as needed', status: 'todo', updates: [] },
+                                { text: 'Need to update prototype for full parity on segmentation builder from slack and Data 360 UI', status: 'todo', updates: [] },
+                                { text: 'Discuss with Brad on above', status: 'todo', updates: [] },
+                                { text: 'Start with user testing plan', status: 'todo', updates: [] },
+                                { text: 'Work with Sameer/Darshna on AI accuracy for natural language segment creation', status: 'todo', updates: [] }
+                            ],
+                            'Streaming Segmentation': [
+                                { text: 'Start a thread with Lucie to understand - Any particular use-cases which could not be solved by real-time or data actions?', status: 'todo', updates: [] }
+                            ],
+                            'Segment Approval Workflow': [
+                                { text: 'Wait for Elevance to come back on requirements', status: 'todo', updates: [] },
+                                { text: 'Understand from Mandeep on challenges in Core object approach', status: 'todo', updates: [] }
+                            ],
+                            'SQL based Segments': [
+                                { text: 'Need product thinking on sql based containers in UI segments', status: 'todo', updates: [] },
+                                { text: 'Evaluate bandwidth and transition topic to other PMs if needed', status: 'todo', updates: [] }
+                            ]
+                        }
+                    }
+                ];
+                saveData();
+            }
+            renderWeeks();
+            updateSyncStatus(true);
+        });
+
+        function updateSyncStatus(synced) {
+            const status = document.getElementById('syncStatus');
+            status.textContent = synced ? '✓ Synced' : '🔄 Syncing...';
+        }
+
+        window.saveData = function() {
+            updateSyncStatus(false);
+            set(ref(database, 'sharedWeekData'), weekData)
+                .then(() => updateSyncStatus(true))
+                .catch(error => {
+                    console.error('Error saving data:', error);
+                    updateSyncStatus(false);
+                });
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return 'Invalid Date';
+            const date = new Date(dateStr + 'T00:00:00');
+            if (isNaN(date.getTime())) return dateStr;
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        window.renderWeeks = function() {
+            const weeksList = document.getElementById('weeksList');
+            weeksList.innerHTML = weekData.map((week, weekIndex) => {
+                const categories = Object.entries(week.categories);
+                return `
+                    <div class="week-card ${weekIndex > 0 ? 'collapsed' : ''}" id="week-${weekIndex}">
+                        <div class="week-header">
+                            <div class="week-title">
+                                <span class="collapse-icon" onclick="toggleWeek(${weekIndex})">▶</span>
+                                <input type="date"
+                                       class="date-input"
+                                       value="${week.weekStart}"
+                                       onchange="updateWeekDate(${weekIndex}, 'start', this.value)"
+                                       onclick="event.stopPropagation()">
+                                <span style="color: white; font-weight: 500;">—</span>
+                                <input type="date"
+                                       class="date-input"
+                                       value="${week.weekEnd}"
+                                       onchange="updateWeekDate(${weekIndex}, 'end', this.value)"
+                                       onclick="event.stopPropagation()">
+                            </div>
+                            <button class="delete-week-btn" onclick="deleteWeek(${weekIndex}); event.stopPropagation();" title="Delete week">
+                                🗑️
+                            </button>
+                        </div>
+                        <div class="week-content">
+                            ${categories.map(([category, tasks]) => `
+                                <div class="category-section">
+                                    <div class="category-header">
+                                        <span class="category-icon"></span>
+                                        ${category}
+                                    </div>
+                                    <div class="tasks-table">
+                                        <div class="table-header">
+                                            <div>Task</div>
+                                            <div>Status</div>
+                                            <div style="text-align: center;">Done</div>
+                                            <div>Updates</div>
+                                        </div>
+                                        ${tasks.map((task, taskIndex) => `
+                                            <div class="task-row">
+                                                <div class="task-name ${task.status === 'done' ? 'completed' : ''}">${task.text}</div>
+                                                <div class="task-status-cell">
+                                                    <select class="status-select ${task.status}"
+                                                            onchange="changeTaskStatus(${weekIndex}, '${escapeQuotes(category)}', ${taskIndex}, this.value)">
+                                                        <option value="todo" ${task.status === 'todo' ? 'selected' : ''}>To Do</option>
+                                                        <option value="progress" ${task.status === 'progress' ? 'selected' : ''}>In Progress</option>
+                                                        <option value="done" ${task.status === 'done' ? 'selected' : ''}>Done</option>
+                                                        <option value="blocked" ${task.status === 'blocked' ? 'selected' : ''}>Blocked</option>
+                                                    </select>
+                                                </div>
+                                                <div class="task-checkbox-cell">
+                                                    <input type="checkbox"
+                                                           class="task-checkbox"
+                                                           ${task.status === 'done' ? 'checked' : ''}
+                                                           onchange="toggleTaskStatus(${weekIndex}, '${escapeQuotes(category)}', ${taskIndex})">
+                                                </div>
+                                                <div class="task-updates">
+                                                    ${task.updates && task.updates.length > 0 ? `
+                                                        <div>
+                                                            ${task.updates.map(update => `
+                                                                <div class="update-item">
+                                                                    <div class="update-date">${update.date}</div>
+                                                                    <div class="update-text">${update.text}</div>
+                                                                </div>
+                                                            `).join('')}
+                                                        </div>
+                                                    ` : '<div class="no-updates">No updates yet</div>'}
+                                                    <button class="add-update-btn" onclick="addTaskUpdate(${weekIndex}, '${escapeQuotes(category)}', ${taskIndex})">
+                                                        + Add Update
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            `).join('')}
+                            <button class="add-category-btn" onclick="addCategory(${weekIndex})">+ Add Topic</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function escapeQuotes(str) {
+            return str.replace(/'/g, "\\'");
+        }
+
+        window.toggleWeek = function(weekIndex) {
+            const weekEl = document.getElementById(`week-${weekIndex}`);
+            weekEl.classList.toggle('collapsed');
+        }
+
+        window.toggleSummary = function() {
+            const summarySection = document.getElementById('summarySection');
+            summarySection.classList.toggle('collapsed');
+            if (!summarySection.classList.contains('collapsed')) {
+                renderSummary();
+            }
+        }
+
+        function renderSummary() {
+            const summaryContent = document.getElementById('summaryContent');
+            const categoryMap = {};
+
+            weekData.forEach(week => {
+                Object.entries(week.categories).forEach(([category, tasks]) => {
+                    if (!categoryMap[category]) {
+                        categoryMap[category] = [];
+                    }
+                    tasks.forEach(task => {
+                        const existingTask = categoryMap[category].find(t => t.text === task.text);
+                        if (existingTask) {
+                            if (task.updates && task.updates.length > 0) {
+                                existingTask.updates = [...(existingTask.updates || []), ...task.updates];
+                            }
+                            existingTask.status = task.status;
+                        } else {
+                            categoryMap[category].push({
+                                text: task.text,
+                                status: task.status,
+                                updates: task.updates || []
+                            });
+                        }
+                    });
+                });
+            });
+
+            summaryContent.innerHTML = Object.entries(categoryMap).map(([category, tasks]) => `
+                <div class="summary-category">
+                    <div class="summary-category-title">${category}</div>
+                    ${tasks.map(task => {
+                        const latestUpdate = task.updates && task.updates.length > 0
+                            ? task.updates[task.updates.length - 1]
+                            : null;
+                        return `
+                            <div class="summary-item">
+                                <div class="summary-task">
+                                    <span class="status-badge ${task.status}">${task.status}</span>
+                                    <span class="summary-task-text">${task.text}</span>
+                                </div>
+                                ${latestUpdate ? `
+                                    <div class="summary-latest-update">
+                                        Latest: ${latestUpdate.text} <em>(${latestUpdate.date})</em>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `).join('');
+        }
+
+        window.addWeek = function() {
+            const firstWeek = weekData[0];
+            const firstStart = new Date(firstWeek.weekStart + 'T00:00:00');
+            const newEnd = new Date(firstStart);
+            newEnd.setDate(newEnd.getDate() - 1);
+            const newStart = new Date(newEnd);
+            newStart.setDate(newStart.getDate() - 6);
+
+            weekData.unshift({
+                weekStart: newStart.toISOString().split('T')[0],
+                weekEnd: newEnd.toISOString().split('T')[0],
+                categories: {}
+            });
+            saveData();
+        }
+
+        window.addCategory = function(weekIndex) {
+            const categoryName = prompt('Enter topic name:');
+            if (categoryName && categoryName.trim()) {
+                if (!weekData[weekIndex].categories[categoryName]) {
+                    weekData[weekIndex].categories[categoryName] = [];
+                }
+                const taskText = prompt('Enter first action item:');
+                if (taskText && taskText.trim()) {
+                    weekData[weekIndex].categories[categoryName].push({
+                        text: taskText,
+                        status: 'todo',
+                        updates: []
+                    });
+                }
+                saveData();
+            }
+        }
+
+        window.changeTaskStatus = function(weekIndex, category, taskIndex, newStatus) {
+            weekData[weekIndex].categories[category][taskIndex].status = newStatus;
+            const select = event.target;
+            select.className = `status-select ${newStatus}`;
+            saveData();
+        }
+
+        window.toggleTaskStatus = function(weekIndex, category, taskIndex) {
+            const task = weekData[weekIndex].categories[category][taskIndex];
+            task.status = task.status === 'done' ? 'todo' : 'done';
+            saveData();
+        }
+
+        window.addTaskUpdate = function(weekIndex, category, taskIndex) {
+            const updateText = prompt('Enter update:');
+            if (updateText && updateText.trim()) {
+                const today = new Date().toISOString().split('T')[0];
+                weekData[weekIndex].categories[category][taskIndex].updates.push({
+                    date: today,
+                    text: updateText
+                });
+                saveData();
+            }
+        }
+
+        window.updateWeekDate = function(weekIndex, type, newDate) {
+            if (type === 'start') {
+                weekData[weekIndex].weekStart = newDate;
+            } else {
+                weekData[weekIndex].weekEnd = newDate;
+            }
+            saveData();
+        }
+
+        window.deleteWeek = function(weekIndex) {
+            if (confirm('Are you sure you want to delete this week? All tasks and updates will be lost.')) {
+                weekData.splice(weekIndex, 1);
+                saveData();
+            }
+        }
+    </script>
+</body>
+</html>
