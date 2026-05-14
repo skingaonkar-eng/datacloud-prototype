@@ -272,7 +272,7 @@
 
         .table-header {
             display: grid;
-            grid-template-columns: 2.5fr 180px 60px 3fr;
+            grid-template-columns: 2.5fr 180px 60px 3fr 80px;
             gap: 20px;
             padding: 16px 32px;
             background: #f9fafb;
@@ -285,7 +285,7 @@
 
         .task-row {
             display: grid;
-            grid-template-columns: 2.5fr 180px 60px 3fr;
+            grid-template-columns: 2.5fr 180px 60px 3fr 80px;
             gap: 20px;
             padding: 20px 32px;
             border-bottom: 1px solid #f3f4f6;
@@ -456,6 +456,49 @@
             background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
             border-color: #088395;
             color: #088395;
+        }
+
+        .add-task-btn {
+            background: linear-gradient(135deg, #0A4D68 0%, #088395 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            margin: 12px 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .add-task-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(8, 131, 149, 0.3);
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .task-row:hover .task-actions {
+            opacity: 1;
+        }
+
+        .edit-task-btn, .delete-task-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 4px;
+            transition: transform 0.2s;
+        }
+
+        .edit-task-btn:hover, .delete-task-btn:hover {
+            transform: scale(1.2);
         }
 
         .date-input {
@@ -698,6 +741,7 @@
                                             <div>Status</div>
                                             <div style="text-align: center;">Done</div>
                                             <div>Updates</div>
+                                            <div>Actions</div>
                                         </div>
                                         ${tasks.map((task, taskIndex) => `
                                             <div class="task-row">
@@ -732,8 +776,13 @@
                                                         + Add Update
                                                     </button>
                                                 </div>
+                                                <div class="task-actions">
+                                                    <button class="edit-task-btn" onclick="editTask(${weekIndex}, '${escapeQuotes(category)}', ${taskIndex})" title="Edit task">✏️</button>
+                                                    <button class="delete-task-btn" onclick="deleteTask(${weekIndex}, '${escapeQuotes(category)}', ${taskIndex})" title="Delete task">🗑️</button>
+                                                </div>
                                             </div>
                                         `).join('')}
+                                        <button class="add-task-btn" onclick="addTask(${weekIndex}, '${escapeQuotes(category)}')">+ Add Task</button>
                                     </div>
                                 </div>
                             `).join('')}
@@ -884,6 +933,35 @@
         window.deleteWeek = function(weekIndex) {
             if (confirm('Are you sure you want to delete this week? All tasks and updates will be lost.')) {
                 weekData.splice(weekIndex, 1);
+                saveData();
+            }
+        }
+
+        window.addTask = function(weekIndex, category) {
+            const taskText = prompt('Enter new task:');
+            if (taskText && taskText.trim()) {
+                weekData[weekIndex].categories[category].push({
+                    text: taskText.trim(),
+                    status: 'todo',
+                    updates: []
+                });
+                saveData();
+            }
+        }
+
+        window.editTask = function(weekIndex, category, taskIndex) {
+            const currentTask = weekData[weekIndex].categories[category][taskIndex];
+            const newText = prompt('Edit task:', currentTask.text);
+            if (newText && newText.trim()) {
+                weekData[weekIndex].categories[category][taskIndex].text = newText.trim();
+                saveData();
+            }
+        }
+
+        window.deleteTask = function(weekIndex, category, taskIndex) {
+            const task = weekData[weekIndex].categories[category][taskIndex];
+            if (confirm(`Delete task: "${task.text}"?`)) {
+                weekData[weekIndex].categories[category].splice(taskIndex, 1);
                 saveData();
             }
         }
