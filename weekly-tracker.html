@@ -779,6 +779,52 @@
             color: var(--gray-700);
             white-space: pre-wrap;
             word-wrap: break-word;
+            cursor: text;
+        }
+
+        .feed-item-wrap {
+            position: relative;
+        }
+
+        .feed-actions-inline {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            display: flex;
+            gap: 4px;
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+
+        .feed-item-wrap:hover .feed-actions-inline {
+            opacity: 1;
+        }
+
+        .feed-action-btn {
+            width: 24px;
+            height: 24px;
+            background: white;
+            border: 1px solid var(--gray-200);
+            color: var(--gray-500);
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            transition: all 0.15s;
+        }
+
+        .feed-action-btn:hover {
+            color: var(--marine-700);
+            border-color: var(--marine-400);
+            background: var(--marine-50);
+        }
+
+        .feed-action-btn.danger:hover {
+            color: #dc2626;
+            border-color: #fca5a5;
+            background: #fef2f2;
         }
 
         .empty-state {
@@ -1378,10 +1424,18 @@
                         ${updates.length === 0
                             ? '<div class="empty-state">No updates yet</div>'
                             : ''}
-                        ${updates.map(u => `
-                            <div class="feed-item update">
-                                <div class="feed-meta">📝 ${escText(u.date)}</div>
-                                <div class="feed-text">${escText(u.text)}</div>
+                        ${updates.map((u, ui) => `
+                            <div class="feed-item-wrap" id="update-${taskKey}-${ui}">
+                                <div class="feed-item update">
+                                    <div class="feed-meta">📝 ${escText(u.date)}</div>
+                                    <div class="feed-text">${escText(u.text)}</div>
+                                </div>
+                                <div class="feed-actions-inline">
+                                    <button class="feed-action-btn" title="Edit"
+                                            onclick="editUpdate(${wi}, '${escJs(category)}', ${ti}, ${ui})">✎</button>
+                                    <button class="feed-action-btn danger" title="Delete"
+                                            onclick="deleteUpdate(${wi}, '${escJs(category)}', ${ti}, ${ui})">×</button>
+                                </div>
                             </div>
                         `).join('')}
                         <div id="new-feed-${taskKey}"></div>
@@ -1742,6 +1796,90 @@
                     container.innerHTML = '';
                 }
             });
+        };
+
+        window.editUpdate = function(wi, category, ti, ui) {
+            const wrapId = `update-${wi}-${escAttr(category)}-${ti}-${ui}`;
+            const wrap = document.getElementById(wrapId);
+            if (!wrap || wrap.dataset.editing === 'true') return;
+            wrap.dataset.editing = 'true';
+
+            const update = weekData[wi].categories[category][ti].updates[ui];
+            const originalText = update.text;
+
+            // Replace contents with editor
+            wrap.innerHTML = `
+                <div class="feed-item update">
+                    <div class="feed-meta">📝 ${escText(update.date)}</div>
+                    <textarea class="inline-textarea"></textarea>
+                    <div class="save-row">
+                        <button class="save-btn" data-action="save">Save</button>
+                        <button class="cancel-btn" data-action="cancel">Cancel</button>
+                    </div>
+                </div>
+            `;
+            const ta = wrap.querySelector('textarea');
+            ta.value = originalText;
+            ta.focus();
+            ta.setSelectionRange(ta.value.length, ta.value.length);
+
+            const restoreView = (text) => {
+                wrap.dataset.editing = 'false';
+                wrap.innerHTML = `
+                    <div class="feed-item update">
+                        <div class="feed-meta">📝 ${escText(update.date)}</div>
+                        <div class="feed-text"></div>
+                    </div>
+                    <div class="feed-actions-inline">
+                        <button class="feed-action-btn" title="Edit">✎</button>
+                        <button class="feed-action-btn danger" title="Delete">×</button>
+                    </div>
+                `;
+                wrap.querySelector('.feed-text').textContent = text;
+                const [editBtn, deleteBtn] = wrap.querySelectorAll('.feed-action-btn');
+                editBtn.onclick = () => window.editUpdate(wi, category, ti, ui);
+                deleteBtn.onclick = () => window.deleteUpdate(wi, category, ti, ui);
+            };
+
+            const doSave = () => {
+                const v = ta.value.trim();
+                if (!v) {
+                    restoreView(originalText);
+                    return;
+                }
+                if (v === originalText) {
+                    restoreView(originalText);
+                    return;
+                }
+                weekData[wi].categories[category][ti].updates[ui].text = v;
+                restoreView(v);
+                saveData();
+            };
+
+            wrap.querySelector('[data-action="save"]').onclick = doSave;
+            wrap.querySelector('[data-action="cancel"]').onclick = () => restoreView(originalText);
+
+            ta.addEventListener('keydown', e => {
+                if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+                    e.preventDefault();
+                    doSave();
+                } else if (e.key === 'Escape') {
+                    e.preventDefault();
+                    restoreView(originalText);
+                }
+            });
+        };
+
+        window.deleteUpdate = function(wi, category, ti, ui) {
+            if (!confirm('Delete this update?')) return;
+            const wrapId = `update-${wi}-${escAttr(category)}-${ti}-${ui}`;
+            const wrap = document.getElementById(wrapId);
+
+            weekData[wi].categories[category][ti].updates.splice(ui, 1);
+            saveData();
+
+            // Need to re-render the task row because indices shifted
+            renderWeeks();
         };
 
         // ─── SUMMARY ─────────────────────────────────────────
