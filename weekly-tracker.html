@@ -4,8 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weekly Progress Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        :root {
+            --marine-900: #052E3F;
+            --marine-800: #0A4D68;
+            --marine-700: #0a5a7a;
+            --marine-600: #088395;
+            --marine-500: #05BFDB;
+            --marine-400: #6ed4e2;
+            --marine-50: #eff9fb;
+
+            --gray-900: #0f172a;
+            --gray-800: #1e293b;
+            --gray-700: #334155;
+            --gray-600: #475569;
+            --gray-500: #64748b;
+            --gray-400: #94a3b8;
+            --gray-300: #cbd5e1;
+            --gray-200: #e2e8f0;
+            --gray-100: #f1f5f9;
+            --gray-50: #f8fafc;
+
+            --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+            --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.06);
+            --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.10);
+            --shadow-xl: 0 20px 48px rgba(15, 23, 42, 0.12);
+        }
 
         * {
             margin: 0;
@@ -13,474 +40,366 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            height: 100%;
+        }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #0A4D68 0%, #088395 100%);
+            background: linear-gradient(180deg, #eff9fb 0%, #ffffff 50%, #eff9fb 100%);
+            color: var(--gray-900);
             min-height: 100vh;
-            padding: 32px 20px;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            line-height: 1.5;
         }
 
-        .container {
-            max-width: 1600px;
+        .app-shell {
+            max-width: 1400px;
             margin: 0 auto;
+            padding: 32px 24px 80px;
         }
 
-        .header {
-            background: white;
-            padding: 40px 48px;
-            border-radius: 16px;
-            margin-bottom: 24px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        /* ─── HEADER ───────────────────────────────────────── */
+        .app-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-end;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--gray-200);
         }
 
-        .header-left h1 {
-            font-size: 28px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #0A4D68 0%, #088395 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 6px;
-        }
-
-        .header-left p {
-            font-size: 15px;
-            color: #6b7280;
-        }
-
-        .add-week-btn {
-            background: linear-gradient(135deg, #0A4D68 0%, #088395 100%);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.2s;
-            font-family: 'Inter', sans-serif;
-            box-shadow: 0 4px 12px rgba(8, 131, 149, 0.3);
-        }
-
-        .add-week-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(8, 131, 149, 0.5);
-        }
-
-        .summary-section {
-            background: white;
-            border-radius: 16px;
-            margin-bottom: 24px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            overflow: hidden;
-        }
-
-        .summary-header {
-            padding: 20px 32px;
-            cursor: pointer;
+        .brand {
             display: flex;
             align-items: center;
-            gap: 12px;
-            background: linear-gradient(135deg, #05BFDB 0%, #088395 100%);
-            transition: all 0.2s;
+            gap: 16px;
         }
 
-        .summary-header:hover {
-            opacity: 0.95;
-        }
-
-        .summary-title {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 15px;
-            font-weight: 600;
-            color: white;
-        }
-
-        .collapse-icon {
-            font-size: 14px;
-            transition: transform 0.2s;
-        }
-
-        .summary-section.collapsed .collapse-icon {
-            transform: rotate(-90deg);
-        }
-
-        .summary-content {
-            padding: 28px 32px;
-        }
-
-        .summary-section.collapsed .summary-content {
-            display: none;
-        }
-
-        .summary-category {
-            margin-bottom: 28px;
-        }
-
-        .summary-category:last-child {
-            margin-bottom: 0;
-        }
-
-        .summary-category-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: #1f2937;
-            margin-bottom: 14px;
-            padding-left: 14px;
-            border-left: 4px solid #088395;
-        }
-
-        .summary-item {
-            padding: 14px 16px;
-            background: #f9fafb;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            border-left: 3px solid #e5e7eb;
-        }
-
-        .summary-task {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 6px;
-        }
-
-        .status-badge {
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .status-badge.todo {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        .status-badge.progress {
-            background: #dbeafe;
-            color: #1e40af;
-        }
-
-        .status-badge.done {
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        .status-badge.blocked {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        .summary-task-text {
-            font-size: 14px;
-            color: #1f2937;
-        }
-
-        .summary-latest-update {
-            color: #6b7280;
-            font-size: 13px;
-            padding-left: 2px;
-        }
-
-        .week-card {
-            background: white;
-            border-radius: 16px;
-            margin-bottom: 24px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            overflow: hidden;
-            border: 2px solid transparent;
-            transition: all 0.2s;
-        }
-
-        .week-card:hover {
-            border-color: #088395;
-        }
-
-        .week-header {
-            padding: 20px 32px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: linear-gradient(135deg, #0A4D68 0%, #05BFDB 100%);
-            transition: all 0.2s;
-        }
-
-        .week-header:hover {
-            opacity: 0.95;
-        }
-
-        .week-title {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 15px;
-            font-weight: 600;
-            color: white;
-        }
-
-        .week-card.collapsed .collapse-icon {
-            transform: rotate(-90deg);
-        }
-
-        .week-content {
-            display: block;
-        }
-
-        .week-card.collapsed .week-content {
-            display: none;
-        }
-
-        .category-section {
-            border-bottom: 2px solid #f3f4f6;
-        }
-
-        .category-section:last-child {
-            border-bottom: none;
-        }
-
-        .category-header {
-            padding: 20px 32px;
-            background: linear-gradient(to right, #fafafa, #f9fafb);
-            font-weight: 700;
-            color: #1f2937;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .category-icon {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #0A4D68 0%, #088395 100%);
-        }
-
-        .tasks-table {
-            width: 100%;
-        }
-
-        .table-header {
-            display: grid;
-            grid-template-columns: 2.5fr 180px 60px 3fr;
-            gap: 20px;
-            padding: 16px 32px;
-            background: #f9fafb;
-            font-size: 12px;
-            font-weight: 700;
-            color: #6b7280;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .task-row {
-            display: grid;
-            grid-template-columns: 2.5fr 180px 60px 3fr;
-            gap: 20px;
-            padding: 20px 32px;
-            border-bottom: 1px solid #f3f4f6;
-            align-items: start;
-            transition: all 0.15s;
-        }
-
-        .task-row:hover {
-            background: linear-gradient(to right, #fafafa, #ffffff);
-        }
-
-        .task-row:last-child {
-            border-bottom: none;
-        }
-
-        .task-name {
-            font-size: 14px;
-            color: #1f2937;
-            font-weight: 500;
-            line-height: 1.6;
-        }
-
-        .task-name.completed {
-            text-decoration: line-through;
-            color: #9ca3af;
-        }
-
-        .task-status-cell {
-            display: flex;
-            align-items: center;
-        }
-
-        .status-select {
-            width: 100%;
-            padding: 8px 12px;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            background: white;
-            transition: all 0.15s;
-            font-family: 'Inter', sans-serif;
-            outline: none;
-        }
-
-        .status-select:hover {
-            border-color: #088395;
-        }
-
-        .status-select:focus {
-            border-color: #088395;
-            box-shadow: 0 0 0 3px rgba(8, 131, 149, 0.1);
-        }
-
-        .status-select.todo {
-            background: #fef3c7;
-            color: #92400e;
-            border-color: #fbbf24;
-        }
-
-        .status-select.progress {
-            background: #dbeafe;
-            color: #1e40af;
-            border-color: #3b82f6;
-        }
-
-        .status-select.done {
-            background: #dcfce7;
-            color: #166534;
-            border-color: #22c55e;
-        }
-
-        .status-select.blocked {
-            background: #fee2e2;
-            color: #991b1b;
-            border-color: #ef4444;
-        }
-
-        .task-checkbox-cell {
+        .brand-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--marine-700), var(--marine-500));
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
+            color: white;
+            font-size: 22px;
+            font-weight: 700;
+            box-shadow: var(--shadow-md);
         }
 
-        .task-checkbox {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-            accent-color: #088395;
+        .brand-text h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--gray-900);
+            letter-spacing: -0.5px;
         }
 
-        .task-updates {
+        .brand-text p {
+            font-size: 14px;
+            color: var(--gray-500);
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            margin-top: 2px;
+        }
+
+        .sync-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 3px 10px;
+            background: var(--gray-100);
+            color: var(--gray-600);
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .sync-pill.synced {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .sync-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .header-actions {
+            display: flex;
             gap: 10px;
         }
 
-        .update-item {
-            background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
-            padding: 12px 16px;
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border: none;
             border-radius: 10px;
-            font-size: 13px;
-            border-left: 3px solid #088395;
-            transition: all 0.2s;
-        }
-
-        .update-item:hover {
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            transform: translateX(2px);
-        }
-
-        .update-date {
-            font-weight: 700;
-            color: #088395;
-            font-size: 11px;
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .update-text {
-            color: #374151;
-            line-height: 1.6;
-        }
-
-        .no-updates {
-            color: #9ca3af;
-            font-size: 13px;
-            font-style: italic;
-        }
-
-        .add-update-btn {
-            background: white;
-            border: 2px dashed #d1d5db;
-            padding: 8px 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            color: #6b7280;
-            transition: all 0.2s;
             font-family: 'Inter', sans-serif;
-        }
-
-        .add-update-btn:hover {
-            background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
-            border-color: #088395;
-            color: #088395;
-        }
-
-        .add-category-btn {
-            background: white;
-            border: 2px dashed #d1d5db;
-            padding: 12px 20px;
-            margin: 20px 32px;
-            border-radius: 10px;
-            cursor: pointer;
             font-size: 14px;
             font-weight: 600;
-            color: #6b7280;
-            width: calc(100% - 64px);
-            transition: all 0.2s;
-            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            white-space: nowrap;
         }
 
-        .add-category-btn:hover {
-            background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
-            border-color: #088395;
-            color: #088395;
+        .btn-primary {
+            background: linear-gradient(135deg, var(--marine-700), var(--marine-600));
+            color: white;
+            box-shadow: 0 2px 8px rgba(8, 131, 149, 0.25);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(8, 131, 149, 0.4);
+        }
+
+        .btn-ghost {
+            background: white;
+            color: var(--gray-700);
+            border: 1px solid var(--gray-200);
+        }
+
+        .btn-ghost:hover {
+            background: var(--gray-50);
+            border-color: var(--gray-300);
+        }
+
+        /* ─── SUMMARY ──────────────────────────────────────── */
+        .summary-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 16px;
+            margin-bottom: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .summary-toggle {
+            padding: 18px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.15s;
+        }
+
+        .summary-toggle:hover {
+            background: var(--gray-50);
+        }
+
+        .summary-toggle-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .summary-toggle-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--marine-50), white);
+            border: 1px solid var(--gray-200);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--marine-700);
+            font-size: 16px;
+        }
+
+        .summary-toggle-text {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--gray-900);
+        }
+
+        .summary-toggle-text small {
+            display: block;
+            font-size: 12px;
+            font-weight: 400;
+            color: var(--gray-500);
+            margin-top: 1px;
+        }
+
+        .chevron {
+            color: var(--gray-400);
+            transition: transform 0.2s;
+            font-size: 14px;
+        }
+
+        .summary-card.collapsed .chevron {
+            transform: rotate(-90deg);
+        }
+
+        .summary-body {
+            padding: 8px 24px 24px;
+            border-top: 1px solid var(--gray-100);
+        }
+
+        .summary-card.collapsed .summary-body {
+            display: none;
+        }
+
+        .summary-topic {
+            margin-top: 20px;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .summary-topic-header {
+            background: linear-gradient(135deg, var(--marine-800), var(--marine-600));
+            color: white;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .summary-topic-name {
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: -0.2px;
+        }
+
+        .summary-topic-meta {
+            display: flex;
+            gap: 8px;
+        }
+
+        .summary-meta-pill {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 100px;
+            letter-spacing: 0.3px;
+        }
+
+        .summary-task {
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--gray-100);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .summary-task:last-child {
+            border-bottom: none;
+        }
+
+        .summary-task-content {
+            flex: 1;
+        }
+
+        .summary-task-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-800);
+            line-height: 1.5;
+        }
+
+        .summary-task-name.done {
+            text-decoration: line-through;
+            color: var(--gray-400);
+        }
+
+        .summary-task-update {
+            margin-top: 6px;
+            font-size: 13px;
+            color: var(--gray-600);
+            line-height: 1.5;
+        }
+
+        .summary-task-update-date {
+            color: var(--marine-600);
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-right: 6px;
+        }
+
+        /* ─── WEEK CARD ─────────────────────────────────────── */
+        .week-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 16px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            transition: box-shadow 0.2s;
+        }
+
+        .week-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .week-header {
+            padding: 16px 20px;
+            background: linear-gradient(135deg, var(--marine-800), var(--marine-600));
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .week-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .week-header .chevron {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .week-card.collapsed .week-header .chevron {
+            transform: rotate(-90deg);
+        }
+
+        .week-dates {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 14px;
         }
 
         .date-input {
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             color: white;
-            padding: 6px 12px;
+            padding: 5px 10px;
             border-radius: 8px;
-            font-size: 14px;
-            font-weight: 500;
+            font-size: 13px;
+            font-weight: 600;
             font-family: 'Inter', sans-serif;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.15s;
         }
 
         .date-input:hover {
-            background: rgba(255, 255, 255, 0.3);
-            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.25);
         }
 
         .date-input:focus {
             outline: none;
-            background: rgba(255, 255, 255, 0.95);
-            color: #0A4D68;
-            border-color: white;
+            background: white;
+            color: var(--marine-800);
         }
 
         .date-input::-webkit-calendar-picker-indicator {
@@ -492,63 +411,536 @@
             filter: invert(0);
         }
 
-        .delete-week-btn {
-            background: rgba(255, 255, 255, 0.2);
+        .icon-btn {
+            background: rgba(255, 255, 255, 0.15);
             border: none;
             color: white;
-            padding: 4px 8px;
-            border-radius: 6px;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
-            transition: all 0.2s;
             display: flex;
             align-items: center;
-            opacity: 0.7;
+            justify-content: center;
+            font-size: 13px;
+            transition: all 0.15s;
+            opacity: 0.85;
         }
 
-        .delete-week-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
+        .icon-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
             opacity: 1;
-            transform: scale(1.05);
         }
 
-        .delete-week-btn:active {
-            transform: scale(0.95);
+        .icon-btn-danger:hover {
+            background: rgba(239, 68, 68, 0.5);
+        }
+
+        .week-body {
+            padding: 4px 0 12px;
+        }
+
+        .week-card.collapsed .week-body {
+            display: none;
+        }
+
+        /* ─── TOPIC ─────────────────────────────────────────── */
+        .topic {
+            margin: 16px 16px 8px;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            overflow: hidden;
+            background: white;
+            transition: border-color 0.15s;
+        }
+
+        .topic:hover {
+            border-color: var(--marine-400);
+        }
+
+        .topic-header {
+            padding: 12px 18px;
+            background: linear-gradient(135deg, var(--marine-50), white);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .topic-header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .topic-marker {
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(180deg, var(--marine-700), var(--marine-500));
+            border-radius: 2px;
+        }
+
+        .topic-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--marine-900);
+            letter-spacing: -0.2px;
+            cursor: text;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: background 0.15s;
+        }
+
+        .topic-name:hover {
+            background: rgba(8, 131, 149, 0.08);
+        }
+
+        .topic-task-count {
+            font-size: 12px;
+            color: var(--gray-500);
+            background: white;
+            padding: 2px 10px;
+            border-radius: 100px;
+            border: 1px solid var(--gray-200);
+            font-weight: 600;
+        }
+
+        .topic-actions {
+            display: flex;
+            gap: 4px;
+        }
+
+        .topic-icon-btn {
+            width: 28px;
+            height: 28px;
+            background: white;
+            border: 1px solid var(--gray-200);
+            color: var(--gray-500);
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transition: all 0.15s;
+        }
+
+        .topic-icon-btn:hover {
+            color: var(--marine-700);
+            border-color: var(--marine-400);
+            background: var(--marine-50);
+        }
+
+        .topic-icon-btn.danger:hover {
+            color: #dc2626;
+            border-color: #fca5a5;
+            background: #fef2f2;
+        }
+
+        /* ─── TASK TABLE ────────────────────────────────────── */
+        .task-table-head {
+            display: grid;
+            grid-template-columns: minmax(0, 2.5fr) 160px 44px minmax(0, 3fr) 80px;
+            gap: 16px;
+            padding: 10px 18px;
+            background: var(--gray-50);
+            border-bottom: 1px solid var(--gray-200);
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .task-table-head .col-done {
+            text-align: center;
+        }
+
+        .task-row {
+            display: grid;
+            grid-template-columns: minmax(0, 2.5fr) 160px 44px minmax(0, 3fr) 80px;
+            gap: 16px;
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--gray-100);
+            align-items: start;
+            transition: background 0.15s;
+        }
+
+        .task-row:hover {
+            background: var(--gray-50);
+        }
+
+        .task-row:last-child {
+            border-bottom: none;
+        }
+
+        .task-name {
+            font-size: 14px;
+            color: var(--gray-800);
+            font-weight: 500;
+            line-height: 1.6;
+            cursor: text;
+            padding: 6px 8px;
+            border-radius: 6px;
+            transition: background 0.15s;
+            min-height: 32px;
+            word-wrap: break-word;
+        }
+
+        .task-name:hover {
+            background: white;
+            box-shadow: inset 0 0 0 1px var(--gray-200);
+        }
+
+        .task-name.done {
+            text-decoration: line-through;
+            color: var(--gray-400);
+        }
+
+        .inline-input {
+            width: 100%;
+            padding: 6px 8px;
+            border: 2px solid var(--marine-500);
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+        }
+
+        .inline-textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid var(--marine-500);
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            resize: vertical;
+            min-height: 70px;
+            outline: none;
+        }
+
+        /* ─── STATUS DROPDOWN ───────────────────────────────── */
+        .status-select {
+            width: 100%;
+            padding: 7px 10px;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.15s;
+        }
+
+        .status-select:focus {
+            box-shadow: 0 0 0 3px rgba(8, 131, 149, 0.15);
+        }
+
+        .status-select.todo {
+            background: #fffbeb;
+            color: #92400e;
+            border-color: #fde68a;
+        }
+
+        .status-select.progress {
+            background: #eff6ff;
+            color: #1e40af;
+            border-color: #bfdbfe;
+        }
+
+        .status-select.done {
+            background: #f0fdf4;
+            color: #166534;
+            border-color: #bbf7d0;
+        }
+
+        .status-select.blocked {
+            background: #fef2f2;
+            color: #991b1b;
+            border-color: #fecaca;
+        }
+
+        /* ─── CHECKBOX ─────────────────────────────────────── */
+        .check-cell {
+            display: flex;
+            justify-content: center;
+            padding-top: 8px;
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--marine-600);
+        }
+
+        /* ─── UPDATES & COMMENTS ────────────────────────────── */
+        .updates-cell {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .feed-item {
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.5;
+            border-left: 3px solid;
+        }
+
+        .feed-item.update {
+            background: linear-gradient(135deg, var(--marine-50), #ffffff);
+            border-left-color: var(--marine-500);
+        }
+
+        .feed-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+            color: var(--marine-600);
+        }
+
+        .feed-text {
+            color: var(--gray-700);
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .empty-state {
+            color: var(--gray-400);
+            font-size: 12px;
+            font-style: italic;
+            padding: 4px 8px;
+        }
+
+        .feed-actions {
+            display: flex;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .feed-btn {
+            flex: 1;
+            background: white;
+            border: 1px dashed var(--gray-300);
+            padding: 7px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-600);
+            font-family: 'Inter', sans-serif;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .feed-btn.update-btn:hover {
+            background: var(--marine-50);
+            border-color: var(--marine-500);
+            border-style: solid;
+            color: var(--marine-700);
+        }
+
+        .save-row {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .save-btn {
+            background: var(--marine-600);
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .save-btn:hover {
+            background: var(--marine-700);
+        }
+
+        .cancel-btn {
+            background: var(--gray-100);
+            color: var(--gray-700);
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .cancel-btn:hover {
+            background: var(--gray-200);
+        }
+
+        /* ─── ROW ACTIONS ───────────────────────────────────── */
+        .row-actions {
+            display: flex;
+            gap: 4px;
+            justify-content: flex-end;
+            padding-top: 4px;
+            opacity: 0.4;
+            transition: opacity 0.15s;
+        }
+
+        .task-row:hover .row-actions {
+            opacity: 1;
+        }
+
+        .row-icon-btn {
+            width: 28px;
+            height: 28px;
+            background: white;
+            border: 1px solid var(--gray-200);
+            color: var(--gray-500);
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transition: all 0.15s;
+        }
+
+        .row-icon-btn:hover {
+            color: #dc2626;
+            border-color: #fca5a5;
+            background: #fef2f2;
+        }
+
+        /* ─── ADD BUTTONS ───────────────────────────────────── */
+        .add-task-btn {
+            width: calc(100% - 36px);
+            margin: 12px 18px;
+            padding: 10px;
+            background: white;
+            border: 1px dashed var(--gray-300);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-500);
+            font-family: 'Inter', sans-serif;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .add-task-btn:hover {
+            background: var(--marine-50);
+            border-color: var(--marine-500);
+            border-style: solid;
+            color: var(--marine-700);
+        }
+
+        .add-topic-btn {
+            width: calc(100% - 32px);
+            margin: 8px 16px 16px;
+            padding: 14px;
+            background: white;
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-600);
+            font-family: 'Inter', sans-serif;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .add-topic-btn:hover {
+            background: var(--marine-50);
+            border-color: var(--marine-500);
+            border-style: solid;
+            color: var(--marine-700);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ─── HIGHLIGHT NEW ─────────────────────────────────── */
+        @keyframes highlight {
+            0% { background: rgba(5, 191, 219, 0.18); }
+            100% { background: white; }
+        }
+
+        .highlight-new {
+            animation: highlight 1.8s ease-out;
         }
 
         .loading {
             text-align: center;
-            padding: 40px;
-            color: white;
-            font-size: 16px;
+            padding: 60px 20px;
+            color: var(--gray-500);
+            font-size: 14px;
         }
 
-        .sync-status {
-            display: inline-block;
-            padding: 6px 12px;
-            background: rgba(34, 197, 94, 0.3);
-            border-radius: 8px;
-            color: white;
-            font-size: 12px;
+        @media (max-width: 900px) {
+            .task-table-head, .task-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            .task-table-head { display: none; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="header-left">
-                <h1>📊 Weekly Progress Tracker</h1>
-                <p>Track action items and updates across weeks <span class="sync-status" id="syncStatus">✓ Synced</span></p>
+    <div class="app-shell">
+        <header class="app-header">
+            <div class="brand">
+                <div class="brand-icon">W</div>
+                <div class="brand-text">
+                    <h1>Weekly Progress</h1>
+                    <p>
+                        Track tasks, updates, and feedback by week
+                        <span class="sync-pill" id="syncPill">
+                            <span class="sync-dot"></span>
+                            <span id="syncText">Syncing</span>
+                        </span>
+                    </p>
+                </div>
             </div>
-            <button class="add-week-btn" onclick="addWeek()">+ Add Week</button>
-        </div>
+            <div class="header-actions">
+                <button class="btn btn-primary" onclick="addWeek()">
+                    <span>+</span> New Week
+                </button>
+            </div>
+        </header>
 
-        <div class="summary-section collapsed" id="summarySection">
-            <div class="summary-header" onclick="toggleSummary()">
-                <span class="collapse-icon">▶</span>
-                <span class="summary-title">Summary</span>
+        <div class="summary-card collapsed" id="summaryCard">
+            <div class="summary-toggle" onclick="toggleSummary()">
+                <div class="summary-toggle-left">
+                    <div class="summary-toggle-icon">≡</div>
+                    <div class="summary-toggle-text">
+                        Summary
+                        <small>Latest status & updates across all weeks, grouped by topic</small>
+                    </div>
+                </div>
+                <span class="chevron">▼</span>
             </div>
-            <div class="summary-content" id="summaryContent"></div>
+            <div class="summary-body" id="summaryBody"></div>
         </div>
 
         <div id="weeksList">
@@ -556,12 +948,10 @@
         </div>
     </div>
 
-    <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
         import { getDatabase, ref, onValue, set } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
 
-        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBO4ZSNWY3XJjVz5TkK2dOXIDRUZZCph44",
             authDomain: "weekly-tracker-e184a.firebaseapp.com",
@@ -573,319 +963,507 @@
             measurementId: "G-QES5R2BMLD"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
         let weekData = [];
+        let highlightTarget = null;
 
-        // Listen for data changes in real-time (shared data - no auth needed!)
         const dataRef = ref(database, 'sharedWeekData');
         onValue(dataRef, (snapshot) => {
             const data = snapshot.val();
             if (data) {
                 weekData = data;
             } else {
-                // Initialize with default data
-                weekData = [
-                    {
-                        weekStart: '2026-05-13',
-                        weekEnd: '2026-05-19',
-                        categories: {
-                            'Reimagined Experience': [
-                                { text: 'Walk-through the latest Data 360 experience to Engineering', status: 'todo', updates: [] },
-                                { text: 'Review the current and reimagined parallel experience strategy with Engineering', status: 'todo', updates: [] },
-                                { text: 'Demo of agentic + slack experience to share with Rahul/MK/Marc', status: 'todo', updates: [] }
-                            ],
-                            'Segment Approval Workflow': [
-                                { text: 'Based on Elevance call, connect with Engineering to discuss proposal for cumulative counts ask', status: 'todo', updates: [] },
-                                { text: 'Connect with Elevance team on Friday to understand and validate the cumulative count ask', status: 'todo', updates: [] },
-                                { text: 'Write/Update PRD for cumulative count requirements', status: 'todo', updates: [] }
-                            ],
-                            'Streaming Segmentation': [
-                                { text: 'Check with Deepak on any thread with MC team if they are going ahead with real-time sku for this use-case', status: 'todo', updates: [] }
-                            ]
-                        }
-                    },
-                    {
-                        weekStart: '2026-04-29',
-                        weekEnd: '2026-05-05',
-                        categories: {
-                            'Reimagined Experience': [
-                                { text: 'Discuss with Luke to pick-up the pace of prototype updates', status: 'todo', updates: [] },
-                                { text: 'Take more control of vibe coding prototype as needed', status: 'todo', updates: [] },
-                                { text: 'Need to update prototype for full parity on segmentation builder from slack and Data 360 UI', status: 'todo', updates: [] },
-                                { text: 'Discuss with Brad on above', status: 'todo', updates: [] },
-                                { text: 'Start with user testing plan', status: 'todo', updates: [] },
-                                { text: 'Work with Sameer/Darshna on AI accuracy for natural language segment creation', status: 'todo', updates: [] }
-                            ],
-                            'Streaming Segmentation': [
-                                { text: 'Start a thread with Lucie to understand - Any particular use-cases which could not be solved by real-time or data actions?', status: 'todo', updates: [] }
-                            ],
-                            'Segment Approval Workflow': [
-                                { text: 'Wait for Elevance to come back on requirements', status: 'todo', updates: [] },
-                                { text: 'Understand from Mandeep on challenges in Core object approach', status: 'todo', updates: [] }
-                            ],
-                            'SQL based Segments': [
-                                { text: 'Need product thinking on sql based containers in UI segments', status: 'todo', updates: [] },
-                                { text: 'Evaluate bandwidth and transition topic to other PMs if needed', status: 'todo', updates: [] }
-                            ]
-                        }
-                    }
-                ];
+                weekData = getDefaultData();
                 saveData();
             }
             renderWeeks();
-            updateSyncStatus(true);
+            setSyncStatus(true);
         });
 
-        function updateSyncStatus(synced) {
-            const status = document.getElementById('syncStatus');
-            status.textContent = synced ? '✓ Synced' : '🔄 Syncing...';
+        function getDefaultData() {
+            return [
+                {
+                    weekStart: '2026-05-13',
+                    weekEnd: '2026-05-19',
+                    categoryOrder: ['Reimagined Experience', 'Segment Approval Workflow', 'Streaming Segmentation'],
+                    categories: {
+                        'Reimagined Experience': [
+                            { text: 'Walk-through the latest Data 360 experience to Engineering', status: 'todo', updates: [], comments: [] },
+                            { text: 'Review the current and reimagined parallel experience strategy with Engineering', status: 'todo', updates: [], comments: [] },
+                            { text: 'Demo of agentic + slack experience to share with Rahul/MK/Marc', status: 'todo', updates: [], comments: [] }
+                        ],
+                        'Segment Approval Workflow': [
+                            { text: 'Based on Elevance call, connect with Engineering to discuss proposal for cumulative counts ask', status: 'todo', updates: [], comments: [] },
+                            { text: 'Connect with Elevance team on Friday to validate the cumulative count ask', status: 'todo', updates: [], comments: [] },
+                            { text: 'Write/Update PRD for cumulative count requirements', status: 'todo', updates: [], comments: [] }
+                        ],
+                        'Streaming Segmentation': [
+                            { text: 'Check with Deepak on any thread with MC team if they are going ahead with real-time sku for this use-case', status: 'todo', updates: [], comments: [] }
+                        ]
+                    }
+                },
+                {
+                    weekStart: '2026-04-29',
+                    weekEnd: '2026-05-05',
+                    categoryOrder: ['Reimagined Experience', 'Streaming Segmentation', 'Segment Approval Workflow', 'SQL based Segments'],
+                    categories: {
+                        'Reimagined Experience': [
+                            { text: 'Discuss with Luke to pick-up the pace of prototype updates', status: 'todo', updates: [], comments: [] },
+                            { text: 'Take more control of vibe coding prototype as needed', status: 'todo', updates: [], comments: [] },
+                            { text: 'Need to update prototype for full parity on segmentation builder from slack and Data 360 UI', status: 'todo', updates: [], comments: [] },
+                            { text: 'Discuss with Brad on above', status: 'todo', updates: [], comments: [] },
+                            { text: 'Start with user testing plan', status: 'todo', updates: [], comments: [] },
+                            { text: 'Work with Sameer/Darshna on AI accuracy for natural language segment creation', status: 'todo', updates: [], comments: [] }
+                        ],
+                        'Streaming Segmentation': [
+                            { text: 'Start a thread with Lucie to understand any particular use-cases that could not be solved by real-time or data actions', status: 'todo', updates: [], comments: [] }
+                        ],
+                        'Segment Approval Workflow': [
+                            { text: 'Wait for Elevance to come back on requirements', status: 'todo', updates: [], comments: [] },
+                            { text: 'Understand from Mandeep on challenges in Core object approach', status: 'todo', updates: [], comments: [] }
+                        ],
+                        'SQL based Segments': [
+                            { text: 'Need product thinking on sql based containers in UI segments', status: 'todo', updates: [], comments: [] },
+                            { text: 'Evaluate bandwidth and transition topic to other PMs if needed', status: 'todo', updates: [], comments: [] }
+                        ]
+                    }
+                }
+            ];
+        }
+
+        function setSyncStatus(synced) {
+            const pill = document.getElementById('syncPill');
+            const text = document.getElementById('syncText');
+            if (synced) {
+                pill.classList.add('synced');
+                text.textContent = 'Synced';
+            } else {
+                pill.classList.remove('synced');
+                text.textContent = 'Syncing';
+            }
         }
 
         window.saveData = function() {
-            updateSyncStatus(false);
+            setSyncStatus(false);
             set(ref(database, 'sharedWeekData'), weekData)
-                .then(() => updateSyncStatus(true))
-                .catch(error => {
-                    console.error('Error saving data:', error);
-                    updateSyncStatus(false);
-                });
+                .then(() => setSyncStatus(true))
+                .catch(err => console.error('Save error:', err));
+        };
+
+        function escAttr(str) {
+            return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+        function escText(str) {
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+        function escJs(str) {
+            return String(str).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
         }
 
-        function formatDate(dateStr) {
-            if (!dateStr) return 'Invalid Date';
-            const date = new Date(dateStr + 'T00:00:00');
-            if (isNaN(date.getTime())) return dateStr;
-            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        function getCategoryOrder(week) {
+            if (!week.categoryOrder || !Array.isArray(week.categoryOrder)) {
+                week.categoryOrder = Object.keys(week.categories || {});
+            }
+            // Ensure all current categories are in order
+            Object.keys(week.categories || {}).forEach(cat => {
+                if (!week.categoryOrder.includes(cat)) {
+                    week.categoryOrder.push(cat);
+                }
+            });
+            // Filter out non-existent
+            week.categoryOrder = week.categoryOrder.filter(cat => week.categories && week.categories[cat]);
+            return week.categoryOrder;
         }
 
         window.renderWeeks = function() {
             const weeksList = document.getElementById('weeksList');
-            weeksList.innerHTML = weekData.map((week, weekIndex) => {
-                const categories = Object.entries(week.categories);
-                return `
-                    <div class="week-card ${weekIndex > 0 ? 'collapsed' : ''}" id="week-${weekIndex}">
-                        <div class="week-header">
-                            <div class="week-title">
-                                <span class="collapse-icon" onclick="toggleWeek(${weekIndex})">▶</span>
-                                <input type="date"
-                                       class="date-input"
-                                       value="${week.weekStart}"
-                                       onchange="updateWeekDate(${weekIndex}, 'start', this.value)"
-                                       onclick="event.stopPropagation()">
-                                <span style="color: white; font-weight: 500;">—</span>
-                                <input type="date"
-                                       class="date-input"
-                                       value="${week.weekEnd}"
-                                       onchange="updateWeekDate(${weekIndex}, 'end', this.value)"
-                                       onclick="event.stopPropagation()">
+            if (!weekData || weekData.length === 0) {
+                weeksList.innerHTML = `<div class="loading">No weeks yet. Click "+ New Week" above to get started.</div>`;
+                return;
+            }
+
+            weeksList.innerHTML = weekData.map((week, wi) => renderWeek(week, wi)).join('');
+
+            // Apply highlight if needed
+            if (highlightTarget) {
+                const target = document.querySelector(highlightTarget.selector);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    target.classList.add('highlight-new');
+                    setTimeout(() => target.classList.remove('highlight-new'), 1800);
+                }
+                highlightTarget = null;
+            }
+        };
+
+        function renderWeek(week, wi) {
+            const collapsed = wi > 0 ? 'collapsed' : '';
+            const order = getCategoryOrder(week);
+            return `
+                <div class="week-card ${collapsed}" id="week-${wi}">
+                    <div class="week-header">
+                        <div class="week-header-left" onclick="toggleWeek(${wi})">
+                            <span class="chevron">▼</span>
+                            <div class="week-dates" onclick="event.stopPropagation()">
+                                <input type="date" class="date-input" value="${escAttr(week.weekStart)}"
+                                       onchange="updateWeekDate(${wi}, 'start', this.value)">
+                                <span>→</span>
+                                <input type="date" class="date-input" value="${escAttr(week.weekEnd)}"
+                                       onchange="updateWeekDate(${wi}, 'end', this.value)">
                             </div>
-                            <button class="delete-week-btn" onclick="deleteWeek(${weekIndex}); event.stopPropagation();" title="Delete week">
-                                🗑️
+                        </div>
+                        <div style="display:flex; gap:6px;">
+                            <button class="icon-btn icon-btn-danger" title="Delete week"
+                                    onclick="deleteWeek(${wi}); event.stopPropagation();">×</button>
+                        </div>
+                    </div>
+                    <div class="week-body">
+                        ${order.map(cat => renderTopic(week, wi, cat)).join('')}
+                        <button class="add-topic-btn" onclick="addTopic(${wi})">
+                            <span>+</span> Add Topic
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderTopic(week, wi, category) {
+            const tasks = week.categories[category] || [];
+            return `
+                <div class="topic" id="topic-${wi}-${escAttr(category)}">
+                    <div class="topic-header">
+                        <div class="topic-header-left">
+                            <div class="topic-marker"></div>
+                            <div class="topic-name" onclick="editTopicName(${wi}, '${escJs(category)}', this)">${escText(category)}</div>
+                            <span class="topic-task-count">${tasks.length} task${tasks.length === 1 ? '' : 's'}</span>
+                        </div>
+                        <div class="topic-actions">
+                            <button class="topic-icon-btn danger" title="Delete topic"
+                                    onclick="deleteTopic(${wi}, '${escJs(category)}')">×</button>
+                        </div>
+                    </div>
+                    <div class="task-table-head">
+                        <div>Task</div>
+                        <div>Status</div>
+                        <div class="col-done">Done</div>
+                        <div>Updates</div>
+                        <div></div>
+                    </div>
+                    <div>
+                        ${tasks.map((task, ti) => renderTaskRow(wi, category, ti, task)).join('')}
+                    </div>
+                    <button class="add-task-btn" onclick="addTask(${wi}, '${escJs(category)}')">
+                        <span>+</span> Add Task
+                    </button>
+                </div>
+            `;
+        }
+
+        function renderTaskRow(wi, category, ti, task) {
+            const updates = task.updates || [];
+            const taskKey = `${wi}-${escAttr(category)}-${ti}`;
+            return `
+                <div class="task-row" id="task-${taskKey}">
+                    <div class="task-name ${task.status === 'done' ? 'done' : ''}"
+                         onclick="editTaskName(${wi}, '${escJs(category)}', ${ti}, this)">${escText(task.text)}</div>
+                    <div>
+                        <select class="status-select ${task.status}"
+                                onchange="changeStatus(${wi}, '${escJs(category)}', ${ti}, this.value)">
+                            <option value="todo" ${task.status === 'todo' ? 'selected' : ''}>To Do</option>
+                            <option value="progress" ${task.status === 'progress' ? 'selected' : ''}>In Progress</option>
+                            <option value="done" ${task.status === 'done' ? 'selected' : ''}>Done</option>
+                            <option value="blocked" ${task.status === 'blocked' ? 'selected' : ''}>Blocked</option>
+                        </select>
+                    </div>
+                    <div class="check-cell">
+                        <input type="checkbox" class="task-checkbox" ${task.status === 'done' ? 'checked' : ''}
+                               onchange="toggleDone(${wi}, '${escJs(category)}', ${ti})">
+                    </div>
+                    <div class="updates-cell">
+                        ${updates.length === 0
+                            ? '<div class="empty-state">No updates yet</div>'
+                            : ''}
+                        ${updates.map(u => `
+                            <div class="feed-item update">
+                                <div class="feed-meta">📝 ${escText(u.date)}</div>
+                                <div class="feed-text">${escText(u.text)}</div>
+                            </div>
+                        `).join('')}
+                        <div id="new-feed-${taskKey}"></div>
+                        <div class="feed-actions">
+                            <button class="feed-btn update-btn" onclick="addUpdate(${wi}, '${escJs(category)}', ${ti})">
+                                <span>+</span> Add Update
                             </button>
                         </div>
-                        <div class="week-content">
-                            ${categories.map(([category, tasks]) => `
-                                <div class="category-section">
-                                    <div class="category-header">
-                                        <span class="category-icon"></span>
-                                        ${category}
-                                    </div>
-                                    <div class="tasks-table">
-                                        <div class="table-header">
-                                            <div>Task</div>
-                                            <div>Status</div>
-                                            <div style="text-align: center;">Done</div>
-                                            <div>Updates</div>
-                                        </div>
-                                        ${tasks.map((task, taskIndex) => `
-                                            <div class="task-row">
-                                                <div class="task-name ${task.status === 'done' ? 'completed' : ''}">${task.text}</div>
-                                                <div class="task-status-cell">
-                                                    <select class="status-select ${task.status}"
-                                                            onchange="changeTaskStatus(${weekIndex}, '${escapeQuotes(category)}', ${taskIndex}, this.value)">
-                                                        <option value="todo" ${task.status === 'todo' ? 'selected' : ''}>To Do</option>
-                                                        <option value="progress" ${task.status === 'progress' ? 'selected' : ''}>In Progress</option>
-                                                        <option value="done" ${task.status === 'done' ? 'selected' : ''}>Done</option>
-                                                        <option value="blocked" ${task.status === 'blocked' ? 'selected' : ''}>Blocked</option>
-                                                    </select>
-                                                </div>
-                                                <div class="task-checkbox-cell">
-                                                    <input type="checkbox"
-                                                           class="task-checkbox"
-                                                           ${task.status === 'done' ? 'checked' : ''}
-                                                           onchange="toggleTaskStatus(${weekIndex}, '${escapeQuotes(category)}', ${taskIndex})">
-                                                </div>
-                                                <div class="task-updates">
-                                                    ${task.updates && task.updates.length > 0 ? `
-                                                        <div>
-                                                            ${task.updates.map(update => `
-                                                                <div class="update-item">
-                                                                    <div class="update-date">${update.date}</div>
-                                                                    <div class="update-text">${update.text}</div>
-                                                                </div>
-                                                            `).join('')}
-                                                        </div>
-                                                    ` : '<div class="no-updates">No updates yet</div>'}
-                                                    <button class="add-update-btn" onclick="addTaskUpdate(${weekIndex}, '${escapeQuotes(category)}', ${taskIndex})">
-                                                        + Add Update
-                                                    </button>
-                                                </div>
+                    </div>
+                    <div class="row-actions">
+                        <button class="row-icon-btn" title="Delete task"
+                                onclick="deleteTask(${wi}, '${escJs(category)}', ${ti})">×</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ─── WEEK ACTIONS ────────────────────────────────────
+        window.toggleWeek = function(wi) {
+            document.getElementById(`week-${wi}`).classList.toggle('collapsed');
+        };
+
+        window.addWeek = function() {
+            const today = new Date();
+            const day = today.getDay();
+            const diff = today.getDate() - day + (day === 0 ? -6 : 1); // Monday
+            const monday = new Date(today.setDate(diff));
+            const sunday = new Date(monday);
+            sunday.setDate(monday.getDate() + 6);
+
+            weekData.unshift({
+                weekStart: monday.toISOString().split('T')[0],
+                weekEnd: sunday.toISOString().split('T')[0],
+                categoryOrder: [],
+                categories: {}
+            });
+            highlightTarget = { selector: '#week-0' };
+            saveData();
+        };
+
+        window.deleteWeek = function(wi) {
+            if (confirm('Delete this entire week and all its tasks?')) {
+                weekData.splice(wi, 1);
+                saveData();
+            }
+        };
+
+        window.updateWeekDate = function(wi, type, value) {
+            if (type === 'start') weekData[wi].weekStart = value;
+            else weekData[wi].weekEnd = value;
+            saveData();
+        };
+
+        // ─── TOPIC ACTIONS ───────────────────────────────────
+        window.addTopic = function(wi) {
+            const newName = 'New Topic';
+            let finalName = newName;
+            let counter = 1;
+            while (weekData[wi].categories[finalName]) {
+                finalName = `${newName} ${++counter}`;
+            }
+            weekData[wi].categories[finalName] = [
+                { text: 'New task', status: 'todo', updates: [], comments: [] }
+            ];
+            getCategoryOrder(weekData[wi]); // sync order
+            weekData[wi].categoryOrder.push(finalName);
+            highlightTarget = { selector: `#topic-${wi}-${escAttr(finalName)}` };
+            saveData();
+        };
+
+        window.deleteTopic = function(wi, category) {
+            if (confirm(`Delete topic "${category}" and all its tasks?`)) {
+                delete weekData[wi].categories[category];
+                if (weekData[wi].categoryOrder) {
+                    weekData[wi].categoryOrder = weekData[wi].categoryOrder.filter(c => c !== category);
+                }
+                saveData();
+            }
+        };
+
+        window.editTopicName = function(wi, oldName, el) {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'inline-input';
+            input.value = oldName;
+            el.replaceWith(input);
+            input.focus();
+            input.select();
+
+            const finish = (save) => {
+                if (!save) { renderWeeks(); return; }
+                const newName = input.value.trim();
+                if (!newName || newName === oldName) { renderWeeks(); return; }
+                if (weekData[wi].categories[newName]) {
+                    alert('A topic with that name already exists');
+                    renderWeeks();
+                    return;
+                }
+                weekData[wi].categories[newName] = weekData[wi].categories[oldName];
+                delete weekData[wi].categories[oldName];
+                getCategoryOrder(weekData[wi]);
+                const idx = weekData[wi].categoryOrder.indexOf(oldName);
+                if (idx !== -1) weekData[wi].categoryOrder[idx] = newName;
+                saveData();
+            };
+
+            input.addEventListener('blur', () => finish(true));
+            input.addEventListener('keydown', e => {
+                if (e.key === 'Enter') input.blur();
+                else if (e.key === 'Escape') finish(false);
+            });
+        };
+
+        // ─── TASK ACTIONS ────────────────────────────────────
+        window.addTask = function(wi, category) {
+            weekData[wi].categories[category].push({
+                text: 'New task',
+                status: 'todo',
+                updates: [],
+                comments: []
+            });
+            const newIdx = weekData[wi].categories[category].length - 1;
+            highlightTarget = { selector: `#task-${wi}-${escAttr(category)}-${newIdx}` };
+            saveData();
+        };
+
+        window.deleteTask = function(wi, category, ti) {
+            if (confirm('Delete this task?')) {
+                weekData[wi].categories[category].splice(ti, 1);
+                saveData();
+            }
+        };
+
+        window.editTaskName = function(wi, category, ti, el) {
+            const task = weekData[wi].categories[category][ti];
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'inline-input';
+            input.value = task.text;
+            el.replaceWith(input);
+            input.focus();
+            input.select();
+
+            const finish = (save) => {
+                if (!save) { renderWeeks(); return; }
+                const v = input.value.trim();
+                if (!v) { renderWeeks(); return; }
+                weekData[wi].categories[category][ti].text = v;
+                saveData();
+            };
+
+            input.addEventListener('blur', () => finish(true));
+            input.addEventListener('keydown', e => {
+                if (e.key === 'Enter') input.blur();
+                else if (e.key === 'Escape') finish(false);
+            });
+        };
+
+        window.changeStatus = function(wi, category, ti, status) {
+            weekData[wi].categories[category][ti].status = status;
+            saveData();
+        };
+
+        window.toggleDone = function(wi, category, ti) {
+            const t = weekData[wi].categories[category][ti];
+            t.status = t.status === 'done' ? 'todo' : 'done';
+            saveData();
+        };
+
+        // ─── UPDATES ─────────────────────────────────────────
+        window.addUpdate = function(wi, category, ti) {
+            const containerId = `new-feed-${wi}-${escAttr(category)}-${ti}`;
+            const container = document.getElementById(containerId);
+            if (!container || container.innerHTML) return;
+
+            const today = new Date().toISOString().split('T')[0];
+            container.innerHTML = `
+                <div class="feed-item update">
+                    <div class="feed-meta">📝 Update · ${today}</div>
+                    <textarea class="inline-textarea" placeholder="What's the latest progress?"></textarea>
+                    <div class="save-row">
+                        <button class="save-btn" data-action="save">Save</button>
+                        <button class="cancel-btn" data-action="cancel">Cancel</button>
+                    </div>
+                </div>
+            `;
+            const ta = container.querySelector('textarea');
+            ta.focus();
+
+            container.querySelector('[data-action="save"]').onclick = () => {
+                const v = ta.value.trim();
+                if (!v) { container.innerHTML = ''; return; }
+                const task = weekData[wi].categories[category][ti];
+                if (!task.updates) task.updates = [];
+                task.updates.push({ date: today, text: v });
+                container.innerHTML = '';
+                saveData();
+            };
+            container.querySelector('[data-action="cancel"]').onclick = () => {
+                container.innerHTML = '';
+            };
+        };
+
+        // ─── SUMMARY ─────────────────────────────────────────
+        window.toggleSummary = function() {
+            const card = document.getElementById('summaryCard');
+            card.classList.toggle('collapsed');
+            if (!card.classList.contains('collapsed')) renderSummary();
+        };
+
+        function renderSummary() {
+            const body = document.getElementById('summaryBody');
+            const map = {};
+
+            weekData.forEach(week => {
+                const order = getCategoryOrder(week);
+                order.forEach(cat => {
+                    const tasks = week.categories[cat] || [];
+                    if (!map[cat]) map[cat] = {};
+                    tasks.forEach(t => {
+                        if (!map[cat][t.text]) {
+                            map[cat][t.text] = { status: t.status, updates: [] };
+                        }
+                        if (t.updates) map[cat][t.text].updates.push(...t.updates);
+                    });
+                });
+            });
+
+            const entries = Object.entries(map);
+            if (entries.length === 0) {
+                body.innerHTML = `<div class="empty-state" style="padding:24px 0;">No data yet</div>`;
+                return;
+            }
+
+            body.innerHTML = entries.map(([cat, tasks]) => {
+                const taskList = Object.entries(tasks);
+                const counts = { todo: 0, progress: 0, done: 0, blocked: 0 };
+                taskList.forEach(([, t]) => counts[t.status] = (counts[t.status] || 0) + 1);
+
+                return `
+                    <div class="summary-topic">
+                        <div class="summary-topic-header">
+                            <div class="summary-topic-name">${escText(cat)}</div>
+                            <div class="summary-topic-meta">
+                                ${counts.progress > 0 ? `<span class="summary-meta-pill">${counts.progress} in progress</span>` : ''}
+                                ${counts.done > 0 ? `<span class="summary-meta-pill">${counts.done} done</span>` : ''}
+                                ${counts.todo > 0 ? `<span class="summary-meta-pill">${counts.todo} to do</span>` : ''}
+                                ${counts.blocked > 0 ? `<span class="summary-meta-pill">${counts.blocked} blocked</span>` : ''}
+                            </div>
+                        </div>
+                        ${taskList.map(([taskText, info]) => {
+                            const sortedUpdates = [...info.updates].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+                            const latest = sortedUpdates[0];
+                            return `
+                                <div class="summary-task">
+                                    <select class="status-select ${info.status}" disabled style="width:120px; flex-shrink:0;">
+                                        <option>${formatStatus(info.status)}</option>
+                                    </select>
+                                    <div class="summary-task-content">
+                                        <div class="summary-task-name ${info.status === 'done' ? 'done' : ''}">${escText(taskText)}</div>
+                                        ${latest ? `
+                                            <div class="summary-task-update">
+                                                <span class="summary-task-update-date">📝 ${escText(latest.date)}</span>${escText(latest.text)}
                                             </div>
-                                        `).join('')}
+                                        ` : ''}
                                     </div>
                                 </div>
-                            `).join('')}
-                            <button class="add-category-btn" onclick="addCategory(${weekIndex})">+ Add Topic</button>
-                        </div>
+                            `;
+                        }).join('')}
                     </div>
                 `;
             }).join('');
         }
 
-        function escapeQuotes(str) {
-            return str.replace(/'/g, "\\'");
-        }
-
-        window.toggleWeek = function(weekIndex) {
-            const weekEl = document.getElementById(`week-${weekIndex}`);
-            weekEl.classList.toggle('collapsed');
-        }
-
-        window.toggleSummary = function() {
-            const summarySection = document.getElementById('summarySection');
-            summarySection.classList.toggle('collapsed');
-            if (!summarySection.classList.contains('collapsed')) {
-                renderSummary();
-            }
-        }
-
-        function renderSummary() {
-            const summaryContent = document.getElementById('summaryContent');
-            const categoryMap = {};
-
-            weekData.forEach(week => {
-                Object.entries(week.categories).forEach(([category, tasks]) => {
-                    if (!categoryMap[category]) {
-                        categoryMap[category] = [];
-                    }
-                    tasks.forEach(task => {
-                        const existingTask = categoryMap[category].find(t => t.text === task.text);
-                        if (existingTask) {
-                            if (task.updates && task.updates.length > 0) {
-                                existingTask.updates = [...(existingTask.updates || []), ...task.updates];
-                            }
-                            existingTask.status = task.status;
-                        } else {
-                            categoryMap[category].push({
-                                text: task.text,
-                                status: task.status,
-                                updates: task.updates || []
-                            });
-                        }
-                    });
-                });
-            });
-
-            summaryContent.innerHTML = Object.entries(categoryMap).map(([category, tasks]) => `
-                <div class="summary-category">
-                    <div class="summary-category-title">${category}</div>
-                    ${tasks.map(task => {
-                        const latestUpdate = task.updates && task.updates.length > 0
-                            ? task.updates[task.updates.length - 1]
-                            : null;
-                        return `
-                            <div class="summary-item">
-                                <div class="summary-task">
-                                    <span class="status-badge ${task.status}">${task.status}</span>
-                                    <span class="summary-task-text">${task.text}</span>
-                                </div>
-                                ${latestUpdate ? `
-                                    <div class="summary-latest-update">
-                                        Latest: ${latestUpdate.text} <em>(${latestUpdate.date})</em>
-                                    </div>
-                                ` : ''}
-                            </div>
-                        `;
-                    }).join('')}
-                </div>
-            `).join('');
-        }
-
-        window.addWeek = function() {
-            const firstWeek = weekData[0];
-            const firstStart = new Date(firstWeek.weekStart + 'T00:00:00');
-            const newEnd = new Date(firstStart);
-            newEnd.setDate(newEnd.getDate() - 1);
-            const newStart = new Date(newEnd);
-            newStart.setDate(newStart.getDate() - 6);
-
-            weekData.unshift({
-                weekStart: newStart.toISOString().split('T')[0],
-                weekEnd: newEnd.toISOString().split('T')[0],
-                categories: {}
-            });
-            saveData();
-        }
-
-        window.addCategory = function(weekIndex) {
-            const categoryName = prompt('Enter topic name:');
-            if (categoryName && categoryName.trim()) {
-                if (!weekData[weekIndex].categories[categoryName]) {
-                    weekData[weekIndex].categories[categoryName] = [];
-                }
-                const taskText = prompt('Enter first action item:');
-                if (taskText && taskText.trim()) {
-                    weekData[weekIndex].categories[categoryName].push({
-                        text: taskText,
-                        status: 'todo',
-                        updates: []
-                    });
-                }
-                saveData();
-            }
-        }
-
-        window.changeTaskStatus = function(weekIndex, category, taskIndex, newStatus) {
-            weekData[weekIndex].categories[category][taskIndex].status = newStatus;
-            const select = event.target;
-            select.className = `status-select ${newStatus}`;
-            saveData();
-        }
-
-        window.toggleTaskStatus = function(weekIndex, category, taskIndex) {
-            const task = weekData[weekIndex].categories[category][taskIndex];
-            task.status = task.status === 'done' ? 'todo' : 'done';
-            saveData();
-        }
-
-        window.addTaskUpdate = function(weekIndex, category, taskIndex) {
-            const updateText = prompt('Enter update:');
-            if (updateText && updateText.trim()) {
-                const today = new Date().toISOString().split('T')[0];
-                weekData[weekIndex].categories[category][taskIndex].updates.push({
-                    date: today,
-                    text: updateText
-                });
-                saveData();
-            }
-        }
-
-        window.updateWeekDate = function(weekIndex, type, newDate) {
-            if (type === 'start') {
-                weekData[weekIndex].weekStart = newDate;
-            } else {
-                weekData[weekIndex].weekEnd = newDate;
-            }
-            saveData();
-        }
-
-        window.deleteWeek = function(weekIndex) {
-            if (confirm('Are you sure you want to delete this week? All tasks and updates will be lost.')) {
-                weekData.splice(weekIndex, 1);
-                saveData();
-            }
+        function formatStatus(s) {
+            return { todo: 'To Do', progress: 'In Progress', done: 'Done', blocked: 'Blocked' }[s] || s;
         }
     </script>
 </body>
