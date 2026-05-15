@@ -967,10 +967,21 @@
         const database = getDatabase(app);
         let weekData = [];
         let highlightTarget = null;
+        let pendingLocalSave = false;
+        let lastSavedJSON = '';
 
         const dataRef = ref(database, 'sharedWeekData');
         onValue(dataRef, (snapshot) => {
             const data = snapshot.val();
+            const incomingJSON = JSON.stringify(data);
+
+            // Skip re-render if this is just an echo of our own save
+            if (pendingLocalSave && incomingJSON === lastSavedJSON) {
+                pendingLocalSave = false;
+                setSyncStatus(true);
+                return;
+            }
+
             if (data) {
                 weekData = data;
             } else {
@@ -1046,9 +1057,14 @@
 
         window.saveData = function() {
             setSyncStatus(false);
+            pendingLocalSave = true;
+            lastSavedJSON = JSON.stringify(weekData);
             set(ref(database, 'sharedWeekData'), weekData)
                 .then(() => setSyncStatus(true))
-                .catch(err => console.error('Save error:', err));
+                .catch(err => {
+                    console.error('Save error:', err);
+                    pendingLocalSave = false;
+                });
         };
 
         function escAttr(str) {
@@ -1076,6 +1092,44 @@
             return week.categoryOrder;
         }
 
+        function captureUIState() {
+            const expandedWeeks = new Set();
+            document.querySelectorAll('.week-card').forEach(el => {
+                if (!el.classList.contains('collapsed')) {
+                    expandedWeeks.add(el.id);
+                }
+            });
+            const summaryOpen = !document.getElementById('summaryCard')?.classList.contains('collapsed');
+            const scrollY = window.scrollY;
+            return { expandedWeeks, summaryOpen, scrollY };
+        }
+
+        function restoreUIState(state) {
+            if (!state) return;
+            // First, collapse all weeks (default for index > 0)
+            document.querySelectorAll('.week-card').forEach(el => {
+                if (state.expandedWeeks.has(el.id)) {
+                    el.classList.remove('collapsed');
+                } else {
+                    // Only collapse if it wasn't expanded before
+                    if (el.id !== 'week-0' || !state.expandedWeeks.has('week-0')) {
+                        // Keep default behavior — only week-0 is open by default
+                    }
+                }
+            });
+            // Restore summary state
+            const summaryCard = document.getElementById('summaryCard');
+            if (summaryCard) {
+                if (state.summaryOpen) {
+                    summaryCard.classList.remove('collapsed');
+                } else {
+                    summaryCard.classList.add('collapsed');
+                }
+            }
+            // Restore scroll position
+            window.scrollTo(0, state.scrollY);
+        }
+
         window.renderWeeks = function() {
             const weeksList = document.getElementById('weeksList');
             if (!weekData || weekData.length === 0) {
@@ -1083,9 +1137,13 @@
                 return;
             }
 
-            weeksList.innerHTML = weekData.map((week, wi) => renderWeek(week, wi)).join('');
+            const uiState = captureUIState();
 
-            // Apply highlight if needed
+            weeksList.innerHTML = weekData.map((week, wi) => renderWeek(week, wi, uiState)).join('');
+
+            restoreUIState(uiState);
+
+            // Apply highlight if needed (overrides scroll restore)
             if (highlightTarget) {
                 const target = document.querySelector(highlightTarget.selector);
                 if (target) {
@@ -1097,8 +1155,14 @@
             }
         };
 
-        function renderWeek(week, wi) {
-            const collapsed = wi > 0 ? 'collapsed' : '';
+        function renderWeek(week, wi, uiState) {
+            // If we have UI state, respect it; otherwise default first week open
+            let collapsed;
+            if (uiState && uiState.expandedWeeks && uiState.expandedWeeks.size > 0) {
+                collapsed = uiState.expandedWeeks.has(`week-${wi}`) ? '' : 'collapsed';
+            } else {
+                collapsed = wi > 0 ? 'collapsed' : '';
+            }
             const order = getCategoryOrder(week);
             return `
                 <div class="week-card ${collapsed}" id="week-${wi}">
@@ -1238,6 +1302,7 @@
         window.updateWeekDate = function(wi, type, value) {
             if (type === 'start') weekData[wi].weekStart = value;
             else weekData[wi].weekEnd = value;
+            // No re-render needed — date input already shows the new value
             saveData();
         };
 
@@ -1348,12 +1413,49 @@
 
         window.changeStatus = function(wi, category, ti, status) {
             weekData[wi].categories[category][ti].status = status;
+
+            // Update DOM directly without full re-render
+            const taskKey = `${wi}-${escAttr(category)}-${ti}`;
+            const row = document.getElementById(`task-${taskKey}`);
+            if (row) {
+                const select = row.querySelector('.status-select');
+                if (select) {
+                    select.classList.remove('todo', 'progress', 'done', 'blocked');
+                    select.classList.add(status);
+                }
+                const checkbox = row.querySelector('.task-checkbox');
+                if (checkbox) checkbox.checked = (status === 'done');
+                const taskName = row.querySelector('.task-name');
+                if (taskName) {
+                    if (status === 'done') taskName.classList.add('done');
+                    else taskName.classList.remove('done');
+                }
+            }
+
             saveData();
         };
 
         window.toggleDone = function(wi, category, ti) {
             const t = weekData[wi].categories[category][ti];
             t.status = t.status === 'done' ? 'todo' : 'done';
+
+            // Update DOM directly
+            const taskKey = `${wi}-${escAttr(category)}-${ti}`;
+            const row = document.getElementById(`task-${taskKey}`);
+            if (row) {
+                const select = row.querySelector('.status-select');
+                if (select) {
+                    select.classList.remove('todo', 'progress', 'done', 'blocked');
+                    select.classList.add(t.status);
+                    select.value = t.status;
+                }
+                const taskName = row.querySelector('.task-name');
+                if (taskName) {
+                    if (t.status === 'done') taskName.classList.add('done');
+                    else taskName.classList.remove('done');
+                }
+            }
+
             saveData();
         };
 
