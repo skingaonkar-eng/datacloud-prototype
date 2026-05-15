@@ -1679,7 +1679,7 @@
             const today = new Date().toISOString().split('T')[0];
             container.innerHTML = `
                 <div class="feed-item update">
-                    <div class="feed-meta">📝 Update · ${today}</div>
+                    <div class="feed-meta">📝 ${today}</div>
                     <textarea class="inline-textarea" placeholder="What's the latest progress?"></textarea>
                     <div class="save-row">
                         <button class="save-btn" data-action="save">Save</button>
@@ -1690,18 +1690,58 @@
             const ta = container.querySelector('textarea');
             ta.focus();
 
-            container.querySelector('[data-action="save"]').onclick = () => {
+            const doSave = () => {
                 const v = ta.value.trim();
-                if (!v) { container.innerHTML = ''; return; }
+                if (!v) {
+                    container.innerHTML = '';
+                    return;
+                }
                 const task = weekData[wi].categories[category][ti];
                 if (!task.updates) task.updates = [];
                 task.updates.push({ date: today, text: v });
+
+                // Insert the new update INTO the DOM directly (before the editing container)
+                const updateEl = document.createElement('div');
+                updateEl.className = 'feed-item update';
+                const metaDiv = document.createElement('div');
+                metaDiv.className = 'feed-meta';
+                metaDiv.textContent = `📝 ${today}`;
+                const textDiv = document.createElement('div');
+                textDiv.className = 'feed-text';
+                textDiv.textContent = v;
+                updateEl.appendChild(metaDiv);
+                updateEl.appendChild(textDiv);
+
+                // Remove "No updates yet" empty state if present
+                const cell = container.parentNode;
+                const emptyState = cell.querySelector('.empty-state');
+                if (emptyState) emptyState.remove();
+
+                // Insert the new update right before the editing container
+                cell.insertBefore(updateEl, container);
+
+                // Clear the editor
                 container.innerHTML = '';
+
+                // Persist to Firebase
                 saveData();
             };
+
+            container.querySelector('[data-action="save"]').onclick = doSave;
             container.querySelector('[data-action="cancel"]').onclick = () => {
                 container.innerHTML = '';
             };
+
+            // Cmd/Ctrl+Enter to save
+            ta.addEventListener('keydown', e => {
+                if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+                    e.preventDefault();
+                    doSave();
+                } else if (e.key === 'Escape') {
+                    e.preventDefault();
+                    container.innerHTML = '';
+                }
+            });
         };
 
         // ─── SUMMARY ─────────────────────────────────────────
