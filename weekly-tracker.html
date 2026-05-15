@@ -967,27 +967,25 @@
         const database = getDatabase(app);
         let weekData = [];
         let highlightTarget = null;
-        let pendingLocalSave = false;
-        let lastSavedJSON = '';
+        let pendingSaves = 0;
 
         const dataRef = ref(database, 'sharedWeekData');
         onValue(dataRef, (snapshot) => {
-            const data = snapshot.val();
-            const incomingJSON = JSON.stringify(data);
+            // Don't accept incoming data while our saves are in flight
+            if (pendingSaves > 0) return;
 
-            // Skip re-render if this is just an echo of our own save
-            if (pendingLocalSave && incomingJSON === lastSavedJSON) {
-                pendingLocalSave = false;
+            const data = snapshot.val();
+            if (!data) {
+                weekData = getDefaultData();
+                saveData();
+                return;
+            }
+            // If incoming matches our local state, no need to re-render
+            if (JSON.stringify(data) === JSON.stringify(weekData)) {
                 setSyncStatus(true);
                 return;
             }
-
-            if (data) {
-                weekData = data;
-            } else {
-                weekData = getDefaultData();
-                saveData();
-            }
+            weekData = data;
             renderWeeks();
             setSyncStatus(true);
         });
@@ -1057,13 +1055,15 @@
 
         window.saveData = function() {
             setSyncStatus(false);
-            pendingLocalSave = true;
-            lastSavedJSON = JSON.stringify(weekData);
+            pendingSaves++;
             set(ref(database, 'sharedWeekData'), weekData)
-                .then(() => setSyncStatus(true))
+                .then(() => {
+                    pendingSaves = Math.max(0, pendingSaves - 1);
+                    if (pendingSaves === 0) setSyncStatus(true);
+                })
                 .catch(err => {
+                    pendingSaves = Math.max(0, pendingSaves - 1);
                     console.error('Save error:', err);
-                    pendingLocalSave = false;
                 });
         };
 
@@ -1334,36 +1334,64 @@
         };
 
         window.editTopicName = function(wi, oldName, el) {
+            if (el.dataset.editing === 'true') return;
+
             const input = document.createElement('input');
             input.type = 'text';
             input.className = 'inline-input';
             input.value = oldName;
-            el.replaceWith(input);
-            input.focus();
-            input.select();
+            input.dataset.editing = 'true';
 
+            const restoreText = (text) => {
+                const newDiv = document.createElement('div');
+                newDiv.className = 'topic-name';
+                newDiv.textContent = text;
+                newDiv.onclick = () => window.editTopicName(wi, text, newDiv);
+                if (input.parentNode) input.parentNode.replaceChild(newDiv, input);
+            };
+
+            let finished = false;
             const finish = (save) => {
-                if (!save) { renderWeeks(); return; }
+                if (finished) return;
+                finished = true;
+
                 const newName = input.value.trim();
-                if (!newName || newName === oldName) { renderWeeks(); return; }
-                if (weekData[wi].categories[newName]) {
-                    alert('A topic with that name already exists');
-                    renderWeeks();
+                if (!save || !newName || newName === oldName) {
+                    restoreText(oldName);
                     return;
                 }
+                if (weekData[wi].categories[newName]) {
+                    alert('A topic with that name already exists');
+                    restoreText(oldName);
+                    return;
+                }
+                // Apply rename
                 weekData[wi].categories[newName] = weekData[wi].categories[oldName];
                 delete weekData[wi].categories[oldName];
                 getCategoryOrder(weekData[wi]);
                 const idx = weekData[wi].categoryOrder.indexOf(oldName);
                 if (idx !== -1) weekData[wi].categoryOrder[idx] = newName;
+
+                restoreText(newName);
+                // Full re-render needed because IDs/handlers reference category name
                 saveData();
+                renderWeeks();
             };
 
             input.addEventListener('blur', () => finish(true));
             input.addEventListener('keydown', e => {
-                if (e.key === 'Enter') input.blur();
-                else if (e.key === 'Escape') finish(false);
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    input.blur();
+                } else if (e.key === 'Escape') {
+                    e.preventDefault();
+                    finish(false);
+                }
             });
+
+            el.replaceWith(input);
+            input.focus();
+            input.select();
         };
 
         // ─── TASK ACTIONS ────────────────────────────────────
@@ -1387,28 +1415,60 @@
         };
 
         window.editTaskName = function(wi, category, ti, el) {
+            // Don't double-init if already editing
+            if (el.dataset.editing === 'true') return;
+
             const task = weekData[wi].categories[category][ti];
+            const originalText = task.text;
+            const taskKey = `${wi}-${escAttr(category)}-${ti}`;
+
+            // Build input
             const input = document.createElement('input');
             input.type = 'text';
             input.className = 'inline-input';
-            input.value = task.text;
-            el.replaceWith(input);
-            input.focus();
-            input.select();
+            input.value = originalText;
+            input.dataset.editing = 'true';
 
+            // Helper to swap input back to text div with given content
+            const restoreText = (text, status) => {
+                const newDiv = document.createElement('div');
+                newDiv.className = 'task-name' + (status === 'done' ? ' done' : '');
+                newDiv.textContent = text;
+                newDiv.onclick = () => window.editTaskName(wi, category, ti, newDiv);
+                if (input.parentNode) input.parentNode.replaceChild(newDiv, input);
+            };
+
+            let finished = false;
             const finish = (save) => {
-                if (!save) { renderWeeks(); return; }
-                const v = input.value.trim();
-                if (!v) { renderWeeks(); return; }
-                weekData[wi].categories[category][ti].text = v;
-                saveData();
+                if (finished) return;
+                finished = true;
+
+                const newValue = input.value.trim();
+                if (save && newValue && newValue !== originalText) {
+                    weekData[wi].categories[category][ti].text = newValue;
+                    restoreText(newValue, task.status);
+                    saveData();
+                } else {
+                    // Revert without saving
+                    restoreText(originalText, task.status);
+                }
             };
 
             input.addEventListener('blur', () => finish(true));
             input.addEventListener('keydown', e => {
-                if (e.key === 'Enter') input.blur();
-                else if (e.key === 'Escape') finish(false);
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    input.blur();
+                } else if (e.key === 'Escape') {
+                    e.preventDefault();
+                    finish(false);
+                }
             });
+
+            // Replace text div with input, then focus
+            el.replaceWith(input);
+            input.focus();
+            input.select();
         };
 
         window.changeStatus = function(wi, category, ti, status) {
