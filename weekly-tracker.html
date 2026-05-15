@@ -1474,12 +1474,14 @@
             });
             highlightTarget = { selector: '#week-0' };
             saveData();
+            renderWeeks();
         };
 
         window.deleteWeek = function(wi) {
             if (confirm('Delete this entire week and all its tasks?')) {
                 weekData.splice(wi, 1);
                 saveData();
+                renderWeeks();
             }
         };
 
@@ -1526,6 +1528,7 @@
             weekData[wi].categoryOrder.push(finalName);
             highlightTarget = { selector: `#topic-${wi}-${escAttr(finalName)}` };
             saveData();
+            renderWeeks();
         };
 
         window.deleteTopic = function(wi, category) {
@@ -1535,6 +1538,7 @@
                     weekData[wi].categoryOrder = weekData[wi].categoryOrder.filter(c => c !== category);
                 }
                 saveData();
+                renderWeeks();
             }
         };
 
@@ -1610,12 +1614,14 @@
             const newIdx = weekData[wi].categories[category].length - 1;
             highlightTarget = { selector: `#task-${wi}-${escAttr(category)}-${newIdx}` };
             saveData();
+            renderWeeks();
         };
 
         window.deleteTask = function(wi, category, ti) {
             if (confirm('Delete this task?')) {
                 weekData[wi].categories[category].splice(ti, 1);
                 saveData();
+                renderWeeks();
             }
         };
 
