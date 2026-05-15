@@ -373,10 +373,77 @@
 
         .week-dates {
             display: flex;
+            flex-direction: column;
+            gap: 2px;
+            line-height: 1.2;
+        }
+
+        .week-label {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+        }
+
+        .week-label-primary {
+            font-weight: 700;
+            font-size: 16px;
+            color: white;
+            letter-spacing: -0.2px;
+        }
+
+        .week-label-relative {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 2px 8px;
+            border-radius: 100px;
+            background: rgba(255, 255, 255, 0.18);
+            color: white;
+        }
+
+        .week-label-relative.current {
+            background: white;
+            color: var(--marine-800);
+        }
+
+        .week-label-secondary {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.75);
+            font-weight: 500;
+        }
+
+        .date-edit-toggle {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.15s;
+            margin-left: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.7;
+        }
+
+        .date-edit-toggle:hover {
+            background: rgba(255, 255, 255, 0.25);
+            opacity: 1;
+        }
+
+        .date-inputs-wrap {
+            display: none;
             align-items: center;
             gap: 8px;
-            font-weight: 600;
-            font-size: 14px;
+            background: linear-gradient(135deg, var(--marine-800), var(--marine-600));
+        }
+
+        .date-inputs-wrap.show {
+            display: flex;
         }
 
         .date-input {
@@ -1067,6 +1134,57 @@
                 });
         };
 
+        const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+        function parseDate(str) {
+            if (!str) return null;
+            const [y, m, d] = str.split('-').map(Number);
+            return new Date(y, m - 1, d);
+        }
+
+        function formatWeekDates(startStr, endStr) {
+            const start = parseDate(startStr);
+            const end = parseDate(endStr);
+            if (!start || !end) return { primary: 'Unknown week', secondary: '', relative: '' };
+
+            const sameMonth = start.getMonth() === end.getMonth() && start.getFullYear() === end.getFullYear();
+            const sameYear = start.getFullYear() === end.getFullYear();
+
+            const primary = `Week of ${MONTH_NAMES[start.getMonth()]} ${start.getDate()}`;
+            let secondary;
+            if (sameMonth) {
+                secondary = `${MONTH_NAMES[start.getMonth()]} ${start.getDate()}–${end.getDate()}, ${start.getFullYear()}`;
+            } else if (sameYear) {
+                secondary = `${MONTH_NAMES[start.getMonth()]} ${start.getDate()} – ${MONTH_NAMES[end.getMonth()]} ${end.getDate()}, ${start.getFullYear()}`;
+            } else {
+                secondary = `${MONTH_NAMES[start.getMonth()]} ${start.getDate()}, ${start.getFullYear()} – ${MONTH_NAMES[end.getMonth()]} ${end.getDate()}, ${end.getFullYear()}`;
+            }
+
+            return { primary, secondary, relative: getRelativeWeekLabel(start, end) };
+        }
+
+        function getRelativeWeekLabel(start, end) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            // Get current week's Monday
+            const day = today.getDay();
+            const diff = today.getDate() - day + (day === 0 ? -6 : 1);
+            const thisMonday = new Date(today);
+            thisMonday.setDate(diff);
+            thisMonday.setHours(0, 0, 0, 0);
+
+            const weekMs = 7 * 24 * 60 * 60 * 1000;
+            const weeksDiff = Math.round((start.getTime() - thisMonday.getTime()) / weekMs);
+
+            if (today >= start && today <= end) return 'This week';
+            if (weeksDiff === -1) return 'Last week';
+            if (weeksDiff === 1) return 'Next week';
+            if (weeksDiff < -1) return `${Math.abs(weeksDiff)} weeks ago`;
+            if (weeksDiff > 1) return `In ${weeksDiff} weeks`;
+            return '';
+        }
+
         function escAttr(str) {
             return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         }
@@ -1164,23 +1282,35 @@
                 collapsed = wi > 0 ? 'collapsed' : '';
             }
             const order = getCategoryOrder(week);
+            const labels = formatWeekDates(week.weekStart, week.weekEnd);
+            const isCurrent = labels.relative === 'This week';
             return `
                 <div class="week-card ${collapsed}" id="week-${wi}">
                     <div class="week-header">
                         <div class="week-header-left" onclick="toggleWeek(${wi})">
                             <span class="chevron">▼</span>
-                            <div class="week-dates" onclick="event.stopPropagation()">
-                                <input type="date" class="date-input" value="${escAttr(week.weekStart)}"
-                                       onchange="updateWeekDate(${wi}, 'start', this.value)">
-                                <span>→</span>
-                                <input type="date" class="date-input" value="${escAttr(week.weekEnd)}"
-                                       onchange="updateWeekDate(${wi}, 'end', this.value)">
+                            <div class="week-dates">
+                                <div class="week-label">
+                                    <span class="week-label-primary">${escText(labels.primary)}</span>
+                                    ${labels.relative ? `<span class="week-label-relative ${isCurrent ? 'current' : ''}">${escText(labels.relative)}</span>` : ''}
+                                </div>
+                                <span class="week-label-secondary">${escText(labels.secondary)}</span>
                             </div>
+                            <button class="date-edit-toggle" title="Edit dates"
+                                    onclick="toggleDateEdit(${wi}); event.stopPropagation();">📅</button>
                         </div>
                         <div style="display:flex; gap:6px;">
                             <button class="icon-btn icon-btn-danger" title="Delete week"
                                     onclick="deleteWeek(${wi}); event.stopPropagation();">×</button>
                         </div>
+                    </div>
+                    <div class="date-inputs-wrap" id="date-edit-${wi}" style="padding:0 20px 14px;">
+                        <span style="color:rgba(255,255,255,0.85); font-size:12px; font-weight:600;">From:</span>
+                        <input type="date" class="date-input" value="${escAttr(week.weekStart)}"
+                               onchange="updateWeekDate(${wi}, 'start', this.value)">
+                        <span style="color:rgba(255,255,255,0.85); font-size:12px; font-weight:600;">To:</span>
+                        <input type="date" class="date-input" value="${escAttr(week.weekEnd)}"
+                               onchange="updateWeekDate(${wi}, 'end', this.value)">
                     </div>
                     <div class="week-body">
                         ${order.map(cat => renderTopic(week, wi, cat)).join('')}
@@ -1302,8 +1432,29 @@
         window.updateWeekDate = function(wi, type, value) {
             if (type === 'start') weekData[wi].weekStart = value;
             else weekData[wi].weekEnd = value;
-            // No re-render needed — date input already shows the new value
+
+            // Update the label display in place
+            const card = document.getElementById(`week-${wi}`);
+            if (card) {
+                const labels = formatWeekDates(weekData[wi].weekStart, weekData[wi].weekEnd);
+                const primary = card.querySelector('.week-label-primary');
+                const secondary = card.querySelector('.week-label-secondary');
+                const relative = card.querySelector('.week-label-relative');
+                if (primary) primary.textContent = labels.primary;
+                if (secondary) secondary.textContent = labels.secondary;
+                if (relative) {
+                    relative.textContent = labels.relative;
+                    if (labels.relative === 'This week') relative.classList.add('current');
+                    else relative.classList.remove('current');
+                }
+            }
+
             saveData();
+        };
+
+        window.toggleDateEdit = function(wi) {
+            const wrap = document.getElementById(`date-edit-${wi}`);
+            if (wrap) wrap.classList.toggle('show');
         };
 
         // ─── TOPIC ACTIONS ───────────────────────────────────
