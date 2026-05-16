@@ -1042,9 +1042,13 @@
             color: var(--marine-700);
         }
 
-        .add-topic-btn {
-            width: calc(100% - 32px);
+        .add-topic-wrap {
+            position: relative;
             margin: 8px 16px 16px;
+        }
+
+        .add-topic-btn {
+            width: 100%;
             padding: 14px;
             background: white;
             border: 1px dashed var(--gray-300);
@@ -1068,6 +1072,71 @@
             color: var(--marine-700);
             transform: translateY(-1px);
             box-shadow: var(--shadow-md);
+        }
+
+        .add-topic-menu {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            padding: 6px;
+            z-index: 50;
+            display: none;
+            max-height: 320px;
+            overflow-y: auto;
+        }
+
+        .add-topic-menu.show {
+            display: block;
+        }
+
+        .add-topic-menu-section {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 8px 12px 4px;
+        }
+
+        .add-topic-menu-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.15s;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            color: var(--gray-800);
+            font-weight: 500;
+        }
+
+        .add-topic-menu-item:hover {
+            background: var(--marine-50);
+            color: var(--marine-700);
+        }
+
+        .add-topic-menu-item-meta {
+            font-size: 11px;
+            color: var(--gray-400);
+            font-weight: 500;
+        }
+
+        .add-topic-menu-divider {
+            height: 1px;
+            background: var(--gray-100);
+            margin: 4px 0;
         }
 
         /* ─── HIGHLIGHT NEW ─────────────────────────────────── */
@@ -1460,9 +1529,12 @@
                     </div>
                     <div class="week-body">
                         ${order.map(cat => renderTopic(week, wi, cat)).join('')}
-                        <button class="add-topic-btn" onclick="addTopic(${wi})">
-                            <span>+</span> Add Topic
-                        </button>
+                        <div class="add-topic-wrap">
+                            <button class="add-topic-btn" onclick="toggleAddTopicMenu(${wi}, event)">
+                                <span>+</span> Add Topic
+                            </button>
+                            <div class="add-topic-menu" id="add-topic-menu-${wi}"></div>
+                        </div>
                     </div>
                 </div>
             `;
@@ -1637,11 +1709,9 @@
         });
 
         window.deleteWeek = function(wi) {
-            if (confirm('Delete this entire week and all its tasks?')) {
-                weekData.splice(wi, 1);
-                saveData();
-                renderWeeks();
-            }
+            weekData.splice(wi, 1);
+            saveData();
+            renderWeeks();
         };
 
         window.updateWeekDate = function(wi, type, value) {
@@ -1673,32 +1743,130 @@
         };
 
         // ─── TOPIC ACTIONS ───────────────────────────────────
-        window.addTopic = function(wi) {
-            const newName = 'New Topic';
-            let finalName = newName;
-            let counter = 1;
-            while (weekData[wi].categories[finalName]) {
-                finalName = `${newName} ${++counter}`;
+        window.addTopic = function(wi, sourceTopicName, copyOpenTasks) {
+            const week = weekData[wi];
+            let finalName, tasksToAdd = [];
+
+            if (sourceTopicName) {
+                // Reuse a topic from previous weeks
+                finalName = sourceTopicName;
+                if (week.categories[finalName]) {
+                    // Already exists in this week — just highlight it
+                    highlightTarget = { selector: `#topic-${wi}-${escAttr(finalName)}` };
+                    renderWeeks();
+                    return;
+                }
+                if (copyOpenTasks) {
+                    // Find the topic in any previous week and copy non-done tasks
+                    for (let i = 0; i < weekData.length; i++) {
+                        if (i === wi) continue;
+                        const sourceTasks = weekData[i].categories?.[finalName];
+                        if (sourceTasks && sourceTasks.length > 0) {
+                            tasksToAdd = sourceTasks
+                                .filter(t => t.status !== 'done')
+                                .map(t => ({
+                                    text: t.text,
+                                    status: t.status,
+                                    updates: []
+                                }));
+                            break;
+                        }
+                    }
+                }
+            } else {
+                // Brand new topic
+                const newName = 'New Topic';
+                finalName = newName;
+                let counter = 1;
+                while (week.categories[finalName]) {
+                    finalName = `${newName} ${++counter}`;
+                }
+                tasksToAdd = [{ text: 'New task', status: 'todo', updates: [] }];
             }
-            weekData[wi].categories[finalName] = [
-                { text: 'New task', status: 'todo', updates: [], comments: [] }
-            ];
-            getCategoryOrder(weekData[wi]); // sync order
-            weekData[wi].categoryOrder.push(finalName);
+
+            week.categories[finalName] = tasksToAdd;
+            getCategoryOrder(week);
+            week.categoryOrder.push(finalName);
             highlightTarget = { selector: `#topic-${wi}-${escAttr(finalName)}` };
             saveData();
             renderWeeks();
         };
 
-        window.deleteTopic = function(wi, category) {
-            if (confirm(`Delete topic "${category}" and all its tasks?`)) {
-                delete weekData[wi].categories[category];
-                if (weekData[wi].categoryOrder) {
-                    weekData[wi].categoryOrder = weekData[wi].categoryOrder.filter(c => c !== category);
-                }
-                saveData();
-                renderWeeks();
+        window.toggleAddTopicMenu = function(wi, e) {
+            if (e) e.stopPropagation();
+            const menu = document.getElementById(`add-topic-menu-${wi}`);
+            if (!menu) return;
+
+            // Close all other menus
+            document.querySelectorAll('.add-topic-menu.show').forEach(m => {
+                if (m !== menu) m.classList.remove('show');
+            });
+
+            // Build menu content (gather distinct topics from OTHER weeks not present in this week)
+            const currentTopics = new Set(getCategoryOrder(weekData[wi]));
+            const candidates = new Map(); // topicName -> { sourceWi, openCount }
+
+            for (let i = 0; i < weekData.length; i++) {
+                if (i === wi) continue;
+                const order = getCategoryOrder(weekData[i]);
+                order.forEach(cat => {
+                    if (currentTopics.has(cat)) return;
+                    if (candidates.has(cat)) return;
+                    const tasks = weekData[i].categories[cat] || [];
+                    const openCount = tasks.filter(t => t.status !== 'done').length;
+                    candidates.set(cat, { sourceWi: i, openCount });
+                });
             }
+
+            let html = `
+                <button class="add-topic-menu-item" onclick="addTopic(${wi}); closeAllAddTopicMenus();">
+                    <span>+ Brand new topic</span>
+                </button>
+            `;
+
+            if (candidates.size > 0) {
+                html += `<div class="add-topic-menu-divider"></div>`;
+                html += `<div class="add-topic-menu-section">From previous weeks</div>`;
+                candidates.forEach(({ openCount }, name) => {
+                    const safeName = escJs(name);
+                    html += `
+                        <button class="add-topic-menu-item" onclick="addTopic(${wi}, '${safeName}', false); closeAllAddTopicMenus();">
+                            <span>${escText(name)}</span>
+                            <span class="add-topic-menu-item-meta">empty</span>
+                        </button>
+                    `;
+                    if (openCount > 0) {
+                        html += `
+                            <button class="add-topic-menu-item" onclick="addTopic(${wi}, '${safeName}', true); closeAllAddTopicMenus();">
+                                <span style="padding-left:14px;">↳ with ${openCount} open task${openCount === 1 ? '' : 's'}</span>
+                                <span class="add-topic-menu-item-meta">carry over</span>
+                            </button>
+                        `;
+                    }
+                });
+            }
+
+            menu.innerHTML = html;
+            menu.classList.toggle('show');
+        };
+
+        window.closeAllAddTopicMenus = function() {
+            document.querySelectorAll('.add-topic-menu.show').forEach(m => m.classList.remove('show'));
+        };
+
+        // Close add-topic menus on outside click
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.add-topic-wrap')) return;
+            window.closeAllAddTopicMenus();
+        });
+
+        window.deleteTopic = function(wi, category) {
+            delete weekData[wi].categories[category];
+            if (weekData[wi].categoryOrder) {
+                weekData[wi].categoryOrder = weekData[wi].categoryOrder.filter(c => c !== category);
+            }
+            saveData();
+            renderWeeks();
         };
 
         window.editTopicName = function(wi, oldName, el) {
@@ -1777,11 +1945,9 @@
         };
 
         window.deleteTask = function(wi, category, ti) {
-            if (confirm('Delete this task?')) {
-                weekData[wi].categories[category].splice(ti, 1);
-                saveData();
-                renderWeeks();
-            }
+            weekData[wi].categories[category].splice(ti, 1);
+            saveData();
+            renderWeeks();
         };
 
         window.editTaskName = function(wi, category, ti, el) {
@@ -2036,14 +2202,8 @@
         };
 
         window.deleteUpdate = function(wi, category, ti, ui) {
-            if (!confirm('Delete this update?')) return;
-            const wrapId = `update-${wi}-${escAttr(category)}-${ti}-${ui}`;
-            const wrap = document.getElementById(wrapId);
-
             weekData[wi].categories[category][ti].updates.splice(ui, 1);
             saveData();
-
-            // Need to re-render the task row because indices shifted
             renderWeeks();
         };
 
