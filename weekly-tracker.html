@@ -1743,38 +1743,37 @@
         };
 
         // ─── TOPIC ACTIONS ───────────────────────────────────
-        window.addTopic = function(wi, sourceTopicName, copyOpenTasks) {
+        // mode: 'empty' | 'open' | 'all'
+        window.addTopic = function(wi, sourceTopicName, mode = 'empty') {
             const week = weekData[wi];
             let finalName, tasksToAdd = [];
 
             if (sourceTopicName) {
-                // Reuse a topic from previous weeks
                 finalName = sourceTopicName;
                 if (week.categories[finalName]) {
-                    // Already exists in this week — just highlight it
                     highlightTarget = { selector: `#topic-${wi}-${escAttr(finalName)}` };
                     renderWeeks();
                     return;
                 }
-                if (copyOpenTasks) {
-                    // Find the topic in any previous week and copy non-done tasks
+                if (mode === 'open' || mode === 'all') {
+                    // Find topic's most recent task list in another week
                     for (let i = 0; i < weekData.length; i++) {
                         if (i === wi) continue;
                         const sourceTasks = weekData[i].categories?.[finalName];
                         if (sourceTasks && sourceTasks.length > 0) {
-                            tasksToAdd = sourceTasks
-                                .filter(t => t.status !== 'done')
-                                .map(t => ({
-                                    text: t.text,
-                                    status: t.status,
-                                    updates: []
-                                }));
+                            const filtered = mode === 'all'
+                                ? sourceTasks
+                                : sourceTasks.filter(t => t.status !== 'done');
+                            tasksToAdd = filtered.map(t => ({
+                                text: t.text,
+                                status: mode === 'all' ? t.status : (t.status === 'done' ? 'todo' : t.status),
+                                updates: []
+                            }));
                             break;
                         }
                     }
                 }
             } else {
-                // Brand new topic
                 const newName = 'New Topic';
                 finalName = newName;
                 let counter = 1;
@@ -1804,9 +1803,7 @@
 
             const currentTopics = new Set(getCategoryOrder(weekData[wi]));
 
-            // Gather ALL distinct topics from ALL weeks (excluding the current week's contribution
-            // to "previous" — but include current week's own topics for visibility).
-            // Map: topicName -> { mostRecentOpenCount, alreadyHere }
+            // Gather ALL distinct topics from ALL weeks
             const seen = new Map();
 
             // Iterate weeks in order (weekData[0] is most recent)
@@ -1816,8 +1813,10 @@
                     if (seen.has(cat)) return;
                     const tasks = weekData[i].categories[cat] || [];
                     const openCount = tasks.filter(t => t.status !== 'done').length;
+                    const totalCount = tasks.length;
                     seen.set(cat, {
                         openCount,
+                        totalCount,
                         alreadyHere: currentTopics.has(cat),
                         sourceWi: i
                     });
@@ -1841,19 +1840,27 @@
             if (reusable.length > 0) {
                 html += `<div class="add-topic-menu-divider"></div>`;
                 html += `<div class="add-topic-menu-section">Reuse from previous weeks</div>`;
-                reusable.forEach(([name, { openCount }]) => {
+                reusable.forEach(([name, { openCount, totalCount }]) => {
                     const safeName = escJs(name);
                     html += `
-                        <button class="add-topic-menu-item" onclick="addTopic(${wi}, '${safeName}', false); closeAllAddTopicMenus();">
-                            <span>${escText(name)}</span>
-                            <span class="add-topic-menu-item-meta">empty</span>
+                        <button class="add-topic-menu-item" onclick="addTopic(${wi}, '${safeName}', 'empty'); closeAllAddTopicMenus();">
+                            <span><strong>${escText(name)}</strong></span>
+                            <span class="add-topic-menu-item-meta">topic only</span>
                         </button>
                     `;
                     if (openCount > 0) {
                         html += `
-                            <button class="add-topic-menu-item" onclick="addTopic(${wi}, '${safeName}', true); closeAllAddTopicMenus();">
+                            <button class="add-topic-menu-item" onclick="addTopic(${wi}, '${safeName}', 'open'); closeAllAddTopicMenus();">
                                 <span style="padding-left:14px; color: var(--marine-700);">↳ with ${openCount} open task${openCount === 1 ? '' : 's'}</span>
-                                <span class="add-topic-menu-item-meta">carry over</span>
+                                <span class="add-topic-menu-item-meta">carry over open</span>
+                            </button>
+                        `;
+                    }
+                    if (totalCount > 0) {
+                        html += `
+                            <button class="add-topic-menu-item" onclick="addTopic(${wi}, '${safeName}', 'all'); closeAllAddTopicMenus();">
+                                <span style="padding-left:14px; color: var(--marine-700);">↳ with all ${totalCount} task${totalCount === 1 ? '' : 's'}</span>
+                                <span class="add-topic-menu-item-meta">carry over all</span>
                             </button>
                         `;
                     }
