@@ -1802,32 +1802,46 @@
                 if (m !== menu) m.classList.remove('show');
             });
 
-            // Build menu content (gather distinct topics from OTHER weeks not present in this week)
             const currentTopics = new Set(getCategoryOrder(weekData[wi]));
-            const candidates = new Map(); // topicName -> { sourceWi, openCount }
 
+            // Gather ALL distinct topics from ALL weeks (excluding the current week's contribution
+            // to "previous" — but include current week's own topics for visibility).
+            // Map: topicName -> { mostRecentOpenCount, alreadyHere }
+            const seen = new Map();
+
+            // Iterate weeks in order (weekData[0] is most recent)
             for (let i = 0; i < weekData.length; i++) {
-                if (i === wi) continue;
                 const order = getCategoryOrder(weekData[i]);
                 order.forEach(cat => {
-                    if (currentTopics.has(cat)) return;
-                    if (candidates.has(cat)) return;
+                    if (seen.has(cat)) return;
                     const tasks = weekData[i].categories[cat] || [];
                     const openCount = tasks.filter(t => t.status !== 'done').length;
-                    candidates.set(cat, { sourceWi: i, openCount });
+                    seen.set(cat, {
+                        openCount,
+                        alreadyHere: currentTopics.has(cat),
+                        sourceWi: i
+                    });
                 });
             }
 
             let html = `
                 <button class="add-topic-menu-item" onclick="addTopic(${wi}); closeAllAddTopicMenus();">
-                    <span>+ Brand new topic</span>
+                    <strong>+ Brand new topic</strong>
                 </button>
             `;
 
-            if (candidates.size > 0) {
+            // Split into two groups: not in current week, already in current week
+            const reusable = [];
+            const alreadyInWeek = [];
+            seen.forEach((info, name) => {
+                if (info.alreadyHere) alreadyInWeek.push([name, info]);
+                else reusable.push([name, info]);
+            });
+
+            if (reusable.length > 0) {
                 html += `<div class="add-topic-menu-divider"></div>`;
-                html += `<div class="add-topic-menu-section">From previous weeks</div>`;
-                candidates.forEach(({ openCount }, name) => {
+                html += `<div class="add-topic-menu-section">Reuse from previous weeks</div>`;
+                reusable.forEach(([name, { openCount }]) => {
                     const safeName = escJs(name);
                     html += `
                         <button class="add-topic-menu-item" onclick="addTopic(${wi}, '${safeName}', false); closeAllAddTopicMenus();">
@@ -1838,11 +1852,24 @@
                     if (openCount > 0) {
                         html += `
                             <button class="add-topic-menu-item" onclick="addTopic(${wi}, '${safeName}', true); closeAllAddTopicMenus();">
-                                <span style="padding-left:14px;">↳ with ${openCount} open task${openCount === 1 ? '' : 's'}</span>
+                                <span style="padding-left:14px; color: var(--marine-700);">↳ with ${openCount} open task${openCount === 1 ? '' : 's'}</span>
                                 <span class="add-topic-menu-item-meta">carry over</span>
                             </button>
                         `;
                     }
+                });
+            }
+
+            if (alreadyInWeek.length > 0) {
+                html += `<div class="add-topic-menu-divider"></div>`;
+                html += `<div class="add-topic-menu-section">Already in this week</div>`;
+                alreadyInWeek.forEach(([name]) => {
+                    html += `
+                        <button class="add-topic-menu-item" disabled style="opacity:0.5; cursor: not-allowed;">
+                            <span>${escText(name)}</span>
+                            <span class="add-topic-menu-item-meta">added</span>
+                        </button>
+                    `;
                 });
             }
 
