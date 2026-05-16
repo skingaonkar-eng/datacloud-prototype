@@ -1910,17 +1910,21 @@
         // mode: 'empty' | 'open' | 'all'
         window.addTopic = function(wi, sourceTopicName, mode = 'empty') {
             const week = weekData[wi];
-            let finalName, tasksToAdd = [];
+            if (!week.categories) week.categories = {};
+
+            let finalName;
+            let tasksToAdd = [];
 
             if (sourceTopicName) {
                 finalName = sourceTopicName;
-                if (week.categories[finalName]) {
+                // Topic already exists in this week — just highlight, don't duplicate
+                if (week.categories[finalName] !== undefined) {
                     highlightTarget = { selector: `#topic-${wi}-${escAttr(finalName)}`, expandWeek: wi };
                     renderWeeks();
                     return;
                 }
                 if (mode === 'open' || mode === 'all') {
-                    // Find topic's most recent task list in another week
+                    // Find this topic's most recent task list in another week
                     for (let i = 0; i < weekData.length; i++) {
                         if (i === wi) continue;
                         const sourceTasks = weekData[i].categories?.[finalName];
@@ -1938,22 +1942,31 @@
                     }
                 }
             } else {
+                // Brand new topic
                 const newName = 'New Topic';
                 finalName = newName;
                 let counter = 1;
-                while (week.categories[finalName]) {
+                while (week.categories[finalName] !== undefined) {
                     finalName = `${newName} ${++counter}`;
                 }
                 tasksToAdd = [{ text: 'New task', status: 'todo', updates: [] }];
             }
 
-            // Make sure categoryOrder exists, but DON'T let it auto-append the new topic yet
-            if (!week.categoryOrder || !Array.isArray(week.categoryOrder)) {
-                week.categoryOrder = Object.keys(week.categories || {});
+            // CRITICAL: Firebase strips empty arrays. If we'd save an empty topic, give it
+            // a placeholder task so the topic survives the round-trip.
+            if (tasksToAdd.length === 0) {
+                tasksToAdd = [{ text: 'New task', status: 'todo', updates: [] }];
             }
 
+            // Initialize categoryOrder if missing
+            if (!week.categoryOrder || !Array.isArray(week.categoryOrder)) {
+                week.categoryOrder = Object.keys(week.categories);
+            }
+
+            // Add the topic
             week.categories[finalName] = tasksToAdd;
 
+            // Push name to order if not already present
             if (!week.categoryOrder.includes(finalName)) {
                 week.categoryOrder.push(finalName);
             }
