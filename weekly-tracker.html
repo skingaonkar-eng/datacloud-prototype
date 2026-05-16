@@ -1854,17 +1854,17 @@
             if (reusable.length > 0) {
                 html += `<div class="add-topic-menu-divider"></div>`;
                 html += `<div class="add-topic-menu-section">Reuse from previous weeks</div>`;
-                reusable.forEach(([name, { openCount, totalCount }]) => {
-                    const safeName = escJs(name);
+                reusable.forEach(([name, { openCount, totalCount }], idx) => {
+                    const safeAttr = escAttr(name);
                     html += `
-                        <button class="add-topic-menu-item" onclick="addTopic(${wi}, '${safeName}', 'empty'); closeAllAddTopicMenus();">
+                        <button class="add-topic-menu-item reuse-item" data-topic="${safeAttr}" data-mode="empty" data-wi="${wi}">
                             <span><strong>${escText(name)}</strong></span>
                             <span class="add-topic-menu-item-meta">topic only</span>
                         </button>
                     `;
                     if (openCount > 0) {
                         html += `
-                            <button class="add-topic-menu-item" onclick="addTopic(${wi}, '${safeName}', 'open'); closeAllAddTopicMenus();">
+                            <button class="add-topic-menu-item reuse-item" data-topic="${safeAttr}" data-mode="open" data-wi="${wi}">
                                 <span style="padding-left:14px; color: var(--marine-700);">↳ with ${openCount} open task${openCount === 1 ? '' : 's'}</span>
                                 <span class="add-topic-menu-item-meta">carry over open</span>
                             </button>
@@ -1872,7 +1872,7 @@
                     }
                     if (totalCount > 0) {
                         html += `
-                            <button class="add-topic-menu-item" onclick="addTopic(${wi}, '${safeName}', 'all'); closeAllAddTopicMenus();">
+                            <button class="add-topic-menu-item reuse-item" data-topic="${safeAttr}" data-mode="all" data-wi="${wi}">
                                 <span style="padding-left:14px; color: var(--marine-700);">↳ with all ${totalCount} task${totalCount === 1 ? '' : 's'}</span>
                                 <span class="add-topic-menu-item-meta">carry over all</span>
                             </button>
@@ -1896,6 +1896,18 @@
 
             menu.innerHTML = html;
             menu.classList.toggle('show');
+
+            // Bind reuse-item click handlers (using data attributes for safety)
+            menu.querySelectorAll('.reuse-item').forEach(btn => {
+                btn.addEventListener('click', (ev) => {
+                    ev.stopPropagation();
+                    const topic = btn.dataset.topic;
+                    const mode = btn.dataset.mode;
+                    const targetWi = parseInt(btn.dataset.wi, 10);
+                    closeAllAddTopicMenus();
+                    window.addTopic(targetWi, topic, mode);
+                });
+            });
         };
 
         window.closeAllAddTopicMenus = function() {
