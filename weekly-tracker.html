@@ -1797,9 +1797,17 @@
                 tasksToAdd = [{ text: 'New task', status: 'todo', updates: [] }];
             }
 
+            // Make sure categoryOrder exists, but DON'T let it auto-append the new topic yet
+            if (!week.categoryOrder || !Array.isArray(week.categoryOrder)) {
+                week.categoryOrder = Object.keys(week.categories || {});
+            }
+
             week.categories[finalName] = tasksToAdd;
-            getCategoryOrder(week);
-            week.categoryOrder.push(finalName);
+
+            if (!week.categoryOrder.includes(finalName)) {
+                week.categoryOrder.push(finalName);
+            }
+
             highlightTarget = { selector: `#topic-${wi}-${escAttr(finalName)}`, expandWeek: wi };
             saveData();
             renderWeeks();
