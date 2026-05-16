@@ -1082,12 +1082,13 @@
             background: white;
             border: 1px solid var(--gray-200);
             border-radius: 12px;
-            box-shadow: var(--shadow-lg);
-            padding: 6px;
+            box-shadow: var(--shadow-xl);
+            padding: 8px;
             z-index: 50;
             display: none;
-            max-height: 320px;
+            max-height: 70vh;
             overflow-y: auto;
+            min-width: 380px;
         }
 
         .add-topic-menu.show {
@@ -1107,8 +1108,8 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 8px;
-            padding: 8px 12px;
+            gap: 12px;
+            padding: 11px 14px;
             border-radius: 8px;
             cursor: pointer;
             transition: background 0.15s;
@@ -1117,9 +1118,17 @@
             width: 100%;
             text-align: left;
             font-family: 'Inter', sans-serif;
-            font-size: 13px;
+            font-size: 14px;
             color: var(--gray-800);
             font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .add-topic-menu-item span:first-child {
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .add-topic-menu-item:hover {
@@ -1478,6 +1487,11 @@
 
             // Apply highlight if needed (overrides scroll restore)
             if (highlightTarget) {
+                // Make sure the week is expanded
+                if (typeof highlightTarget.expandWeek === 'number') {
+                    const weekEl = document.getElementById(`week-${highlightTarget.expandWeek}`);
+                    if (weekEl) weekEl.classList.remove('collapsed');
+                }
                 const target = document.querySelector(highlightTarget.selector);
                 if (target) {
                     target.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1751,7 +1765,7 @@
             if (sourceTopicName) {
                 finalName = sourceTopicName;
                 if (week.categories[finalName]) {
-                    highlightTarget = { selector: `#topic-${wi}-${escAttr(finalName)}` };
+                    highlightTarget = { selector: `#topic-${wi}-${escAttr(finalName)}`, expandWeek: wi };
                     renderWeeks();
                     return;
                 }
@@ -1786,7 +1800,7 @@
             week.categories[finalName] = tasksToAdd;
             getCategoryOrder(week);
             week.categoryOrder.push(finalName);
-            highlightTarget = { selector: `#topic-${wi}-${escAttr(finalName)}` };
+            highlightTarget = { selector: `#topic-${wi}-${escAttr(finalName)}`, expandWeek: wi };
             saveData();
             renderWeeks();
         };
