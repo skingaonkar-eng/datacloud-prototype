@@ -1074,25 +1074,162 @@
             box-shadow: var(--shadow-md);
         }
 
-        .add-topic-menu {
-            position: absolute;
-            bottom: calc(100% + 8px);
-            left: 0;
-            right: 0;
-            background: white;
-            border: 1px solid var(--gray-200);
-            border-radius: 12px;
-            box-shadow: var(--shadow-xl);
-            padding: 8px;
-            z-index: 50;
+        /* Modal overlay backdrop */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.55);
+            z-index: 1000;
             display: none;
-            max-height: 70vh;
-            overflow-y: auto;
-            min-width: 380px;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            backdrop-filter: blur(4px);
         }
 
-        .add-topic-menu.show {
-            display: block;
+        .modal-backdrop.show {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow-xl);
+            width: 100%;
+            max-width: 640px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .modal-subtitle {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 2px;
+        }
+
+        .modal-close {
+            background: var(--gray-100);
+            border: none;
+            color: var(--gray-600);
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+        }
+
+        .modal-close:hover {
+            background: var(--gray-200);
+            color: var(--gray-900);
+        }
+
+        .modal-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        .topic-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 18px;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.15s;
+            background: white;
+            width: 100%;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .topic-option:hover:not(:disabled) {
+            border-color: var(--marine-500);
+            background: var(--marine-50);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .topic-option:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        .topic-option-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .topic-option-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 4px;
+        }
+
+        .topic-option-detail {
+            font-size: 13px;
+            color: var(--gray-500);
+        }
+
+        .topic-option-badge {
+            background: var(--marine-50);
+            color: var(--marine-700);
+            border: 1px solid var(--marine-400);
+            padding: 4px 10px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .topic-option-badge.empty {
+            background: var(--gray-100);
+            color: var(--gray-600);
+            border-color: var(--gray-300);
+        }
+
+        .topic-option-badge.added {
+            background: #ecfdf5;
+            color: #047857;
+            border-color: #6ee7b7;
+        }
+
+        .modal-section-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin: 16px 4px 8px;
+        }
+
+        .modal-section-label:first-child {
+            margin-top: 4px;
         }
 
         .add-topic-menu-section {
@@ -1236,6 +1373,20 @@
 
         <div id="weeksList">
             <div class="loading">Loading your tracker...</div>
+        </div>
+    </div>
+
+    <!-- Add Topic Modal -->
+    <div class="modal-backdrop" id="addTopicBackdrop" onclick="closeAddTopicModalIfBackdrop(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div>
+                    <div class="modal-title">Add Topic</div>
+                    <div class="modal-subtitle" id="addTopicSubtitle">Pick from previous weeks or create a brand new topic</div>
+                </div>
+                <button class="modal-close" onclick="closeAddTopicModal()">×</button>
+            </div>
+            <div class="modal-body" id="addTopicModalBody"></div>
         </div>
     </div>
 
@@ -1544,10 +1695,9 @@
                     <div class="week-body">
                         ${order.map(cat => renderTopic(week, wi, cat)).join('')}
                         <div class="add-topic-wrap">
-                            <button class="add-topic-btn" onclick="toggleAddTopicMenu(${wi}, event)">
+                            <button class="add-topic-btn" onclick="openAddTopicModal(${wi})">
                                 <span>+</span> Add Topic
                             </button>
-                            <div class="add-topic-menu" id="add-topic-menu-${wi}"></div>
                         </div>
                     </div>
                 </div>
@@ -1813,22 +1963,15 @@
             renderWeeks();
         };
 
-        window.toggleAddTopicMenu = function(wi, e) {
-            if (e) e.stopPropagation();
-            const menu = document.getElementById(`add-topic-menu-${wi}`);
-            if (!menu) return;
-
-            // Close all other menus
-            document.querySelectorAll('.add-topic-menu.show').forEach(m => {
-                if (m !== menu) m.classList.remove('show');
-            });
+        window.openAddTopicModal = function(wi) {
+            const backdrop = document.getElementById('addTopicBackdrop');
+            const body = document.getElementById('addTopicModalBody');
+            if (!backdrop || !body) return;
 
             const currentTopics = new Set(getCategoryOrder(weekData[wi]));
 
-            // Gather ALL distinct topics from ALL weeks
+            // Gather ALL distinct topics from ALL weeks (most recent first wins)
             const seen = new Map();
-
-            // Iterate weeks in order (weekData[0] is most recent)
             for (let i = 0; i < weekData.length; i++) {
                 const order = getCategoryOrder(weekData[i]);
                 order.forEach(cat => {
@@ -1836,22 +1979,10 @@
                     const tasks = weekData[i].categories[cat] || [];
                     const openCount = tasks.filter(t => t.status !== 'done').length;
                     const totalCount = tasks.length;
-                    seen.set(cat, {
-                        openCount,
-                        totalCount,
-                        alreadyHere: currentTopics.has(cat),
-                        sourceWi: i
-                    });
+                    seen.set(cat, { openCount, totalCount, alreadyHere: currentTopics.has(cat) });
                 });
             }
 
-            let html = `
-                <button class="add-topic-menu-item" onclick="addTopic(${wi}); closeAllAddTopicMenus();">
-                    <strong>+ Brand new topic</strong>
-                </button>
-            `;
-
-            // Split into two groups: not in current week, already in current week
             const reusable = [];
             const alreadyInWeek = [];
             seen.forEach((info, name) => {
@@ -1859,73 +1990,101 @@
                 else reusable.push([name, info]);
             });
 
+            let html = '';
+
+            // Always show "brand new" option first
+            html += `
+                <button class="topic-option" data-action="new" data-wi="${wi}">
+                    <div class="topic-option-text">
+                        <div class="topic-option-name">+ Brand new topic</div>
+                        <div class="topic-option-detail">Create a fresh topic with one starter task</div>
+                    </div>
+                </button>
+            `;
+
             if (reusable.length > 0) {
-                html += `<div class="add-topic-menu-divider"></div>`;
-                html += `<div class="add-topic-menu-section">Reuse from previous weeks</div>`;
-                reusable.forEach(([name, { openCount, totalCount }], idx) => {
+                html += `<div class="modal-section-label">Reuse from previous weeks</div>`;
+                reusable.forEach(([name, { openCount, totalCount }]) => {
                     const safeAttr = escAttr(name);
+                    let detail;
+                    let badge;
+                    if (totalCount === 0) {
+                        detail = 'No tasks to carry over';
+                        badge = `<span class="topic-option-badge empty">topic only</span>`;
+                    } else if (openCount === 0) {
+                        detail = `All ${totalCount} task${totalCount === 1 ? ' was' : 's were'} done — adding topic only`;
+                        badge = `<span class="topic-option-badge empty">topic only</span>`;
+                    } else if (openCount === totalCount) {
+                        detail = `Carry over ${openCount} open task${openCount === 1 ? '' : 's'}`;
+                        badge = `<span class="topic-option-badge">+${openCount} task${openCount === 1 ? '' : 's'}</span>`;
+                    } else {
+                        detail = `Carry over ${openCount} open task${openCount === 1 ? '' : 's'} (skipping ${totalCount - openCount} done)`;
+                        badge = `<span class="topic-option-badge">+${openCount} task${openCount === 1 ? '' : 's'}</span>`;
+                    }
                     html += `
-                        <button class="add-topic-menu-item reuse-item" data-topic="${safeAttr}" data-mode="empty" data-wi="${wi}">
-                            <span><strong>${escText(name)}</strong></span>
-                            <span class="add-topic-menu-item-meta">topic only</span>
+                        <button class="topic-option reuse-option" data-topic="${safeAttr}" data-wi="${wi}">
+                            <div class="topic-option-text">
+                                <div class="topic-option-name">${escText(name)}</div>
+                                <div class="topic-option-detail">${detail}</div>
+                            </div>
+                            ${badge}
                         </button>
                     `;
-                    if (openCount > 0) {
-                        html += `
-                            <button class="add-topic-menu-item reuse-item" data-topic="${safeAttr}" data-mode="open" data-wi="${wi}">
-                                <span style="padding-left:14px; color: var(--marine-700);">↳ with ${openCount} open task${openCount === 1 ? '' : 's'}</span>
-                                <span class="add-topic-menu-item-meta">carry over open</span>
-                            </button>
-                        `;
-                    }
-                    if (totalCount > 0) {
-                        html += `
-                            <button class="add-topic-menu-item reuse-item" data-topic="${safeAttr}" data-mode="all" data-wi="${wi}">
-                                <span style="padding-left:14px; color: var(--marine-700);">↳ with all ${totalCount} task${totalCount === 1 ? '' : 's'}</span>
-                                <span class="add-topic-menu-item-meta">carry over all</span>
-                            </button>
-                        `;
-                    }
                 });
             }
 
             if (alreadyInWeek.length > 0) {
-                html += `<div class="add-topic-menu-divider"></div>`;
-                html += `<div class="add-topic-menu-section">Already in this week</div>`;
+                html += `<div class="modal-section-label">Already in this week</div>`;
                 alreadyInWeek.forEach(([name]) => {
                     html += `
-                        <button class="add-topic-menu-item" disabled style="opacity:0.5; cursor: not-allowed;">
-                            <span>${escText(name)}</span>
-                            <span class="add-topic-menu-item-meta">added</span>
+                        <button class="topic-option" disabled>
+                            <div class="topic-option-text">
+                                <div class="topic-option-name">${escText(name)}</div>
+                                <div class="topic-option-detail">Already added to this week</div>
+                            </div>
+                            <span class="topic-option-badge added">added</span>
                         </button>
                     `;
                 });
             }
 
-            menu.innerHTML = html;
-            menu.classList.toggle('show');
+            body.innerHTML = html;
 
-            // Bind reuse-item click handlers (using data attributes for safety)
-            menu.querySelectorAll('.reuse-item').forEach(btn => {
-                btn.addEventListener('click', (ev) => {
-                    ev.stopPropagation();
+            // Wire up handlers
+            body.querySelector('[data-action="new"]')?.addEventListener('click', () => {
+                window.closeAddTopicModal();
+                window.addTopic(wi);
+            });
+
+            body.querySelectorAll('.reuse-option').forEach(btn => {
+                btn.addEventListener('click', () => {
                     const topic = btn.dataset.topic;
-                    const mode = btn.dataset.mode;
                     const targetWi = parseInt(btn.dataset.wi, 10);
-                    closeAllAddTopicMenus();
-                    window.addTopic(targetWi, topic, mode);
+                    window.closeAddTopicModal();
+                    // Always carry over open tasks (or add empty if none open)
+                    window.addTopic(targetWi, topic, 'open');
                 });
             });
+
+            backdrop.classList.add('show');
         };
 
-        window.closeAllAddTopicMenus = function() {
-            document.querySelectorAll('.add-topic-menu.show').forEach(m => m.classList.remove('show'));
+        window.closeAddTopicModal = function() {
+            const backdrop = document.getElementById('addTopicBackdrop');
+            if (backdrop) backdrop.classList.remove('show');
         };
 
-        // Close add-topic menus on outside click
-        document.addEventListener('click', (e) => {
-            if (e.target.closest('.add-topic-wrap')) return;
-            window.closeAllAddTopicMenus();
+        window.closeAddTopicModalIfBackdrop = function(e) {
+            if (e.target.id === 'addTopicBackdrop') {
+                window.closeAddTopicModal();
+            }
+        };
+
+        // Close modal on Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                window.closeAddTopicModal();
+            }
         });
 
         window.deleteTopic = function(wi, category) {
