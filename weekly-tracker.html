@@ -134,6 +134,83 @@
         .header-actions {
             display: flex;
             gap: 10px;
+            position: relative;
+        }
+
+        .add-week-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            min-width: 280px;
+            padding: 6px;
+            z-index: 100;
+            display: none;
+        }
+
+        .add-week-menu.show {
+            display: block;
+        }
+
+        .add-week-menu-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.15s;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .add-week-menu-item:hover {
+            background: var(--marine-50);
+        }
+
+        .add-week-menu-item-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--gray-100);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .add-week-menu-item:hover .add-week-menu-item-icon {
+            background: white;
+        }
+
+        .add-week-menu-item-text {
+            flex: 1;
+        }
+
+        .add-week-menu-item-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .add-week-menu-item-sub {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 1px;
+            line-height: 1.4;
+        }
+
+        .add-week-menu-divider {
+            height: 1px;
+            background: var(--gray-100);
+            margin: 4px 0;
         }
 
         .btn {
@@ -1036,9 +1113,32 @@
                 </div>
             </div>
             <div class="header-actions">
-                <button class="btn btn-primary" onclick="addWeek()">
+                <button class="btn btn-primary" onclick="toggleAddWeekMenu(event)">
                     <span>+</span> New Week
                 </button>
+                <div class="add-week-menu" id="addWeekMenu">
+                    <button class="add-week-menu-item" onclick="addWeek('empty'); closeAddWeekMenu();">
+                        <span class="add-week-menu-item-icon">📄</span>
+                        <span class="add-week-menu-item-text">
+                            <span class="add-week-menu-item-title">Empty week</span>
+                            <span class="add-week-menu-item-sub">Start fresh — no topics or tasks</span>
+                        </span>
+                    </button>
+                    <button class="add-week-menu-item" onclick="addWeek('topics'); closeAddWeekMenu();">
+                        <span class="add-week-menu-item-icon">📋</span>
+                        <span class="add-week-menu-item-text">
+                            <span class="add-week-menu-item-title">Copy topics from last week</span>
+                            <span class="add-week-menu-item-sub">Same topics, no tasks — add fresh ones</span>
+                        </span>
+                    </button>
+                    <button class="add-week-menu-item" onclick="addWeek('full'); closeAddWeekMenu();">
+                        <span class="add-week-menu-item-icon">🔁</span>
+                        <span class="add-week-menu-item-text">
+                            <span class="add-week-menu-item-title">Carry over open tasks</span>
+                            <span class="add-week-menu-item-sub">Topics + To Do/In Progress/Blocked tasks (skip Done)</span>
+                        </span>
+                    </button>
+                </div>
             </div>
         </header>
 
@@ -1458,7 +1558,7 @@
             document.getElementById(`week-${wi}`).classList.toggle('collapsed');
         };
 
-        window.addWeek = function() {
+        window.addWeek = function(mode = 'empty') {
             const today = new Date();
             const day = today.getDay();
             const diff = today.getDate() - day + (day === 0 ? -6 : 1); // Monday
@@ -1466,16 +1566,75 @@
             const sunday = new Date(monday);
             sunday.setDate(monday.getDate() + 6);
 
-            weekData.unshift({
-                weekStart: monday.toISOString().split('T')[0],
-                weekEnd: sunday.toISOString().split('T')[0],
+            // If a week with the same start already exists, push the new one ahead by 7 days
+            let weekStart = monday.toISOString().split('T')[0];
+            let weekEnd = sunday.toISOString().split('T')[0];
+            if (weekData.some(w => w.weekStart === weekStart)) {
+                const futureMonday = new Date(monday);
+                futureMonday.setDate(futureMonday.getDate() + 7);
+                const futureSunday = new Date(futureMonday);
+                futureSunday.setDate(futureSunday.getDate() + 6);
+                weekStart = futureMonday.toISOString().split('T')[0];
+                weekEnd = futureSunday.toISOString().split('T')[0];
+            }
+
+            const newWeek = {
+                weekStart,
+                weekEnd,
                 categoryOrder: [],
                 categories: {}
-            });
+            };
+
+            // Copy topics/tasks from the most recent existing week
+            if (mode !== 'empty' && weekData.length > 0) {
+                const source = weekData[0];
+                const sourceOrder = getCategoryOrder(source);
+                sourceOrder.forEach(cat => {
+                    const sourceTasks = source.categories[cat] || [];
+                    let tasksToAdd = [];
+                    if (mode === 'topics') {
+                        // Only copy topic structure, no tasks
+                        tasksToAdd = [];
+                    } else if (mode === 'full') {
+                        // Copy non-done tasks (status reset to todo, no updates)
+                        tasksToAdd = sourceTasks
+                            .filter(t => t.status !== 'done')
+                            .map(t => ({
+                                text: t.text,
+                                status: t.status === 'blocked' ? 'blocked' : (t.status === 'progress' ? 'progress' : 'todo'),
+                                updates: []
+                            }));
+                    }
+                    newWeek.categories[cat] = tasksToAdd;
+                    newWeek.categoryOrder.push(cat);
+                });
+            }
+
+            weekData.unshift(newWeek);
             highlightTarget = { selector: '#week-0' };
             saveData();
             renderWeeks();
         };
+
+        window.toggleAddWeekMenu = function(e) {
+            if (e) e.stopPropagation();
+            const menu = document.getElementById('addWeekMenu');
+            menu.classList.toggle('show');
+        };
+
+        window.closeAddWeekMenu = function() {
+            const menu = document.getElementById('addWeekMenu');
+            if (menu) menu.classList.remove('show');
+        };
+
+        // Close menu on outside click
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('addWeekMenu');
+            const trigger = e.target.closest('.btn-primary');
+            if (menu && menu.classList.contains('show') && !menu.contains(e.target) && !trigger) {
+                menu.classList.remove('show');
+            }
+        });
 
         window.deleteWeek = function(wi) {
             if (confirm('Delete this entire week and all its tasks?')) {
