@@ -326,8 +326,123 @@
             display: none;
         }
 
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 720px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .dashboard-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 18px 20px;
+            transition: all 0.15s;
+        }
+
+        .dashboard-card:hover {
+            border-color: var(--marine-400);
+            box-shadow: var(--shadow-md);
+        }
+
+        .dashboard-card-name {
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--marine-900);
+            letter-spacing: -0.2px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dashboard-card-name::before {
+            content: '';
+            width: 4px;
+            height: 16px;
+            border-radius: 2px;
+            background: linear-gradient(180deg, var(--marine-700), var(--marine-500));
+        }
+
+        .dashboard-card-narrative {
+            font-size: 13.5px;
+            color: var(--gray-700);
+            line-height: 1.6;
+        }
+
+        .dashboard-card-empty {
+            font-size: 13px;
+            color: var(--gray-400);
+            font-style: italic;
+        }
+
+        .dashboard-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 24px 0 12px;
+            color: var(--gray-500);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .dashboard-divider::before,
+        .dashboard-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--gray-200);
+        }
+
+        .full-summary-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 20px 0 0;
+            padding: 12px 16px;
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-700);
+            width: 100%;
+            transition: all 0.15s;
+        }
+
+        .full-summary-toggle:hover {
+            background: white;
+            border-color: var(--marine-400);
+            color: var(--marine-700);
+        }
+
+        .full-summary-toggle .chevron {
+            color: currentColor;
+            margin-left: auto;
+        }
+
+        .full-summary-section {
+            display: none;
+            margin-top: 16px;
+        }
+
+        .full-summary-section.show {
+            display: block;
+        }
+
         .summary-topic {
-            margin-top: 20px;
+            margin-top: 14px;
             border: 1px solid var(--gray-200);
             border-radius: 12px;
             overflow: hidden;
@@ -2456,66 +2571,247 @@
 
         function renderSummary() {
             const body = document.getElementById('summaryBody');
-            const map = {};
 
-            weekData.forEach(week => {
-                const order = getCategoryOrder(week);
-                order.forEach(cat => {
-                    const tasks = week.categories[cat] || [];
-                    if (!map[cat]) map[cat] = {};
-                    tasks.forEach(t => {
-                        if (!map[cat][t.text]) {
-                            map[cat][t.text] = { status: t.status, updates: [] };
-                        }
-                        if (t.updates) map[cat][t.text].updates.push(...t.updates);
-                    });
-                });
-            });
-
-            const entries = Object.entries(map);
-            if (entries.length === 0) {
+            if (!weekData || weekData.length === 0) {
                 body.innerHTML = `<div class="empty-state" style="padding:24px 0;">No data yet</div>`;
                 return;
             }
 
-            body.innerHTML = entries.map(([cat, tasks]) => {
-                const taskList = Object.entries(tasks);
-                const counts = { todo: 0, progress: 0, done: 0, blocked: 0 };
-                taskList.forEach(([, t]) => counts[t.status] = (counts[t.status] || 0) + 1);
+            // ── Collect every distinct topic (in order of latest appearance) ──
+            const topicOrder = [];
+            const seenTopics = new Set();
+            weekData.forEach(week => {
+                getCategoryOrder(week).forEach(cat => {
+                    if (!seenTopics.has(cat)) {
+                        seenTopics.add(cat);
+                        topicOrder.push(cat);
+                    }
+                });
+            });
 
+            // ── For each topic, find the FIRST 5 tasks from the LATEST week it appears in ──
+            const dashboardData = topicOrder.map(cat => {
+                let recentTasks = [];
+                let sourceWeek = null;
+                for (let i = 0; i < weekData.length; i++) {
+                    const tasks = weekData[i].categories?.[cat];
+                    if (tasks && tasks.length > 0) {
+                        recentTasks = tasks.slice(0, 5);
+                        sourceWeek = weekData[i];
+                        break;
+                    }
+                }
+                return { topic: cat, tasks: recentTasks, sourceWeek };
+            });
+
+            // ── Aggregated full-history map for the detailed view ──
+            const fullMap = {};
+            weekData.forEach(week => {
+                getCategoryOrder(week).forEach(cat => {
+                    const tasks = week.categories[cat] || [];
+                    if (!fullMap[cat]) fullMap[cat] = {};
+                    tasks.forEach(t => {
+                        if (!fullMap[cat][t.text]) {
+                            fullMap[cat][t.text] = { status: t.status, updates: [] };
+                        }
+                        if (t.updates) fullMap[cat][t.text].updates.push(...t.updates);
+                    });
+                });
+            });
+
+            // ── Render ──
+            const dashboardHTML = dashboardData.map(({ topic, tasks }) => {
+                const narrative = buildNarrative(tasks);
                 return `
-                    <div class="summary-topic">
-                        <div class="summary-topic-header">
-                            <div class="summary-topic-name">${escText(cat)}</div>
-                            <div class="summary-topic-meta">
-                                ${counts.progress > 0 ? `<span class="summary-meta-pill">${counts.progress} in progress</span>` : ''}
-                                ${counts.done > 0 ? `<span class="summary-meta-pill">${counts.done} done</span>` : ''}
-                                ${counts.todo > 0 ? `<span class="summary-meta-pill">${counts.todo} to do</span>` : ''}
-                                ${counts.blocked > 0 ? `<span class="summary-meta-pill">${counts.blocked} blocked</span>` : ''}
-                            </div>
-                        </div>
-                        ${taskList.map(([taskText, info]) => {
-                            const sortedUpdates = [...info.updates].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
-                            const latest = sortedUpdates[0];
-                            return `
-                                <div class="summary-task">
-                                    <select class="status-select ${info.status}" disabled style="width:120px; flex-shrink:0;">
-                                        <option>${formatStatus(info.status)}</option>
-                                    </select>
-                                    <div class="summary-task-content">
-                                        <div class="summary-task-name ${info.status === 'done' ? 'done' : ''}">${escText(taskText)}</div>
-                                        ${latest ? `
-                                            <div class="summary-task-update">
-                                                <span class="summary-task-update-date">📝 ${escText(latest.date)}</span>${escText(latest.text)}
-                                            </div>
-                                        ` : ''}
-                                    </div>
-                                </div>
-                            `;
-                        }).join('')}
+                    <div class="dashboard-card">
+                        <div class="dashboard-card-name">${escText(topic)}</div>
+                        ${narrative
+                            ? `<div class="dashboard-card-narrative">${escText(narrative)}</div>`
+                            : `<div class="dashboard-card-empty">No tasks tracked yet for this topic.</div>`
+                        }
                     </div>
                 `;
             }).join('');
+
+            const fullSummaryHTML = Object.entries(fullMap).map(([cat, tasks]) => `
+                <div class="summary-topic">
+                    <div class="summary-topic-header">
+                        <div class="summary-topic-name">${escText(cat)}</div>
+                    </div>
+                    ${Object.entries(tasks).map(([taskText, info]) => {
+                        const sortedUpdates = [...info.updates].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+                        const latest = sortedUpdates[0];
+                        return `
+                            <div class="summary-task">
+                                <select class="status-select ${info.status}" disabled style="width:120px; flex-shrink:0;">
+                                    <option>${formatStatus(info.status)}</option>
+                                </select>
+                                <div class="summary-task-content">
+                                    <div class="summary-task-name ${info.status === 'done' ? 'done' : ''}">${escText(taskText)}</div>
+                                    ${latest ? `
+                                        <div class="summary-task-update">
+                                            <span class="summary-task-update-date">📝 ${escText(latest.date)}</span>${escText(latest.text)}
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `).join('');
+
+            body.innerHTML = `
+                <div class="dashboard-grid">${dashboardHTML}</div>
+                <button class="full-summary-toggle" onclick="toggleFullSummary()">
+                    <span id="fullSummaryToggleText">Show full summary</span>
+                    <span class="chevron" id="fullSummaryChevron">▼</span>
+                </button>
+                <div class="full-summary-section" id="fullSummarySection">
+                    ${fullSummaryHTML}
+                </div>
+            `;
+        }
+
+        window.toggleFullSummary = function() {
+            const section = document.getElementById('fullSummarySection');
+            const chevron = document.getElementById('fullSummaryChevron');
+            const text = document.getElementById('fullSummaryToggleText');
+            if (!section) return;
+
+            const willShow = !section.classList.contains('show');
+            section.classList.toggle('show');
+
+            if (willShow) {
+                text.textContent = 'Hide full summary';
+                chevron.style.transform = 'rotate(180deg)';
+            } else {
+                text.textContent = 'Show full summary';
+                chevron.style.transform = 'rotate(0deg)';
+            }
+        };
+
+        // ─── NARRATIVE GENERATOR (template-based) ─────────────
+        function buildNarrative(tasks) {
+            if (!tasks || tasks.length === 0) return '';
+
+            // Bucket tasks by status, keep the original task order
+            const buckets = { progress: [], blocked: [], todo: [], done: [] };
+            tasks.forEach(t => {
+                if (buckets[t.status]) buckets[t.status].push(t);
+            });
+
+            const sentences = [];
+
+            // ── Sentence 1: what's actively in motion (in progress + done) ──
+            const progressNames = buckets.progress.map(t => extractTaskGist(t));
+            const doneNames = buckets.done.map(t => extractTaskGist(t));
+
+            if (progressNames.length > 0) {
+                const verb = pickProgressVerb(progressNames.length);
+                sentences.push(`${verb} ${joinList(progressNames)}.`);
+            } else if (doneNames.length > 0) {
+                sentences.push(`Recently wrapped up ${joinList(doneNames)}.`);
+            }
+
+            // ── Sentence 2: what's blocked or upcoming ──
+            const blockedNames = buckets.blocked.map(t => extractTaskGist(t));
+            const todoNames = buckets.todo.map(t => extractTaskGist(t));
+
+            const part2 = [];
+            if (blockedNames.length > 0) {
+                part2.push(`held up on ${joinList(blockedNames)}`);
+            }
+            if (todoNames.length > 0) {
+                const lead = blockedNames.length > 0 ? 'with' : 'Up next:';
+                if (lead === 'Up next:') {
+                    part2.push(`Up next: ${joinList(todoNames)}`);
+                } else {
+                    part2.push(`with ${joinList(todoNames)} lined up`);
+                }
+            }
+            if (doneNames.length > 0 && progressNames.length > 0) {
+                part2.push(`finished ${joinList(doneNames)} along the way`);
+            }
+
+            if (part2.length > 0) {
+                let s = part2.join(', ');
+                s = s.charAt(0).toUpperCase() + s.slice(1);
+                if (!s.endsWith('.')) s += '.';
+                sentences.push(s);
+            }
+
+            // Fallback: nothing actionable in any bucket — describe what's there
+            if (sentences.length === 0) {
+                const allNames = tasks.map(extractTaskGist);
+                sentences.push(`Tracking ${joinList(allNames)}.`);
+            }
+
+            // Add latest update flavor if a recent meaningful update exists
+            const latestUpdate = findMostRecentUpdate(tasks);
+            if (latestUpdate && sentences.length < 2) {
+                sentences.push(`Latest: ${trimUpdateSnippet(latestUpdate.text)}.`);
+            }
+
+            return sentences.join(' ');
+        }
+
+        function extractTaskGist(task) {
+            // If task has a recent update, prefer that as the gist; otherwise use the task name
+            if (task.updates && task.updates.length > 0) {
+                const last = [...task.updates].sort((a, b) => (b.date || '').localeCompare(a.date || ''))[0];
+                if (last && last.text) {
+                    return shortenPhrase(last.text);
+                }
+            }
+            return shortenPhrase(task.text || '');
+        }
+
+        function shortenPhrase(text) {
+            if (!text) return '';
+            // Take the first clause (up to first period, comma, or 60 chars)
+            let s = text.trim();
+            // Lowercase first letter so it reads inline
+            s = s.charAt(0).toLowerCase() + s.slice(1);
+            // Cut at sentence boundary
+            const periodIdx = s.search(/[.;]/);
+            if (periodIdx > 8 && periodIdx < 80) s = s.substring(0, periodIdx);
+            // If still long, cut at first comma after a reasonable point
+            if (s.length > 70) {
+                const commaIdx = s.indexOf(',', 30);
+                if (commaIdx !== -1 && commaIdx < 80) s = s.substring(0, commaIdx);
+            }
+            // Last resort: truncate
+            if (s.length > 80) s = s.substring(0, 77) + '...';
+            return s.trim();
+        }
+
+        function joinList(items) {
+            const cleaned = items.filter(Boolean);
+            if (cleaned.length === 0) return '';
+            if (cleaned.length === 1) return cleaned[0];
+            if (cleaned.length === 2) return cleaned[0] + ' and ' + cleaned[1];
+            return cleaned.slice(0, -1).join(', ') + ', and ' + cleaned[cleaned.length - 1];
+        }
+
+        function pickProgressVerb(count) {
+            const single = ['Currently working on', 'Focused on', 'Actively pushing on'];
+            const multi = ['Currently focused on', 'Working through', 'Active on'];
+            const pool = count === 1 ? single : multi;
+            return pool[0]; // deterministic, pick first
+        }
+
+        function findMostRecentUpdate(tasks) {
+            let best = null;
+            tasks.forEach(t => {
+                (t.updates || []).forEach(u => {
+                    if (!best || (u.date || '') > (best.date || '')) best = u;
+                });
+            });
+            return best;
+        }
+
+        function trimUpdateSnippet(text) {
+            return shortenPhrase(text);
         }
 
         function formatStatus(s) {
