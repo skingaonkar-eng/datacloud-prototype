@@ -7,12 +7,17 @@ import AttributeCards from '@/components/AttributeCards'
 import ChannelAffinity from '@/components/ChannelAffinity'
 import SplitVisualization from '@/components/SplitVisualization'
 import InsightsPanel from '@/components/InsightsPanel'
+import GovernanceTags from '@/components/GovernanceTags'
 import { Sparkles } from 'lucide-react'
 
 export default function Home() {
   const [step, setStep] = useState(0)
   const [userGoal, setUserGoal] = useState('')
   const [isProcessing, setIsProcessing] = useState(false)
+  const [govTags, setGovTags] = useState<string[]>([])
+  const [govRequired, setGovRequired] = useState(false)
+  const [govSingle, setGovSingle] = useState(false)
+  const [govShowError, setGovShowError] = useState(false)
 
   const handleGoalSubmit = (goal: string) => {
     setUserGoal(goal)
@@ -26,6 +31,11 @@ export default function Home() {
   }
 
   const handleContinue = () => {
+    if (govRequired && !govSingle && govTags.length === 0) {
+      setGovShowError(true)
+      return
+    }
+    setGovShowError(false)
     setStep(prev => Math.min(prev + 1, 4))
   }
 
@@ -112,6 +122,16 @@ export default function Home() {
                 </div>
               </motion.div>
 
+              <GovernanceTags
+                value={govTags}
+                onChange={setGovTags}
+                required={govRequired}
+                single={govSingle}
+                showError={govShowError}
+                onRequiredChange={setGovRequired}
+                onSingleChange={setGovSingle}
+              />
+
               {/* Step 2: Attribute Cards */}
               {step >= 1 && <AttributeCards onContinue={handleContinue} />}
 
@@ -122,6 +142,13 @@ export default function Home() {
               {step >= 3 && <SplitVisualization onContinue={handleContinue} />}
 
               {/* Step 5: Insights & Analytics */}
+              {step >= 4 && (
+                <GovernanceTags
+                  readOnly
+                  value={govTags}
+                  single={govSingle}
+                />
+              )}
               {step >= 4 && <InsightsPanel />}
             </motion.div>
           )}
