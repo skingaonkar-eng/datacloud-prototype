@@ -1,0 +1,27 @@
+/* Copied from the HTML governance tag picker. */
+.gov-card { background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1.5rem; }
+.gov-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1rem; }
+.gov-title { font-size: 1.125rem; font-weight: 600; color: #1f2937; margin: 0 0 0.25rem; }
+.gov-sub { font-size: 0.875rem; color: #6b7280; margin: 0; }
+.gov-opt { font-size: 0.75rem; color: #6b7280; background: #f3f4f6; border-radius: 0.25rem; padding: 0.125rem 0.5rem; white-space: nowrap; }
+.gov-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1.5rem; }
+.gov-label { font-size: 0.8125rem; color: #6b7280; margin-bottom: 0.25rem; }
+.gov-search { width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem; margin-bottom: 0.5rem; box-sizing: border-box; color: #1f2937; background: white; }
+.gov-search:focus { outline: 2px solid #93c5fd; border-color: #1d72f3; }
+.gov-tree { border: 1px solid #e5e7eb; border-radius: 0.375rem; padding: 0.375rem; max-height: 260px; overflow-y: auto; }
+.gov-row { display: flex; align-items: center; gap: 0.375rem; padding: 0.25rem 0.375rem; border-radius: 0.25rem; font-size: 0.875rem; color: #1f2937; }
+.gov-row:hover { background: #f9fafb; }
+.gov-row label { display: flex; align-items: center; gap: 0.5rem; flex: 1; cursor: pointer; }
+.gov-toggle { width: 1.25rem; height: 1.25rem; border: none; background: transparent; cursor: pointer; color: #6b7280; font-size: 0.75rem; padding: 0; }
+.gov-toggle:focus-visible { outline: 2px solid #1d72f3; }
+.gov-spacer { display: inline-block; width: 1.25rem; }
+.gov-count { color: #9ca3af; font-size: 0.75rem; }
+.gov-chip { display: inline-flex; align-items: center; gap: 0.375rem; background: #eff6ff; color: #1d4ed8; border: 1px solid #93c5fd; border-radius: 0.375rem; padding: 0.125rem 0.5rem; font-size: 0.8125rem; margin: 0 0.375rem 0.375rem 0; }
+.gov-chip button { border: none; background: transparent; color: #1d4ed8; cursor: pointer; font-size: 0.875rem; line-height: 1; padding: 0; }
+.gov-note { font-size: 0.75rem; color: #9ca3af; margin: 0.5rem 0 0; }
+.gov-err { display: none; margin-top: 0.75rem; padding: 0.5rem 0.75rem; background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; border-radius: 0.375rem; font-size: 0.8125rem; }
+.gov-err.is-shown { display: block; }
+.gov-proto { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; margin-top: 1rem; padding-top: 0.75rem; border-top: 1px dashed #e5e7eb; font-size: 0.75rem; color: #6b7280; }
+.gov-sum { font-size: 0.8125rem; color: #374151; margin: 0.5rem 0 0; }
+.gov-one { font-size: 0.875rem; color: #6b7280; }
+@media (max-width: 720px) { .gov-cols { grid-template-columns: minmax(0, 1fr); } }
